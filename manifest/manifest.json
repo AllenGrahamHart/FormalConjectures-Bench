@@ -2544,7 +2544,7 @@
           "url": "https://github.com/google-deepmind/formal-conjectures/blob/2404258180688283e5141021c75464dc2acfb798/FormalConjectures/ErdosProblems/846.lean"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "erdosproblems-846-erdos-846",
       "local_declaration_name": "erdos_846",
       "namespace": [
@@ -2553,10 +2553,14 @@
       "selected_oracle": {
         "formal_proof_kind": "formal_conjectures",
         "kind": "formal_conjectures",
-        "licence_status": "unreviewed",
-        "redistribution_status": "unreviewed",
+        "licence_status": "Apache-2.0",
+        "redistribution_status": "bundled",
         "url": "https://github.com/google-deepmind/formal-conjectures/blob/2404258180688283e5141021c75464dc2acfb798/FormalConjectures/ErdosProblems/846.lean"
       },
+      "oracle_files": [
+        "Submission.lean",
+        "Target.lean"
+      ],
       "source_file": "FormalConjectures/ErdosProblems/846.lean",
       "theorem_header": "theorem erdos_846 : answer(False) \u2194 \u2200\u1d49 (A : Set \u211d\u00b2) (\u03b5 > 0), A.Infinite \u2192 NonTrilinearFor A \u03b5 \u2192\n    WeaklyNonTrilinear A",
       "theorem_name": "Erdos846.erdos_846",
