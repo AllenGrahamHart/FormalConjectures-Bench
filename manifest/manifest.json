@@ -1365,7 +1365,7 @@
           "url": "https://github.com/google-deepmind/formal-conjectures/blob/c8cf651906abe91051cf835d4232ad5648412113/FormalConjectures/ErdosProblems/263.lean#L298"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "erdosproblems-263-ii",
       "local_declaration_name": "erdos_263.parts.ii",
       "namespace": [
@@ -1374,14 +1374,18 @@
       "selected_oracle": {
         "formal_proof_kind": "formal_conjectures",
         "kind": "formal_conjectures",
-        "licence_status": "unreviewed",
-        "redistribution_status": "unreviewed",
+        "licence_status": "Apache-2.0",
+        "redistribution_status": "bundled",
         "url": "https://github.com/google-deepmind/formal-conjectures/blob/c8cf651906abe91051cf835d4232ad5648412113/FormalConjectures/ErdosProblems/263.lean#L298"
       },
       "source_file": "FormalConjectures/ErdosProblems/263.lean",
       "theorem_header": "theorem erdos_263.parts.ii : answer(False) \u2194\n    \u2200 a : \u2115 \u2192 \u2115,\n      IsIrrationalitySequence a \u2192\n        atTop.Tendsto (fun n : \u2115 => (a n : \u211d) ^ (1 / (n : \u211d))) atTop",
       "theorem_name": "Erdos263.erdos_263.parts.ii",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "oracle_files": [
+        "Submission.lean",
+        "Target.lean"
+      ]
     },
     {
       "ams_tags": [
