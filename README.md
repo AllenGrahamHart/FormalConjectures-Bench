@@ -58,21 +58,32 @@ manifest and place their canonical proof files under `oracles/<instance_id>/`.
 Then generate tasks:
 
 ```bash
-python3 generators/generate_tasks.py \
-  --manifest manifest/manifest.json \
-  --formal-conjectures-source .cache/formal-conjectures \
-  --tasks-dir tasks
+make generate
 ```
 
 For pilot work before review, pass `--include-candidates --only <instance_id>`.
-Those generated tasks are for harness development only; the oracle solution
-will intentionally fail until an `Oracle.lean` file exists.
+Those generated tasks are for harness development only; the bundled oracle run
+will only work after proof files have been added under `oracles/<instance_id>/`.
+
+Generated task directories are checked in so Harbor can consume the dataset as
+static tasks, but they should be treated as build artifacts. To verify that
+`tasks/` still matches `manifest/`, `generators/templates/`, and `oracles/`,
+run:
+
+```bash
+make check-generated
+```
+
+For a pilot candidate, use:
+
+```bash
+make check-pilot-generated ONLY=<instance_id>
+```
 
 The repository currently includes one generated scaffold pilot,
-`tasks/erdosproblems-370-erdos-370`, with `oracle_status = "missing"`. It is
-useful for reviewing task shape and verifier structure, but it is not a release
-benchmark instance until a licence-reviewed oracle is added and the manifest
-entry is promoted to `included`.
+`tasks/erdosproblems-370-erdos-370`, with a bundled oracle solution. It is
+useful for reviewing task shape, verifier structure, and model behavior before
+scaling to the rest of the reviewed manifest.
 
 ## Verification Model
 
