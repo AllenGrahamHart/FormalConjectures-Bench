@@ -44,6 +44,15 @@ python3 manifest/build_manifest.py \
   --pinned-out manifest/pinned_versions.toml
 ```
 
+Build the shared Lean base image once:
+
+```bash
+make base-image
+```
+
+Generated tasks inherit from `formal-conjectures-bench-base:v4.27.0-fc233a10e`.
+The image itself is not stored in git; only its Dockerfile is committed.
+
 After licence and oracle review, mark selected entries as `included` in the
 manifest and place their canonical proof files under `oracles/<instance_id>/`.
 Then generate tasks:

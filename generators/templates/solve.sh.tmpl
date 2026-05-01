@@ -4,10 +4,9 @@ set -euo pipefail
 
 cd /app
 
-if [ ! -f /solution/Oracle.lean ]; then
-  echo "No licence-reviewed Oracle.lean is bundled for $instance_id." >&2
+if [ ! -f /solution/Target.lean ]; then
+  echo "No licence-reviewed Target.lean is bundled for $instance_id." >&2
   exit 1
 fi
 
-cp /solution/Oracle.lean /app/FormalConjecturesBench/Target.lean
-lake build FormalConjecturesBench.Target
+cp /solution/*.lean /app/FormalConjecturesBench/

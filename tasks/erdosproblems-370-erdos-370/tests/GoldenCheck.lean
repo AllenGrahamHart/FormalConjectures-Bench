@@ -8,6 +8,6 @@ file ensures the submitted declaration is importable from the hidden project and
 available under the expected fully qualified name.
 -/
 
-import FormalConjecturesBench
+import FormalConjecturesBench.Target
 
 #check Erdos370.erdos_370

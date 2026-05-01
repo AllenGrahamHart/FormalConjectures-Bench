@@ -16,6 +16,7 @@ limitations under the License.
 -/
 
 import FormalConjectures.Util.ProblemImports
+import FormalConjecturesBench.Submission
 
 /-!
 # Erdős Problem 370

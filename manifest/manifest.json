@@ -1705,17 +1705,21 @@
           "url": "https://github.com/XC0R/formal-conjectures/blob/f58dea7d2cc5c9da2e050ec80a73e838b54a6dd2/FormalConjectures/ErdosProblems/370.lean#L73"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "erdosproblems-370-erdos-370",
       "local_declaration_name": "erdos_370",
       "namespace": [
         "Erdos370"
       ],
+      "oracle_files": [
+        "Submission.lean",
+        "Target.lean"
+      ],
       "selected_oracle": {
         "formal_proof_kind": "formal_conjectures",
         "kind": "formal_conjectures",
-        "licence_status": "unreviewed",
-        "redistribution_status": "unreviewed",
+        "licence_status": "Apache-2.0",
+        "redistribution_status": "bundled",
         "url": "https://github.com/XC0R/formal-conjectures/blob/f58dea7d2cc5c9da2e050ec80a73e838b54a6dd2/FormalConjectures/ErdosProblems/370.lean#L73"
       },
       "source_file": "FormalConjectures/ErdosProblems/370.lean",
