@@ -253,7 +253,23 @@ def namespace_block(namespaces: list[str]) -> tuple[str, str]:
     return opening, closing
 
 
-def target_source(source_root: Path, instance: dict) -> tuple[str, str, str]:
+def open_context(lines: list[str]) -> str:
+    """Replay source `open` commands needed to elaborate copied theorem headers."""
+    stripper = LeanCommentStripper()
+    result: list[str] = []
+    seen: set[str] = set()
+    for raw in lines:
+        stripped = stripper.strip_line(raw).strip()
+        if not stripped.startswith("open "):
+            continue
+        line = raw.rstrip()
+        if line not in seen:
+            result.append(line)
+            seen.add(line)
+    return "\n".join(result)
+
+
+def target_source(source_root: Path, instance: dict) -> tuple[str, str, str, str]:
     source_file = source_root / instance["source_file"]
     lines = source_file.read_text(encoding="utf-8").splitlines()
 
@@ -279,7 +295,7 @@ def target_source(source_root: Path, instance: dict) -> tuple[str, str, str]:
     ]
     generated = "\n".join(generated_lines)
     frozen_prefix = generated.split(TARGET_MARKER, 1)[0]
-    return generated, frozen_prefix, header
+    return generated, frozen_prefix, header, open_context(prefix_lines)
 
 
 def selected_instances(manifest: dict, include_candidates: bool, only: set[str]) -> list[dict]:
@@ -419,7 +435,8 @@ def generate_task(
     task_dir = tasks_dir / instance["instance_id"]
     clean_task_dir(task_dir)
 
-    target, frozen_prefix, header = target_source(source_root, instance)
+    target, frozen_prefix, header, theorem_open_context = target_source(source_root, instance)
+    rendered_open_context = f"{theorem_open_context}\n\n" if theorem_open_context else ""
     oracle_dir = oracles_dir / instance["instance_id"]
     oracle_status = "bundled" if (oracle_dir / "Target.lean").exists() else "missing"
     namespace_open, namespace_close = namespace_block(instance.get("namespace", []))
@@ -445,6 +462,7 @@ def generate_task(
         "expected_theorem_application_args": (
             " " + " ".join(expected_theorem_args) if expected_theorem_args else ""
         ),
+        "open_context": rendered_open_context,
         "namespace_open": namespace_open,
         "namespace_close": namespace_close,
         "target_marker_json": json.dumps(TARGET_MARKER),

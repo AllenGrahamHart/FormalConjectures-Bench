@@ -12,7 +12,9 @@ The verifier design follows the same pattern as the local Takens TB3 task:
   output is treated as a verifier failure.
 - Run a `sorry` canary to confirm the axiom-audit path detects `sorryAx`.
 - Run a hidden golden wrapper theorem with the original expected signature,
-  proved by applying the submitted theorem.
+  proved by applying the submitted theorem. The wrapper replays source-level
+  `open` commands from the frozen target prefix so unqualified theorem headers
+  elaborate under the same namespace/import context as the public target file.
 - Provide the agent a read-only verifier-equivalent checker at
   `/app/check.sh`, backed by `/opt/formal-conjectures-bench-checker`, so it can
   iterate before final grading.

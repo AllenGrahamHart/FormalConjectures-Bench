@@ -1,2 +1,3 @@
 instance_id,theorem_name,proof_url,licence_status,redistribution_status,reviewer,notes
 erdosproblems-370-erdos-370,Erdos370.erdos_370,https://github.com/XC0R/formal-conjectures/blob/f58dea7d2cc5c9da2e050ec80a73e838b54a6dd2/FormalConjectures/ErdosProblems/370.lean#L73,Apache-2.0,bundled,Codex,"Pilot oracle copied from pinned Formal Conjectures fork file with Apache-2.0 header; canary pass still required."
+erdosproblems-741-i,Erdos741.erdos_741.parts.i,https://github.com/mo271/formal-conjectures/blob/486bc8afae062b6711cd16d3466d651ee2880a52/FormalConjectures/ErdosProblems/741.lean#L1449,Apache-2.0,bundled,Codex,"Hard pilot oracle copied from pinned Formal Conjectures fork file with Apache-2.0 header; oracle passes hardened verifier offline."

@@ -80,10 +80,11 @@ For a pilot candidate, use:
 make check-pilot-generated ONLY=<instance_id>
 ```
 
-The repository currently includes one generated scaffold pilot,
-`tasks/erdosproblems-370-erdos-370`, with a bundled oracle solution. It is
-useful for reviewing task shape, verifier structure, and model behavior before
-scaling to the rest of the reviewed manifest.
+The repository currently includes two generated tasks with bundled oracle
+solutions: `tasks/erdosproblems-370-erdos-370` as the initial verifier pilot,
+and `tasks/erdosproblems-741-i` as a harder proof-ability probe. They are useful
+for reviewing task shape, verifier structure, and model behavior before scaling
+to the rest of the reviewed manifest.
 
 ## Verification Model
 
