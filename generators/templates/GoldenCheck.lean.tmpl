@@ -5,9 +5,17 @@ Hidden golden check for $theorem_name.
 
 The verifier separately checks the source theorem header byte-for-byte. This
 file ensures the submitted declaration is importable from the hidden project and
-available under the expected fully qualified name.
+can prove a hidden wrapper with the expected theorem signature.
 -/
 
 import FormalConjecturesBench.Target
 
+$namespace_open
+
+$expected_theorem_header := by
+  exact $theorem_name$expected_theorem_application_args
+
+$namespace_close
+
 #check $theorem_name
+#check $expected_theorem_qualified_name

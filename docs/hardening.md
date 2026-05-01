@@ -8,14 +8,22 @@ The verifier design follows the same pattern as the local Takens TB3 task:
 - Ignore public `lakefile`, `lean-toolchain`, imports, and support files during
   the final build, except to assert they were not modified.
 - Check the theorem header and all code above the target marker byte-for-byte.
-- Build the hidden project, then audit `#print axioms`.
+- Build the hidden project, then audit `#print axioms`; malformed axiom-audit
+  output is treated as a verifier failure.
 - Run a `sorry` canary to confirm the axiom-audit path detects `sorryAx`.
+- Run a hidden golden wrapper theorem with the original expected signature,
+  proved by applying the submitted theorem.
 - Provide the agent a read-only verifier-equivalent checker at
   `/app/check.sh`, backed by `/opt/formal-conjectures-bench-checker`, so it can
   iterate before final grading.
 - Reject common escape hatches: `sorry`, `admit`, `axiom`, `unsafe`,
   `native_decide`, `@[implemented_by]`, `@[extern]`, `run_cmd`, `#eval`,
   `initialize`, `builtin_initialize`, and `load_dynlib`.
+- Reject parser and metaprogramming extensions in editable sources, including
+  `macro`, `macro_rules`, `syntax`, `elab`, custom notation declarations, and
+  related infix/prefix/postfix/mixfix commands. These are not needed for normal
+  Lean proofs and can interfere with verifier audit commands or theorem
+  statement elaboration.
 - Reject symlinks and non-Lean files in the editable source tree.
 - Link verifier dependency packages directly from
   `/opt/formal-conjectures/.lake/packages`, not through mutable `/app` state.

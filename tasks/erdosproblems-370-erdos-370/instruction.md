@@ -10,6 +10,10 @@ You may edit Lean files only under `/app/FormalConjecturesBench`. The main
 target is `/app/FormalConjecturesBench/Target.lean`; helper lemmas may go in
 `/app/FormalConjecturesBench/Submission.lean`.
 
+Do not introduce custom Lean syntax, macros, command elaborators, or notation
+declarations. Ordinary helper `def`, `lemma`, `theorem`, `instance`, and
+attributes such as `@[simp]` are allowed.
+
 Use this command to test your final answer:
 
 ```bash

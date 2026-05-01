@@ -5,9 +5,18 @@ Hidden golden check for Erdos370.erdos_370.
 
 The verifier separately checks the source theorem header byte-for-byte. This
 file ensures the submitted declaration is importable from the hidden project and
-available under the expected fully qualified name.
+can prove a hidden wrapper with the expected theorem signature.
 -/
 
 import FormalConjecturesBench.Target
 
+namespace Erdos370
+
+theorem formal_conjectures_bench_expected_type : answer(True) ↔
+    { n | Nat.maxPrimeFac n < √n ∧ Nat.maxPrimeFac (n + 1) < √(n + 1) }.Infinite := by
+  exact Erdos370.erdos_370
+
+end Erdos370
+
 #check Erdos370.erdos_370
+#check Erdos370.formal_conjectures_bench_expected_type

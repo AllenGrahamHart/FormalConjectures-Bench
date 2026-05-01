@@ -45,7 +45,9 @@ FROZEN_FILES = sorted(
 BANNED_PATTERNS = [
     r"\bsorry\b",
     r"\badmit\b",
-    r"\baxiom\b",
+    r"(?m)^\s*(?:private\s+|protected\s+)?axiom\b",
+    r"(?m)^\s*(?:private\s+|protected\s+)?constant\b",
+    r"(?m)^\s*(?:private\s+|protected\s+)?opaque\b",
     r"@\[(?:implemented_by|extern)\]",
     r"\brun_cmd\b",
     r"#eval\b",
@@ -54,6 +56,14 @@ BANNED_PATTERNS = [
     r"\bload_dynlib\b",
     r"\bnative_decide\b",
     r"\bunsafe\b",
+    r"(?m)^\s*(?:@\[[^\]]+\]\s*)*macro_rules\b",
+    r"(?m)^\s*(?:@\[[^\]]+\]\s*)*macro\b",
+    r"(?m)^\s*(?:@\[[^\]]+\]\s*)*syntax\b",
+    r"(?m)^\s*(?:@\[[^\]]+\]\s*)*declare_syntax_cat\b",
+    r"(?m)^\s*(?:@\[[^\]]+\]\s*)*elab_rules\b",
+    r"(?m)^\s*(?:@\[[^\]]+\]\s*)*elab\b",
+    r"(?m)^\s*(?:local\s+|scoped\s+)?notation\b",
+    r"(?m)^\s*(?:infix|infixl|infixr|prefix|postfix|mixfix)\b",
 ]
 
 
@@ -272,11 +282,16 @@ def lean_output(project_dir: Path, source: str) -> str:
     return result.stdout
 
 
-def parse_axioms(output: str) -> set[str]:
-    match = re.search(r"depends on axioms:\s*\[([^\]]*)\]", output)
-    if not match:
+def parse_axioms(output: str, theorem_name: str) -> set[str]:
+    if theorem_name not in output:
+        fail(f"Axiom audit output did not mention {theorem_name}\n{output}")
+    if "does not depend on any axioms" in output:
         return set()
-    raw = match.group(1).strip()
+
+    matches = re.findall(r"depends on axioms:\s*\[([^\]]*)\]", output)
+    if len(matches) != 1:
+        fail(f"Could not parse axiom audit output for {theorem_name}\n{output}")
+    raw = matches[0].strip()
     if not raw:
         return set()
     return {item.strip() for item in raw.split(",") if item.strip()}
@@ -293,7 +308,7 @@ def check_golden_theorem_import(project_dir: Path) -> None:
 
 def check_axioms(project_dir: Path) -> None:
     output = lean_output(project_dir, f"import FormalConjecturesBench.Target\n#print axioms {THEOREM_NAME}\n")
-    axioms = parse_axioms(output)
+    axioms = parse_axioms(output, THEOREM_NAME)
     extra = axioms - ALLOWED_AXIOMS
     if extra:
         fail(f"Unexpected axioms for {THEOREM_NAME}: {sorted(extra)}\n{output}")
