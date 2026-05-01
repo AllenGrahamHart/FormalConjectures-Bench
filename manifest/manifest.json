@@ -1,0 +1,3975 @@
+{
+  "instances": [
+    {
+      "ams_tags": [
+        "60"
+      ],
+      "attribute_line": 50,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 51,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/logical-intelligence/proofs/blob/0dbb9215f472c532ca8af1376ed58a7ebca6dec2/LI/Conj63.lean#L8845"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "arxiv-0911-2077-conjecture6-3-conjecture6-3",
+      "local_declaration_name": "arxiv.id0911_2077.conjecture6_3",
+      "namespace": [
+        "Arxiv"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "external_lean4",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/logical-intelligence/proofs/blob/0dbb9215f472c532ca8af1376ed58a7ebca6dec2/LI/Conj63.lean#L8845"
+      },
+      "source_file": "FormalConjectures/Arxiv/0911.2077/Conjecture6_3.lean",
+      "theorem_header": "theorem arxiv.id0911_2077.conjecture6_3\n    (p : \u211d) (h_p : p \u2208 Set.Ioo 0 (1 / 2)) (k : \u2115) (hk : 0 < k)\n    (\u03c3 : \u211d) (h_\u03c3 : \u03c3 = (p * (1 - p)).sqrt) :\n    letI hp' : (\u27e8p, le_of_lt h_p.1\u27e9 : \u211d\u22650) \u2264 1",
+      "theorem_name": "Arxiv.arxiv.id0911_2077.conjecture6_3",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "3"
+      ],
+      "attribute_line": 201,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 204,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/FormalizedFormalLogic/Foundation"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "arxiv-1308-0994-boxdotconjecture-boxdotconjecture",
+      "local_declaration_name": "BoxdotConjecture",
+      "namespace": [
+        "Arxiv"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "external_lean4",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation"
+      },
+      "source_file": "FormalConjectures/Arxiv/1308.0994/BoxdotConjecture.lean",
+      "theorem_header": "theorem BoxdotConjecture (L : NormalModalLogic) (H : \u2200 \u03c6, L \u22a2 \u25a0 \u03c6 \u2194 KT \u22a2 \u03c6) : L \u2286 KT",
+      "theorem_name": "Arxiv.BoxdotConjecture",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5"
+      ],
+      "attribute_line": 55,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 57,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/frenzymath/Archon-FirstProof-Results/blob/main/FirstProof/FirstProof6/Problem6.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "arxiv-2602-05192-firstproof6-epsilon-light-subset-exists",
+      "local_declaration_name": "epsilon_light_subset_exists",
+      "namespace": [
+        "Arxiv"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "external_lean4",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/frenzymath/Archon-FirstProof-Results/blob/main/FirstProof/FirstProof6/Problem6.lean"
+      },
+      "source_file": "FormalConjectures/Arxiv/2602.05192/FirstProof6.lean",
+      "theorem_header": "theorem epsilon_light_subset_exists : answer(True) \u2194\n    \u2203 (c : \u211d), c > 0 \u2227 \u2200 (n : \u2115) (G : SimpleGraph (Fin n)) (\u03b5 : \u211d),\n    0 < \u03b5 \u2192 \u03b5 < 1 \u2192\n    \u2203 (S : Finset (Fin n)), IsEpsilonLight G \u03b5 S \u2227 (S.card : \u211d) \u2265 c * \u03b5 * n",
+      "theorem_name": "Arxiv.epsilon_light_subset_exists",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "26",
+        "40"
+      ],
+      "attribute_line": 47,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 48,
+      "exclusion_reason": "theorem statement contains answer(sorry)",
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/AxiomMath/gdm-formal-conjectures/blob/main/BorweinSineSeries/solution.lean"
+        }
+      ],
+      "inclusion_status": "excluded",
+      "instance_id": "books-borweinsineseries-borwein-sine-series",
+      "local_declaration_name": "borwein_sine_series",
+      "namespace": [
+        "BorweinSineSeries"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "external_lean4",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/AxiomMath/gdm-formal-conjectures/blob/main/BorweinSineSeries/solution.lean"
+      },
+      "source_file": "FormalConjectures/Books/BorweinSineSeries.lean",
+      "theorem_header": "theorem borwein_sine_series :\n    answer(sorry) \u2194\n      Summable fun n : \u2115+ \u21a6 ((2 / 3 + 1 / 3 * Real.sin (n : \u211d)) ^ (n : \u2115)) / (n : \u211d)",
+      "theorem_name": "BorweinSineSeries.borwein_sine_series",
+      "uses_answer_sorry": true
+    },
+    {
+      "ams_tags": [
+        "52"
+      ],
+      "attribute_line": 78,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 79,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/theaustinhatfield/formal-conjectures/blob/solve-erdos-100-piepmeyer/FormalConjectures/ErdosProblems/100.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-100-erdos-100-piepmeyer",
+      "local_declaration_name": "erdos_100_piepmeyer",
+      "namespace": [
+        "Erdos100"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/theaustinhatfield/formal-conjectures/blob/solve-erdos-100-piepmeyer/FormalConjectures/ErdosProblems/100.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/100.lean",
+      "theorem_header": "theorem erdos_100_piepmeyer :\n    \u2203 A : Finset \u211d\u00b2, A.card = 9 \u2227 DistancesSeparated A \u2227\n      diam (A : Set \u211d\u00b2) < 5",
+      "theorem_name": "Erdos100.erdos_100_piepmeyer",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "28",
+        "30"
+      ],
+      "attribute_line": 50,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 53,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos1043.lean"
+        },
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/XC0R/formal-conjectures/blob/7db17471701f15b125d1c36bc1fa5bb9b702d6be/FormalConjectures/ErdosProblems/1043.lean#L214"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-1043-erdos-1043",
+      "local_declaration_name": "erdos_1043",
+      "namespace": [
+        "Erdos1043"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/XC0R/formal-conjectures/blob/7db17471701f15b125d1c36bc1fa5bb9b702d6be/FormalConjectures/ErdosProblems/1043.lean#L214"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/1043.lean",
+      "theorem_header": "theorem erdos_1043 :\n    answer(False) \u2194 \u2200 (f : \u2102[X]), f.Monic \u2192 f.degree \u2265 1 \u2192\n      \u2203 (u : \u2102), \u2016u\u2016 = 1 \u2227\n      volume ((\u211d \u2219 u).orthogonalProjection '' levelSet f) \u2264 2",
+      "theorem_name": "Erdos1043.erdos_1043",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 65,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 66,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://www.erdosproblems.com/forum/thread/1051"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-1051-erdos-1051",
+      "local_declaration_name": "erdos_1051",
+      "namespace": [
+        "Erdos1051"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "external",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://www.erdosproblems.com/forum/thread/1051"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/1051.lean",
+      "theorem_header": "theorem erdos_1051 :\n    answer(True) \u2194 \u2200 (a : \u2115 \u2192 \u2124), StrictMono a \u2192 GrowthCondition a \u2192\n      Irrational (ErdosSeries a)",
+      "theorem_name": "Erdos1051.erdos_1051",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 48,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 49,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mzhorvath1/formal-conjectures/blob/b70a2ddf5e55f743aac9d4f4a907786b39bc9807/FormalConjectures/ErdosProblems/1052.lean#L46"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-1052-even-of-isunitaryperfect",
+      "local_declaration_name": "even_of_isUnitaryPerfect",
+      "namespace": [
+        "Erdos1052"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mzhorvath1/formal-conjectures/blob/b70a2ddf5e55f743aac9d4f4a907786b39bc9807/FormalConjectures/ErdosProblems/1052.lean#L46"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/1052.lean",
+      "theorem_header": "theorem even_of_isUnitaryPerfect (n : \u2115) (hn : IsUnitaryPerfect n) : Even n",
+      "theorem_name": "Erdos1052.even_of_isUnitaryPerfect",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5"
+      ],
+      "attribute_line": 56,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 57,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos1067.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-1067-erdos-1067",
+      "local_declaration_name": "erdos_1067",
+      "namespace": [
+        "Erdos1067"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "lean_proofs_repo",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos1067.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/1067.lean",
+      "theorem_header": "theorem erdos_1067 :\n    answer(False) \u2194 \u2200 (V : Type) (G : SimpleGraph V), G.chromaticCardinal = \u2135_ 1 \u2192\n      \u2203 (H : G.Subgraph), H.coe.chromaticCardinal = \u2135_ 1 \u2227 InfinitelyConnected H.coe",
+      "theorem_name": "Erdos1067.erdos_1067",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "52"
+      ],
+      "attribute_line": 41,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 42,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos1071.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-1071-i",
+      "local_declaration_name": "erdos_1071.parts.i",
+      "namespace": [
+        "Erdos1071"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "lean_proofs_repo",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos1071.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/1071.lean",
+      "theorem_header": "theorem erdos_1071.parts.i :\n    answer(True) \u2194 \u2203 S : Finset (\u211d\u00b2 \u00d7 \u211d\u00b2),\n      Maximal (fun T : Finset (\u211d\u00b2 \u00d7 \u211d\u00b2) =>\n        (\u2200 seg \u2208 T, dist seg.1 seg.2 = 1 \u2227\n          seg.1 0 \u2208 Icc 0 1 \u2227 seg.1 1 \u2208 Icc 0 1 \u2227\n          seg.2 0 \u2208 Icc 0 1 \u2227 seg.2 1 \u2208 Icc 0 1) \u2227\n          (T : Set (\u211d\u00b2 \u00d7 \u211d\u00b2)).Pairwise SegmentsDisjoint) S",
+      "theorem_name": "Erdos1071.erdos_1071.parts.i",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "52"
+      ],
+      "attribute_line": 56,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 57,
+      "exclusion_reason": "theorem statement contains answer(sorry)",
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos1071b.lean"
+        }
+      ],
+      "inclusion_status": "excluded",
+      "instance_id": "erdosproblems-1071-ii",
+      "local_declaration_name": "erdos_1071.parts.ii",
+      "namespace": [
+        "Erdos1071"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "lean_proofs_repo",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos1071b.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/1071.lean",
+      "theorem_header": "theorem erdos_1071.parts.ii :\n    answer(sorry) \u2194 \u2203 (R : Set \u211d\u00b2) (S : Set (\u211d\u00b2 \u00d7 \u211d\u00b2)),\n      IsOpen R \u2227 IsConnected R \u2227 S.Countable \u2227 S.Infinite \u2227\n      Maximal (fun T : Set (\u211d\u00b2 \u00d7 \u211d\u00b2) =>\n        (\u2200 seg \u2208 T, dist seg.1 seg.2 = 1 \u2227 seg.1 \u2208 R \u2227 seg.2 \u2208 R) \u2227\n        T.Pairwise SegmentsDisjoint) S",
+      "theorem_name": "Erdos1071.erdos_1071.parts.ii",
+      "uses_answer_sorry": true
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 101,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 103,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mzhorvath1/formal-conjectures/blob/3dec597bd1a73778760b761712a1fc5fb24bc5d7/FormalConjectures/ErdosProblems/1074.lean#L99"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-1074-ehsnumbers-infinite",
+      "local_declaration_name": "erdos_1074.variants.EHSNumbers_infinite",
+      "namespace": [
+        "Erdos1074"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mzhorvath1/formal-conjectures/blob/3dec597bd1a73778760b761712a1fc5fb24bc5d7/FormalConjectures/ErdosProblems/1074.lean#L99"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/1074.lean",
+      "theorem_header": "theorem erdos_1074.variants.EHSNumbers_infinite : EHSNumbers.Infinite",
+      "theorem_name": "Erdos1074.erdos_1074.variants.EHSNumbers_infinite",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5"
+      ],
+      "attribute_line": 56,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 57,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos1080.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-1080-erdos-1080",
+      "local_declaration_name": "erdos_1080",
+      "namespace": [
+        "Erdos1080"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "lean_proofs_repo",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos1080.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/1080.lean",
+      "theorem_header": "theorem erdos_1080 :\n    answer(False) \u2194\n    \u2203 c > (0 : \u211d), \u2200 (V : Type) [Fintype V] [Nonempty V] (G : SimpleGraph V) (X Y : Set V),\n      IsBipartition G X Y \u2192 X.ncard = \u230a(Fintype.card V : \u211d) ^ (2/3 : \u211d)\u230b\u208a \u2192\n      G.edgeSet.ncard \u2265 c * Fintype.card V \u2192\n        \u2203 (v : V) (walk : G.Walk v v), walk.IsCycle \u2227 walk.length = 6",
+      "theorem_name": "Erdos1080.erdos_1080",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "51"
+      ],
+      "attribute_line": 51,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 52,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/google-deepmind/formal-conjectures/blob/0aca4d71095301c0fd2dca32611b7addb2ea735c/FormalConjectures/ErdosProblems/1082.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-1082-ii",
+      "local_declaration_name": "erdos_1082.parts.ii",
+      "namespace": [
+        "Erdos1082"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/google-deepmind/formal-conjectures/blob/0aca4d71095301c0fd2dca32611b7addb2ea735c/FormalConjectures/ErdosProblems/1082.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/1082.lean",
+      "theorem_header": "theorem erdos_1082.parts.ii : answer(False) \u2194\n    \u2200 (A : Finset \u211d\u00b2) (hA : A.Nonempty) (hA_n3c : NonTrilinear (A : Set \u211d\u00b2)),\n    \u2203 (a : \u211d\u00b2) (ha : a \u2208 A), A.card / 2 \u2264 distinctDistancesFrom A a - 1",
+      "theorem_name": "Erdos1082.erdos_1082.parts.ii",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 64,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 66,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/yuta0x89/ErdosProblems/blob/a1319f732cdee5140faf47d984e2c451c1184803/Erdos1141.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-1141-erdos-1141",
+      "local_declaration_name": "erdos_1141",
+      "namespace": [
+        "Erdos1141"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "external_lean4",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/yuta0x89/ErdosProblems/blob/a1319f732cdee5140faf47d984e2c451c1184803/Erdos1141.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/1141.lean",
+      "theorem_header": "theorem erdos_1141 :\n    answer(False) \u2194 Infinite { n | Erdos1141Prop n }",
+      "theorem_name": "Erdos1141.erdos_1141",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 47,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 49,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://live.lean-lang.org/#codez=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"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-1148-erdos-1148",
+      "local_declaration_name": "erdos_1148",
+      "namespace": [
+        "Erdos1148"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "external",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://live.lean-lang.org/#codez=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"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/1148.lean",
+      "theorem_header": "theorem erdos_1148 : answer(True) \u2194 \u2200\u1da0 n in atTop, Erdos1148Prop n",
+      "theorem_name": "Erdos1148.erdos_1148",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 40,
+      "category": [
+        "textbook"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 42,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mo271/formal-conjectures/blob/2663234a28260853790aa5752d8d4550ff0ab1ca/FormalConjectures/ErdosProblems/12.lean#L39"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-12-isgood-example",
+      "local_declaration_name": "isGood_example",
+      "namespace": [
+        "Erdos12"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mo271/formal-conjectures/blob/2663234a28260853790aa5752d8d4550ff0ab1ca/FormalConjectures/ErdosProblems/12.lean#L39"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/12.lean",
+      "theorem_header": "theorem isGood_example :\n    IsGood {p ^ 2 | (p : \u2115) (_ : p \u2261 3 [MOD 4]) (_ : p.Prime)}",
+      "theorem_name": "Erdos12.isGood_example",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 56,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 58,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mo271/formal-conjectures/blob/8d872b465955e46e2d28bc165d186ea41fd0da9e/FormalConjectures/ErdosProblems/12.lean#L810"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-12-i",
+      "local_declaration_name": "erdos_12.parts.i",
+      "namespace": [
+        "Erdos12"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mo271/formal-conjectures/blob/8d872b465955e46e2d28bc165d186ea41fd0da9e/FormalConjectures/ErdosProblems/12.lean#L810"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/12.lean",
+      "theorem_header": "theorem erdos_12.parts.i : answer(True) \u2194 \u2203 (A : Set \u2115), IsGood A \u2227\n    (0 : \u211d) < Filter.atTop.liminf\n      (fun N => (A \u2229 Icc 1 N).ncard / (N : \u211d).sqrt)",
+      "theorem_name": "Erdos12.erdos_12.parts.i",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 71,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 73,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mo271/formal-conjectures/blob/118a6a60df73a9f47d6c89f3cdb3786eaa2e8d0a/FormalConjectures/ErdosProblems/12.lean#L740"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-12-ii",
+      "local_declaration_name": "erdos_12.parts.ii",
+      "namespace": [
+        "Erdos12"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mo271/formal-conjectures/blob/118a6a60df73a9f47d6c89f3cdb3786eaa2e8d0a/FormalConjectures/ErdosProblems/12.lean#L740"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/12.lean",
+      "theorem_header": "theorem erdos_12.parts.ii : answer(False) \u2194 \u2203 c > (0 : \u211d), \u2200 (A : Set \u2115), IsGood A \u2192\n    {N : \u2115| (A \u2229 Icc 1 N).ncard < (N : \u211d) ^ (1 - c)}.Infinite",
+      "theorem_name": "Erdos12.erdos_12.parts.ii",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 61,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 63,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/google-deepmind/formal-conjectures/blob/300bf771bdbef43d7b9aa2521e633a50fd54dd28/FormalConjectures/ErdosProblems/125.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-125-erdos-125",
+      "local_declaration_name": "erdos_125",
+      "namespace": [
+        "Erdos125"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/google-deepmind/formal-conjectures/blob/300bf771bdbef43d7b9aa2521e633a50fd54dd28/FormalConjectures/ErdosProblems/125.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/125.lean",
+      "theorem_header": "theorem erdos_125 :\n    answer(False) \u2194 (A + B).HasPosDensity",
+      "theorem_name": "Erdos125.erdos_125",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 73,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 75,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mo271/formal-conjectures/blob/c27415379b5dbe34105d1fdd707994540c4c6fc7/FormalConjectures/ErdosProblems/125.lean#L468"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-125-positive-lower-density",
+      "local_declaration_name": "erdos_125.variants.positive_lower_density",
+      "namespace": [
+        "Erdos125"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mo271/formal-conjectures/blob/c27415379b5dbe34105d1fdd707994540c4c6fc7/FormalConjectures/ErdosProblems/125.lean#L468"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/125.lean",
+      "theorem_header": "theorem erdos_125.variants.positive_lower_density :\n    answer(False) \u2194 0 < (A + B).lowerDensity",
+      "theorem_name": "Erdos125.erdos_125.variants.positive_lower_density",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 69,
+      "category": [
+        "test"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 71,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/XC0R/formal-conjectures/blob/6c7a16e8998d1c597fa2a5c6329bc9301fcc56e2/FormalConjectures/ErdosProblems/138.lean#L79"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-138-monoapnumber-two-one",
+      "local_declaration_name": "monoAPNumber_two_one",
+      "namespace": [
+        "Erdos138"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/XC0R/formal-conjectures/blob/6c7a16e8998d1c597fa2a5c6329bc9301fcc56e2/FormalConjectures/ErdosProblems/138.lean#L79"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/138.lean",
+      "theorem_header": "theorem monoAPNumber_two_one : W 1 = 1",
+      "theorem_name": "Erdos138.monoAPNumber_two_one",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 74,
+      "category": [
+        "test"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 76,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/XC0R/formal-conjectures/blob/6c7a16e8998d1c597fa2a5c6329bc9301fcc56e2/FormalConjectures/ErdosProblems/138.lean#L142"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-138-monoapnumber-two-two",
+      "local_declaration_name": "monoAPNumber_two_two",
+      "namespace": [
+        "Erdos138"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/XC0R/formal-conjectures/blob/6c7a16e8998d1c597fa2a5c6329bc9301fcc56e2/FormalConjectures/ErdosProblems/138.lean#L142"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/138.lean",
+      "theorem_header": "theorem monoAPNumber_two_two : W 2 = 3",
+      "theorem_name": "Erdos138.monoAPNumber_two_two",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 115,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 117,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mo271/formal-conjectures/blob/6ac8d0cbe1a85e71747c62c1391a84788015ebc1/FormalConjectures/ErdosProblems/138.lean#L844"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-138-difference",
+      "local_declaration_name": "erdos_138.variants.difference",
+      "namespace": [
+        "Erdos138"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mo271/formal-conjectures/blob/6ac8d0cbe1a85e71747c62c1391a84788015ebc1/FormalConjectures/ErdosProblems/138.lean#L844"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/138.lean",
+      "theorem_header": "theorem erdos_138.variants.difference :\n    answer(True) \u2194 atTop.Tendsto (fun k => (W (k + 1) - W k)) atTop",
+      "theorem_name": "Erdos138.erdos_138.variants.difference",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5"
+      ],
+      "attribute_line": 47,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 49,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mo271/formal-conjectures/blob/29c60aa79729701905cf9e92517af23f588971f2/FormalConjectures/ErdosProblems/152.lean#L485"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-152-erdos-152",
+      "local_declaration_name": "erdos_152",
+      "namespace": [
+        "Erdos152"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mo271/formal-conjectures/blob/29c60aa79729701905cf9e92517af23f588971f2/FormalConjectures/ErdosProblems/152.lean#L485"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/152.lean",
+      "theorem_header": "theorem erdos_152 : answer(True) \u2194 Tendsto f atTop atTop",
+      "theorem_name": "Erdos152.erdos_152",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5"
+      ],
+      "attribute_line": 57,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 59,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mo271/formal-conjectures/blob/ff58c933d53bb807bf85d98a47402703f9f14ed3/FormalConjectures/ErdosProblems/152.lean#L496"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-152-square",
+      "local_declaration_name": "erdos_152.variants.square",
+      "namespace": [
+        "Erdos152"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mo271/formal-conjectures/blob/ff58c933d53bb807bf85d98a47402703f9f14ed3/FormalConjectures/ErdosProblems/152.lean#L496"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/152.lean",
+      "theorem_header": "theorem erdos_152.variants.square : answer(True) \u2194\n    (fun n => f n : \u2115 \u2192 \u211d) \u226b (fun n => n ^ 2 : \u2115 \u2192 \u211d)",
+      "theorem_name": "Erdos152.erdos_152.variants.square",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5",
+        "51"
+      ],
+      "attribute_line": 52,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 53,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos189.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-189-erdos-189",
+      "local_declaration_name": "erdos_189",
+      "namespace": [
+        "Erdos189"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "lean_proofs_repo",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos189.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/189.lean",
+      "theorem_header": "theorem erdos_189 :\n    answer(False) \u2194 Erdos189For\n      (fun a b c d \u21a6\n        line[\u211d, a, b].direction \u27c2 line[\u211d, b, c].direction \u2227\n        line[\u211d, b, c].direction \u27c2 line[\u211d, c, d].direction \u2227\n        line[\u211d, c, d].direction \u27c2 line[\u211d, d, a].direction)\n      (fun a b c d \u21a6 dist a b * dist b c)",
+      "theorem_name": "Erdos189.erdos_189",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5",
+        "11"
+      ],
+      "attribute_line": 71,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 74,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos198.lean"
+        },
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/XC0R/formal-conjectures/blob/33045ec97b08a40c7ff91f1e2a112f5e3b4725f8/FormalConjectures/ErdosProblems/198.lean#L168"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-198-erdos-198",
+      "local_declaration_name": "erdos_198",
+      "namespace": [
+        "Erdos198"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/XC0R/formal-conjectures/blob/33045ec97b08a40c7ff91f1e2a112f5e3b4725f8/FormalConjectures/ErdosProblems/198.lean#L168"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/198.lean",
+      "theorem_header": "theorem erdos_198 : (\u2200 A : Set \u2115, IsSidon A \u2192 (\u2203 Y, IsAPOfLength Y \u22a4 \u2227 Y \u2286 A\u1d9c)) \u2194\n    answer(False)",
+      "theorem_name": "Erdos198.erdos_198",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5",
+        "11"
+      ],
+      "attribute_line": 85,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 86,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mzhorvath1/formal-conjectures/blob/21f6780f84b406de468389571eb01717b8072f09/FormalConjectures/ErdosProblems/198.lean#L84"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-198-concrete",
+      "local_declaration_name": "erdos_198.variants.concrete",
+      "namespace": [
+        "Erdos198"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mzhorvath1/formal-conjectures/blob/21f6780f84b406de468389571eb01717b8072f09/FormalConjectures/ErdosProblems/198.lean#L84"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/198.lean",
+      "theorem_header": "theorem erdos_198.variants.concrete :  \u2203 (A : Set \u2115), A = {n ! + n | n} \u2227\n    IsSidon A \u2227 (\u2200 Y, IsAPOfLength Y \u22a4 \u2192 (A \u2229 Y).Nonempty)",
+      "theorem_name": "Erdos198.erdos_198.variants.concrete",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5"
+      ],
+      "attribute_line": 43,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 44,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/Woett/Lean-files/blob/main/ErdosProblem204.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-204-erdos-204",
+      "local_declaration_name": "erdos_204",
+      "namespace": [
+        "Erdos204"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "external_lean4",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/Woett/Lean-files/blob/main/ErdosProblem204.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/204.lean",
+      "theorem_header": "theorem erdos_204 : answer(False) \u2194 \u2203 (n : \u2115) (a : \u2115 \u2192 \u2124),\n    let D",
+      "theorem_name": "Erdos204.erdos_204",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "30"
+      ],
+      "attribute_line": 42,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 43,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos229.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-229-erdos-229",
+      "local_declaration_name": "erdos_229",
+      "namespace": [
+        "Erdos229"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "lean_proofs_repo",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos229.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/229.lean",
+      "theorem_header": "theorem erdos_229 :\n    letI",
+      "theorem_name": "Erdos229.erdos_229",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 55,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 56,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mzhorvath1/formal-conjectures/blob/032848c62fdf4c422bb0ee6663dc8d009d456c2c/FormalConjectures/ErdosProblems/233.lean#L57"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-233-lower-bound",
+      "local_declaration_name": "erdos_233.variants.lower_bound",
+      "namespace": [
+        "Erdos233"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mzhorvath1/formal-conjectures/blob/032848c62fdf4c422bb0ee6663dc8d009d456c2c/FormalConjectures/ErdosProblems/233.lean#L57"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/233.lean",
+      "theorem_header": "theorem erdos_233.variants.lower_bound :\n    (fun (N : \u2115) => N * (log N)^2) =O[atTop]\n    (fun N => ((\u2211 n \u2208 Finset.range N, (primeGap n) ^ 2) : \u211d))",
+      "theorem_name": "Erdos233.erdos_233.variants.lower_bound",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 37,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 39,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://live.lean-lang.org/#project=mathlib-v4.28.0&url=https://gist.githubusercontent.com/ster-oc/2b7adcf9d753cf6e29d782f7374cc57e/raw/689a8483895cbe147634dfbf2d7b1db93a3b5b5f/Erdos258.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-258-erdos-258",
+      "local_declaration_name": "erdos_258",
+      "namespace": [
+        "Erdos258"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "external_lean4",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://live.lean-lang.org/#project=mathlib-v4.28.0&url=https://gist.githubusercontent.com/ster-oc/2b7adcf9d753cf6e29d782f7374cc57e/raw/689a8483895cbe147634dfbf2d7b1db93a3b5b5f/Erdos258.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/258.lean",
+      "theorem_header": "theorem erdos_258 : answer(True) \u2194 \u2200 (a : \u2115 \u2192 \u2115), (\u2200 n, a n \u2260 0) \u2192\n    Filter.Tendsto a Filter.atTop Filter.atTop \u2192\n    Irrational (\u2211' (n : \u2115), ((n + 1).divisors.card / \u220f i \u2208 Finset.Icc 1 n, a i))",
+      "theorem_name": "Erdos258.erdos_258",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 36,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 37,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://gist.githubusercontent.com/ster-oc/c7429943f6b3a634797dc8b2a3b01f2d/raw/8c6b5b7f08021f0aed2312542dd2e9ee7beaa6d6/Erdos259.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-259-erdos-259",
+      "local_declaration_name": "erdos_259",
+      "namespace": [
+        "Erdos259"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "external_lean4",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://gist.githubusercontent.com/ster-oc/c7429943f6b3a634797dc8b2a3b01f2d/raw/8c6b5b7f08021f0aed2312542dd2e9ee7beaa6d6/Erdos259.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/259.lean",
+      "theorem_header": "theorem erdos_259 : Irrational (\u2211' n : \u2115, (\u03bc n) ^ 2 * n / (2 ^ n))",
+      "theorem_name": "Erdos259.erdos_259",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 94,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 95,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos26.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-26-erdos-26",
+      "local_declaration_name": "erdos_26",
+      "namespace": [
+        "Erdos26"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "lean_proofs_repo",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos26.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/26.lean",
+      "theorem_header": "theorem erdos_26 : answer(False) \u2194 \u2200 A : \u2115 \u2192 \u2115, StrictMono A \u2192 IsThick A \u2192\n    \u2203 k, IsBehrend (A \u00b7 + k)",
+      "theorem_name": "Erdos26.erdos_26",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 114,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 116,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mo271/formal-conjectures/blob/09c54540aa51cb40dff73660c94a82e2631386f8/FormalConjectures/ErdosProblems/26.lean#L625"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-26-tenenbaum",
+      "local_declaration_name": "erdos_26.variants.tenenbaum",
+      "namespace": [
+        "Erdos26"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mo271/formal-conjectures/blob/09c54540aa51cb40dff73660c94a82e2631386f8/FormalConjectures/ErdosProblems/26.lean#L625"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/26.lean",
+      "theorem_header": "theorem erdos_26.variants.tenenbaum : answer(False) \u2194 \u2200\u1d49 (A : \u2115 \u2192 \u2115), StrictMono A \u2192 IsThick A \u2192\n    (\u2200 \u03b5 > (0 : \u211d), \u2203 k, IsWeaklyBehrend (A \u00b7 + k) \u03b5)",
+      "theorem_name": "Erdos26.erdos_26.variants.tenenbaum",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 56,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 57,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/google-deepmind/formal-conjectures/blob/c8cf651906abe91051cf835d4232ad5648412113/FormalConjectures/ErdosProblems/263.lean#L298"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-263-ii",
+      "local_declaration_name": "erdos_263.parts.ii",
+      "namespace": [
+        "Erdos263"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/google-deepmind/formal-conjectures/blob/c8cf651906abe91051cf835d4232ad5648412113/FormalConjectures/ErdosProblems/263.lean#L298"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/263.lean",
+      "theorem_header": "theorem erdos_263.parts.ii : answer(False) \u2194\n    \u2200 a : \u2115 \u2192 \u2115,\n      IsIrrationalitySequence a \u2192\n        atTop.Tendsto (fun n : \u2115 => (a n : \u211d) ^ (1 / (n : \u211d))) atTop",
+      "theorem_name": "Erdos263.erdos_263.parts.ii",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 57,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 59,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mo271/formal-conjectures/blob/2663234a28260853790aa5752d8d4550ff0ab1ca/FormalConjectures/ErdosProblems/267.lean#L56"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-267-specialization-pow-two",
+      "local_declaration_name": "erdos_267.variants.specialization_pow_two",
+      "namespace": [
+        "Erdos267"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mo271/formal-conjectures/blob/2663234a28260853790aa5752d8d4550ff0ab1ca/FormalConjectures/ErdosProblems/267.lean#L56"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/267.lean",
+      "theorem_header": "theorem erdos_267.variants.specialization_pow_two :\n    Irrational <| \u2211' k, 1 / (Nat.fib <| 2^k)",
+      "theorem_name": "Erdos267.erdos_267.variants.specialization_pow_two",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 41,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 42,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos275.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-275-erdos-275",
+      "local_declaration_name": "erdos_275",
+      "namespace": [
+        "Erdos275"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "lean_proofs_repo",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos275.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/275.lean",
+      "theorem_header": "theorem erdos_275 (r : \u2115) (a : Fin r \u2192 \u2124) (n : Fin r \u2192 \u2115)\n    (H : \u2203 k : \u2124, \u2200 x \u2208 Ico k (k + 2 ^ r), \u2203 i, x \u2261 a i [ZMOD n i]) (x : \u2124) :\n    \u2203 i, x \u2261 a i [ZMOD n i]",
+      "theorem_name": "Erdos275.erdos_275",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5",
+        "11"
+      ],
+      "attribute_line": 38,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 39,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://www.erdosproblems.com/forum/thread/303"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-303-erdos-303",
+      "local_declaration_name": "erdos_303",
+      "namespace": [
+        "Erdos303"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "external",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://www.erdosproblems.com/forum/thread/303"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/303.lean",
+      "theorem_header": "theorem erdos_303 :\n    answer(True) \u2194\n    -- For any finite colouring of the integers\n    \u2200 (\ud835\udcd2 : \u2124 \u2192 \u2124), (Set.range \ud835\udcd2).Finite \u2192\n      -- There exists integers `a, b, c`\n      \u2203 (a b c : \u2124),\n      -- that are non-zero and distinct.\n      [a, b, c, 0].Nodup \u2227\n      -- `a, b, c` satisfy the equation\n      (1/a : \u211d) = 1/b + 1/c \u2227\n      -- `a, b, c` have the same color\n      (\ud835\udcd2 '' {a, b, c}).Subsingleton",
+      "theorem_name": "Erdos303.erdos_303",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5",
+        "11"
+      ],
+      "attribute_line": 40,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 41,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/google-deepmind/formal-conjectures/blob/main/FormalConjectures/ErdosProblems/316.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-316-erdos-316",
+      "local_declaration_name": "erdos_316",
+      "namespace": [
+        "Erdos316"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "external_lean4",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/google-deepmind/formal-conjectures/blob/main/FormalConjectures/ErdosProblems/316.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/316.lean",
+      "theorem_header": "theorem erdos_316 : answer(False) \u2194 \u2200 A : Finset \u2115, 0 \u2209 A \u2192 1 \u2209 A \u2192\n    \u2211 n \u2208 A, (1 / n : \u211a) < 2 \u2192 \u2203 (A\u2081 A\u2082 : Finset \u2115),\n      Disjoint A\u2081 A\u2082 \u2227 A = A\u2081 \u222a A\u2082 \u2227\n      \u2211 n \u2208 A\u2081, (1 / n : \u211a) < 1 \u2227 \u2211 n \u2208 A\u2082, (1 / n : \u211a) <  1",
+      "theorem_name": "Erdos316.erdos_316",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 43,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 44,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/Woett/Lean-files/blob/main/ErdosProblem%23331.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-331-erdos-331",
+      "local_declaration_name": "erdos_331",
+      "namespace": [
+        "Erdos331"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "external_lean4",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/Woett/Lean-files/blob/main/ErdosProblem%23331.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/331.lean",
+      "theorem_header": "theorem erdos_331 :\n    answer(False) \u2194\n      \u2200 A B : Set \u2115,\n      (fun (n : \u2115) \u21a6 (n : \u211d) ^ (1 / 2 : \u211d)) =O[atTop] (fun (n : \u2115) \u21a6 (count A n : \u211d)) \u2192\n      (fun (n : \u2115) \u21a6 (n : \u211d) ^ (1 / 2 : \u211d)) =O[atTop] (fun (n : \u2115) \u21a6 (count B n : \u211d)) \u2192\n      { s : \u2115 \u00d7 \u2115 \u00d7 \u2115 \u00d7 \u2115 | let \u27e8a\u2081, a\u2082, b\u2081, b\u2082\u27e9",
+      "theorem_name": "Erdos331.erdos_331",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 46,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 47,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/ebarschkis/ErdosProblem/blob/main/Problem347/Formalization.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-347-erdos-347",
+      "local_declaration_name": "erdos_347",
+      "namespace": [
+        "Erdos347"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "external_lean4",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/ebarschkis/ErdosProblem/blob/main/Problem347/Formalization.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/347.lean",
+      "theorem_header": "theorem erdos_347 :\n    answer(True) \u2194 \u2203 a : \u2115 \u2192 \u2115, (Monotone a) \u2227\n      (Tendsto (fun n \u21a6 (a (n + 1) : \u211d) / (a n : \u211d)) atTop (\ud835\udcdd 2)) \u2227\n      (\u2200 \u03b9 : \u2115 \u2192 \u2115, (range \u03b9)\u1d9c.Finite \u2192 HasDensity (\ud835\udcdf (range (a \u2218 \u03b9))) 1)",
+      "theorem_name": "Erdos347.erdos_347",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5",
+        "11"
+      ],
+      "attribute_line": 70,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 73,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos350.lean"
+        },
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/XC0R/formal-conjectures/blob/ba788c9124b563bce98a3413d474b3a2731fd0af/FormalConjectures/ErdosProblems/350.lean#L226"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-350-erdos-350",
+      "local_declaration_name": "erdos_350",
+      "namespace": [
+        "Erdos350"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/XC0R/formal-conjectures/blob/ba788c9124b563bce98a3413d474b3a2731fd0af/FormalConjectures/ErdosProblems/350.lean#L226"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/350.lean",
+      "theorem_header": "theorem erdos_350 (A : Finset \u2115) (hA : DecidableDistinctSubsetSums A) :\n    \u2211 n \u2208 A, (1 / n : \u211d) < 2",
+      "theorem_name": "Erdos350.erdos_350",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 44,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 45,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/Woett/Lean-files/blob/main/ErdosProblem355.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-355-erdos-355",
+      "local_declaration_name": "erdos_355",
+      "namespace": [
+        "Erdos355"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "external_lean4",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/Woett/Lean-files/blob/main/ErdosProblem355.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/355.lean",
+      "theorem_header": "theorem erdos_355 :\n    answer(True) \u2194 \u2203 A : \u2115 \u2192 \u2115, IsLacunary A \u2227 \u2203 u v : \u211d, u < v \u2227 \u2200 q : \u211a, \u2191q \u2208 Set.Ioo u v \u2192\n      q \u2208 {\u2211 a \u2208 A', (1 / a : \u211a) | (A' : Finset \u2115) (_ : \u2191A' \u2286 Set.range A)}",
+      "theorem_name": "Erdos355.erdos_355",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 35,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 38,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos370.lean"
+        },
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/XC0R/formal-conjectures/blob/f58dea7d2cc5c9da2e050ec80a73e838b54a6dd2/FormalConjectures/ErdosProblems/370.lean#L73"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-370-erdos-370",
+      "local_declaration_name": "erdos_370",
+      "namespace": [
+        "Erdos370"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/XC0R/formal-conjectures/blob/f58dea7d2cc5c9da2e050ec80a73e838b54a6dd2/FormalConjectures/ErdosProblems/370.lean#L73"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/370.lean",
+      "theorem_header": "theorem erdos_370 : answer(True) \u2194\n    { n | Nat.maxPrimeFac n < \u221an \u2227 Nat.maxPrimeFac (n + 1) < \u221a(n + 1) }.Infinite",
+      "theorem_name": "Erdos370.erdos_370",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 39,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 42,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/teorth/analysis/blob/4f623b0f4cacdb967f1f8132db0becaee0f1fb3d/Analysis/Misc/erdos_379.lean#L90"
+        },
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/XC0R/formal-conjectures/blob/80a965e9a85d3f3dabd0a398a49adab6742ea6e0/FormalConjectures/ErdosProblems/379.lean#L123"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-379-erdos-379",
+      "local_declaration_name": "erdos_379",
+      "namespace": [
+        "Erdos379"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/XC0R/formal-conjectures/blob/80a965e9a85d3f3dabd0a398a49adab6742ea6e0/FormalConjectures/ErdosProblems/379.lean#L123"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/379.lean",
+      "theorem_header": "theorem erdos_379 : atTop.limsup (fun n => (S n : \u2115\u221e)) = \u22a4",
+      "theorem_name": "Erdos379.erdos_379",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 41,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 42,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/AlexKontorovich/PrimeNumberTheoremAnd/blob/main/PrimeNumberTheoremAnd/Erdos392.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-392-erdos-392",
+      "local_declaration_name": "erdos_392",
+      "namespace": [
+        "Erdos392"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "external_lean4",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/AlexKontorovich/PrimeNumberTheoremAnd/blob/main/PrimeNumberTheoremAnd/Erdos392.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/392.lean",
+      "theorem_header": "theorem erdos_392 (A : \u2115 \u2192 \u2115) (h : \u2200 n > 0,\n    IsLeast { t + 1 | (t) (_ : \u2203 a : Fin (t + 1) \u2192 \u2115, (n)! = \u220f i, a i \u2227\n      Monotone a \u2227 a (Fin.last t) \u2264 n ^ 2) } (A n)) :\n    ((fun (n : \u2115) => (A n - n / 2 + n / (2 * Real.log n) : \u211d)) =o[atTop] fun n => n / Real.log n)",
+      "theorem_name": "Erdos392.erdos_392",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 48,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 51,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://gist.github.com/llllvvuu/40d68cfa9de9f43eece07ff4fdc3b0ef"
+        },
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/XC0R/formal-conjectures/blob/3c356a50a21bcbf3543f960b0c92d7fb26228cb6/FormalConjectures/ErdosProblems/397.lean#L147"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-397-erdos-397",
+      "local_declaration_name": "erdos_397",
+      "namespace": [
+        "Erdos397"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/XC0R/formal-conjectures/blob/3c356a50a21bcbf3543f960b0c92d7fb26228cb6/FormalConjectures/ErdosProblems/397.lean#L147"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/397.lean",
+      "theorem_header": "theorem erdos_397 :\n    answer(False) \u2194\n      {(M, N) : Finset \u2115 \u00d7 Finset \u2115 | Disjoint M N \u2227\n      \u220f i \u2208 M, centralBinom i = \u220f j \u2208 N, centralBinom j}.Finite",
+      "theorem_name": "Erdos397.erdos_397",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 51,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 52,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/google-deepmind/formal-conjectures/blob/main/FormalConjectures/ErdosProblems/399.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-399-erdos-399",
+      "local_declaration_name": "erdos_399",
+      "namespace": [
+        "Erdos399"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "external_lean4",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/google-deepmind/formal-conjectures/blob/main/FormalConjectures/ErdosProblems/399.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/399.lean",
+      "theorem_header": "theorem erdos_399 : answer(False) \u2194\n    \u00ac \u2203 (n x y k : \u2115), 1 < x * y \u2227 2 < k \u2227 (n ! = x ^ k + y ^ k \u2228 n ! + y ^ k = x ^ k)",
+      "theorem_name": "Erdos399.erdos_399",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 53,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 54,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos418.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-418-erdos-418",
+      "local_declaration_name": "erdos_418",
+      "namespace": [
+        "Erdos418"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "lean_proofs_repo",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos418.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/418.lean",
+      "theorem_header": "theorem erdos_418 : answer(True) \u2194 { (n - n.totient : \u2115) | n }\u1d9c.Infinite",
+      "theorem_name": "Erdos418.erdos_418",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 47,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 48,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://gist.githubusercontent.com/JohnEdwardJennings/e2c6ef0daab55857b7cc9d340de7af84/raw/8ff97800e38582c71246a238e7541a9d69488cbd/Erdos427.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-427-erdos-427",
+      "local_declaration_name": "erdos_427",
+      "namespace": [
+        "Erdos427"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "external_lean4",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://gist.githubusercontent.com/JohnEdwardJennings/e2c6ef0daab55857b7cc9d340de7af84/raw/8ff97800e38582c71246a238e7541a9d69488cbd/Erdos427.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/427.lean",
+      "theorem_header": "theorem erdos_427 : answer(True) \u2194 erdos427",
+      "theorem_name": "Erdos427.erdos_427",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 50,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 51,
+      "exclusion_reason": "theorem statement contains answer(sorry)",
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://www.erdosproblems.com/forum/thread/434#post-4437"
+        }
+      ],
+      "inclusion_status": "excluded",
+      "instance_id": "erdosproblems-434-i",
+      "local_declaration_name": "erdos_434.parts.i",
+      "namespace": [
+        "Erdos434"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "external",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://www.erdosproblems.com/forum/thread/434#post-4437"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/434.lean",
+      "theorem_header": "theorem erdos_434.parts.i (n k : \u2115) (hn : 1 \u2264 n) (hk : 1 \u2264 k) (h : k \u2264 n) :\n    IsGreatest\n      { Nat.NcardUnrepresentable S | (S : Finset \u2115) (_ : S \u2286 Finset.Icc 1 n)\n        (_ : #S = k) (_ : S.gcd id = 1) }\n      (Nat.NcardUnrepresentable <| answer(sorry))",
+      "theorem_name": "Erdos434.erdos_434.parts.i",
+      "uses_answer_sorry": true
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 63,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 64,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://www.erdosproblems.com/forum/thread/434#post-4437"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-434-ii",
+      "local_declaration_name": "erdos_434.parts.ii",
+      "namespace": [
+        "Erdos434"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "external",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://www.erdosproblems.com/forum/thread/434#post-4437"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/434.lean",
+      "theorem_header": "theorem erdos_434.parts.ii : answer(True) \u2194 \u2200\u1d49 (n \u2265 1) (k \u2265 1), k \u2264 n \u2192\n    IsGreatest\n      { Nat.NcardUnrepresentable S | (S : Finset \u2115) (_ : S \u2286 Finset.Icc 1 n)\n        (_ : #S = k) (_ : S.gcd id = 1)}\n      (Nat.NcardUnrepresentable <| Set.Icc (n - k + 1 : \u2115) n)",
+      "theorem_name": "Erdos434.erdos_434.parts.ii",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 36,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 37,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/Woett/Lean-files/blob/main/ErdosProblem457.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-457-erdos-457",
+      "local_declaration_name": "erdos_457",
+      "namespace": [
+        "Erdos457"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "external_lean4",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/Woett/Lean-files/blob/main/ErdosProblem457.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/457.lean",
+      "theorem_header": "theorem erdos_457 : answer(True) \u2194 \u2203 \u03b5 > (0 : \u211d),\n    { (n : \u2115) | \u2200 (p : \u2115), p \u2264 (2 + \u03b5) * Real.log n \u2192 p.Prime \u2192\n      p \u2223 \u220f i \u2208 Finset.Icc 1 \u230aReal.log n\u230b\u208a, (n + i) }.Infinite",
+      "theorem_name": "Erdos457.erdos_457",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 44,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 45,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos541.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-541-erdos-541",
+      "local_declaration_name": "erdos_541",
+      "namespace": [
+        "Erdos541"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "lean_proofs_repo",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos541.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/541.lean",
+      "theorem_header": "theorem erdos_541 : answer(True) \u2194 (\u2200 p, Fact p.Prime \u2192 \u2200 (a : Fin p \u2192 ZMod p),\n    (\u2203 r, \u2200 (S : Finset (Fin p)), S \u2260 \u2205 \u2192 \u2211 i \u2208 S, a i = 0 \u2192 S.card = r) \u2192\n      (Set.range a).ncard \u2264 2)",
+      "theorem_name": "Erdos541.erdos_541",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 149,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 150,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos56.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-56-erdos-56",
+      "local_declaration_name": "erdos_56",
+      "namespace": [
+        "Erdos56"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "lean_proofs_repo",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos56.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/56.lean",
+      "theorem_header": "theorem erdos_56 : answer(False) \u2194 \u2200\u1d49 (k > 0) (N \u2265 (k-1).nth Nat.Prime),\n    (MaxWeaklyDivisible N k = (FirstPrimesMultiples N k).card)",
+      "theorem_name": "Erdos56.erdos_56",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5",
+        "11"
+      ],
+      "attribute_line": 40,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 41,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos645.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-645-erdos-645",
+      "local_declaration_name": "erdos_645",
+      "namespace": [
+        "Erdos645"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "lean_proofs_repo",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos645.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/645.lean",
+      "theorem_header": "theorem erdos_645 (c : \u2115 \u2192 Bool) : \u2203 x d, 0 < x \u2227 x < d \u2227\n    (\u2203 C, c x = C \u2227 c (x + d) = C \u2227 c (x + 2 * d) = C)",
+      "theorem_name": "Erdos645.erdos_645",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "52"
+      ],
+      "attribute_line": 51,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 52,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/plby/lean-proofs/blob/226d5fad7143dcebea2bbb5ec87f18a3a1dcea69/src/v4.24.0/ErdosProblems/Erdos659.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-659-erdos-659",
+      "local_declaration_name": "erdos_659",
+      "namespace": [
+        "Erdos659"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "lean_proofs_repo",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/plby/lean-proofs/blob/226d5fad7143dcebea2bbb5ec87f18a3a1dcea69/src/v4.24.0/ErdosProblems/Erdos659.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/659.lean",
+      "theorem_header": "theorem erdos_659 : answer(True) \u2194 \u2203 A : \u2115 \u2192 Finset \u211d\u00b2,\n   (\u2200 n, #(A n) = n \u2227 \u2200 S \u2286 A n, #S = 4 \u2192 3 \u2264 distinctDistances S) \u2227\n    (fun n \u21a6 distinctDistances (A n)) \u226a fun n \u21a6 n / sqrt (log n)",
+      "theorem_name": "Erdos659.erdos_659",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 75,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 76,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos678.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-678-erdos-678",
+      "local_declaration_name": "erdos_678",
+      "namespace": [
+        "Erdos678"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "lean_proofs_repo",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos678.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/678.lean",
+      "theorem_header": "theorem erdos_678 : answer(True) \u2194\n    \u2200\u1da0 k in atTop, {(m, n) | n + k \u2264 m \u2227 lcmInterval m (k + 1) < lcmInterval n k}.Infinite",
+      "theorem_name": "Erdos678.erdos_678",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5",
+        "11"
+      ],
+      "attribute_line": 49,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 50,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos707.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-707-erdos-707",
+      "local_declaration_name": "erdos_707",
+      "namespace": [
+        "Erdos707"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "lean_proofs_repo",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos707.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/707.lean",
+      "theorem_header": "theorem erdos_707 : (\u2200 (A : Set \u2115) (h : A.Finite), IsSidon A \u2192\n    \u2203\u1d49 (B : Set \u2115) (n > 0), A \u2286 B \u2227 IsPerfectDifferenceSet B n) \u2194 False",
+      "theorem_name": "Erdos707.erdos_707",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 47,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 48,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos728p.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-728-erdos-728",
+      "local_declaration_name": "erdos_728",
+      "namespace": [
+        "Erdos728"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "lean_proofs_repo",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos728p.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/728.lean",
+      "theorem_header": "theorem erdos_728 :\n    answer(True) \u2194\n      \u2200\u1da0 \u03b5 : \u211d in \ud835\udcdd[>] 0, \u2200 C > (0 : \u211d), \u2200 C' > C,\n        \u2203 a b n : \u2115,\n          0 < n \u2227\n          \u03b5 * n < a \u2227\n          \u03b5 * n < b \u2227\n          a ! * b ! \u2223 n ! * (a + b - n)! \u2227\n          a + b > n + C * log n \u2227\n          a + b < n + C' * log n",
+      "theorem_name": "Erdos728.erdos_728",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5"
+      ],
+      "attribute_line": 42,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 44,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mo271/formal-conjectures/blob/486bc8afae062b6711cd16d3466d651ee2880a52/FormalConjectures/ErdosProblems/741.lean#L1449"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-741-i",
+      "local_declaration_name": "erdos_741.parts.i",
+      "namespace": [
+        "Erdos741"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mo271/formal-conjectures/blob/486bc8afae062b6711cd16d3466d651ee2880a52/FormalConjectures/ErdosProblems/741.lean#L1449"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/741.lean",
+      "theorem_header": "theorem erdos_741.parts.i : answer(False) \u2194 \u2200 A : Set \u2115, HasPosDensity (A + A) \u2192 \u2203 A\u2081 A\u2082,\n    A = A\u2081 \u222a A\u2082 \u2227 Disjoint A\u2081 A\u2082 \u2227 HasPosDensity (A\u2081 + A\u2081)\n    \u2227 HasPosDensity (A\u2082 + A\u2082)",
+      "theorem_name": "Erdos741.erdos_741.parts.i",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5"
+      ],
+      "attribute_line": 67,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 69,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/google-deepmind/formal-conjectures/blob/9d492049e42167b0d2fd58a9e91da3bf160172b5/FormalConjectures/ErdosProblems/741.lean#L228"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-741-upper",
+      "local_declaration_name": "erdos_741.variants.upper",
+      "namespace": [
+        "Erdos741"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/google-deepmind/formal-conjectures/blob/9d492049e42167b0d2fd58a9e91da3bf160172b5/FormalConjectures/ErdosProblems/741.lean#L228"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/741.lean",
+      "theorem_header": "theorem erdos_741.variants.upper : answer(True) \u2194 \u2200 A : Set \u2115, 0 < upperDensity (A + A) \u2192 \u2203 A\u2081 A\u2082,\n    A = A\u2081 \u222a A\u2082 \u2227 Disjoint A\u2081 A\u2082 \u2227 0 < upperDensity (A\u2081 + A\u2081)\n    \u2227 0 < upperDensity (A\u2082 + A\u2082)",
+      "theorem_name": "Erdos741.erdos_741.variants.upper",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5"
+      ],
+      "attribute_line": 80,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 82,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mo271/formal-conjectures/blob/486bc8afae062b6711cd16d3466d651ee2880a52/FormalConjectures/ErdosProblems/741.lean#L1629"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-741-ii",
+      "local_declaration_name": "erdos_741.parts.ii",
+      "namespace": [
+        "Erdos741"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mo271/formal-conjectures/blob/486bc8afae062b6711cd16d3466d651ee2880a52/FormalConjectures/ErdosProblems/741.lean#L1629"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/741.lean",
+      "theorem_header": "theorem erdos_741.parts.ii : answer(True) \u2194 \u2203 A : Set \u2115, IsAddBasisOfOrder (A \u222a {0}) 2 \u2227 \u2200 A\u2081 A\u2082,\n    A = A\u2081 \u222a A\u2082 \u2192 Disjoint A\u2081 A\u2082 \u2192 \u00ac (IsSyndetic (A\u2081 + A\u2081) \u2227 IsSyndetic (A\u2082 + A\u2082))",
+      "theorem_name": "Erdos741.erdos_741.parts.ii",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 48,
+      "category": [
+        "textbook"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 50,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/XC0R/formal-conjectures/blob/03e00cf8d44098d0fb06e891fca30c29769df619/FormalConjectures/ErdosProblems/828.lean#L49"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-828-phi-dvd-self-iff-pow2-pow3",
+      "local_declaration_name": "erdos_828.variants.phi_dvd_self_iff_pow2_pow3",
+      "namespace": [
+        "Erdos828"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/XC0R/formal-conjectures/blob/03e00cf8d44098d0fb06e891fca30c29769df619/FormalConjectures/ErdosProblems/828.lean#L49"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/828.lean",
+      "theorem_header": "theorem erdos_828.variants.phi_dvd_self_iff_pow2_pow3 {n : \u2115} :\n    \u03c6 n \u2223 n \u2194 n \u2264 1 \u2228 \u2203\u1d49 (a > 0) (b), n = 2 ^ a * 3 ^ b",
+      "theorem_name": "Erdos828.erdos_828.variants.phi_dvd_self_iff_pow2_pow3",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 37,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 38,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos845.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-845-erdos-845",
+      "local_declaration_name": "erdos_845",
+      "namespace": [
+        "Erdos845"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "lean_proofs_repo",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos845.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/845.lean",
+      "theorem_header": "theorem erdos_845 :\n    answer(False) \u2194\n      \u2200\u1d49 (C : \u211d) (hC : 0 < C),\n        let f : \u2115 \u00d7 \u2115 \u2192 \u2115",
+      "theorem_name": "Erdos845.erdos_845",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 53,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 54,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/google-deepmind/formal-conjectures/blob/2404258180688283e5141021c75464dc2acfb798/FormalConjectures/ErdosProblems/846.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-846-erdos-846",
+      "local_declaration_name": "erdos_846",
+      "namespace": [
+        "Erdos846"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/google-deepmind/formal-conjectures/blob/2404258180688283e5141021c75464dc2acfb798/FormalConjectures/ErdosProblems/846.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/846.lean",
+      "theorem_header": "theorem erdos_846 : answer(False) \u2194 \u2200\u1d49 (A : Set \u211d\u00b2) (\u03b5 > 0), A.Infinite \u2192 NonTrilinearFor A \u03b5 \u2192\n    WeaklyNonTrilinear A",
+      "theorem_name": "Erdos846.erdos_846",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 75,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 76,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/The-Obstacle-Is-The-Way/erdos-banger/blob/1cc2ac8e9d70516e979733c6ea5c4d2eb652d1f5/formal/lean/Erdos/848.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-848-asymptotic",
+      "local_declaration_name": "erdos_848.variants.asymptotic",
+      "namespace": [
+        "Erdos848"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "external_lean4",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/The-Obstacle-Is-The-Way/erdos-banger/blob/1cc2ac8e9d70516e979733c6ea5c4d2eb652d1f5/formal/lean/Erdos/848.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/848.lean",
+      "theorem_header": "theorem erdos_848.variants.asymptotic : \u2200\u1da0 N in Filter.atTop, Erdos848For N",
+      "theorem_name": "Erdos848.erdos_848.variants.asymptotic",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 43,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 45,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos897.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-897-i",
+      "local_declaration_name": "erdos_897.parts.i",
+      "namespace": [
+        "Erdos897"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "lean_proofs_repo",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos897.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/897.lean",
+      "theorem_header": "theorem erdos_897.parts.i : answer(False) \u2194 \u2200 (f : \u2115 \u2192 \u211d),\n    (\u2200\u1d49 (a > 0) (b > 0), a.Coprime b \u2192 f (a * b) = f a + f b) \u2192\n    ((Filter.atTop \u2293 Filter.principal {(p, k) : \u2115 \u00d7 \u2115 | p.Prime}).limsup\n      (fun (p, k) => (f (p^k) / (p^k : \u211d).log : EReal)) = \u22a4) \u2192\n    Filter.atTop.limsup (fun (n : \u2115) => ((f (n+1) - f n) / (n : \u211d).log : EReal)) = \u22a4",
+      "theorem_name": "Erdos897.erdos_897.parts.i",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 59,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 61,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos897.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-897-ii",
+      "local_declaration_name": "erdos_897.parts.ii",
+      "namespace": [
+        "Erdos897"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "lean_proofs_repo",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos897.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/897.lean",
+      "theorem_header": "theorem erdos_897.parts.ii : answer(False) \u2194 \u2200 (f : \u2115 \u2192 \u211d),\n    (\u2200\u1d49 (a > 0) (b > 0), a.Coprime b \u2192 f (a * b) = f a + f b) \u2192\n    ((Filter.atTop \u2293 Filter.principal {(p, k) : \u2115 \u00d7 \u2115 | p.Prime}).limsup\n      (fun (p, k) => (f (p^k) / (p^k : \u211d).log : EReal)) = \u22a4) \u2192\n    Filter.atTop.limsup (fun (n : \u2115) => (f (n+1) / f n : EReal)) = \u22a4",
+      "theorem_name": "Erdos897.erdos_897.parts.ii",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5"
+      ],
+      "attribute_line": 43,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 44,
+      "exclusion_reason": "selected formal_proof URL is empty",
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": ""
+        }
+      ],
+      "inclusion_status": "excluded",
+      "instance_id": "erdosproblems-949-sidon",
+      "local_declaration_name": "erdos_949.variants.sidon",
+      "namespace": [
+        "Erdos949"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": ""
+      },
+      "source_file": "FormalConjectures/ErdosProblems/949.lean",
+      "theorem_header": "theorem erdos_949.variants.sidon : answer(True) \u2194\n    \u2200 S : Set \u211d, IsSidon S \u2192 \u2203 A \u2286 S\u1d9c, #A = \ud835\udd20 \u2227 A + A \u2286 S\u1d9c",
+      "theorem_name": "Erdos949.erdos_949.variants.sidon",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 67,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 69,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mo271/formal-conjectures/blob/3b5d6ac2555cd63b83d418c29ff040876be9dee0/FormalConjectures/ErdosProblems/978.lean#L64"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-978-allow-fixed-divisors",
+      "local_declaration_name": "erdos_978.variants.allow_fixed_divisors",
+      "namespace": [
+        "Erdos978"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mo271/formal-conjectures/blob/3b5d6ac2555cd63b83d418c29ff040876be9dee0/FormalConjectures/ErdosProblems/978.lean#L64"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/978.lean",
+      "theorem_header": "theorem erdos_978.variants.allow_fixed_divisors : answer(False) \u2194\n    \u2200 {f : \u2124[X]}, Irreducible f \u2192 f.natDegree > 3 \u2192\n    (\u00ac \u2203 l : \u2115, f.natDegree = 2 ^ l) \u2192 0 < f.leadingCoeff \u2192\n    (\u00ac \u2203 p : \u2115, p.Prime \u2227 \u2200 n : \u2115, (p : \u2124) ^ (f.natDegree - 1) \u2223 f.eval (n : \u2124)) \u2192\n    {n : \u2115 | Powerfree (f.natDegree - 2) (f.eval (n : \u2124))}.Infinite",
+      "theorem_name": "Erdos978.erdos_978.variants.allow_fixed_divisors",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 62,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 64,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://live.lean-lang.org/#project=mathlib-v4.28.0&url=https://gist.githubusercontent.com/pitmonticone/016f2ed66b4cd1c4c4b9998095170e60/raw/b7dfc05c525ae385b5835f89f1ada721443e4305/Erdos997.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "erdosproblems-997-erdos-997",
+      "local_declaration_name": "erdos_997",
+      "namespace": [
+        "Erdos997"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "external_lean4",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://live.lean-lang.org/#project=mathlib-v4.28.0&url=https://gist.githubusercontent.com/pitmonticone/016f2ed66b4cd1c4c4b9998095170e60/raw/b7dfc05c525ae385b5835f89f1ada721443e4305/Erdos997.lean"
+      },
+      "source_file": "FormalConjectures/ErdosProblems/997.lean",
+      "theorem_header": "theorem erdos_997 :\n    answer(True) \u2194\n      \u2200 \u03b1 : \u211d, \u00ac IsWellDistributed (fun n \u21a6 Int.fract (\u03b1 * (n.nth Nat.Prime)))",
+      "theorem_name": "Erdos997.erdos_997",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5",
+        "11"
+      ],
+      "attribute_line": 106,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 108,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mo271/formal-conjectures/blob/f5afe85e1e02611f63c32ae041b33c67b7938cba/FormalConjectures/GreensOpenProblems/57.lean#L1071"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "greensopenproblems-57-z3-functional",
+      "local_declaration_name": "green_57.variants.z3_functional",
+      "namespace": [
+        "Green57"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mo271/formal-conjectures/blob/f5afe85e1e02611f63c32ae041b33c67b7938cba/FormalConjectures/GreensOpenProblems/57.lean#L1071"
+      },
+      "source_file": "FormalConjectures/GreensOpenProblems/57.lean",
+      "theorem_header": "theorem green_57.variants.z3_functional :\n    let a : ZMod 3 \u2192 \u2102",
+      "theorem_name": "Green57.green_57.variants.z3_functional",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5",
+        "11"
+      ],
+      "attribute_line": 121,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 123,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mo271/formal-conjectures/blob/f5afe85e1e02611f63c32ae041b33c67b7938cba/FormalConjectures/GreensOpenProblems/57.lean#L1100"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "greensopenproblems-57-z3",
+      "local_declaration_name": "green_57.variants.z3",
+      "namespace": [
+        "Green57"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mo271/formal-conjectures/blob/f5afe85e1e02611f63c32ae041b33c67b7938cba/FormalConjectures/GreensOpenProblems/57.lean#L1100"
+      },
+      "source_file": "FormalConjectures/GreensOpenProblems/57.lean",
+      "theorem_header": "theorem green_57.variants.z3 :\n    answer(False) \u2194 (\u03a6 (ZMod 3) = \u03a6' (ZMod 3))",
+      "theorem_name": "Green57.green_57.variants.z3",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5",
+        "11"
+      ],
+      "attribute_line": 135,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 137,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mo271/formal-conjectures/blob/f5afe85e1e02611f63c32ae041b33c67b7938cba/FormalConjectures/GreensOpenProblems/57.lean#L1120"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "greensopenproblems-57-green-57",
+      "local_declaration_name": "green_57",
+      "namespace": [
+        "Green57"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mo271/formal-conjectures/blob/f5afe85e1e02611f63c32ae041b33c67b7938cba/FormalConjectures/GreensOpenProblems/57.lean#L1120"
+      },
+      "source_file": "FormalConjectures/GreensOpenProblems/57.lean",
+      "theorem_header": "theorem green_57 :\n  answer(False) \u2194\n    \u2200 (G : Type) [AddCommGroup G] [Fintype G] [DecidableEq G],\n      \u03a6 G = \u03a6' G",
+      "theorem_name": "Green57.green_57",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "28"
+      ],
+      "attribute_line": 36,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 37,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/google-deepmind/formal-conjectures/blob/153d79d6c82c76fe1bee860742af800840c974d9/FormalConjectures/GreensOpenProblems/94.lean#L174"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "greensopenproblems-94-green-94-outer-measure",
+      "local_declaration_name": "green_94_outer_measure",
+      "namespace": [
+        "Green94"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/google-deepmind/formal-conjectures/blob/153d79d6c82c76fe1bee860742af800840c974d9/FormalConjectures/GreensOpenProblems/94.lean#L174"
+      },
+      "source_file": "FormalConjectures/GreensOpenProblems/94.lean",
+      "theorem_header": "theorem green_94_outer_measure :\n   answer(False) \u2194 \u2200 A : Set \u211d,\n   volume A > 0 \u2192\n   \u2203 a b : \u211d, a \u2260 0 \u2227 \u2200 n : \u2115, a * (1 / 2^n) + b \u2208 A",
+      "theorem_name": "Green94.green_94_outer_measure",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5",
+        "60"
+      ],
+      "attribute_line": 156,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 158,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mo271/formal-conjectures/blob/408f53dc0856c0882a5e77acd24fc83b978f0bc9/FormalConjectures/Mathoverflow/10799.lean#L252"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "mathoverflow-10799-mathoverflow-10799",
+      "local_declaration_name": "mathoverflow_10799",
+      "namespace": [
+        "Mathoverflow10799"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mo271/formal-conjectures/blob/408f53dc0856c0882a5e77acd24fc83b978f0bc9/FormalConjectures/Mathoverflow/10799.lean#L252"
+      },
+      "source_file": "FormalConjectures/Mathoverflow/10799.lean",
+      "theorem_header": "theorem mathoverflow_10799 : answer(False) \u2194\n    \u2200 (n : \u2115) (_ : 2 \u2264 n)\n    (F : Finset (Finset (Fin n))) (_ : IsMonotoneIncreasing F)\n    (s t : \u211d) (_ : 0 < s) (_ : s \u2264 t) (_ : t < 1)\n    (_ : t / s > 1000 * Real.log n),\n    \u2203 p, s \u2264 p \u2227 p \u2264 t \u2227 IsOptimal p F",
+      "theorem_name": "Mathoverflow10799.mathoverflow_10799",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "16"
+      ],
+      "attribute_line": 41,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 42,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/google-deepmind/formal-conjectures/blob/f7502b9ed3e32d193ab8fee53d2e28f7d67f2dc3/FormalConjectures/Mathoverflow/486451.lean#L333"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "mathoverflow-486451-exists-semiring-unique-left-right-maximal-ne",
+      "local_declaration_name": "exists_semiring_unique_left_right_maximal_ne",
+      "namespace": [
+        "Mathoverflow486451"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/google-deepmind/formal-conjectures/blob/f7502b9ed3e32d193ab8fee53d2e28f7d67f2dc3/FormalConjectures/Mathoverflow/486451.lean#L333"
+      },
+      "source_file": "FormalConjectures/Mathoverflow/486451.lean",
+      "theorem_header": "theorem exists_semiring_unique_left_right_maximal_ne :\n    answer(True) \u2194 \u2203 (R : Type) (_ : Semiring R) (hI : \u2203! I : Ideal R, I.IsMaximal)\n      (hJ : \u2203! J : Ideal R\u1d50\u1d52\u1d56, J.IsMaximal),\n        (hI.choose : Set R) \u2260 MulOpposite.op \u207b\u00b9' hJ.choose",
+      "theorem_name": "Mathoverflow486451.exists_semiring_unique_left_right_maximal_ne",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 73,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 75,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/google-deepmind/formal-conjectures/commit/9c7f21e7d4445637538bc1817b058b9b3f31bd2b"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "oeis-357513-a357513-supercongruence",
+      "local_declaration_name": "a357513_supercongruence",
+      "namespace": [
+        "OeisA357513"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/google-deepmind/formal-conjectures/commit/9c7f21e7d4445637538bc1817b058b9b3f31bd2b"
+      },
+      "source_file": "FormalConjectures/OEIS/357513.lean",
+      "theorem_header": "theorem a357513_supercongruence (p : \u2115) (hp : Nat.Prime p) (h_ge3 : p \u2265 3) (h_neq7 : p \u2260 7) :\n    (a (p - 1) : \u2124) \u2261 0 [ZMOD (p : \u2124) ^ 4]",
+      "theorem_name": "OeisA357513.a357513_supercongruence",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "68"
+      ],
+      "attribute_line": 120,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 121,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/AxiomMath/gdm-formal-conjectures/blob/main/OeisA6697/solution.lean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "oeis-6697-conjecture",
+      "local_declaration_name": "conjecture",
+      "namespace": [
+        "OeisA6697"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "external_lean4",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/AxiomMath/gdm-formal-conjectures/blob/main/OeisA6697/solution.lean"
+      },
+      "source_file": "FormalConjectures/OEIS/6697.lean",
+      "theorem_header": "theorem conjecture (n : \u2115) :\n    a n = coeff (R",
+      "theorem_name": "OeisA6697.conjecture",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 76,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 77,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/google-deepmind/formal-conjectures/pull/1894/commits/7a286754f623759d69a3dd18f482c53c1d70959b"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "oeis-87719-a-formula",
+      "local_declaration_name": "a_formula",
+      "namespace": [
+        "OeisA87719"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/google-deepmind/formal-conjectures/pull/1894/commits/7a286754f623759d69a3dd18f482c53c1d70959b"
+      },
+      "source_file": "FormalConjectures/OEIS/87719.lean",
+      "theorem_header": "theorem a_formula {n : \u2115} (hn : n \u2265 1) : a n = 3 ^ n + 3 * 2 ^ n + 6",
+      "theorem_name": "OeisA87719.a_formula",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5",
+        "15",
+        "81",
+        "94"
+      ],
+      "attribute_line": 517,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 519,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/XC0R/formal-conjectures/blob/c8733543568e8011288a9fa7ef33375f5e5907d3/FormalConjectures/OpenQuantumProblems/13.lean#L1168"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "openquantumproblems-13-mutuallyunbiasedbases-dim6-bounds",
+      "local_declaration_name": "mutuallyUnbiasedBases_dim6_bounds",
+      "namespace": [
+        "OpenQuantumProblem13"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/XC0R/formal-conjectures/blob/c8733543568e8011288a9fa7ef33375f5e5907d3/FormalConjectures/OpenQuantumProblems/13.lean#L1168"
+      },
+      "source_file": "FormalConjectures/OpenQuantumProblems/13.lean",
+      "theorem_header": "theorem mutuallyUnbiasedBases_dim6_bounds :\n    HasMUBs 6 3 \u2227 \u2200 m : \u2115, HasMUBs 6 m \u2192 m \u2264 7",
+      "theorem_name": "OpenQuantumProblem13.mutuallyUnbiasedBases_dim6_bounds",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5",
+        "15",
+        "81",
+        "94"
+      ],
+      "attribute_line": 817,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 819,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/google-deepmind/formal-conjectures/blob/47383bf7fbe86effc9ac184446e320f26ddbee3a/FormalConjectures/OpenQuantumProblems/35.lean#L2138"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "openquantumproblems-35-ame-11-5-open",
+      "local_declaration_name": "ame_11_5_open",
+      "namespace": [
+        "OpenQuantumProblem35"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/google-deepmind/formal-conjectures/blob/47383bf7fbe86effc9ac184446e320f26ddbee3a/FormalConjectures/OpenQuantumProblems/35.lean#L2138"
+      },
+      "source_file": "FormalConjectures/OpenQuantumProblems/35.lean",
+      "theorem_header": "theorem ame_11_5_open :\n    answer(True) \u2194 ExistsAME 11 5",
+      "theorem_name": "OpenQuantumProblem35.ame_11_5_open",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "12"
+      ],
+      "attribute_line": 159,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 160,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mzhorvath1/formal-conjectures/blob/4f2343508f2c157f35abb7be4814bd550280ce81/FormalConjectures/Paper/CasasAlvero.lean#163"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "paper-casasalvero-positive-char-counterexample",
+      "local_declaration_name": "casas_alvero.positive_char_counterexample",
+      "namespace": [
+        "CasasAlvero"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mzhorvath1/formal-conjectures/blob/4f2343508f2c157f35abb7be4814bd550280ce81/FormalConjectures/Paper/CasasAlvero.lean#163"
+      },
+      "source_file": "FormalConjectures/Paper/CasasAlvero.lean",
+      "theorem_header": "theorem casas_alvero.positive_char_counterexample {p : \u2115} (hp : p.Prime) :\n    \u2203 (K : Type*) (_ : Field K) (_ : CharP K p),\n      let P",
+      "theorem_name": "CasasAlvero.casas_alvero.positive_char_counterexample",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5"
+      ],
+      "attribute_line": 71,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 72,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://github.com/kim-em/KnuthClaudeLean"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "paper-claudescycles-cube-hamiltonian-arc-decomposition",
+      "local_declaration_name": "cube_hamiltonian_arc_decomposition",
+      "namespace": [
+        "ClaudesCycles"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "external_lean4",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/kim-em/KnuthClaudeLean"
+      },
+      "source_file": "FormalConjectures/Paper/ClaudesCycles.lean",
+      "theorem_header": "theorem cube_hamiltonian_arc_decomposition {m : \u2115} [NeZero m] (hm : Odd m) (hm' : 1 < m) :\n    HasHamiltonianArcDecomposition m",
+      "theorem_name": "ClaudesCycles.cube_hamiltonian_arc_decomposition",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5",
+        "14",
+        "81"
+      ],
+      "attribute_line": 369,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 371,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/google-deepmind/formal-conjectures/blob/af88acbf9da0f26e3e934743a819e986e02f6875/FormalConjectures/Paper/MonochromaticQuantumGraph.lean#L1006"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "paper-monochromaticquantumgraph-eqsystem-no-solution-even-ge4-d-eq-n-explicit",
+      "local_declaration_name": "eqSystem_no_solution_even_ge4_d_eq_n_explicit",
+      "namespace": [
+        "MonochromaticQuantumGraph"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/google-deepmind/formal-conjectures/blob/af88acbf9da0f26e3e934743a819e986e02f6875/FormalConjectures/Paper/MonochromaticQuantumGraph.lean#L1006"
+      },
+      "source_file": "FormalConjectures/Paper/MonochromaticQuantumGraph.lean",
+      "theorem_header": "theorem eqSystem_no_solution_even_ge4_d_eq_n_explicit :\n    answer(True) \u2194\n      \u2200 N : Nat, N \u2265 4 \u2192 Even N \u2192\n        \u00ac \u2203 W : WeightsN N N \u2102, EqSystemN N N W",
+      "theorem_name": "MonochromaticQuantumGraph.eqSystem_no_solution_even_ge4_d_eq_n_explicit",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5",
+        "14",
+        "81"
+      ],
+      "attribute_line": 381,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 383,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/google-deepmind/formal-conjectures/blob/af88acbf9da0f26e3e934743a819e986e02f6875/FormalConjectures/Paper/MonochromaticQuantumGraph.lean#L1021"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "paper-monochromaticquantumgraph-eqsystem4-no-solution-d4",
+      "local_declaration_name": "eqSystem4_no_solution_d4",
+      "namespace": [
+        "MonochromaticQuantumGraph"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/google-deepmind/formal-conjectures/blob/af88acbf9da0f26e3e934743a819e986e02f6875/FormalConjectures/Paper/MonochromaticQuantumGraph.lean#L1021"
+      },
+      "source_file": "FormalConjectures/Paper/MonochromaticQuantumGraph.lean",
+      "theorem_header": "theorem eqSystem4_no_solution_d4 :\n    answer(True) \u2194\n      \u00ac \u2203 W : WeightsN 4 4 \u2102, EqSystemN 4 4 W",
+      "theorem_name": "MonochromaticQuantumGraph.eqSystem4_no_solution_d4",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5",
+        "14",
+        "81"
+      ],
+      "attribute_line": 394,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 396,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mo271/formal-conjectures/blob/4854c7233c58a7dce45fdd58b1826abf2c9c1a0f/FormalConjectures/Paper/MonochromaticQuantumGraph.lean#L549"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "paper-monochromaticquantumgraph-eqsystem4-no-solution-ge4",
+      "local_declaration_name": "eqSystem4_no_solution_ge4",
+      "namespace": [
+        "MonochromaticQuantumGraph"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mo271/formal-conjectures/blob/4854c7233c58a7dce45fdd58b1826abf2c9c1a0f/FormalConjectures/Paper/MonochromaticQuantumGraph.lean#L549"
+      },
+      "source_file": "FormalConjectures/Paper/MonochromaticQuantumGraph.lean",
+      "theorem_header": "theorem eqSystem4_no_solution_ge4 :\n    answer(True) \u2194\n      \u2200 D : Nat, D \u2265 4 \u2192\n        \u00ac \u2203 W : WeightsN 4 D \u2102, EqSystemN 4 D W",
+      "theorem_name": "MonochromaticQuantumGraph.eqSystem4_no_solution_ge4",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5",
+        "14",
+        "81"
+      ],
+      "attribute_line": 433,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 435,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/google-deepmind/formal-conjectures/blob/af88acbf9da0f26e3e934743a819e986e02f6875/FormalConjectures/Paper/MonochromaticQuantumGraph.lean#L1074"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "paper-monochromaticquantumgraph-eqsystem6-no-solution-d6",
+      "local_declaration_name": "eqSystem6_no_solution_d6",
+      "namespace": [
+        "MonochromaticQuantumGraph"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/google-deepmind/formal-conjectures/blob/af88acbf9da0f26e3e934743a819e986e02f6875/FormalConjectures/Paper/MonochromaticQuantumGraph.lean#L1074"
+      },
+      "source_file": "FormalConjectures/Paper/MonochromaticQuantumGraph.lean",
+      "theorem_header": "theorem eqSystem6_no_solution_d6 :\n    answer(True) \u2194\n      \u00ac \u2203 W : WeightsN 6 6 \u2102, EqSystemN 6 6 W",
+      "theorem_name": "MonochromaticQuantumGraph.eqSystem6_no_solution_d6",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5",
+        "14",
+        "81"
+      ],
+      "attribute_line": 462,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 464,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mo271/formal-conjectures/blob/2cc6df2e95835d759caedb15e36b70025b2eae2c/FormalConjectures/Paper/MonochromaticQuantumGraph.lean#L853"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "paper-monochromaticquantumgraph-eqsystem8-no-solution-d10",
+      "local_declaration_name": "eqSystem8_no_solution_d10",
+      "namespace": [
+        "MonochromaticQuantumGraph"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mo271/formal-conjectures/blob/2cc6df2e95835d759caedb15e36b70025b2eae2c/FormalConjectures/Paper/MonochromaticQuantumGraph.lean#L853"
+      },
+      "source_file": "FormalConjectures/Paper/MonochromaticQuantumGraph.lean",
+      "theorem_header": "theorem eqSystem8_no_solution_d10 :\n    answer(True) \u2194\n      \u00ac \u2203 W : WeightsN 8 10 \u2102, EqSystemN 8 10 W",
+      "theorem_name": "MonochromaticQuantumGraph.eqSystem8_no_solution_d10",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5",
+        "14",
+        "81"
+      ],
+      "attribute_line": 529,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 531,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/google-deepmind/formal-conjectures/blob/af88acbf9da0f26e3e934743a819e986e02f6875/FormalConjectures/Paper/MonochromaticQuantumGraph.lean#L1167"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "paper-monochromaticquantumgraph-eqsystem10-no-solution-d10",
+      "local_declaration_name": "eqSystem10_no_solution_d10",
+      "namespace": [
+        "MonochromaticQuantumGraph"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/google-deepmind/formal-conjectures/blob/af88acbf9da0f26e3e934743a819e986e02f6875/FormalConjectures/Paper/MonochromaticQuantumGraph.lean#L1167"
+      },
+      "source_file": "FormalConjectures/Paper/MonochromaticQuantumGraph.lean",
+      "theorem_header": "theorem eqSystem10_no_solution_d10 :\n    answer(True) \u2194\n      \u00ac \u2203 W : WeightsN 10 10 \u2102, EqSystemN 10 10 W",
+      "theorem_name": "MonochromaticQuantumGraph.eqSystem10_no_solution_d10",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5",
+        "14",
+        "81"
+      ],
+      "attribute_line": 580,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 582,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mo271/formal-conjectures/blob/4854c7233c58a7dce45fdd58b1826abf2c9c1a0f/FormalConjectures/Paper/MonochromaticQuantumGraph.lean#L738"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "paper-monochromaticquantumgraph-eqsystem4-no-solution-ge4-real",
+      "local_declaration_name": "eqSystem4_no_solution_ge4_real",
+      "namespace": [
+        "MonochromaticQuantumGraph"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mo271/formal-conjectures/blob/4854c7233c58a7dce45fdd58b1826abf2c9c1a0f/FormalConjectures/Paper/MonochromaticQuantumGraph.lean#L738"
+      },
+      "source_file": "FormalConjectures/Paper/MonochromaticQuantumGraph.lean",
+      "theorem_header": "theorem eqSystem4_no_solution_ge4_real :\n    answer(True) \u2194\n      \u2200 D : Nat, D \u2265 4 \u2192\n        \u00ac \u2203 W : WeightsN 4 D \u211d, EqSystemN 4 D W",
+      "theorem_name": "MonochromaticQuantumGraph.eqSystem4_no_solution_ge4_real",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5",
+        "14",
+        "81"
+      ],
+      "attribute_line": 648,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 650,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mo271/formal-conjectures/blob/4854c7233c58a7dce45fdd58b1826abf2c9c1a0f/FormalConjectures/Paper/MonochromaticQuantumGraph.lean#L836"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "paper-monochromaticquantumgraph-eqsystem4-no-solution-ge4-int",
+      "local_declaration_name": "eqSystem4_no_solution_ge4_int",
+      "namespace": [
+        "MonochromaticQuantumGraph"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mo271/formal-conjectures/blob/4854c7233c58a7dce45fdd58b1826abf2c9c1a0f/FormalConjectures/Paper/MonochromaticQuantumGraph.lean#L836"
+      },
+      "source_file": "FormalConjectures/Paper/MonochromaticQuantumGraph.lean",
+      "theorem_header": "theorem eqSystem4_no_solution_ge4_int :\n    answer(True) \u2194\n      \u2200 D : Nat, D \u2265 4 \u2192\n        \u00ac \u2203 W : WeightsN 4 D \u2124, EqSystemN 4 D W",
+      "theorem_name": "MonochromaticQuantumGraph.eqSystem4_no_solution_ge4_int",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "5",
+        "14",
+        "81"
+      ],
+      "attribute_line": 725,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": true,
+      "declaration_kind": "theorem",
+      "declaration_line": 727,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mo271/formal-conjectures/blob/4854c7233c58a7dce45fdd58b1826abf2c9c1a0f/FormalConjectures/Paper/MonochromaticQuantumGraph.lean#L936"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "paper-monochromaticquantumgraph-eqsystem4-no-solution-ge4-trinary-int",
+      "local_declaration_name": "eqSystem4_no_solution_ge4_trinary_int",
+      "namespace": [
+        "MonochromaticQuantumGraph"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mo271/formal-conjectures/blob/4854c7233c58a7dce45fdd58b1826abf2c9c1a0f/FormalConjectures/Paper/MonochromaticQuantumGraph.lean#L936"
+      },
+      "source_file": "FormalConjectures/Paper/MonochromaticQuantumGraph.lean",
+      "theorem_header": "theorem eqSystem4_no_solution_ge4_trinary_int :\n    answer(True) \u2194\n      \u2200 D : Nat, D \u2265 4 \u2192\n        \u00ac \u2203 W : WeightsN 4 D \u2124,\n            (\u2200 e, W e = (-1 : \u2124) \u2228 W e = 0 \u2228 W e = 1) \u2227\n              EqSystemN 4 D W",
+      "theorem_name": "MonochromaticQuantumGraph.eqSystem4_no_solution_ge4_trinary_int",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [],
+      "attribute_line": 56,
+      "category": [],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 65,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "link"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "util-attributes-basic-imo-2024-p6",
+      "local_declaration_name": "imo_2024_p6",
+      "namespace": [],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "link"
+      },
+      "source_file": "FormalConjectures/Util/Attributes/Basic.lean",
+      "theorem_header": "theorem imo_2024_p6\n    (IsAquaesulian : (\u211a \u2192 \u211a) \u2192 Prop)\n    (IsAquaesulian_def : \u2200 f, IsAquaesulian f \u2194\n      \u2200 x y, f (x + f y) = f x + y \u2228 f (f x + y) = x + f y) :\n    IsLeast {(c : \u2124) | \u2200 f, IsAquaesulian f \u2192 {(f r + f (-r)) | (r : \u211a)}.Finite \u2227\n      {(f r + f (-r)) | (r : \u211a)}.ncard \u2264 c} 2",
+      "theorem_name": "imo_2024_p6",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [],
+      "attribute_line": 57,
+      "category": [],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 65,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "link"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "util-attributes-basic-imo-2024-p6-2",
+      "local_declaration_name": "imo_2024_p6",
+      "namespace": [],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "external",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "link"
+      },
+      "source_file": "FormalConjectures/Util/Attributes/Basic.lean",
+      "theorem_header": "theorem imo_2024_p6\n    (IsAquaesulian : (\u211a \u2192 \u211a) \u2192 Prop)\n    (IsAquaesulian_def : \u2200 f, IsAquaesulian f \u2194\n      \u2200 x y, f (x + f y) = f x + y \u2228 f (f x + y) = x + f y) :\n    IsLeast {(c : \u2124) | \u2200 f, IsAquaesulian f \u2192 {(f r + f (-r)) | (r : \u211a)}.Finite \u2227\n      {(f r + f (-r)) | (r : \u211a)}.ncard \u2264 c} 2",
+      "theorem_name": "imo_2024_p6",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [],
+      "attribute_line": 77,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 78,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "lean4",
+          "url": "https://example.com/proof"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "util-attributes-basic-a-solved-problem-with-formal-proof",
+      "local_declaration_name": "a_solved_problem_with_formal_proof",
+      "namespace": [],
+      "selected_oracle": {
+        "formal_proof_kind": "lean4",
+        "kind": "external",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://example.com/proof"
+      },
+      "source_file": "FormalConjectures/Util/Attributes/Basic.lean",
+      "theorem_header": "theorem a_solved_problem_with_formal_proof : ...",
+      "theorem_name": "a_solved_problem_with_formal_proof",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 96,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 98,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mo271/formal-conjectures/blob/2663234a28260853790aa5752d8d4550ff0ab1ca/FormalConjectures/Wikipedia/AgohGiuga.lean#L97"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "wikipedia-agohgiuga-isweakgiuga-iff-prime-dvd",
+      "local_declaration_name": "isWeakGiuga_iff_prime_dvd",
+      "namespace": [
+        "AgohGiuga"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mo271/formal-conjectures/blob/2663234a28260853790aa5752d8d4550ff0ab1ca/FormalConjectures/Wikipedia/AgohGiuga.lean#L97"
+      },
+      "source_file": "FormalConjectures/Wikipedia/AgohGiuga.lean",
+      "theorem_header": "theorem isWeakGiuga_iff_prime_dvd {n : \u2115} (hn : n.Composite) :\n    IsWeakGiuga n \u2194 \u2200 p \u2208 n.primeFactors, p \u2223 (n / p - 1)",
+      "theorem_name": "AgohGiuga.isWeakGiuga_iff_prime_dvd",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "12"
+      ],
+      "attribute_line": 99,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 101,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/google-deepmind/formal-conjectures/blob/34c93bbad127a9a5354b9d53478d338eb65edb88/FormalConjectures/Wikipedia/EulerBrick.lean#L1804"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "wikipedia-eulerbrick-cuboidone",
+      "local_declaration_name": "cuboidOne",
+      "namespace": [
+        "EulerBrick"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/google-deepmind/formal-conjectures/blob/34c93bbad127a9a5354b9d53478d338eb65edb88/FormalConjectures/Wikipedia/EulerBrick.lean#L1804"
+      },
+      "source_file": "FormalConjectures/Wikipedia/EulerBrick.lean",
+      "theorem_header": "theorem cuboidOne : CuboidOne",
+      "theorem_name": "EulerBrick.cuboidOne",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "47"
+      ],
+      "attribute_line": 71,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 72,
+      "exclusion_reason": "selected formal_proof URL is empty",
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": ""
+        }
+      ],
+      "inclusion_status": "excluded",
+      "instance_id": "wikipedia-invariantsubspaceproblem-invariant-subspace-problem-non-separable",
+      "local_declaration_name": "Invariant_subspace_problem_non_separable",
+      "namespace": [
+        "InvariantSubspaceProblem"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": ""
+      },
+      "source_file": "FormalConjectures/Wikipedia/InvariantSubspaceProblem.lean",
+      "theorem_header": "theorem Invariant_subspace_problem_non_separable [InnerProductSpace \u2102 H] [CompleteSpace H]\n    (h : \u00acTopologicalSpace.SeparableSpace H) (T : H \u2192L[\u2102] H) :\n    Nonempty (ClosedInvariantSubspace T)",
+      "theorem_name": "InvariantSubspaceProblem.Invariant_subspace_problem_non_separable",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 47,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 48,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mzhorvath1/formal-conjectures/blob/a4568d467b4f42884b6a4bd09c40d65f92113ee7/FormalConjectures/Wikipedia/LegendreConjecture.lean#L48"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "wikipedia-legendreconjecture-bounded-gap-legendre",
+      "local_declaration_name": "bounded_gap_legendre",
+      "namespace": [
+        "LegendreConjecture"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mzhorvath1/formal-conjectures/blob/a4568d467b4f42884b6a4bd09c40d65f92113ee7/FormalConjectures/Wikipedia/LegendreConjecture.lean#L48"
+      },
+      "source_file": "FormalConjectures/Wikipedia/LegendreConjecture.lean",
+      "theorem_header": "theorem bounded_gap_legendre\n    (H : \u2203 c > 0, \u2200\u1da0 n in atTop, (n + 1).nth Nat.Prime - n.nth Nat.Prime <\n      (n.nth Nat.Prime : \u211d) ^ (1 / (2 : \u211d) - c)) :\n    \u2200\u1da0 n in atTop, \u2203 p \u2208 Set.Ioo (n ^ 2) ((n + 1) ^ 2), Nat.Prime p",
+      "theorem_name": "LegendreConjecture.bounded_gap_legendre",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 104,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 105,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mzhorvath1/formal-conjectures/blob/7deed78f7babe2ae9ea13969a8dfa26854982407/FormalConjectures/Wikipedia/PerfectNumbers.lean#L110"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "wikipedia-perfectnumbers-euler-form",
+      "local_declaration_name": "odd_perfect_number.euler_form",
+      "namespace": [
+        "PerfectNumbers"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mzhorvath1/formal-conjectures/blob/7deed78f7babe2ae9ea13969a8dfa26854982407/FormalConjectures/Wikipedia/PerfectNumbers.lean#L110"
+      },
+      "source_file": "FormalConjectures/Wikipedia/PerfectNumbers.lean",
+      "theorem_header": "theorem odd_perfect_number.euler_form (n : \u2115) (hn : Odd n) (hp : Perfect n) :\n    \u2203 (p m \u03b1 : \u2115),\n      p.Prime \u2227\n      p \u2261 1 [ZMOD 4] \u2227\n      \u03b1 \u2261 1 [ZMOD 4] \u2227\n      \u00ac p \u2223 m \u2227\n      n = p^\u03b1 * m^2",
+      "theorem_name": "PerfectNumbers.odd_perfect_number.euler_form",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 34,
+      "category": [
+        "textbook"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 36,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mo271/formal-conjectures/blob/d833ed31d82693f10bed7a4c9ac329545b556a03/FormalConjectures/Wikipedia/WolstenholmePrime.lean#L34"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "wikipedia-wolstenholmeprime-wolstenholme-theorem",
+      "local_declaration_name": "wolstenholme_theorem",
+      "namespace": [
+        "WolstenholmePrime"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mo271/formal-conjectures/blob/d833ed31d82693f10bed7a4c9ac329545b556a03/FormalConjectures/Wikipedia/WolstenholmePrime.lean#L34"
+      },
+      "source_file": "FormalConjectures/Wikipedia/WolstenholmePrime.lean",
+      "theorem_header": "theorem wolstenholme_theorem (p : \u2115) (h : p > 3) (hp : Nat.Prime p) :\n    (2 * p - 1).choose (p - 1) \u2261 1 [MOD p ^ 3]",
+      "theorem_name": "WolstenholmePrime.wolstenholme_theorem",
+      "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "11"
+      ],
+      "attribute_line": 52,
+      "category": [
+        "test"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 54,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "formal_conjectures",
+          "url": "https://github.com/mo271/formal-conjectures/blob/d833ed31d82693f10bed7a4c9ac329545b556a03/FormalConjectures/Wikipedia/WolstenholmePrime.lean#L73"
+        }
+      ],
+      "inclusion_status": "candidate",
+      "instance_id": "wikipedia-wolstenholmeprime-wolstenholme-prime-16483",
+      "local_declaration_name": "wolstenholme_prime_16483",
+      "namespace": [
+        "WolstenholmePrime"
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "unreviewed",
+        "redistribution_status": "unreviewed",
+        "url": "https://github.com/mo271/formal-conjectures/blob/d833ed31d82693f10bed7a4c9ac329545b556a03/FormalConjectures/Wikipedia/WolstenholmePrime.lean#L73"
+      },
+      "source_file": "FormalConjectures/Wikipedia/WolstenholmePrime.lean",
+      "theorem_header": "theorem wolstenholme_prime_16483 : IsWolstenholmePrime 16843",
+      "theorem_name": "WolstenholmePrime.wolstenholme_prime_16483",
+      "uses_answer_sorry": false
+    }
+  ],
+  "schema_version": 1,
+  "source": {
+    "candidate_count": 106,
+    "excluded_count": 5,
+    "formal_conjectures_commit": "233a10e857ef78e79fd9fe661d37db724089170a",
+    "formal_conjectures_remote": "https://github.com/google-deepmind/formal-conjectures.git",
+    "generated_at": "2026-05-01T12:10:31+00:00",
+    "lean_toolchain": "leanprover/lean4:v4.27.0",
+    "mathlib_commit": "a3a10db0e9d66acbebf76c5e6a135066525ac900",
+    "mathlib_input_rev": "v4.27.0"
+  }
+}

@@ -1,0 +1,12 @@
+# Dataset manifest for FormalConjectures-Bench.
+# Task references are added after generated tasks are reviewed and digests are synced.
+
+schema_version = "1.0"
+
+[dataset]
+name = "formal-conjectures-bench/formal-conjectures-bench"
+description = "Lean 4 theorem-proving tasks generated from the formally proved subset of Formal Conjectures."
+authors = [{ name = "Allen Graham Hart" }]
+keywords = ["lean4", "theorem-proving", "formal-mathematics", "harbor"]
+
+tasks = []

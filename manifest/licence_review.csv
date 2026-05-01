@@ -1,0 +1,2 @@
+instance_id,theorem_name,proof_url,licence_status,redistribution_status,reviewer,notes
+erdosproblems-370-erdos-370,Erdos370.erdos_370,https://github.com/XC0R/formal-conjectures/blob/f58dea7d2cc5c9da2e050ec80a73e838b54a6dd2/FormalConjectures/ErdosProblems/370.lean#L73,unreviewed,unreviewed,,"Pilot scaffold; do not promote until oracle file is reviewed and canary-passes."

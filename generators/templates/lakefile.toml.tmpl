@@ -1,0 +1,17 @@
+# $canary
+name = "formal_conjectures_bench_task"
+defaultTargets = ["FormalConjecturesBench"]
+
+[leanOptions]
+pp.unicode.fun = true
+autoImplicit = false
+relaxedAutoImplicit = false
+
+[[require]]
+name = "formal_conjectures"
+path = "/opt/formal-conjectures"
+
+[[lean_lib]]
+name = "FormalConjecturesBench"
+[lean_lib.leanOptions]
+warn.sorry = false

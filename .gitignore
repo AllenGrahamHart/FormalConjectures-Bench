@@ -1,0 +1,10 @@
+.cache/
+.lake/
+.venv/
+__pycache__/
+*.py[cod]
+.DS_Store
+
+# Generated Harbor tasks can be regenerated from manifest/ plus oracles/.
+# Keep this commented out once tasks are ready to publish.
+# tasks/*/

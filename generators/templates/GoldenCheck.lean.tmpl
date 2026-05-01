@@ -1,0 +1,13 @@
+-- $canary
+
+/-
+Hidden golden check for $theorem_name.
+
+The verifier separately checks the source theorem header byte-for-byte. This
+file ensures the submitted declaration is importable from the hidden project and
+available under the expected fully qualified name.
+-/
+
+import FormalConjecturesBench
+
+#check $theorem_name
