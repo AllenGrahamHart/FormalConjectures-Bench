@@ -6,6 +6,11 @@ __pycache__/
 .DS_Store
 jobs/
 
+# Local secrets for model providers.
+.env
+.env.*
+!.env.example
+
 # Generated Harbor tasks can be regenerated from manifest/ plus oracles/.
 # Keep this commented out once tasks are ready to publish.
 # tasks/*/
