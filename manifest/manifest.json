@@ -910,7 +910,7 @@
           "url": "https://github.com/mo271/formal-conjectures/blob/29c60aa79729701905cf9e92517af23f588971f2/FormalConjectures/ErdosProblems/152.lean#L485"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "erdosproblems-152-erdos-152",
       "local_declaration_name": "erdos_152",
       "namespace": [
@@ -919,10 +919,14 @@
       "selected_oracle": {
         "formal_proof_kind": "formal_conjectures",
         "kind": "formal_conjectures",
-        "licence_status": "unreviewed",
-        "redistribution_status": "unreviewed",
+        "licence_status": "Apache-2.0",
+        "redistribution_status": "bundled",
         "url": "https://github.com/mo271/formal-conjectures/blob/29c60aa79729701905cf9e92517af23f588971f2/FormalConjectures/ErdosProblems/152.lean#L485"
       },
+      "oracle_files": [
+        "Submission.lean",
+        "Target.lean"
+      ],
       "source_file": "FormalConjectures/ErdosProblems/152.lean",
       "theorem_header": "theorem erdos_152 : answer(True) \u2194 Tendsto f atTop atTop",
       "theorem_name": "Erdos152.erdos_152",
@@ -1627,7 +1631,7 @@
           "url": "https://github.com/XC0R/formal-conjectures/blob/ba788c9124b563bce98a3413d474b3a2731fd0af/FormalConjectures/ErdosProblems/350.lean#L226"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "erdosproblems-350-erdos-350",
       "local_declaration_name": "erdos_350",
       "namespace": [
@@ -1636,10 +1640,14 @@
       "selected_oracle": {
         "formal_proof_kind": "formal_conjectures",
         "kind": "formal_conjectures",
-        "licence_status": "unreviewed",
-        "redistribution_status": "unreviewed",
+        "licence_status": "Apache-2.0",
+        "redistribution_status": "bundled",
         "url": "https://github.com/XC0R/formal-conjectures/blob/ba788c9124b563bce98a3413d474b3a2731fd0af/FormalConjectures/ErdosProblems/350.lean#L226"
       },
+      "oracle_files": [
+        "Submission.lean",
+        "Target.lean"
+      ],
       "source_file": "FormalConjectures/ErdosProblems/350.lean",
       "theorem_header": "theorem erdos_350 (A : Finset \u2115) (hA : DecidableDistinctSubsetSums A) :\n    \u2211 n \u2208 A, (1 / n : \u211d) < 2",
       "theorem_name": "Erdos350.erdos_350",
@@ -3135,7 +3143,7 @@
           "url": "https://github.com/XC0R/formal-conjectures/blob/c8733543568e8011288a9fa7ef33375f5e5907d3/FormalConjectures/OpenQuantumProblems/13.lean#L1168"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "openquantumproblems-13-mutuallyunbiasedbases-dim6-bounds",
       "local_declaration_name": "mutuallyUnbiasedBases_dim6_bounds",
       "namespace": [
@@ -3144,10 +3152,14 @@
       "selected_oracle": {
         "formal_proof_kind": "formal_conjectures",
         "kind": "formal_conjectures",
-        "licence_status": "unreviewed",
-        "redistribution_status": "unreviewed",
+        "licence_status": "Apache-2.0",
+        "redistribution_status": "bundled",
         "url": "https://github.com/XC0R/formal-conjectures/blob/c8733543568e8011288a9fa7ef33375f5e5907d3/FormalConjectures/OpenQuantumProblems/13.lean#L1168"
       },
+      "oracle_files": [
+        "Submission.lean",
+        "Target.lean"
+      ],
       "source_file": "FormalConjectures/OpenQuantumProblems/13.lean",
       "theorem_header": "theorem mutuallyUnbiasedBases_dim6_bounds :\n    HasMUBs 6 3 \u2227 \u2200 m : \u2115, HasMUBs 6 m \u2192 m \u2264 7",
       "theorem_name": "OpenQuantumProblem13.mutuallyUnbiasedBases_dim6_bounds",
