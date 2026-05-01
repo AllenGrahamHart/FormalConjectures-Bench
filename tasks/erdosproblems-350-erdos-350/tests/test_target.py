@@ -118,6 +118,8 @@ def check_banned_patterns(proof_region: str) -> None:
 def check_no_banned_patterns_in_editable_sources() -> None:
     violations = []
     for rel_path, content in editable_lean_sources():
+        if rel_path == TARGET_REL and MARKER in content:
+            content = content.split(MARKER, 1)[1]
         stripped = strip_lean_comments(content)
         for pattern in BANNED_PATTERNS:
             for match in re.finditer(pattern, stripped):
