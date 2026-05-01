@@ -3,7 +3,7 @@ MANIFEST ?= manifest/manifest.json
 TASKS_DIR ?= tasks
 BASE_IMAGE_TAG ?= formal-conjectures-bench-base:v4.27.0-fc233a10e
 
-.PHONY: upstream manifest base-image generate-pilot generate check-generated check-pilot-generated check-manifest
+.PHONY: upstream manifest base-image generate-pilot generate check-generated check-pilot-generated check-manifest check-oracles check
 
 upstream:
 	mkdir -p .cache
@@ -30,3 +30,8 @@ check-pilot-generated:
 
 check-manifest:
 	python3 -m json.tool "$(MANIFEST)" >/dev/null
+
+check-oracles:
+	python3 scripts/check_included_oracles.py --manifest "$(MANIFEST)" --oracles-dir oracles --tasks-dir "$(TASKS_DIR)"
+
+check: check-manifest check-oracles check-generated

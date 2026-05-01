@@ -74,6 +74,19 @@ run:
 make check-generated
 ```
 
+To verify that every included task has a local bundled oracle and offline task
+metadata, run:
+
+```bash
+make check-oracles
+```
+
+For the lightweight repository checks together, run:
+
+```bash
+make check
+```
+
 For a pilot candidate, use:
 
 ```bash
@@ -99,3 +112,6 @@ Each task verifier checks that:
 
 Trial-time internet access is disabled for generated tasks. Docker image builds
 may fetch pinned dependencies, but the agent and verifier run offline.
+
+See `docs/reproducibility.md` for the current reproducibility invariants and
+the future archival hardening plan.
