@@ -18,4 +18,4 @@ path = "/opt/formal-conjectures"
 [[lean_lib]]
 name = "FormalConjecturesBench"
 [lean_lib.leanOptions]
-warn.sorry = false
+warn.sorry = true

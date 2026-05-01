@@ -12,9 +12,18 @@ import tempfile
 from pathlib import Path
 
 
-TASK_DIR = Path("/app")
-TESTS_DIR = Path("/tests")
+TASK_DIR = Path(os.environ.get("FCB_TASK_DIR", "/app"))
+TESTS_DIR = Path(os.environ.get("FCB_TESTS_DIR", "/tests"))
 GOLDEN_ENV_DIR = TESTS_DIR / "golden_env"
+DEPENDENCY_PACKAGES = Path(
+    os.environ.get("FCB_DEPENDENCY_PACKAGES", "/opt/formal-conjectures/.lake/packages")
+)
+DEPENDENCY_CONFIG_BACKUP = Path(
+    os.environ.get(
+        "FCB_DEPENDENCY_CONFIG_BACKUP",
+        "/opt/formal-conjectures-bench-dependency-config",
+    )
+)
 EDITABLE_REL = Path("$editable_rel")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
@@ -23,8 +32,8 @@ EXPECTED_PREFIX_SHA256 = "$expected_prefix_sha256"
 EXPECTED_HEADER = $expected_header_json
 THEOREM_NAME = "$theorem_name"
 ALLOWED_AXIOMS = set($allowed_axioms_json)
-ELAN_PATH = os.path.expanduser("~/.elan/bin")
-ENV = {**os.environ, "PATH": f"{ELAN_PATH}:{os.environ.get('PATH', '')}"}
+ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]
+ENV = {**os.environ, "PATH": f"{':'.join(ELAN_PATHS)}:{os.environ.get('PATH', '')}"}
 
 FROZEN_FILES = sorted(
     path.relative_to(GOLDEN_ENV_DIR)
@@ -161,8 +170,26 @@ def editable_lean_sources() -> list[tuple[Path, str]]:
     editable_root = TASK_DIR / EDITABLE_REL
     if editable_root.exists():
         for path in sorted(editable_root.rglob("*.lean")):
+            if path.is_symlink() or not path.is_file():
+                fail(f"Editable Lean source must be a regular file: {path.relative_to(TASK_DIR)}")
             result.append((path.relative_to(TASK_DIR), path.read_text(encoding="utf-8")))
     return result
+
+
+def check_editable_tree_shape() -> None:
+    editable_root = TASK_DIR / EDITABLE_REL
+    if not editable_root.exists():
+        fail(f"Missing editable source directory: {editable_root}")
+    for path in sorted(editable_root.rglob("*")):
+        rel = path.relative_to(TASK_DIR)
+        if path.is_symlink():
+            fail(f"Symlinks are not allowed in the editable source tree: {rel}")
+        if path.is_dir():
+            continue
+        if not path.is_file():
+            fail(f"Unexpected non-file entry in editable source tree: {rel}")
+        if path.suffix != ".lean":
+            fail(f"Unexpected non-Lean file in editable source tree: {rel}")
 
 
 def check_extra_lean_files_confined() -> None:
@@ -187,22 +214,38 @@ def check_frozen_files_unchanged() -> None:
             fail(f"Trusted benchmark file was modified: {rel_path}")
 
 
+def restore_dependency_config_cache() -> None:
+    if not DEPENDENCY_CONFIG_BACKUP.exists():
+        return
+    for src in sorted(DEPENDENCY_CONFIG_BACKUP.rglob("*")):
+        if not src.is_file():
+            continue
+        rel = src.relative_to(DEPENDENCY_CONFIG_BACKUP)
+        dst = Path("/opt/formal-conjectures") / rel
+        if dst.exists() and (dst.is_symlink() or not dst.is_file()):
+            fail(f"Trusted dependency config cache target is not a regular file: {dst}")
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(src, dst)
+
+
 def make_fresh_golden_project() -> tempfile.TemporaryDirectory[str]:
     tmp = tempfile.TemporaryDirectory(prefix="formal_conjectures_bench_")
     project_dir = Path(tmp.name)
     shutil.copytree(GOLDEN_ENV_DIR, project_dir, dirs_exist_ok=True)
 
-    task_packages = TASK_DIR / ".lake" / "packages"
-    if task_packages.exists():
-        lake_dir = project_dir / ".lake"
-        lake_dir.mkdir(exist_ok=True)
-        os.symlink(task_packages, lake_dir / "packages", target_is_directory=True)
+    if not DEPENDENCY_PACKAGES.exists():
+        fail(f"Trusted dependency packages are missing: {DEPENDENCY_PACKAGES}")
+    lake_dir = project_dir / ".lake"
+    lake_dir.mkdir(exist_ok=True)
+    os.symlink(DEPENDENCY_PACKAGES, lake_dir / "packages", target_is_directory=True)
 
     editable_src = TASK_DIR / EDITABLE_REL
     editable_dst = project_dir / EDITABLE_REL
     editable_dst.mkdir(parents=True, exist_ok=True)
     if editable_src.exists():
         for src in sorted(editable_src.rglob("*.lean")):
+            if src.is_symlink() or not src.is_file():
+                fail(f"Editable Lean source must be a regular file: {src.relative_to(TASK_DIR)}")
             rel = src.relative_to(editable_src)
             dst = editable_dst / rel
             dst.parent.mkdir(parents=True, exist_ok=True)
@@ -268,9 +311,11 @@ def main() -> None:
     text = target_text()
     proof_region = check_frozen_prefix_and_header(text)
     check_banned_patterns(proof_region)
+    check_editable_tree_shape()
     check_no_banned_patterns_in_editable_sources()
     check_extra_lean_files_confined()
     check_frozen_files_unchanged()
+    restore_dependency_config_cache()
     with make_fresh_golden_project() as tmp:
         project_dir = Path(tmp)
         check_build(project_dir)

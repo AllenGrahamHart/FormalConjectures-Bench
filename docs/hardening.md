@@ -10,9 +10,20 @@ The verifier design follows the same pattern as the local Takens TB3 task:
 - Check the theorem header and all code above the target marker byte-for-byte.
 - Build the hidden project, then audit `#print axioms`.
 - Run a `sorry` canary to confirm the axiom-audit path detects `sorryAx`.
+- Provide the agent a read-only verifier-equivalent checker at
+  `/app/check.sh`, backed by `/opt/formal-conjectures-bench-checker`, so it can
+  iterate before final grading.
 - Reject common escape hatches: `sorry`, `admit`, `axiom`, `unsafe`,
   `native_decide`, `@[implemented_by]`, `@[extern]`, `run_cmd`, `#eval`,
   `initialize`, `builtin_initialize`, and `load_dynlib`.
+- Reject symlinks and non-Lean files in the editable source tree.
+- Link verifier dependency packages directly from
+  `/opt/formal-conjectures/.lake/packages`, not through mutable `/app` state.
+- Treat Lake dependency config files as scratch: the image keeps a root-owned
+  backup and the verifier restores it before building, while package source and
+  compiled theorem artifacts stay non-writable to the runtime user.
 
 Generated tasks set `allow_internet = false`; the Docker image build may fetch
 pinned dependencies, but the agent and verifier run offline.
+The runtime user is non-root, `/opt/formal-conjectures` is read-only, and only
+`/app/FormalConjecturesBench` plus Lake build cache state are writable.

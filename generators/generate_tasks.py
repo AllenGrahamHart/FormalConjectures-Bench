@@ -245,6 +245,15 @@ def generate_task(
     write(task_dir / "environment" / "data" / "FormalConjecturesBench.lean", render_template("root.lean.tmpl", values))
     write(task_dir / "environment" / "data" / "FormalConjecturesBench" / "Submission.lean", render_template("Submission.lean.tmpl", values))
     write(task_dir / "environment" / "data" / "FormalConjecturesBench" / "Target.lean", target)
+    write(task_dir / "environment" / "data" / "check.sh", render_template("check.sh.tmpl", values), executable=True)
+    write(task_dir / "environment" / "data" / "checker" / "test_target.py", render_template("test_target.py.tmpl", values))
+    write(task_dir / "environment" / "data" / "checker" / "GoldenCheck.lean", render_template("GoldenCheck.lean.tmpl", values))
+    write(task_dir / "environment" / "data" / "checker" / "golden_env" / "lakefile.toml", render_template("lakefile.toml.tmpl", values))
+    write(task_dir / "environment" / "data" / "checker" / "golden_env" / "lake-manifest.json", bench_lake_manifest(source_root))
+    write(task_dir / "environment" / "data" / "checker" / "golden_env" / "lean-toolchain", values["lean_toolchain"] + "\n")
+    write(task_dir / "environment" / "data" / "checker" / "golden_env" / "FormalConjecturesBench.lean", render_template("root.lean.tmpl", values))
+    write(task_dir / "environment" / "data" / "checker" / "golden_env" / "FormalConjecturesBench" / "Submission.lean", render_template("Submission.lean.tmpl", values))
+    write(task_dir / "environment" / "data" / "checker" / "golden_env" / "FormalConjecturesBench" / "Target.lean", target)
     write(task_dir / "solution" / "solve.sh", render_template("solve.sh.tmpl", values), executable=True)
     if oracle_dir.exists():
         for oracle_file in sorted(oracle_dir.glob("*.lean")):
