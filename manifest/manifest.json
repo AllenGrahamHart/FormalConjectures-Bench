@@ -922,7 +922,7 @@
           "url": "https://github.com/mo271/formal-conjectures/blob/29c60aa79729701905cf9e92517af23f588971f2/FormalConjectures/ErdosProblems/152.lean#L485"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "erdosproblems-152-erdos-152",
       "local_declaration_name": "erdos_152",
       "namespace": [
@@ -1651,7 +1651,7 @@
           "url": "https://github.com/XC0R/formal-conjectures/blob/ba788c9124b563bce98a3413d474b3a2731fd0af/FormalConjectures/ErdosProblems/350.lean#L226"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "erdosproblems-350-erdos-350",
       "local_declaration_name": "erdos_350",
       "namespace": [
@@ -2380,7 +2380,7 @@
           "url": "https://github.com/mo271/formal-conjectures/blob/486bc8afae062b6711cd16d3466d651ee2880a52/FormalConjectures/ErdosProblems/741.lean#L1449"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "erdosproblems-741-i",
       "local_declaration_name": "erdos_741.parts.i",
       "namespace": [
@@ -2572,7 +2572,7 @@
           "url": "https://github.com/google-deepmind/formal-conjectures/blob/2404258180688283e5141021c75464dc2acfb798/FormalConjectures/ErdosProblems/846.lean"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "erdosproblems-846-erdos-846",
       "local_declaration_name": "erdos_846",
       "namespace": [
@@ -3187,7 +3187,7 @@
           "url": "https://github.com/XC0R/formal-conjectures/blob/c8733543568e8011288a9fa7ef33375f5e5907d3/FormalConjectures/OpenQuantumProblems/13.lean#L1168"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "openquantumproblems-13-mutuallyunbiasedbases-dim6-bounds",
       "local_declaration_name": "mutuallyUnbiasedBases_dim6_bounds",
       "namespace": [

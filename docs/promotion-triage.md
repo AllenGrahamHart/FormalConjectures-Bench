@@ -7,10 +7,10 @@ License and redistribution review are a separate promotion gate.
 
 ## Summary
 
-- Technically ready now: 60
-- Promoted now: 60
+- Technically ready now: 65
+- Promoted now: 65
 - Promoted with no-explicit-license provenance note: 9
-- Ready after a small change or validation-only pass: 8
+- Ready after a small generator change: 3
 - Needs substantial changes before promotion: 33
 - Total: 101
 
@@ -21,7 +21,8 @@ Evidence used:
 - Ran generator consistency checks for all 101 tasks with `--include-candidates
   --check`; only `greensopenproblems-57-z3-functional` is stale relative to the
   generator.
-- Checked bundled tasks with no matched clean Modal result separately.
+- Ran parallel Modal oracle validation for the five validation-only tasks; all
+  passed with reward `1.0` and zero errors.
 
 ## Promoted Now
 
@@ -42,6 +43,7 @@ are reproducible from the current generator, and are now marked `included` in
 - `erdosproblems-138-difference`
 - `erdosproblems-138-monoapnumber-two-one`
 - `erdosproblems-138-monoapnumber-two-two`
+- `erdosproblems-152-erdos-152`
 - `erdosproblems-152-square`
 - `erdosproblems-198-concrete`
 - `erdosproblems-198-erdos-198`
@@ -50,19 +52,23 @@ are reproducible from the current generator, and are now marked `included` in
 - `erdosproblems-263-ii`
 - `erdosproblems-267-specialization-pow-two`
 - `erdosproblems-316-erdos-316`
+- `erdosproblems-350-erdos-350`
 - `erdosproblems-370-erdos-370`
 - `erdosproblems-379-erdos-379`
 - `erdosproblems-397-erdos-397`
 - `erdosproblems-399-erdos-399`
+- `erdosproblems-741-i`
 - `erdosproblems-741-ii`
 - `erdosproblems-741-upper`
 - `erdosproblems-828-phi-dvd-self-iff-pow2-pow3`
+- `erdosproblems-846-erdos-846`
 - `erdosproblems-978-allow-fixed-divisors`
 - `greensopenproblems-57-green-57`
 - `greensopenproblems-57-z3`
 - `greensopenproblems-94-green-94-outer-measure`
 - `mathoverflow-10799-mathoverflow-10799`
 - `mathoverflow-486451-exists-semiring-unique-left-right-maximal-ne`
+- `openquantumproblems-13-mutuallyunbiasedbases-dim6-bounds`
 - `openquantumproblems-35-ame-11-5-open`
 - `paper-casasalvero-positive-char-counterexample`
 - `paper-monochromaticquantumgraph-eqsystem-no-solution-even-ge4-d-eq-n-explicit`
@@ -119,6 +125,7 @@ tasks and the license-pending tasks above.
 - `erdosproblems-138-difference`
 - `erdosproblems-138-monoapnumber-two-one`
 - `erdosproblems-138-monoapnumber-two-two`
+- `erdosproblems-152-erdos-152`
 - `erdosproblems-152-square`
 - `erdosproblems-189-erdos-189`
 - `erdosproblems-198-concrete`
@@ -130,15 +137,18 @@ tasks and the license-pending tasks above.
 - `erdosproblems-267-specialization-pow-two`
 - `erdosproblems-275-erdos-275`
 - `erdosproblems-316-erdos-316`
+- `erdosproblems-350-erdos-350`
 - `erdosproblems-370-erdos-370`
 - `erdosproblems-379-erdos-379`
 - `erdosproblems-397-erdos-397`
 - `erdosproblems-399-erdos-399`
 - `erdosproblems-645-erdos-645`
 - `erdosproblems-707-erdos-707`
+- `erdosproblems-741-i`
 - `erdosproblems-741-ii`
 - `erdosproblems-741-upper`
 - `erdosproblems-828-phi-dvd-self-iff-pow2-pow3`
+- `erdosproblems-846-erdos-846`
 - `erdosproblems-897-i`
 - `erdosproblems-897-ii`
 - `erdosproblems-978-allow-fixed-divisors`
@@ -147,6 +157,7 @@ tasks and the license-pending tasks above.
 - `greensopenproblems-94-green-94-outer-measure`
 - `mathoverflow-10799-mathoverflow-10799`
 - `mathoverflow-486451-exists-semiring-unique-left-right-maximal-ne`
+- `openquantumproblems-13-mutuallyunbiasedbases-dim6-bounds`
 - `openquantumproblems-35-ame-11-5-open`
 - `paper-casasalvero-positive-char-counterexample`
 - `paper-claudescycles-cube-hamiltonian-arc-decomposition`
@@ -166,7 +177,7 @@ tasks and the license-pending tasks above.
 - `wikipedia-wolstenholmeprime-wolstenholme-prime-16483`
 - `wikipedia-wolstenholmeprime-wolstenholme-theorem`
 
-## Small Change Or Validation
+## Small Generator Change
 
 These are close to promotion, but should not be promoted as-is.
 
@@ -180,20 +191,6 @@ These are close to promotion, but should not be promoted as-is.
   reported as passing, but Modal reward is `0.0` because the header check sees a
   changed target around an internal `let ... := ...`. Fix the same theorem-type
   extraction path and rerun.
-- `erdosproblems-152-erdos-152`: bundled and generator-clean, but no matched
-  clean Modal result yet. Needs a validation-only run.
-- `erdosproblems-350-erdos-350`: bundled and generator-clean, but no matched
-  clean Modal result yet. Needs a validation-only run.
-- `erdosproblems-741-i`: bundled and generator-clean, but no matched clean Modal
-  result yet. Needs a validation-only run.
-- `erdosproblems-846-erdos-846`: bundled and generator-clean, but no matched
-  clean Modal result yet. Needs a validation-only run.
-- `openquantumproblems-13-mutuallyunbiasedbases-dim6-bounds`: bundled and
-  generator-clean, but no matched clean Modal result yet. Needs a validation-only
-  run.
-
-Note: a serial Modal validation attempt for `erdosproblems-152-erdos-152` was
-stopped after prolonged blank setup latency and produced no result file.
 
 ## Substantial Changes
 
