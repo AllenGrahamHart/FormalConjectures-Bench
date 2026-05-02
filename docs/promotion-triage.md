@@ -7,11 +7,11 @@ License and redistribution review are a separate promotion gate.
 
 ## Summary
 
-- Technically ready now: 70
-- Promoted now: 70
-- Promoted with no-explicit-license provenance note: 12
+- Technically ready now: 71
+- Promoted now: 71
+- Promoted with no-explicit-license provenance note: 13
 - Ready after a small generator change: 0
-- Needs substantial changes before promotion: 31
+- Needs substantial changes before promotion: 30
 - Total: 101
 
 Evidence used:
@@ -34,6 +34,12 @@ Evidence used:
   with reward `1.0` and zero errors after reusing the Apache-2.0 Tenenbaum
   counterexample and adding the bridge from natural density `1` to lower
   density `1`.
+- Ran local verifier validation for `erdosproblems-229-erdos-229`; it passed
+  after porting the Lean 4.24 `plby/lean-proofs` source to the pinned Lean
+  4.27.0/mathlib environment.
+- Ran first-pass local compiles for the six remaining Lean API/proof-port
+  candidates; all six need substantial repair, so there are no additional quick
+  v1 promotions in that bucket after `erdosproblems-229-erdos-229`.
 - Reran `arxiv-0911-2077-conjecture6-3-conjecture6-3` after the header fix; it
   still fails because the bundled oracle was generated for the old truncated
   target and only proves the internal `letI` witness.
@@ -114,6 +120,7 @@ the project owner accepted a bundle-and-takedown/rewrite policy. They are marked
 - `erdosproblems-1051-erdos-1051`
 - `erdosproblems-1080-erdos-1080`
 - `erdosproblems-189-erdos-189`
+- `erdosproblems-229-erdos-229`
 - `erdosproblems-259-erdos-259`
 - `erdosproblems-275-erdos-275`
 - `erdosproblems-331-erdos-331`
@@ -150,6 +157,7 @@ tasks and the license-pending tasks above.
 - `erdosproblems-189-erdos-189`
 - `erdosproblems-198-concrete`
 - `erdosproblems-198-erdos-198`
+- `erdosproblems-229-erdos-229`
 - `erdosproblems-233-lower-bound`
 - `erdosproblems-259-erdos-259`
 - `erdosproblems-26-erdos-26`
@@ -238,22 +246,23 @@ For grouped tractability, work order, and next local actions, see
   unavailable Duke theorem hypothesis.
 - `erdosproblems-204-erdos-204`: selected proof is not narrow enough and has
   broad port failures.
-- `erdosproblems-229-erdos-229`: selected proof is large Lean 4.24 code that
-  still needs substantial porting after the theorem-header extraction fix.
 - `erdosproblems-258-erdos-258`: proof depends on a `tao_teravainen` axiom.
-- `erdosproblems-303-erdos-303`: Lean 4.22 proof exists, but port failures are
-  spread through a homemade Ramsey development.
-- `erdosproblems-347-erdos-347`: broad Lean 4.24 to 4.27 generated-proof port
-  failures.
+- `erdosproblems-303-erdos-303`: decoded Lean 4.22 forum proof exists, but
+  first compile shows broad `field_simp`, `ring`, list-sorting, and Ramsey
+  finite-index failures throughout a homemade Ramsey development.
+- `erdosproblems-347-erdos-347`: selected source proves a nearby
+  `answer_is_yes` theorem rather than the generated target, and direct compile
+  also has missing `List.get!` plus broad generated-proof failures.
 - `erdosproblems-392-erdos-392`: missing Lean 4.28 project dependencies.
 - `erdosproblems-418-erdos-418`: proof uses banned/native computation patterns
   and has API drift.
 - `erdosproblems-427-erdos-427`: proof depends on an unproved Shiu theorem.
 - `erdosproblems-434-ii`: proof depends on an axiom for theorem 2.
 - `erdosproblems-457-erdos-457`: proof crashes in an asymptotic block.
-- `erdosproblems-541-erdos-541`: broad Lean 4.24 to 4.27 port failures.
-- `erdosproblems-56-erdos-56`: generated proof has many `exact?` gaps and
-  recursion issues.
+- `erdosproblems-541-erdos-541`: first compile shows many independent generated
+  proof-script, typeclass, and natural-order failures across the file.
+- `erdosproblems-56-erdos-56`: source contains many `exact?` holes and pinned
+  Lean crashes in `Mathlib.Meta.NormNum` deep recursion.
 - `erdosproblems-659-erdos-659`: proof uses a custom `bernays` axiom.
 - `erdosproblems-678-erdos-678`: source contains `not_erdos_678_fc`, proving the
   negation of the generated eventual-infinitude proposition with only standard
@@ -262,13 +271,15 @@ For grouped tractability, work order, and next local actions, see
   target.
 - `erdosproblems-728-erdos-728`: selected file is a large auxiliary development,
   not a direct proof of the target.
-- `erdosproblems-845-erdos-845`: large Lean 4.24 proof does not compile on the
-  pinned environment; the theorem-header extraction issue is fixed.
+- `erdosproblems-845-erdos-845`: direct compile has broad generated-proof
+  failures and leaves the final theorem depending on `sorryAx` after failed
+  elaboration; the theorem-header extraction issue is fixed.
 - `erdosproblems-848-asymptotic`: source proof is very large and timed out or
   became CPU-bound.
 - `erdosproblems-997-erdos-997`: proof depends on a `maynardTaoBFT` axiom.
-- `oeis-357513-a357513-supercongruence`: Lean 4.22 proof has many Lean 4.27
-  port errors.
+- `oeis-357513-a357513-supercongruence`: short proof source exists, but direct
+  compile fails on Lean 4.22 syntax/API drift and brittle arithmetic proof
+  steps.
 - `oeis-6697-conjecture`: selected proof proves the generating function for a
   formula-defined sequence `a`, not the target's subword-complexity definition;
   the missing bridge is the Allouche-Shallit formula for the actual word.

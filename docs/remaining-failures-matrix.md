@@ -2,7 +2,7 @@
 
 Date: 2026-05-02
 
-This matrix tracks the 31 remaining candidates after 70 of the 101 generated
+This matrix tracks the 30 remaining candidates after 71 of the 101 generated
 candidate tasks were promoted. The goal is to separate promising repair work
 from cases that are blocked by missing proofs, unjustified axioms, or dependency
 decisions.
@@ -15,8 +15,9 @@ Potential upstream Formal Conjectures feedback is tracked separately in
 1. **Statement alignment / bridge candidates**: highest expected yield. These
    resemble `erdosproblems-1051-erdos-1051`, where the proof may be correct but
    targets a nearby formulation.
-2. **Lean API and porting candidates**: correct proof source likely exists, but
-   the source needs Lean 4.22/4.24/4.28 to pinned Lean 4.27.0 repair.
+2. **Lean API and porting candidates**: first-pass local compiles are complete
+   after promoting `erdosproblems-229-erdos-229`; the remaining cases are
+   substantial repairs rather than quick API ports.
 3. **Large proof reduction / dependency import candidates**: try to isolate the
    theorem actually needed, as with `erdosproblems-355-erdos-355`.
 4. **Verifier-rule conflicts**: decide whether a banned-computation proof can be
@@ -31,7 +32,7 @@ Potential upstream Formal Conjectures feedback is tracked separately in
 | Bucket | Count | Expected yield | Recommended action |
 | --- | ---: | --- | --- |
 | Statement alignment / bridge | 1 | Low-medium | Develop semantic bridge lemmas only if the source theorem clearly implies the target. |
-| Lean API / proof port | 7 | Medium | Port locally one at a time; prefer shared compatibility fixes for repeated `plby/lean-proofs` patterns. |
+| Lean API / proof port | 6 | Low for v1 | Defer unless we want substantial manual proof repair; first-pass compiles found no quick follow-on after `erdosproblems-229-erdos-229`. |
 | Large proof reduction / import | 6 | Medium | Trim irrelevant sections or import required auxiliary files; validate locally before promotion. |
 | Verifier-rule conflict | 1 | Low-medium | Determine whether banned native/computation steps are essential or replaceable. |
 | External dependency decision | 2 | Low for v1 | Defer unless we accept new pinned dependencies. |
@@ -41,7 +42,7 @@ Potential upstream Formal Conjectures feedback is tracked separately in
 | Wrong proof source / non-implication | 2 | Very low | Exclude or replace the selected proof source; the available theorem does not imply the generated target. |
 | Source/generated target contains sorry dependency | 1 | Low | Requires source/generator redesign rather than oracle repair. |
 
-Total: 31.
+Total: 30.
 
 ## Statement Alignment / Bridge
 
@@ -56,18 +57,19 @@ benchmark statement.
 ## Lean API / Proof Port
 
 These likely have real proof content but need porting to the pinned Lean
-4.27.0/mathlib environment. The repeated `plby/lean-proofs` source makes this a
-possible batch theme, even if validation remains local and one task at a time.
+4.27.0/mathlib environment. First-pass local compiles promoted
+`erdosproblems-229-erdos-229`; the six remaining rows all showed broad proof
+script, generated-proof, or arithmetic-port failures rather than one localized
+API drift pattern.
 
 | Task | Source | Current issue | Tractability | Next local step |
 | --- | --- | --- | --- | --- |
-| `erdosproblems-229-erdos-229` | `plby/lean-proofs`, Lean 4.24 | Large Lean 4.24 code still needs substantial porting. | Medium | Compile reduced source locally; fix first API break and assess error density. |
-| `erdosproblems-303-erdos-303` | Erdős forum Lean 4.22 | Port failures spread through a homemade Ramsey development. | Medium-low | Decode/source the forum proof; identify whether Ramsey helpers are self-contained. |
-| `erdosproblems-347-erdos-347` | External Lean project | Broad Lean 4.24 to 4.27 generated-proof failures. | Medium-low | Compile source in isolation and classify first failures as API drift vs incomplete generated proof. |
-| `erdosproblems-541-erdos-541` | `plby/lean-proofs`, Lean 4.24 | Broad Lean 4.24 to 4.27 port failures. | Medium | Re-run local compile and compare with `229` for shared API drift. |
-| `erdosproblems-56-erdos-56` | `plby/lean-proofs`, Lean 4.24 | Generated proof has many `exact?` gaps and recursion issues. | Low-medium | Determine whether gaps are actual missing proof obligations or failed generated suggestions. |
-| `erdosproblems-845-erdos-845` | `plby/lean-proofs`, Lean 4.24 | Large Lean 4.24 proof does not compile on pinned environment. | Medium-low | Compile source locally and see whether failures are concentrated enough to repair. |
-| `oeis-357513-a357513-supercongruence` | Formal Conjectures commit, Lean 4.22-era | Many Lean 4.27 port errors. | Medium-low | Port against pinned Formal Conjectures source; source is otherwise suitable if it becomes verifier-clean. |
+| `erdosproblems-303-erdos-303` | Erdős forum Lean 4.22 | Decoded forum source, but first compile shows broad `field_simp`, `ring`, list-sorting, and Ramsey finite-index failures throughout a homemade Ramsey development. | Low for v1 | Treat as a substantial Ramsey proof port or rewrite, not a quick API fix. |
+| `erdosproblems-347-erdos-347` | External Lean project | Source proves a nearby `answer_is_yes` theorem rather than the generated target, and direct compile also hits missing `List.get!` plus broad generated-proof failures. | Low for v1 | Requires both a statement bridge and substantial porting before it can become a clean task. |
+| `erdosproblems-541-erdos-541` | `plby/lean-proofs`, Lean 4.24 | First compile shows many independent generated proof-script, typeclass, and natural-order failures across the file. | Low-medium | Keep as later manual proof-port work; no shared one-line compatibility repair was apparent. |
+| `erdosproblems-56-erdos-56` | `plby/lean-proofs`, Lean 4.24 | Source contains many `exact?` holes and pinned Lean crashes in `Mathlib.Meta.NormNum` deep recursion. | Low | Exclude from v1 unless an upstream completed/reduced proof source is found. |
+| `erdosproblems-845-erdos-845` | `plby/lean-proofs`, Lean 4.24 | Direct compile has broad generated-proof failures and leaves the final theorem depending on `sorryAx` after failed elaboration. | Low | Do not promote without eliminating `sorryAx` and substantially repairing the generated proof. |
+| `oeis-357513-a357513-supercongruence` | Formal Conjectures commit, Lean 4.22-era | Short proof source exists, but direct compile fails on Lean 4.22 syntax/API drift and brittle arithmetic proof steps. | Medium-low | Possible later arithmetic port, but not part of the clean v1 promotion path. |
 
 ## Large Proof Reduction / Import
 
