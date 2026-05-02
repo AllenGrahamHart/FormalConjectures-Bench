@@ -7,11 +7,11 @@ License and redistribution review are a separate promotion gate.
 
 ## Summary
 
-- Technically ready now: 68
-- Promoted now: 68
-- Promoted with no-explicit-license provenance note: 11
+- Technically ready now: 69
+- Promoted now: 69
+- Promoted with no-explicit-license provenance note: 12
 - Ready after a small generator change: 0
-- Needs substantial changes before promotion: 33
+- Needs substantial changes before promotion: 32
 - Total: 101
 
 Evidence used:
@@ -27,6 +27,9 @@ Evidence used:
 - Ran local oracle validation for `erdosproblems-355-erdos-355`; it passed with
   reward `1.0` and zero errors after narrowing the oracle to Theorem 1 and its
   dependencies.
+- Ran local oracle validation for `erdosproblems-1051-erdos-1051`; it passed
+  with reward `1.0` and zero errors after adding a bridge from the Nat-valued
+  proof to the integer-valued benchmark target.
 - Reran `arxiv-0911-2077-conjecture6-3-conjecture6-3` after the header fix; it
   still fails because the bundled oracle was generated for the old truncated
   target and only proves the internal `letI` witness.
@@ -103,6 +106,7 @@ the project owner accepted a bundle-and-takedown/rewrite policy. They are marked
 `included`, with `licence_status = "no-explicit-license"` in
 `manifest/licence_review.csv`.
 
+- `erdosproblems-1051-erdos-1051`
 - `erdosproblems-1080-erdos-1080`
 - `erdosproblems-189-erdos-189`
 - `erdosproblems-259-erdos-259`
@@ -123,6 +127,7 @@ tasks and the license-pending tasks above.
 
 - `erdosproblems-100-erdos-100-piepmeyer`
 - `erdosproblems-1043-erdos-1043`
+- `erdosproblems-1051-erdos-1051`
 - `erdosproblems-1052-even-of-isunitaryperfect`
 - `erdosproblems-1074-ehsnumbers-infinite`
 - `erdosproblems-1080-erdos-1080`
@@ -211,8 +216,6 @@ substantial generator/source work before promotion.
 - `arxiv-2602-05192-firstproof6-epsilon-light-subset-exists`: proof depends on
   multiple upstream auxiliary files; bridge to the generated target was not
   completed.
-- `erdosproblems-1051-erdos-1051`: standalone Nat-valued oracle compiles, but
-  the benchmark target is integer-valued and needs a nontrivial bridge.
 - `erdosproblems-1067-erdos-1067`: selected proof is a materially different
   formulation.
 - `erdosproblems-1071-i`: selected proof targets a different finite/countable
