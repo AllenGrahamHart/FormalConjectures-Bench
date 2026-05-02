@@ -7,6 +7,9 @@ candidate tasks were promoted. The goal is to separate promising repair work
 from cases that are blocked by missing proofs, unjustified axioms, or dependency
 decisions.
 
+Potential upstream Formal Conjectures feedback is tracked separately in
+`docs/upstream-feedback-notes.md`.
+
 ## Work Order
 
 1. **Statement alignment / bridge candidates**: highest expected yield. These
