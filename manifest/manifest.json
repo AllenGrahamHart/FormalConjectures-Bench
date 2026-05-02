@@ -1303,19 +1303,23 @@
           "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos26.lean"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "erdosproblems-26-erdos-26",
       "local_declaration_name": "erdos_26",
       "namespace": [
         "Erdos26"
       ],
       "selected_oracle": {
-        "formal_proof_kind": "lean4",
-        "kind": "lean_proofs_repo",
-        "licence_status": "unreviewed",
-        "redistribution_status": "unreviewed",
-        "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos26.lean"
+        "formal_proof_kind": "formal_conjectures",
+        "kind": "formal_conjectures",
+        "licence_status": "Apache-2.0",
+        "redistribution_status": "bundled",
+        "url": "https://github.com/mo271/formal-conjectures/blob/09c54540aa51cb40dff73660c94a82e2631386f8/FormalConjectures/ErdosProblems/26.lean#L625"
       },
+      "oracle_files": [
+        "Submission.lean",
+        "Target.lean"
+      ],
       "source_file": "FormalConjectures/ErdosProblems/26.lean",
       "theorem_header": "theorem erdos_26 : answer(False) ↔ ∀ A : ℕ → ℕ, StrictMono A → IsThick A →\n    ∃ k, IsBehrend (A · + k)",
       "theorem_name": "Erdos26.erdos_26",

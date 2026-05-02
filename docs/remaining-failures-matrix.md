@@ -2,7 +2,7 @@
 
 Date: 2026-05-02
 
-This matrix tracks the 32 remaining candidates after 69 of the 101 generated
+This matrix tracks the 31 remaining candidates after 70 of the 101 generated
 candidate tasks were promoted. The goal is to separate promising repair work
 from cases that are blocked by missing proofs, unjustified axioms, or dependency
 decisions.
@@ -27,16 +27,18 @@ decisions.
 
 | Bucket | Count | Expected yield | Recommended action |
 | --- | ---: | --- | --- |
-| Statement alignment / bridge | 5 | Medium-high | Inspect source theorem and target theorem side by side; attempt a bridge if implication is mathematically direct. |
+| Statement alignment / bridge | 1 | Low-medium | Develop semantic bridge lemmas only if the source theorem clearly implies the target. |
 | Lean API / proof port | 7 | Medium | Port locally one at a time; prefer shared compatibility fixes for repeated `plby/lean-proofs` patterns. |
 | Large proof reduction / import | 6 | Medium | Trim irrelevant sections or import required auxiliary files; validate locally before promotion. |
 | Verifier-rule conflict | 1 | Low-medium | Determine whether banned native/computation steps are essential or replaceable. |
 | External dependency decision | 2 | Low for v1 | Defer unless we accept new pinned dependencies. |
 | Axiom / unavailable theorem | 7 | Low | Do not promote without replacing axioms by proofs or finding alternate proof sources. |
 | Missing or placeholder proof source | 3 | Very low | Exclude or mark blocked unless a real proof URL is found. |
+| Wrong answer / polarity mismatch | 1 | Very low | Exclude unless the upstream Formal Conjectures target is corrected or a different theorem is generated. |
+| Wrong proof source / non-implication | 2 | Very low | Exclude or replace the selected proof source; the available theorem does not imply the generated target. |
 | Source/generated target contains sorry dependency | 1 | Low | Requires source/generator redesign rather than oracle repair. |
 
-Total: 32.
+Total: 31.
 
 ## Statement Alignment / Bridge
 
@@ -46,11 +48,7 @@ benchmark statement.
 
 | Task | Source | Current issue | Tractability | Next local step |
 | --- | --- | --- | --- | --- |
-| `erdosproblems-678-erdos-678` | `plby/lean-proofs`, Lean 4.24 | Oracle and benchmark statement have opposite or mismatched polarity. | Medium | Compare the source theorem with `Erdos678.erdos_678`; check whether polarity mismatch is a target/header issue or a true non-implication. |
-| `erdosproblems-26-erdos-26` | `plby/lean-proofs`, Lean 4.24 | Selected proof targets the non-thick variant; target requires `IsThick`. | Medium | Compare with promoted `erdosproblems-26-tenenbaum`; see whether that proof can imply the base target or whether the base target is strictly stronger. |
-| `erdosproblems-1067-erdos-1067` | `plby/lean-proofs`, Lean 4.24 | Selected proof is a materially different formulation. | Medium-low | Inspect source theorem and decide whether a bridge is plausible before porting. |
-| `erdosproblems-1071-i` | `plby/lean-proofs`, Lean 4.24 | Selected proof targets a different finite/countable formulation. | Medium-low | Inspect statement relation; only port if the source theorem clearly implies the target. |
-| `oeis-6697-conjecture` | AxiomMath external Lean | Selected proof is for the wrong theorem. | Low-medium | Recheck whether another theorem in the source file proves the generated target; otherwise mark as wrong-source. |
+| `erdosproblems-1067-erdos-1067` | `plby/lean-proofs`, Lean 4.24 | Source proof ports after a one-line cardinal API repair, but it proves a custom induced-subgraph formulation using `uncountably_chromatic` and `finite_independent_paths`; the generated target uses `chromaticCardinal = ℵ_ 1`, arbitrary subgraphs, and `InfinitelyConnected`. | Low-medium | Only continue if we want to write substantial bridge lemmas relating these graph/connectivity formulations. |
 
 ## Lean API / Proof Port
 
@@ -122,6 +120,27 @@ These are unlikely to be repairable from the current manifest metadata.
 | `util-attributes-basic-a-solved-problem-with-formal-proof` | Placeholder URL | Selected URL is `https://example.com/proof`. | Very low | Exclude or replace manifest entry with a real proof URL. |
 | `util-attributes-basic-imo-2024-p6` | Placeholder string | Selected URL is the literal string `link`. | Very low | Exclude or replace manifest entry with a real proof URL. |
 | `util-attributes-basic-imo-2024-p6-2` | Placeholder string | Selected URL is the literal string `link`. | Very low | Exclude or replace manifest entry with a real proof URL. |
+
+## Wrong Answer Or Polarity Mismatch
+
+These are not ordinary bridge candidates. The available proof source indicates
+that the generated target has the wrong truth value or is stronger than the
+proved theorem in a way that cannot be repaired by a small theorem bridge.
+
+| Task | Source | Current issue | Tractability | Next local step |
+| --- | --- | --- | --- | --- |
+| `erdosproblems-678-erdos-678` | `plby/lean-proofs`, Lean 4.24 | Source contains `not_erdos_678_fc`, proving the negation of the generated eventual-infinitude proposition with only standard Lean axioms; the positive triple-infinitude variant depends on the `pi_alt` PNT axiom. | Very low | Exclude as generated unless Formal Conjectures corrects the target/answer or we generate a different theorem with a verifier-clean proof. |
+
+## Wrong Proof Source Or Non-Implication
+
+These selected sources prove a nearby but non-implying theorem. They should not
+be promoted unless a different proof source is found or the missing mathematical
+bridge is formalized.
+
+| Task | Source | Current issue | Tractability | Next local step |
+| --- | --- | --- | --- | --- |
+| `erdosproblems-1071-i` | `plby/lean-proofs`, Lean 4.24 | Selected source proves a countably infinite set-based maximal collection of open unit segments; the generated target asks for a finite `Finset` maximal family in the unit square. | Very low | Search for a source proving the finite Danzer construction, or exclude this generated target for now. |
+| `oeis-6697-conjecture` | AxiomMath external Lean | Selected proof proves the generating function for a formula-defined sequence `a`; the generated target's `a` is the actual subword-complexity cardinality. The source notes that formalizing the Allouche-Shallit formula is the missing bridge. | Very low | Exclude until the subword-complexity formula is formalized or a proof of the target definition is found. |
 
 ## Source Or Generator Issue
 

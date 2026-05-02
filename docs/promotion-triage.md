@@ -7,11 +7,11 @@ License and redistribution review are a separate promotion gate.
 
 ## Summary
 
-- Technically ready now: 69
-- Promoted now: 69
+- Technically ready now: 70
+- Promoted now: 70
 - Promoted with no-explicit-license provenance note: 12
 - Ready after a small generator change: 0
-- Needs substantial changes before promotion: 32
+- Needs substantial changes before promotion: 31
 - Total: 101
 
 Evidence used:
@@ -30,6 +30,10 @@ Evidence used:
 - Ran local oracle validation for `erdosproblems-1051-erdos-1051`; it passed
   with reward `1.0` and zero errors after adding a bridge from the Nat-valued
   proof to the integer-valued benchmark target.
+- Ran local Harbor oracle validation for `erdosproblems-26-erdos-26`; it passed
+  with reward `1.0` and zero errors after reusing the Apache-2.0 Tenenbaum
+  counterexample and adding the bridge from natural density `1` to lower
+  density `1`.
 - Reran `arxiv-0911-2077-conjecture6-3-conjecture6-3` after the header fix; it
   still fails because the bundled oracle was generated for the old truncated
   target and only proves the internal `letI` witness.
@@ -58,6 +62,7 @@ are reproducible from the current generator, and are now marked `included` in
 - `erdosproblems-198-concrete`
 - `erdosproblems-198-erdos-198`
 - `erdosproblems-233-lower-bound`
+- `erdosproblems-26-erdos-26`
 - `erdosproblems-26-tenenbaum`
 - `erdosproblems-263-ii`
 - `erdosproblems-267-specialization-pow-two`
@@ -147,6 +152,7 @@ tasks and the license-pending tasks above.
 - `erdosproblems-198-erdos-198`
 - `erdosproblems-233-lower-bound`
 - `erdosproblems-259-erdos-259`
+- `erdosproblems-26-erdos-26`
 - `erdosproblems-26-tenenbaum`
 - `erdosproblems-263-ii`
 - `erdosproblems-267-specialization-pow-two`
@@ -219,10 +225,14 @@ For grouped tractability, work order, and next local actions, see
 - `arxiv-2602-05192-firstproof6-epsilon-light-subset-exists`: proof depends on
   multiple upstream auxiliary files; bridge to the generated target was not
   completed.
-- `erdosproblems-1067-erdos-1067`: selected proof is a materially different
-  formulation.
-- `erdosproblems-1071-i`: selected proof targets a different finite/countable
-  formulation.
+- `erdosproblems-1067-erdos-1067`: source proof ports after a one-line cardinal
+  API repair, but it proves a custom induced-subgraph formulation using
+  `uncountably_chromatic` and `finite_independent_paths`; the generated target
+  uses `chromaticCardinal = ℵ_ 1`, arbitrary subgraphs, and
+  `InfinitelyConnected`, so it needs substantial bridge lemmas.
+- `erdosproblems-1071-i`: selected source proves a countably infinite set-based
+  maximal collection of open unit segments, not the finite `Finset` maximal
+  family required by the generated target.
 - `erdosproblems-1141-erdos-1141`: proof depends on extra unproved axioms.
 - `erdosproblems-1148-erdos-1148`: selected Lean-live proof requires an
   unavailable Duke theorem hypothesis.
@@ -231,8 +241,6 @@ For grouped tractability, work order, and next local actions, see
 - `erdosproblems-229-erdos-229`: selected proof is large Lean 4.24 code that
   still needs substantial porting after the theorem-header extraction fix.
 - `erdosproblems-258-erdos-258`: proof depends on a `tao_teravainen` axiom.
-- `erdosproblems-26-erdos-26`: selected proof targets the non-thick variant;
-  benchmark target requires `IsThick`.
 - `erdosproblems-303-erdos-303`: Lean 4.22 proof exists, but port failures are
   spread through a homemade Ramsey development.
 - `erdosproblems-347-erdos-347`: broad Lean 4.24 to 4.27 generated-proof port
@@ -247,8 +255,11 @@ For grouped tractability, work order, and next local actions, see
 - `erdosproblems-56-erdos-56`: generated proof has many `exact?` gaps and
   recursion issues.
 - `erdosproblems-659-erdos-659`: proof uses a custom `bernays` axiom.
-- `erdosproblems-678-erdos-678`: oracle and benchmark statement have opposite or
-  mismatched polarity.
+- `erdosproblems-678-erdos-678`: source contains `not_erdos_678_fc`, proving the
+  negation of the generated eventual-infinitude proposition with only standard
+  Lean axioms; the positive triple-infinitude variant depends on the `pi_alt`
+  PNT axiom, so there is no verifier-clean oracle bridge for the generated
+  target.
 - `erdosproblems-728-erdos-728`: selected file is a large auxiliary development,
   not a direct proof of the target.
 - `erdosproblems-845-erdos-845`: large Lean 4.24 proof does not compile on the
@@ -258,8 +269,9 @@ For grouped tractability, work order, and next local actions, see
 - `erdosproblems-997-erdos-997`: proof depends on a `maynardTaoBFT` axiom.
 - `oeis-357513-a357513-supercongruence`: Lean 4.22 proof has many Lean 4.27
   port errors.
-- `oeis-6697-conjecture`: selected proof is for the wrong theorem; the
-  theorem-header extraction issue is fixed.
+- `oeis-6697-conjecture`: selected proof proves the generating function for a
+  formula-defined sequence `a`, not the target's subword-complexity definition;
+  the missing bridge is the Allouche-Shallit formula for the actual word.
 - `oeis-87719-a-formula`: frozen prefix contains `sorry`-based data used by the
   target definition.
 - `util-attributes-basic-a-solved-problem-with-formal-proof`: selected URL is a
