@@ -653,7 +653,7 @@
           "url": "https://github.com/mo271/formal-conjectures/blob/8d872b465955e46e2d28bc165d186ea41fd0da9e/FormalConjectures/ErdosProblems/12.lean#L810"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "erdosproblems-12-i",
       "local_declaration_name": "erdos_12.parts.i",
       "namespace": [
@@ -662,10 +662,14 @@
       "selected_oracle": {
         "formal_proof_kind": "formal_conjectures",
         "kind": "formal_conjectures",
-        "licence_status": "unreviewed",
-        "redistribution_status": "unreviewed",
+        "licence_status": "Apache-2.0",
+        "redistribution_status": "bundled",
         "url": "https://github.com/mo271/formal-conjectures/blob/8d872b465955e46e2d28bc165d186ea41fd0da9e/FormalConjectures/ErdosProblems/12.lean#L810"
       },
+      "oracle_files": [
+        "Submission.lean",
+        "Target.lean"
+      ],
       "source_file": "FormalConjectures/ErdosProblems/12.lean",
       "theorem_header": "theorem erdos_12.parts.i : answer(True) \u2194 \u2203 (A : Set \u2115), IsGood A \u2227\n    (0 : \u211d) < Filter.atTop.liminf\n      (fun N => (A \u2229 Icc 1 N).ncard / (N : \u211d).sqrt)",
       "theorem_name": "Erdos12.erdos_12.parts.i",
@@ -1328,7 +1332,7 @@
           "url": "https://github.com/mo271/formal-conjectures/blob/09c54540aa51cb40dff73660c94a82e2631386f8/FormalConjectures/ErdosProblems/26.lean#L625"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "erdosproblems-26-tenenbaum",
       "local_declaration_name": "erdos_26.variants.tenenbaum",
       "namespace": [
@@ -1337,10 +1341,14 @@
       "selected_oracle": {
         "formal_proof_kind": "formal_conjectures",
         "kind": "formal_conjectures",
-        "licence_status": "unreviewed",
-        "redistribution_status": "unreviewed",
+        "licence_status": "Apache-2.0",
+        "redistribution_status": "bundled",
         "url": "https://github.com/mo271/formal-conjectures/blob/09c54540aa51cb40dff73660c94a82e2631386f8/FormalConjectures/ErdosProblems/26.lean#L625"
       },
+      "oracle_files": [
+        "Submission.lean",
+        "Target.lean"
+      ],
       "source_file": "FormalConjectures/ErdosProblems/26.lean",
       "theorem_header": "theorem erdos_26.variants.tenenbaum : answer(False) \u2194 \u2200\u1d49 (A : \u2115 \u2192 \u2115), StrictMono A \u2192 IsThick A \u2192\n    (\u2200 \u03b5 > (0 : \u211d), \u2203 k, IsWeaklyBehrend (A \u00b7 + k) \u03b5)",
       "theorem_name": "Erdos26.erdos_26.variants.tenenbaum",
@@ -2438,7 +2446,7 @@
           "url": "https://github.com/mo271/formal-conjectures/blob/486bc8afae062b6711cd16d3466d651ee2880a52/FormalConjectures/ErdosProblems/741.lean#L1629"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "erdosproblems-741-ii",
       "local_declaration_name": "erdos_741.parts.ii",
       "namespace": [
@@ -2447,10 +2455,14 @@
       "selected_oracle": {
         "formal_proof_kind": "formal_conjectures",
         "kind": "formal_conjectures",
-        "licence_status": "unreviewed",
-        "redistribution_status": "unreviewed",
+        "licence_status": "Apache-2.0",
+        "redistribution_status": "bundled",
         "url": "https://github.com/mo271/formal-conjectures/blob/486bc8afae062b6711cd16d3466d651ee2880a52/FormalConjectures/ErdosProblems/741.lean#L1629"
       },
+      "oracle_files": [
+        "Submission.lean",
+        "Target.lean"
+      ],
       "source_file": "FormalConjectures/ErdosProblems/741.lean",
       "theorem_header": "theorem erdos_741.parts.ii : answer(True) \u2194 \u2203 A : Set \u2115, IsAddBasisOfOrder (A \u222a {0}) 2 \u2227 \u2200 A\u2081 A\u2082,\n    A = A\u2081 \u222a A\u2082 \u2192 Disjoint A\u2081 A\u2082 \u2192 \u00ac (IsSyndetic (A\u2081 + A\u2081) \u2227 IsSyndetic (A\u2082 + A\u2082))",
       "theorem_name": "Erdos741.erdos_741.parts.ii",
@@ -2888,7 +2900,7 @@
           "url": "https://github.com/mo271/formal-conjectures/blob/f5afe85e1e02611f63c32ae041b33c67b7938cba/FormalConjectures/GreensOpenProblems/57.lean#L1120"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "greensopenproblems-57-green-57",
       "local_declaration_name": "green_57",
       "namespace": [
@@ -2897,10 +2909,14 @@
       "selected_oracle": {
         "formal_proof_kind": "formal_conjectures",
         "kind": "formal_conjectures",
-        "licence_status": "unreviewed",
-        "redistribution_status": "unreviewed",
+        "licence_status": "Apache-2.0",
+        "redistribution_status": "bundled",
         "url": "https://github.com/mo271/formal-conjectures/blob/f5afe85e1e02611f63c32ae041b33c67b7938cba/FormalConjectures/GreensOpenProblems/57.lean#L1120"
       },
+      "oracle_files": [
+        "Submission.lean",
+        "Target.lean"
+      ],
       "source_file": "FormalConjectures/GreensOpenProblems/57.lean",
       "theorem_header": "theorem green_57 :\n  answer(False) \u2194\n    \u2200 (G : Type) [AddCommGroup G] [Fintype G] [DecidableEq G],\n      \u03a6 G = \u03a6' G",
       "theorem_name": "Green57.green_57",
