@@ -95,10 +95,24 @@ def bench_lake_manifest(source_root: Path) -> str:
     return json.dumps(manifest, indent=1, ensure_ascii=False) + "\n"
 
 
-def find_header_end(lines: list[str], declaration_line: int) -> int:
+def declaration_body_col(line: str) -> int | None:
+    by_match = re.search(r":=\s*by\b", line)
+    if by_match:
+        return by_match.start()
+
+    for match in re.finditer(r":=", line):
+        before = line[: match.start()]
+        if re.search(r"\blet\s+[^:=]*\Z", before):
+            continue
+        return match.start()
+    return None
+
+
+def find_header_end(lines: list[str], declaration_line: int) -> tuple[int, int]:
     for idx in range(declaration_line - 1, len(lines)):
-        if ":=" in lines[idx]:
-            return idx
+        col = declaration_body_col(lines[idx])
+        if col is not None:
+            return idx, col
     raise ValueError(f"Could not find ':=' for declaration at line {declaration_line}")
 
 
@@ -275,11 +289,11 @@ def target_source(source_root: Path, instance: dict) -> tuple[str, str, str, str
 
     attr_start_index = instance["attribute_line"] - 1
     declaration_line = instance["declaration_line"]
-    header_end_index = find_header_end(lines, declaration_line)
+    header_end_index, body_col = find_header_end(lines, declaration_line)
 
     prefix_lines = add_submission_import(lines[:attr_start_index])
     header_lines = lines[declaration_line - 1 : header_end_index + 1]
-    header_lines[-1] = header_lines[-1].split(":=", 1)[0].rstrip()
+    header_lines[-1] = header_lines[-1][:body_col].rstrip()
     header = "\n".join(line.rstrip() for line in header_lines).strip()
 
     generated_lines = [

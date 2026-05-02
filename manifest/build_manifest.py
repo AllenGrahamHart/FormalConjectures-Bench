@@ -131,11 +131,25 @@ def namespace_stack_before(lines: list[str], one_based_line: int) -> list[str]:
     return namespaces
 
 
+def declaration_body_col(line: str) -> int | None:
+    by_match = re.search(r":=\s*by\b", line)
+    if by_match:
+        return by_match.start()
+
+    for match in re.finditer(r":=", line):
+        before = line[: match.start()]
+        if re.search(r"\blet\s+[^:=]*\Z", before):
+            continue
+        return match.start()
+    return None
+
+
 def extract_header(lines: list[str], declaration_line: int) -> str:
     header_lines: list[str] = []
     for raw in lines[declaration_line - 1 :]:
-        if ":=" in raw:
-            header_lines.append(raw.split(":=", 1)[0].rstrip())
+        col = declaration_body_col(raw)
+        if col is not None:
+            header_lines.append(raw[:col].rstrip())
             break
         header_lines.append(raw.rstrip())
     return "\n".join(header_lines).strip()

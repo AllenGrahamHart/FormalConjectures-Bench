@@ -210,7 +210,7 @@
           "url": "https://github.com/XC0R/formal-conjectures/blob/7db17471701f15b125d1c36bc1fa5bb9b702d6be/FormalConjectures/ErdosProblems/1043.lean#L214"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "erdosproblems-1043-erdos-1043",
       "local_declaration_name": "erdos_1043",
       "namespace": [
@@ -219,14 +219,18 @@
       "selected_oracle": {
         "formal_proof_kind": "formal_conjectures",
         "kind": "formal_conjectures",
-        "licence_status": "unreviewed",
-        "redistribution_status": "unreviewed",
+        "licence_status": "Apache-2.0",
+        "redistribution_status": "bundled",
         "url": "https://github.com/XC0R/formal-conjectures/blob/7db17471701f15b125d1c36bc1fa5bb9b702d6be/FormalConjectures/ErdosProblems/1043.lean#L214"
       },
       "source_file": "FormalConjectures/ErdosProblems/1043.lean",
       "theorem_header": "theorem erdos_1043 :\n    answer(False) \u2194 \u2200 (f : \u2102[X]), f.Monic \u2192 f.degree \u2265 1 \u2192\n      \u2203 (u : \u2102), \u2016u\u2016 = 1 \u2227\n      volume ((\u211d \u2219 u).orthogonalProjection '' levelSet f) \u2264 2",
       "theorem_name": "Erdos1043.erdos_1043",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "oracle_files": [
+        "Submission.lean",
+        "Target.lean"
+      ]
     },
     {
       "ams_tags": [
@@ -506,7 +510,7 @@
           "url": "https://github.com/google-deepmind/formal-conjectures/blob/0aca4d71095301c0fd2dca32611b7addb2ea735c/FormalConjectures/ErdosProblems/1082.lean"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "erdosproblems-1082-ii",
       "local_declaration_name": "erdos_1082.parts.ii",
       "namespace": [
@@ -515,14 +519,18 @@
       "selected_oracle": {
         "formal_proof_kind": "formal_conjectures",
         "kind": "formal_conjectures",
-        "licence_status": "unreviewed",
-        "redistribution_status": "unreviewed",
+        "licence_status": "Apache-2.0",
+        "redistribution_status": "bundled",
         "url": "https://github.com/google-deepmind/formal-conjectures/blob/0aca4d71095301c0fd2dca32611b7addb2ea735c/FormalConjectures/ErdosProblems/1082.lean"
       },
       "source_file": "FormalConjectures/ErdosProblems/1082.lean",
       "theorem_header": "theorem erdos_1082.parts.ii : answer(False) \u2194\n    \u2200 (A : Finset \u211d\u00b2) (hA : A.Nonempty) (hA_n3c : NonTrilinear (A : Set \u211d\u00b2)),\n    \u2203 (a : \u211d\u00b2) (ha : a \u2208 A), A.card / 2 \u2264 distinctDistancesFrom A a - 1",
       "theorem_name": "Erdos1082.erdos_1082.parts.ii",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "oracle_files": [
+        "Submission.lean",
+        "Target.lean"
+      ]
     },
     {
       "ams_tags": [
@@ -1124,7 +1132,7 @@
         "url": "https://github.com/Woett/Lean-files/blob/main/ErdosProblem204.lean"
       },
       "source_file": "FormalConjectures/ErdosProblems/204.lean",
-      "theorem_header": "theorem erdos_204 : answer(False) \u2194 \u2203 (n : \u2115) (a : \u2115 \u2192 \u2124),\n    let D",
+      "theorem_header": "theorem erdos_204 : answer(False) \u2194 \u2203 (n : \u2115) (a : \u2115 \u2192 \u2124),\n    let D := {d : \u2115 | d \u2223 n \u2227 d > 1}\n    (\u2200 x : \u2124, \u2203 d \u2208 D, x \u2261 a d [ZMOD d]) \u2227\n    (\u2200 d \u2208 D, \u2200 d' \u2208 D, d \u2260 d' \u2192 (\u2203 x : \u2124, x \u2261 a d [ZMOD d] \u2227 x \u2261 a d' [ZMOD d']) \u2192\n      Nat.gcd d d' = 1)",
       "theorem_name": "Erdos204.erdos_204",
       "uses_answer_sorry": false
     },
@@ -1578,7 +1586,7 @@
         "url": "https://github.com/Woett/Lean-files/blob/main/ErdosProblem%23331.lean"
       },
       "source_file": "FormalConjectures/ErdosProblems/331.lean",
-      "theorem_header": "theorem erdos_331 :\n    answer(False) \u2194\n      \u2200 A B : Set \u2115,\n      (fun (n : \u2115) \u21a6 (n : \u211d) ^ (1 / 2 : \u211d)) =O[atTop] (fun (n : \u2115) \u21a6 (count A n : \u211d)) \u2192\n      (fun (n : \u2115) \u21a6 (n : \u211d) ^ (1 / 2 : \u211d)) =O[atTop] (fun (n : \u2115) \u21a6 (count B n : \u211d)) \u2192\n      { s : \u2115 \u00d7 \u2115 \u00d7 \u2115 \u00d7 \u2115 | let \u27e8a\u2081, a\u2082, b\u2081, b\u2082\u27e9",
+      "theorem_header": "theorem erdos_331 :\n    answer(False) \u2194\n      \u2200 A B : Set \u2115,\n      (fun (n : \u2115) \u21a6 (n : \u211d) ^ (1 / 2 : \u211d)) =O[atTop] (fun (n : \u2115) \u21a6 (count A n : \u211d)) \u2192\n      (fun (n : \u2115) \u21a6 (n : \u211d) ^ (1 / 2 : \u211d)) =O[atTop] (fun (n : \u2115) \u21a6 (count B n : \u211d)) \u2192\n      { s : \u2115 \u00d7 \u2115 \u00d7 \u2115 \u00d7 \u2115 | let \u27e8a\u2081, a\u2082, b\u2081, b\u2082\u27e9 := s\n        a\u2081 \u2208 A \u2227 a\u2082 \u2208 A \u2227 b\u2081 \u2208 B \u2227 b\u2082 \u2208 B \u2227\n        a\u2081 \u2260 a\u2082 \u2227 a\u2081 + b\u2082 = a\u2082 + b\u2081 }.Infinite",
       "theorem_name": "Erdos331.erdos_331",
       "uses_answer_sorry": false
     },
@@ -1848,7 +1856,7 @@
           "url": "https://github.com/XC0R/formal-conjectures/blob/3c356a50a21bcbf3543f960b0c92d7fb26228cb6/FormalConjectures/ErdosProblems/397.lean#L147"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "erdosproblems-397-erdos-397",
       "local_declaration_name": "erdos_397",
       "namespace": [
@@ -1857,14 +1865,18 @@
       "selected_oracle": {
         "formal_proof_kind": "formal_conjectures",
         "kind": "formal_conjectures",
-        "licence_status": "unreviewed",
-        "redistribution_status": "unreviewed",
+        "licence_status": "Apache-2.0",
+        "redistribution_status": "bundled",
         "url": "https://github.com/XC0R/formal-conjectures/blob/3c356a50a21bcbf3543f960b0c92d7fb26228cb6/FormalConjectures/ErdosProblems/397.lean#L147"
       },
       "source_file": "FormalConjectures/ErdosProblems/397.lean",
       "theorem_header": "theorem erdos_397 :\n    answer(False) \u2194\n      {(M, N) : Finset \u2115 \u00d7 Finset \u2115 | Disjoint M N \u2227\n      \u220f i \u2208 M, centralBinom i = \u220f j \u2208 N, centralBinom j}.Finite",
       "theorem_name": "Erdos397.erdos_397",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "oracle_files": [
+        "Submission.lean",
+        "Target.lean"
+      ]
     },
     {
       "ams_tags": [
@@ -2749,7 +2761,7 @@
           "url": "https://github.com/mo271/formal-conjectures/blob/3b5d6ac2555cd63b83d418c29ff040876be9dee0/FormalConjectures/ErdosProblems/978.lean#L64"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "erdosproblems-978-allow-fixed-divisors",
       "local_declaration_name": "erdos_978.variants.allow_fixed_divisors",
       "namespace": [
@@ -2758,14 +2770,18 @@
       "selected_oracle": {
         "formal_proof_kind": "formal_conjectures",
         "kind": "formal_conjectures",
-        "licence_status": "unreviewed",
-        "redistribution_status": "unreviewed",
+        "licence_status": "Apache-2.0",
+        "redistribution_status": "bundled",
         "url": "https://github.com/mo271/formal-conjectures/blob/3b5d6ac2555cd63b83d418c29ff040876be9dee0/FormalConjectures/ErdosProblems/978.lean#L64"
       },
       "source_file": "FormalConjectures/ErdosProblems/978.lean",
       "theorem_header": "theorem erdos_978.variants.allow_fixed_divisors : answer(False) \u2194\n    \u2200 {f : \u2124[X]}, Irreducible f \u2192 f.natDegree > 3 \u2192\n    (\u00ac \u2203 l : \u2115, f.natDegree = 2 ^ l) \u2192 0 < f.leadingCoeff \u2192\n    (\u00ac \u2203 p : \u2115, p.Prime \u2227 \u2200 n : \u2115, (p : \u2124) ^ (f.natDegree - 1) \u2223 f.eval (n : \u2124)) \u2192\n    {n : \u2115 | Powerfree (f.natDegree - 2) (f.eval (n : \u2124))}.Infinite",
       "theorem_name": "Erdos978.erdos_978.variants.allow_fixed_divisors",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "oracle_files": [
+        "Submission.lean",
+        "Target.lean"
+      ]
     },
     {
       "ams_tags": [
@@ -2979,7 +2995,7 @@
           "url": "https://github.com/mo271/formal-conjectures/blob/408f53dc0856c0882a5e77acd24fc83b978f0bc9/FormalConjectures/Mathoverflow/10799.lean#L252"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "mathoverflow-10799-mathoverflow-10799",
       "local_declaration_name": "mathoverflow_10799",
       "namespace": [
@@ -2988,14 +3004,18 @@
       "selected_oracle": {
         "formal_proof_kind": "formal_conjectures",
         "kind": "formal_conjectures",
-        "licence_status": "unreviewed",
-        "redistribution_status": "unreviewed",
+        "licence_status": "Apache-2.0",
+        "redistribution_status": "bundled",
         "url": "https://github.com/mo271/formal-conjectures/blob/408f53dc0856c0882a5e77acd24fc83b978f0bc9/FormalConjectures/Mathoverflow/10799.lean#L252"
       },
       "source_file": "FormalConjectures/Mathoverflow/10799.lean",
       "theorem_header": "theorem mathoverflow_10799 : answer(False) \u2194\n    \u2200 (n : \u2115) (_ : 2 \u2264 n)\n    (F : Finset (Finset (Fin n))) (_ : IsMonotoneIncreasing F)\n    (s t : \u211d) (_ : 0 < s) (_ : s \u2264 t) (_ : t < 1)\n    (_ : t / s > 1000 * Real.log n),\n    \u2203 p, s \u2264 p \u2227 p \u2264 t \u2227 IsOptimal p F",
       "theorem_name": "Mathoverflow10799.mathoverflow_10799",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "oracle_files": [
+        "Submission.lean",
+        "Target.lean"
+      ]
     },
     {
       "ams_tags": [
@@ -3248,7 +3268,7 @@
           "url": "https://github.com/mzhorvath1/formal-conjectures/blob/4f2343508f2c157f35abb7be4814bd550280ce81/FormalConjectures/Paper/CasasAlvero.lean#163"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "paper-casasalvero-positive-char-counterexample",
       "local_declaration_name": "casas_alvero.positive_char_counterexample",
       "namespace": [
@@ -3257,14 +3277,18 @@
       "selected_oracle": {
         "formal_proof_kind": "formal_conjectures",
         "kind": "formal_conjectures",
-        "licence_status": "unreviewed",
-        "redistribution_status": "unreviewed",
+        "licence_status": "Apache-2.0",
+        "redistribution_status": "bundled",
         "url": "https://github.com/mzhorvath1/formal-conjectures/blob/4f2343508f2c157f35abb7be4814bd550280ce81/FormalConjectures/Paper/CasasAlvero.lean#163"
       },
       "source_file": "FormalConjectures/Paper/CasasAlvero.lean",
-      "theorem_header": "theorem casas_alvero.positive_char_counterexample {p : \u2115} (hp : p.Prime) :\n    \u2203 (K : Type*) (_ : Field K) (_ : CharP K p),\n      let P",
+      "theorem_header": "theorem casas_alvero.positive_char_counterexample {p : \u2115} (hp : p.Prime) :\n    \u2203 (K : Type*) (_ : Field K) (_ : CharP K p),\n      let P := X ^ (p + 1) - X ^ p\n      Monic P \u2227 HasCasasAlveroProp P \u2227\n      \u00ac\u2203 \u03b1 : K, P = (X - C \u03b1) ^ P.natDegree",
       "theorem_name": "CasasAlvero.casas_alvero.positive_char_counterexample",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "oracle_files": [
+        "Submission.lean",
+        "Target.lean"
+      ]
     },
     {
       "ams_tags": [
