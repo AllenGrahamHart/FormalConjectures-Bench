@@ -317,7 +317,8 @@ def selected_instances(manifest: dict, include_candidates: bool, only: set[str])
     for instance in manifest["instances"]:
         if only and instance["instance_id"] not in only:
             continue
-        if include_candidates or instance.get("inclusion_status") == "included":
+        status = instance.get("inclusion_status")
+        if status == "included" or (include_candidates and status == "candidate"):
             result.append(instance)
     return result
 
