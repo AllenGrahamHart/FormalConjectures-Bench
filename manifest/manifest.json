@@ -1692,7 +1692,7 @@
           "url": "https://github.com/Woett/Lean-files/blob/main/ErdosProblem355.lean"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "erdosproblems-355-erdos-355",
       "local_declaration_name": "erdos_355",
       "namespace": [

@@ -7,11 +7,11 @@ License and redistribution review are a separate promotion gate.
 
 ## Summary
 
-- Technically ready now: 67
-- Promoted now: 67
-- Promoted with no-explicit-license provenance note: 10
+- Technically ready now: 68
+- Promoted now: 68
+- Promoted with no-explicit-license provenance note: 11
 - Ready after a small generator change: 0
-- Needs substantial changes before promotion: 34
+- Needs substantial changes before promotion: 33
 - Total: 101
 
 Evidence used:
@@ -24,13 +24,16 @@ Evidence used:
   the repaired first-tier candidates.
 - Ran Modal oracle validation for `greensopenproblems-57-z3-functional` and
   `erdosproblems-331-erdos-331`; both passed with reward `1.0` and zero errors.
+- Ran local oracle validation for `erdosproblems-355-erdos-355`; it passed with
+  reward `1.0` and zero errors after narrowing the oracle to Theorem 1 and its
+  dependencies.
 - Reran `arxiv-0911-2077-conjecture6-3-conjecture6-3` after the header fix; it
   still fails because the bundled oracle was generated for the old truncated
   target and only proves the internal `letI` witness.
 
 ## Promoted Now
 
-These tasks have a clean Modal oracle result with reward `1.0`, zero errors,
+These tasks have a clean oracle result with reward `1.0`, zero errors,
 are reproducible from the current generator, and are now marked `included` in
 `manifest/manifest.json`.
 
@@ -94,7 +97,7 @@ are reproducible from the current generator, and are now marked `included` in
 
 ## Promoted With No Explicit Upstream License
 
-These also have clean Modal oracle results and generator-clean artifacts. Their
+These also have clean oracle results and generator-clean artifacts. Their
 selected proof source currently lacks an explicit license file or is a gist, but
 the project owner accepted a bundle-and-takedown/rewrite policy. They are marked
 `included`, with `licence_status = "no-explicit-license"` in
@@ -105,6 +108,7 @@ the project owner accepted a bundle-and-takedown/rewrite policy. They are marked
 - `erdosproblems-259-erdos-259`
 - `erdosproblems-275-erdos-275`
 - `erdosproblems-331-erdos-331`
+- `erdosproblems-355-erdos-355`
 - `erdosproblems-645-erdos-645`
 - `erdosproblems-707-erdos-707`
 - `erdosproblems-897-i`
@@ -113,7 +117,7 @@ the project owner accepted a bundle-and-takedown/rewrite policy. They are marked
 
 ## Technical-Ready Pool
 
-These tasks have a clean Modal oracle result with reward `1.0`, zero errors, and
+These tasks have a clean oracle result with reward `1.0`, zero errors, and
 are reproducible from the current generator. This list includes the promoted
 tasks and the license-pending tasks above.
 
@@ -145,6 +149,7 @@ tasks and the license-pending tasks above.
 - `erdosproblems-316-erdos-316`
 - `erdosproblems-331-erdos-331`
 - `erdosproblems-350-erdos-350`
+- `erdosproblems-355-erdos-355`
 - `erdosproblems-370-erdos-370`
 - `erdosproblems-379-erdos-379`
 - `erdosproblems-397-erdos-397`
@@ -226,8 +231,6 @@ substantial generator/source work before promotion.
   spread through a homemade Ramsey development.
 - `erdosproblems-347-erdos-347`: broad Lean 4.24 to 4.27 generated-proof port
   failures.
-- `erdosproblems-355-erdos-355`: bundled, but no clean Modal result and earlier
-  validation hit deep-recursion/NormNum failure.
 - `erdosproblems-392-erdos-392`: missing Lean 4.28 project dependencies.
 - `erdosproblems-418-erdos-418`: proof uses banned/native computation patterns
   and has API drift.
