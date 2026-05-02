@@ -207,6 +207,9 @@ target.
 These require a real proof port, dependency decision, target/oracle alignment, or
 substantial generator/source work before promotion.
 
+For grouped tractability, work order, and next local actions, see
+`docs/remaining-failures-matrix.md`.
+
 - `arxiv-0911-2077-conjecture6-3-conjecture6-3`: theorem-header extraction is
   fixed, but the bundled oracle was generated for the old truncated target and
   only proves the internal `letI` witness; it needs a real import or port of the
