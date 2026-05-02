@@ -98,12 +98,14 @@ def check_frozen_prefix_and_header(text: str) -> str:
     if digest != EXPECTED_PREFIX_SHA256:
         fail("Code above the benchmark target marker changed")
 
-    if ":=" not in rest:
-        fail("Target theorem no longer has a proof assignment")
-    actual_header = rest.split(":=", 1)[0].strip()
-    if actual_header != EXPECTED_HEADER.strip():
+    expected_header = EXPECTED_HEADER.strip()
+    target_after_marker = rest.lstrip()
+    if not target_after_marker.startswith(expected_header):
         fail("Target theorem header changed")
-    return rest.split(":=", 1)[1]
+    after_header = target_after_marker[len(expected_header) :].lstrip()
+    if not after_header.startswith(":="):
+        fail("Target theorem no longer has a proof assignment")
+    return after_header[2:]
 
 
 def check_banned_patterns(proof_region: str) -> None:

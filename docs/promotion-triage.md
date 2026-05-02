@@ -7,22 +7,26 @@ License and redistribution review are a separate promotion gate.
 
 ## Summary
 
-- Technically ready now: 65
-- Promoted now: 65
-- Promoted with no-explicit-license provenance note: 9
-- Ready after a small generator change: 3
-- Needs substantial changes before promotion: 33
+- Technically ready now: 67
+- Promoted now: 67
+- Promoted with no-explicit-license provenance note: 10
+- Ready after a small generator change: 0
+- Needs substantial changes before promotion: 34
 - Total: 101
 
 Evidence used:
 
 - Parsed all Harbor `result.json` files and matched task ids from reward trial
   ids as well as job paths.
-- Ran generator consistency checks for all 101 tasks with `--include-candidates
-  --check`; only `greensopenproblems-57-z3-functional` is stale relative to the
-  generator.
-- Ran parallel Modal oracle validation for the five validation-only tasks; all
-  passed with reward `1.0` and zero errors.
+- Fixed theorem-header extraction for internal top-level `let ... := ...` and
+  `letI ... := by ...` binders in theorem result types.
+- Ran repository checks for the promoted set and targeted generator checks for
+  the repaired first-tier candidates.
+- Ran Modal oracle validation for `greensopenproblems-57-z3-functional` and
+  `erdosproblems-331-erdos-331`; both passed with reward `1.0` and zero errors.
+- Reran `arxiv-0911-2077-conjecture6-3-conjecture6-3` after the header fix; it
+  still fails because the bundled oracle was generated for the old truncated
+  target and only proves the internal `letI` witness.
 
 ## Promoted Now
 
@@ -65,6 +69,7 @@ are reproducible from the current generator, and are now marked `included` in
 - `erdosproblems-978-allow-fixed-divisors`
 - `greensopenproblems-57-green-57`
 - `greensopenproblems-57-z3`
+- `greensopenproblems-57-z3-functional`
 - `greensopenproblems-94-green-94-outer-measure`
 - `mathoverflow-10799-mathoverflow-10799`
 - `mathoverflow-486451-exists-semiring-unique-left-right-maximal-ne`
@@ -99,6 +104,7 @@ the project owner accepted a bundle-and-takedown/rewrite policy. They are marked
 - `erdosproblems-189-erdos-189`
 - `erdosproblems-259-erdos-259`
 - `erdosproblems-275-erdos-275`
+- `erdosproblems-331-erdos-331`
 - `erdosproblems-645-erdos-645`
 - `erdosproblems-707-erdos-707`
 - `erdosproblems-897-i`
@@ -137,6 +143,7 @@ tasks and the license-pending tasks above.
 - `erdosproblems-267-specialization-pow-two`
 - `erdosproblems-275-erdos-275`
 - `erdosproblems-316-erdos-316`
+- `erdosproblems-331-erdos-331`
 - `erdosproblems-350-erdos-350`
 - `erdosproblems-370-erdos-370`
 - `erdosproblems-379-erdos-379`
@@ -154,6 +161,7 @@ tasks and the license-pending tasks above.
 - `erdosproblems-978-allow-fixed-divisors`
 - `greensopenproblems-57-green-57`
 - `greensopenproblems-57-z3`
+- `greensopenproblems-57-z3-functional`
 - `greensopenproblems-94-green-94-outer-measure`
 - `mathoverflow-10799-mathoverflow-10799`
 - `mathoverflow-486451-exists-semiring-unique-left-right-maximal-ne`
@@ -179,24 +187,20 @@ tasks and the license-pending tasks above.
 
 ## Small Generator Change
 
-These are close to promotion, but should not be promoted as-is.
-
-- `greensopenproblems-57-z3-functional`: clean Modal pass exists, but the task is
-  hand-patched relative to the generator. Fix theorem-header extraction for
-  `let ... := ...` in result types, regenerate, then rerun Modal.
-- `arxiv-0911-2077-conjecture6-3-conjecture6-3`: oracle is bundled, but Modal
-  reward is `0.0` because generated `Target.lean` is syntactically malformed at
-  an internal `letI ... := by`. Fix manifest/header extraction and rerun.
-- `erdosproblems-331-erdos-331`: oracle is bundled and local proof work was
-  reported as passing, but Modal reward is `0.0` because the header check sees a
-  changed target around an internal `let ... := ...`. Fix the same theorem-type
-  extraction path and rerun.
+No candidates remain in this category after the theorem-header extraction fix.
+`arxiv-0911-2077-conjecture6-3-conjecture6-3` was reclassified under
+substantial changes because its oracle proof is incomplete for the repaired
+target.
 
 ## Substantial Changes
 
 These require a real proof port, dependency decision, target/oracle alignment, or
 substantial generator/source work before promotion.
 
+- `arxiv-0911-2077-conjecture6-3-conjecture6-3`: theorem-header extraction is
+  fixed, but the bundled oracle was generated for the old truncated target and
+  only proves the internal `letI` witness; it needs a real import or port of the
+  Logical Intelligence proof.
 - `arxiv-1308-0994-boxdotconjecture-boxdotconjecture`: proof exists only inside a
   large Lean 4.29 Foundation modal-logic development with incompatible APIs.
 - `arxiv-2602-05192-firstproof6-epsilon-light-subset-exists`: proof depends on
@@ -213,8 +217,8 @@ substantial generator/source work before promotion.
   unavailable Duke theorem hypothesis.
 - `erdosproblems-204-erdos-204`: selected proof is not narrow enough and has
   broad port failures.
-- `erdosproblems-229-erdos-229`: selected proof is large Lean 4.24 code and the
-  generated target is currently malformed by `letI` header extraction.
+- `erdosproblems-229-erdos-229`: selected proof is large Lean 4.24 code that
+  still needs substantial porting after the theorem-header extraction fix.
 - `erdosproblems-258-erdos-258`: proof depends on a `tao_teravainen` axiom.
 - `erdosproblems-26-erdos-26`: selected proof targets the non-thick variant;
   benchmark target requires `IsThick`.
@@ -239,15 +243,14 @@ substantial generator/source work before promotion.
 - `erdosproblems-728-erdos-728`: selected file is a large auxiliary development,
   not a direct proof of the target.
 - `erdosproblems-845-erdos-845`: large Lean 4.24 proof does not compile on the
-  pinned environment and the generated checker is also malformed around an
-  internal `let f := ...`.
+  pinned environment; the theorem-header extraction issue is fixed.
 - `erdosproblems-848-asymptotic`: source proof is very large and timed out or
   became CPU-bound.
 - `erdosproblems-997-erdos-997`: proof depends on a `maynardTaoBFT` axiom.
 - `oeis-357513-a357513-supercongruence`: Lean 4.22 proof has many Lean 4.27
   port errors.
-- `oeis-6697-conjecture`: selected proof is for the wrong theorem and the
-  generated checker is malformed.
+- `oeis-6697-conjecture`: selected proof is for the wrong theorem; the
+  theorem-header extraction issue is fixed.
 - `oeis-87719-a-formula`: frozen prefix contains `sorry`-based data used by the
   target definition.
 - `util-attributes-basic-a-solved-problem-with-formal-proof`: selected URL is a

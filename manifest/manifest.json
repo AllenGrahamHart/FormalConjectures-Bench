@@ -33,7 +33,7 @@
         "url": "https://github.com/logical-intelligence/proofs/blob/0dbb9215f472c532ca8af1376ed58a7ebca6dec2/LI/Conj63.lean#L8845"
       },
       "source_file": "FormalConjectures/Arxiv/0911.2077/Conjecture6_3.lean",
-      "theorem_header": "theorem arxiv.id0911_2077.conjecture6_3\n    (p : ℝ) (h_p : p ∈ Set.Ioo 0 (1 / 2)) (k : ℕ) (hk : 0 < k)\n    (σ : ℝ) (h_σ : σ = (p * (1 - p)).sqrt) :\n    letI hp' : (⟨p, le_of_lt h_p.1⟩ : ℝ≥0) ≤ 1",
+      "theorem_header": "theorem arxiv.id0911_2077.conjecture6_3\n    (p : ℝ) (h_p : p ∈ Set.Ioo 0 (1 / 2)) (k : ℕ) (hk : 0 < k)\n    (σ : ℝ) (h_σ : σ = (p * (1 - p)).sqrt) :\n    letI hp' : (⟨p, le_of_lt h_p.1⟩ : ℝ≥0) ≤ 1 := by\n      have : p ≤ 1 :=  le_trans (le_of_lt (Set.mem_Ioo.mp h_p).right) (by linarith)\n      exact this\n    1 - Φ ((1 / 2 - p) * sqrt (2 * k : ℝ≥0) / σ)\n      + (1 / 2) * ((2 * k).choose k) * σ ^ (2 * k)\n      ≤ ((PMF.binomial (⟨p, le_of_lt h_p.1⟩) hp' (2 * k)).toMeasure\n        (Set.Ici ⟨k, by omega⟩)).toReal",
       "theorem_name": "Arxiv.arxiv.id0911_2077.conjecture6_3",
       "uses_answer_sorry": false
     },
@@ -1169,7 +1169,7 @@
         "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos229.lean"
       },
       "source_file": "FormalConjectures/ErdosProblems/229.lean",
-      "theorem_header": "theorem erdos_229 :\n    letI",
+      "theorem_header": "theorem erdos_229 :\n    letI := Polynomial.algebraPi ℂ ℂ ℂ\n    answer(True) ↔ ∀ (S : ℕ → Set ℂ), (∀ n, derivedSet (S n) = ∅) →\n    ∃ (f : ℂ → ℂ), Transcendental (Polynomial ℂ) f ∧ Differentiable ℂ f ∧ ∀ n ≥ 1,\n      ∃ k, ∀ z ∈ S n, iteratedDeriv k f z = 0",
       "theorem_name": "Erdos229.erdos_229",
       "uses_answer_sorry": false
     },
@@ -1572,7 +1572,7 @@
           "url": "https://github.com/Woett/Lean-files/blob/main/ErdosProblem%23331.lean"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "erdosproblems-331-erdos-331",
       "local_declaration_name": "erdos_331",
       "namespace": [
@@ -2549,7 +2549,7 @@
         "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos845.lean"
       },
       "source_file": "FormalConjectures/ErdosProblems/845.lean",
-      "theorem_header": "theorem erdos_845 :\n    answer(False) ↔\n      ∀ᵉ (C : ℝ) (hC : 0 < C),\n        let f : ℕ × ℕ → ℕ",
+      "theorem_header": "theorem erdos_845 :\n    answer(False) ↔\n      ∀ᵉ (C : ℝ) (hC : 0 < C),\n        let f : ℕ × ℕ → ℕ := fun (k, l) ↦ 2 ^ k * 3 ^ l\n        { ∑ x ∈ B, f x | (B : Finset (ℕ × ℕ)) (h : B.Nonempty)\n          (hB : B.sup f ≤ C * B.inf' h f) }.HasDensity 0",
       "theorem_name": "Erdos845.erdos_845",
       "uses_answer_sorry": false
     },
@@ -2840,7 +2840,7 @@
           "url": "https://github.com/mo271/formal-conjectures/blob/f5afe85e1e02611f63c32ae041b33c67b7938cba/FormalConjectures/GreensOpenProblems/57.lean#L1071"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "greensopenproblems-57-z3-functional",
       "local_declaration_name": "green_57.variants.z3_functional",
       "namespace": [
@@ -2854,7 +2854,7 @@
         "url": "https://github.com/mo271/formal-conjectures/blob/f5afe85e1e02611f63c32ae041b33c67b7938cba/FormalConjectures/GreensOpenProblems/57.lean#L1071"
       },
       "source_file": "FormalConjectures/GreensOpenProblems/57.lean",
-      "theorem_header": "theorem green_57.variants.z3_functional :\n    let a : ZMod 3 → ℂ",
+      "theorem_header": "theorem green_57.variants.z3_functional :\n    let a : ZMod 3 → ℂ := ![(-1 : ℂ), -3, 3]\n    answer(True) ↔\n      supportFn (ZMod 3) a (Φ' (ZMod 3)) < supportFn (ZMod 3) a (Φ (ZMod 3))",
       "theorem_name": "Green57.green_57.variants.z3_functional",
       "uses_answer_sorry": false
     },
@@ -3124,7 +3124,7 @@
         "url": "https://github.com/AxiomMath/gdm-formal-conjectures/blob/main/OeisA6697/solution.lean"
       },
       "source_file": "FormalConjectures/OEIS/6697.lean",
-      "theorem_header": "theorem conjecture (n : ℕ) :\n    a n = coeff (R",
+      "theorem_header": "theorem conjecture (n : ℕ) :\n    a n = coeff (R := ℚ) n\n      ((1 - X)⁻¹ + X * (1 - X)⁻¹ ^ 2 * ((1 - X)⁻¹ - ∑' k, X ^ (2 ^ (k + 1) + k)))",
       "theorem_name": "OeisA6697.conjecture",
       "uses_answer_sorry": false
     },

@@ -131,27 +131,94 @@ def namespace_stack_before(lines: list[str], one_based_line: int) -> list[str]:
     return namespaces
 
 
-def declaration_body_col(line: str) -> int | None:
-    by_match = re.search(r":=\s*by\b", line)
-    if by_match:
-        return by_match.start()
+def starts_with_let_binding(line: str) -> bool:
+    return re.match(r"\s*(?:let|letI)\b", line) is not None
 
-    for match in re.finditer(r":=", line):
-        before = line[: match.start()]
-        if re.search(r"\blet\s+[^:=]*\Z", before):
-            continue
-        return match.start()
-    return None
+
+def leading_spaces(line: str) -> int:
+    return len(line) - len(line.lstrip(" "))
+
+
+def is_by_block_start(line: str, col: int) -> bool:
+    tail = line[col + 2 :].lstrip()
+    return re.match(r"by\b", tail) is not None
+
+
+def declaration_body_location(lines: list[str], declaration_line: int) -> tuple[int, int]:
+    depth = 0
+    block_depth = 0
+    in_string = False
+    escaped = False
+    pending_let_assignment = False
+    skip_by_block_indent: int | None = None
+
+    for idx in range(declaration_line - 1, len(lines)):
+        line = lines[idx]
+        if skip_by_block_indent is not None:
+            stripped = line.strip()
+            if not stripped:
+                continue
+            if leading_spaces(line) > skip_by_block_indent:
+                continue
+            skip_by_block_indent = None
+
+        if depth == 0 and block_depth == 0 and not in_string and starts_with_let_binding(line):
+            pending_let_assignment = True
+
+        i = 0
+        while i < len(line):
+            if in_string:
+                if escaped:
+                    escaped = False
+                elif line[i] == "\\":
+                    escaped = True
+                elif line[i] == '"':
+                    in_string = False
+                i += 1
+                continue
+
+            if block_depth:
+                if line.startswith("-/", i):
+                    block_depth -= 1
+                    i += 2
+                else:
+                    i += 1
+                continue
+
+            if line.startswith("--", i):
+                break
+            if line.startswith("/-", i):
+                block_depth += 1
+                i += 2
+                continue
+            if line[i] == '"':
+                in_string = True
+                escaped = False
+                i += 1
+                continue
+
+            if line.startswith(":=", i) and depth == 0:
+                if pending_let_assignment or starts_with_let_binding(line[:i]):
+                    pending_let_assignment = False
+                    if is_by_block_start(line, i):
+                        skip_by_block_indent = leading_spaces(line)
+                    i += 2
+                    continue
+                return idx, i
+
+            if line[i] in "([{":
+                depth += 1
+            elif line[i] in ")]}" and depth > 0:
+                depth -= 1
+            i += 1
+
+    raise ValueError(f"Could not find ':=' for declaration at line {declaration_line}")
 
 
 def extract_header(lines: list[str], declaration_line: int) -> str:
-    header_lines: list[str] = []
-    for raw in lines[declaration_line - 1 :]:
-        col = declaration_body_col(raw)
-        if col is not None:
-            header_lines.append(raw[:col].rstrip())
-            break
-        header_lines.append(raw.rstrip())
+    header_end_index, body_col = declaration_body_location(lines, declaration_line)
+    header_lines = lines[declaration_line - 1 : header_end_index + 1]
+    header_lines[-1] = header_lines[-1][:body_col].rstrip()
     return "\n".join(header_lines).strip()
 
 
