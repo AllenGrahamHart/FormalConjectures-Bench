@@ -93,11 +93,12 @@ For a pilot candidate, use:
 make check-pilot-generated ONLY=<instance_id>
 ```
 
-The repository currently includes twenty generated tasks with bundled oracle
+The manifest currently includes 51 generated tasks with bundled oracle
 solutions. `tasks/erdosproblems-370-erdos-370` is the initial verifier pilot,
-`tasks/erdosproblems-741-i` is a harder proof-ability probe, and the remaining
-included tasks exercise the same generated verifier across additional Formal
-Conjectures domains.
+and the remaining included tasks exercise the same generated verifier across
+additional Formal Conjectures domains. Candidate task artifacts may also be
+present locally while review is ongoing; `manifest/manifest.json` is the source
+of truth for inclusion.
 
 ## Verification Model
 
