@@ -8,8 +8,8 @@ License and redistribution review are a separate promotion gate.
 ## Summary
 
 - Technically ready now: 60
-- Promoted now after license/provenance gate: 51
-- Technically ready but license-pending: 9
+- Promoted now: 60
+- Promoted with no-explicit-license provenance note: 9
 - Ready after a small change or validation-only pass: 8
 - Needs substantial changes before promotion: 33
 - Total: 101
@@ -26,8 +26,8 @@ Evidence used:
 ## Promoted Now
 
 These tasks have a clean Modal oracle result with reward `1.0`, zero errors,
-are reproducible from the current generator, and have Apache-2.0 Formal
-Conjectures provenance recorded in `manifest/licence_review.csv`.
+are reproducible from the current generator, and are now marked `included` in
+`manifest/manifest.json`.
 
 - `erdosproblems-100-erdos-100-piepmeyer`
 - `erdosproblems-1043-erdos-1043`
@@ -81,12 +81,13 @@ Conjectures provenance recorded in `manifest/licence_review.csv`.
 - `wikipedia-wolstenholmeprime-wolstenholme-prime-16483`
 - `wikipedia-wolstenholmeprime-wolstenholme-theorem`
 
-## Technical-Ready License-Pending
+## Promoted With No Explicit Upstream License
 
-These also have clean Modal oracle results and generator-clean artifacts, but
-their selected proof source currently lacks an explicit license file or is a
-gist. They should not be published as included tasks until license/permission is
-resolved.
+These also have clean Modal oracle results and generator-clean artifacts. Their
+selected proof source currently lacks an explicit license file or is a gist, but
+the project owner accepted a bundle-and-takedown/rewrite policy. They are marked
+`included`, with `licence_status = "no-explicit-license"` in
+`manifest/licence_review.csv`.
 
 - `erdosproblems-1080-erdos-1080`
 - `erdosproblems-189-erdos-189`

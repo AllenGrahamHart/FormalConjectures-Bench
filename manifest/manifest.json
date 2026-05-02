@@ -473,7 +473,7 @@
           "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos1080.lean"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "erdosproblems-1080-erdos-1080",
       "local_declaration_name": "erdos_1080",
       "namespace": [
@@ -1001,7 +1001,7 @@
           "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos189.lean"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "erdosproblems-189-erdos-189",
       "local_declaration_name": "erdos_189",
       "namespace": [
@@ -1266,7 +1266,7 @@
           "url": "https://gist.githubusercontent.com/ster-oc/c7429943f6b3a634797dc8b2a3b01f2d/raw/8c6b5b7f08021f0aed2312542dd2e9ee7beaa6d6/Erdos259.lean"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "erdosproblems-259-erdos-259",
       "local_declaration_name": "erdos_259",
       "namespace": [
@@ -1459,7 +1459,7 @@
           "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos275.lean"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "erdosproblems-275-erdos-275",
       "local_declaration_name": "erdos_275",
       "namespace": [
@@ -2194,7 +2194,7 @@
           "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos645.lean"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "erdosproblems-645-erdos-645",
       "local_declaration_name": "erdos_645",
       "namespace": [
@@ -2306,7 +2306,7 @@
           "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos707.lean"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "erdosproblems-707-erdos-707",
       "local_declaration_name": "erdos_707",
       "namespace": [
@@ -2650,7 +2650,7 @@
           "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos897.lean"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "erdosproblems-897-i",
       "local_declaration_name": "erdos_897.parts.i",
       "namespace": [
@@ -2687,7 +2687,7 @@
           "url": "https://github.com/plby/lean-proofs/blob/main/src/v4.24.0/ErdosProblems/Erdos897.lean"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "erdosproblems-897-ii",
       "local_declaration_name": "erdos_897.parts.ii",
       "namespace": [
@@ -3309,7 +3309,7 @@
           "url": "https://github.com/kim-em/KnuthClaudeLean"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "paper-claudescycles-cube-hamiltonian-arc-decomposition",
       "local_declaration_name": "cube_hamiltonian_arc_decomposition",
       "namespace": [
