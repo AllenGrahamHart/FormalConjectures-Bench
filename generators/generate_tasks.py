@@ -21,6 +21,7 @@ TARGET_MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
 EDITABLE_REL = "FormalConjecturesBench"
 MAX_DIFF_LINES = 200
 EXPECTED_THEOREM_NAME = "formal_conjectures_bench_expected_type"
+ALLOWED_AXIOMS = ["propext", "Classical.choice", "Quot.sound"]
 
 
 class LeanCommentStripper:
@@ -531,7 +532,8 @@ def generate_task(
         "formal_conjectures_commit": source_metadata.get("formal_conjectures_commit", ""),
         "lean_toolchain": source_metadata.get("lean_toolchain", ""),
         "mathlib_commit": source_metadata.get("mathlib_commit", ""),
-        "allowed_axioms_json": json.dumps(["propext", "Classical.choice", "Quot.sound"]),
+        "allowed_axioms_json": json.dumps(ALLOWED_AXIOMS),
+        "allowed_axioms_text": ", ".join(f"`{name}`" for name in ALLOWED_AXIOMS),
         "expected_prefix_sha256": sha256_text(frozen_prefix),
         "expected_header_json": json.dumps(header),
         "expected_theorem_header": renamed_theorem_header(header, EXPECTED_THEOREM_NAME),
