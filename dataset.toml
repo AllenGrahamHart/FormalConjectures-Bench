@@ -5,6 +5,7 @@ schema_version = "1.0"
 
 [dataset]
 name = "formal-conjectures-bench/formal-conjectures-bench"
+version = "1.0.0"
 description = "Lean 4 theorem-proving tasks generated from the formally proved subset of Formal Conjectures."
 authors = [{ name = "Allen Graham Hart" }]
 keywords = ["lean4", "theorem-proving", "formal-mathematics", "harbor"]

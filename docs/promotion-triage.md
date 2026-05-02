@@ -2,8 +2,8 @@
 
 Date: 2026-05-02
 
-This is a technical-readiness triage for the 101 generated candidate tasks.
-License and redistribution review are a separate promotion gate.
+This is the v1.0.0 technical-readiness triage for the 101 generated candidate
+tasks. License and redistribution review are a separate promotion gate.
 
 ## Summary
 
@@ -13,6 +13,10 @@ License and redistribution review are a separate promotion gate.
 - Ready after a small generator change: 0
 - Needs substantial changes before promotion: 30
 - Total: 101
+
+The v1.0.0 release boundary is frozen at the 71 promoted tasks. The remaining
+30 generated candidates are marked as deferred in `manifest/manifest.json` and
+tracked in `docs/remaining-failures-matrix.md`.
 
 Evidence used:
 

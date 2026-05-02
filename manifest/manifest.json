@@ -35,7 +35,10 @@
       "source_file": "FormalConjectures/Arxiv/0911.2077/Conjecture6_3.lean",
       "theorem_header": "theorem arxiv.id0911_2077.conjecture6_3\n    (p : ℝ) (h_p : p ∈ Set.Ioo 0 (1 / 2)) (k : ℕ) (hk : 0 < k)\n    (σ : ℝ) (h_σ : σ = (p * (1 - p)).sqrt) :\n    letI hp' : (⟨p, le_of_lt h_p.1⟩ : ℝ≥0) ≤ 1 := by\n      have : p ≤ 1 :=  le_trans (le_of_lt (Set.mem_Ioo.mp h_p).right) (by linarith)\n      exact this\n    1 - Φ ((1 / 2 - p) * sqrt (2 * k : ℝ≥0) / σ)\n      + (1 / 2) * ((2 * k).choose k) * σ ^ (2 * k)\n      ≤ ((PMF.binomial (⟨p, le_of_lt h_p.1⟩) hp' (2 * k)).toMeasure\n        (Set.Ici ⟨k, by omega⟩)).toReal",
       "theorem_name": "Arxiv.arxiv.id0911_2077.conjecture6_3",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "large proof reduction/import",
+      "v1_0_0_triage_note": "Oracle proves only the old truncated internal letI witness; needs a real import or port of the Logical Intelligence proof for the repaired target."
     },
     {
       "ams_tags": [
@@ -72,7 +75,10 @@
       "source_file": "FormalConjectures/Arxiv/1308.0994/BoxdotConjecture.lean",
       "theorem_header": "theorem BoxdotConjecture (L : NormalModalLogic) (H : ∀ φ, L ⊢ ■ φ ↔ KT ⊢ φ) : L ⊆ KT",
       "theorem_name": "Arxiv.BoxdotConjecture",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "external dependency decision",
+      "v1_0_0_triage_note": "Proof exists only inside a large Lean 4.29 Foundation modal-logic development; deferred unless a new pinned dependency is accepted."
     },
     {
       "ams_tags": [
@@ -109,7 +115,10 @@
       "source_file": "FormalConjectures/Arxiv/2602.05192/FirstProof6.lean",
       "theorem_header": "theorem epsilon_light_subset_exists : answer(True) ↔\n    ∃ (c : ℝ), c > 0 ∧ ∀ (n : ℕ) (G : SimpleGraph (Fin n)) (ε : ℝ),\n    0 < ε → ε < 1 →\n    ∃ (S : Finset (Fin n)), IsEpsilonLight G ε S ∧ (S.card : ℝ) ≥ c * ε * n",
       "theorem_name": "Arxiv.epsilon_light_subset_exists",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "large proof reduction/import",
+      "v1_0_0_triage_note": "Proof depends on multiple upstream auxiliary files and the bridge to the generated target is incomplete."
     },
     {
       "ams_tags": [
@@ -341,7 +350,10 @@
       "source_file": "FormalConjectures/ErdosProblems/1067.lean",
       "theorem_header": "theorem erdos_1067 :\n    answer(False) ↔ ∀ (V : Type) (G : SimpleGraph V), G.chromaticCardinal = ℵ_ 1 →\n      ∃ (H : G.Subgraph), H.coe.chromaticCardinal = ℵ_ 1 ∧ InfinitelyConnected H.coe",
       "theorem_name": "Erdos1067.erdos_1067",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "statement alignment/bridge",
+      "v1_0_0_triage_note": "Source proof ports after a small API repair but proves a different graph/connectivity formulation; needs substantial bridge lemmas."
     },
     {
       "ams_tags": [
@@ -378,7 +390,10 @@
       "source_file": "FormalConjectures/ErdosProblems/1071.lean",
       "theorem_header": "theorem erdos_1071.parts.i :\n    answer(True) ↔ ∃ S : Finset (ℝ² × ℝ²),\n      Maximal (fun T : Finset (ℝ² × ℝ²) =>\n        (∀ seg ∈ T, dist seg.1 seg.2 = 1 ∧\n          seg.1 0 ∈ Icc 0 1 ∧ seg.1 1 ∈ Icc 0 1 ∧\n          seg.2 0 ∈ Icc 0 1 ∧ seg.2 1 ∈ Icc 0 1) ∧\n          (T : Set (ℝ² × ℝ²)).Pairwise SegmentsDisjoint) S",
       "theorem_name": "Erdos1071.erdos_1071.parts.i",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "wrong proof source/non-implication",
+      "v1_0_0_triage_note": "Selected source proves a countably infinite set-based maximal collection, not the finite Finset target."
     },
     {
       "ams_tags": [
@@ -567,7 +582,10 @@
       "source_file": "FormalConjectures/ErdosProblems/1141.lean",
       "theorem_header": "theorem erdos_1141 :\n    answer(False) ↔ Infinite { n | Erdos1141Prop n }",
       "theorem_name": "Erdos1141.erdos_1141",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "axiom/unavailable theorem",
+      "v1_0_0_triage_note": "Proof depends on extra unproved axioms."
     },
     {
       "ams_tags": [
@@ -604,7 +622,10 @@
       "source_file": "FormalConjectures/ErdosProblems/1148.lean",
       "theorem_header": "theorem erdos_1148 : answer(True) ↔ ∀ᶠ n in atTop, Erdos1148Prop n",
       "theorem_name": "Erdos1148.erdos_1148",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "axiom/unavailable theorem",
+      "v1_0_0_triage_note": "Selected Lean-live proof requires an unavailable Duke theorem hypothesis."
     },
     {
       "ams_tags": [
@@ -1134,7 +1155,10 @@
       "source_file": "FormalConjectures/ErdosProblems/204.lean",
       "theorem_header": "theorem erdos_204 : answer(False) ↔ ∃ (n : ℕ) (a : ℕ → ℤ),\n    let D := {d : ℕ | d ∣ n ∧ d > 1}\n    (∀ x : ℤ, ∃ d ∈ D, x ≡ a d [ZMOD d]) ∧\n    (∀ d ∈ D, ∀ d' ∈ D, d ≠ d' → (∃ x : ℤ, x ≡ a d [ZMOD d] ∧ x ≡ a d' [ZMOD d']) →\n      Nat.gcd d d' = 1)",
       "theorem_name": "Erdos204.erdos_204",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "large proof reduction/import",
+      "v1_0_0_triage_note": "Selected proof is not narrow enough and has broad port failures; needs dependency slicing."
     },
     {
       "ams_tags": [
@@ -1245,7 +1269,10 @@
       "source_file": "FormalConjectures/ErdosProblems/258.lean",
       "theorem_header": "theorem erdos_258 : answer(True) ↔ ∀ (a : ℕ → ℕ), (∀ n, a n ≠ 0) →\n    Filter.Tendsto a Filter.atTop Filter.atTop →\n    Irrational (∑' (n : ℕ), ((n + 1).divisors.card / ∏ i ∈ Finset.Icc 1 n, a i))",
       "theorem_name": "Erdos258.erdos_258",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "axiom/unavailable theorem",
+      "v1_0_0_triage_note": "Proof depends on a tao_teravainen axiom."
     },
     {
       "ams_tags": [
@@ -1517,7 +1544,10 @@
       "source_file": "FormalConjectures/ErdosProblems/303.lean",
       "theorem_header": "theorem erdos_303 :\n    answer(True) ↔\n    -- For any finite colouring of the integers\n    ∀ (𝓒 : ℤ → ℤ), (Set.range 𝓒).Finite →\n      -- There exists integers `a, b, c`\n      ∃ (a b c : ℤ),\n      -- that are non-zero and distinct.\n      [a, b, c, 0].Nodup ∧\n      -- `a, b, c` satisfy the equation\n      (1/a : ℝ) = 1/b + 1/c ∧\n      -- `a, b, c` have the same color\n      (𝓒 '' {a, b, c}).Subsingleton",
       "theorem_name": "Erdos303.erdos_303",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "Lean API/proof port",
+      "v1_0_0_triage_note": "Decoded Lean 4.22 forum proof has broad field_simp, ring, list-sorting, and Ramsey finite-index failures."
     },
     {
       "ams_tags": [
@@ -1629,7 +1659,10 @@
       "source_file": "FormalConjectures/ErdosProblems/347.lean",
       "theorem_header": "theorem erdos_347 :\n    answer(True) ↔ ∃ a : ℕ → ℕ, (Monotone a) ∧\n      (Tendsto (fun n ↦ (a (n + 1) : ℝ) / (a n : ℝ)) atTop (𝓝 2)) ∧\n      (∀ ι : ℕ → ℕ, (range ι)ᶜ.Finite → HasDensity (𝓟 (range (a ∘ ι))) 1)",
       "theorem_name": "Erdos347.erdos_347",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "Lean API/proof port",
+      "v1_0_0_triage_note": "Source proves a nearby answer_is_yes theorem and also has missing List.get! plus broad generated-proof failures."
     },
     {
       "ams_tags": [
@@ -1835,7 +1868,10 @@
       "source_file": "FormalConjectures/ErdosProblems/392.lean",
       "theorem_header": "theorem erdos_392 (A : ℕ → ℕ) (h : ∀ n > 0,\n    IsLeast { t + 1 | (t) (_ : ∃ a : Fin (t + 1) → ℕ, (n)! = ∏ i, a i ∧\n      Monotone a ∧ a (Fin.last t) ≤ n ^ 2) } (A n)) :\n    ((fun (n : ℕ) => (A n - n / 2 + n / (2 * Real.log n) : ℝ)) =o[atTop] fun n => n / Real.log n)",
       "theorem_name": "Erdos392.erdos_392",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "external dependency decision",
+      "v1_0_0_triage_note": "Proof needs missing Lean 4.28 PrimeNumberTheoremAnd project dependencies."
     },
     {
       "ams_tags": [
@@ -1954,7 +1990,10 @@
       "source_file": "FormalConjectures/ErdosProblems/418.lean",
       "theorem_header": "theorem erdos_418 : answer(True) ↔ { (n - n.totient : ℕ) | n }ᶜ.Infinite",
       "theorem_name": "Erdos418.erdos_418",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "verifier-rule conflict",
+      "v1_0_0_triage_note": "Proof uses banned/native computation patterns and has API drift."
     },
     {
       "ams_tags": [
@@ -1991,7 +2030,10 @@
       "source_file": "FormalConjectures/ErdosProblems/427.lean",
       "theorem_header": "theorem erdos_427 : answer(True) ↔ erdos427",
       "theorem_name": "Erdos427.erdos_427",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "axiom/unavailable theorem",
+      "v1_0_0_triage_note": "Proof depends on an unproved Shiu theorem."
     },
     {
       "ams_tags": [
@@ -2065,7 +2107,10 @@
       "source_file": "FormalConjectures/ErdosProblems/434.lean",
       "theorem_header": "theorem erdos_434.parts.ii : answer(True) ↔ ∀ᵉ (n ≥ 1) (k ≥ 1), k ≤ n →\n    IsGreatest\n      { Nat.NcardUnrepresentable S | (S : Finset ℕ) (_ : S ⊆ Finset.Icc 1 n)\n        (_ : #S = k) (_ : S.gcd id = 1)}\n      (Nat.NcardUnrepresentable <| Set.Icc (n - k + 1 : ℕ) n)",
       "theorem_name": "Erdos434.erdos_434.parts.ii",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "axiom/unavailable theorem",
+      "v1_0_0_triage_note": "Proof depends on an axiom for theorem 2."
     },
     {
       "ams_tags": [
@@ -2102,7 +2147,10 @@
       "source_file": "FormalConjectures/ErdosProblems/457.lean",
       "theorem_header": "theorem erdos_457 : answer(True) ↔ ∃ ε > (0 : ℝ),\n    { (n : ℕ) | ∀ (p : ℕ), p ≤ (2 + ε) * Real.log n → p.Prime →\n      p ∣ ∏ i ∈ Finset.Icc 1 ⌊Real.log n⌋₊, (n + i) }.Infinite",
       "theorem_name": "Erdos457.erdos_457",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "large proof reduction/import",
+      "v1_0_0_triage_note": "Proof crashes in an asymptotic block; needs target dependency slicing."
     },
     {
       "ams_tags": [
@@ -2139,7 +2187,10 @@
       "source_file": "FormalConjectures/ErdosProblems/541.lean",
       "theorem_header": "theorem erdos_541 : answer(True) ↔ (∀ p, Fact p.Prime → ∀ (a : Fin p → ZMod p),\n    (∃ r, ∀ (S : Finset (Fin p)), S ≠ ∅ → ∑ i ∈ S, a i = 0 → S.card = r) →\n      (Set.range a).ncard ≤ 2)",
       "theorem_name": "Erdos541.erdos_541",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "Lean API/proof port",
+      "v1_0_0_triage_note": "First compile shows many independent generated proof-script, typeclass, and natural-order failures."
     },
     {
       "ams_tags": [
@@ -2176,7 +2227,10 @@
       "source_file": "FormalConjectures/ErdosProblems/56.lean",
       "theorem_header": "theorem erdos_56 : answer(False) ↔ ∀ᵉ (k > 0) (N ≥ (k-1).nth Nat.Prime),\n    (MaxWeaklyDivisible N k = (FirstPrimesMultiples N k).card)",
       "theorem_name": "Erdos56.erdos_56",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "Lean API/proof port",
+      "v1_0_0_triage_note": "Source contains many exact? holes and pinned Lean crashes in Mathlib.Meta.NormNum deep recursion."
     },
     {
       "ams_tags": [
@@ -2251,7 +2305,10 @@
       "source_file": "FormalConjectures/ErdosProblems/659.lean",
       "theorem_header": "theorem erdos_659 : answer(True) ↔ ∃ A : ℕ → Finset ℝ²,\n   (∀ n, #(A n) = n ∧ ∀ S ⊆ A n, #S = 4 → 3 ≤ distinctDistances S) ∧\n    (fun n ↦ distinctDistances (A n)) ≪ fun n ↦ n / sqrt (log n)",
       "theorem_name": "Erdos659.erdos_659",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "axiom/unavailable theorem",
+      "v1_0_0_triage_note": "Proof uses a custom bernays axiom."
     },
     {
       "ams_tags": [
@@ -2288,7 +2345,10 @@
       "source_file": "FormalConjectures/ErdosProblems/678.lean",
       "theorem_header": "theorem erdos_678 : answer(True) ↔\n    ∀ᶠ k in atTop, {(m, n) | n + k ≤ m ∧ lcmInterval m (k + 1) < lcmInterval n k}.Infinite",
       "theorem_name": "Erdos678.erdos_678",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "wrong answer/polarity mismatch",
+      "v1_0_0_triage_note": "Verifier-clean source proves the negation of the generated target; positive variant depends on an axiom."
     },
     {
       "ams_tags": [
@@ -2363,7 +2423,10 @@
       "source_file": "FormalConjectures/ErdosProblems/728.lean",
       "theorem_header": "theorem erdos_728 :\n    answer(True) ↔\n      ∀ᶠ ε : ℝ in 𝓝[>] 0, ∀ C > (0 : ℝ), ∀ C' > C,\n        ∃ a b n : ℕ,\n          0 < n ∧\n          ε * n < a ∧\n          ε * n < b ∧\n          a ! * b ! ∣ n ! * (a + b - n)! ∧\n          a + b > n + C * log n ∧\n          a + b < n + C' * log n",
       "theorem_name": "Erdos728.erdos_728",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "large proof reduction/import",
+      "v1_0_0_triage_note": "Selected file is a large auxiliary development, not a direct target proof."
     },
     {
       "ams_tags": [
@@ -2555,7 +2618,10 @@
       "source_file": "FormalConjectures/ErdosProblems/845.lean",
       "theorem_header": "theorem erdos_845 :\n    answer(False) ↔\n      ∀ᵉ (C : ℝ) (hC : 0 < C),\n        let f : ℕ × ℕ → ℕ := fun (k, l) ↦ 2 ^ k * 3 ^ l\n        { ∑ x ∈ B, f x | (B : Finset (ℕ × ℕ)) (h : B.Nonempty)\n          (hB : B.sup f ≤ C * B.inf' h f) }.HasDensity 0",
       "theorem_name": "Erdos845.erdos_845",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "Lean API/proof port",
+      "v1_0_0_triage_note": "Direct compile has broad generated-proof failures and leaves the final theorem depending on sorryAx."
     },
     {
       "ams_tags": [
@@ -2633,7 +2699,10 @@
       "source_file": "FormalConjectures/ErdosProblems/848.lean",
       "theorem_header": "theorem erdos_848.variants.asymptotic : ∀ᶠ N in Filter.atTop, Erdos848For N",
       "theorem_name": "Erdos848.erdos_848.variants.asymptotic",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "large proof reduction/import",
+      "v1_0_0_triage_note": "Source proof is very large and timed out or became CPU-bound."
     },
     {
       "ams_tags": [
@@ -2822,7 +2891,10 @@
       "source_file": "FormalConjectures/ErdosProblems/997.lean",
       "theorem_header": "theorem erdos_997 :\n    answer(True) ↔\n      ∀ α : ℝ, ¬ IsWellDistributed (fun n ↦ Int.fract (α * (n.nth Nat.Prime)))",
       "theorem_name": "Erdos997.erdos_997",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "axiom/unavailable theorem",
+      "v1_0_0_triage_note": "Proof depends on a maynardTaoBFT axiom."
     },
     {
       "ams_tags": [
@@ -3093,7 +3165,10 @@
       "source_file": "FormalConjectures/OEIS/357513.lean",
       "theorem_header": "theorem a357513_supercongruence (p : ℕ) (hp : Nat.Prime p) (h_ge3 : p ≥ 3) (h_neq7 : p ≠ 7) :\n    (a (p - 1) : ℤ) ≡ 0 [ZMOD (p : ℤ) ^ 4]",
       "theorem_name": "OeisA357513.a357513_supercongruence",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "Lean API/proof port",
+      "v1_0_0_triage_note": "Short proof source exists but fails on Lean 4.22 syntax/API drift and brittle arithmetic proof steps."
     },
     {
       "ams_tags": [
@@ -3130,7 +3205,10 @@
       "source_file": "FormalConjectures/OEIS/6697.lean",
       "theorem_header": "theorem conjecture (n : ℕ) :\n    a n = coeff (R := ℚ) n\n      ((1 - X)⁻¹ + X * (1 - X)⁻¹ ^ 2 * ((1 - X)⁻¹ - ∑' k, X ^ (2 ^ (k + 1) + k)))",
       "theorem_name": "OeisA6697.conjecture",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "wrong proof source/non-implication",
+      "v1_0_0_triage_note": "Selected proof targets a formula-defined sequence; missing bridge from actual subword-complexity definition."
     },
     {
       "ams_tags": [
@@ -3167,7 +3245,10 @@
       "source_file": "FormalConjectures/OEIS/87719.lean",
       "theorem_header": "theorem a_formula {n : ℕ} (hn : n ≥ 1) : a n = 3 ^ n + 3 * 2 ^ n + 6",
       "theorem_name": "OeisA87719.a_formula",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "source/generated target contains sorry dependency",
+      "v1_0_0_triage_note": "Frozen prefix contains sorry-based data used by the target definition."
     },
     {
       "ams_tags": [
@@ -3710,7 +3791,10 @@
       "source_file": "FormalConjectures/Util/Attributes/Basic.lean",
       "theorem_header": "theorem imo_2024_p6\n    (IsAquaesulian : (ℚ → ℚ) → Prop)\n    (IsAquaesulian_def : ∀ f, IsAquaesulian f ↔\n      ∀ x y, f (x + f y) = f x + y ∨ f (f x + y) = x + f y) :\n    IsLeast {(c : ℤ) | ∀ f, IsAquaesulian f → {(f r + f (-r)) | (r : ℚ)}.Finite ∧\n      {(f r + f (-r)) | (r : ℚ)}.ncard ≤ c} 2",
       "theorem_name": "imo_2024_p6",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "missing or placeholder proof source",
+      "v1_0_0_triage_note": "Selected URL is the literal string link."
     },
     {
       "ams_tags": [],
@@ -3740,7 +3824,10 @@
       "source_file": "FormalConjectures/Util/Attributes/Basic.lean",
       "theorem_header": "theorem imo_2024_p6\n    (IsAquaesulian : (ℚ → ℚ) → Prop)\n    (IsAquaesulian_def : ∀ f, IsAquaesulian f ↔\n      ∀ x y, f (x + f y) = f x + y ∨ f (f x + y) = x + f y) :\n    IsLeast {(c : ℤ) | ∀ f, IsAquaesulian f → {(f r + f (-r)) | (r : ℚ)}.Finite ∧\n      {(f r + f (-r)) | (r : ℚ)}.ncard ≤ c} 2",
       "theorem_name": "imo_2024_p6",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "missing or placeholder proof source",
+      "v1_0_0_triage_note": "Selected URL is the literal string link."
     },
     {
       "ams_tags": [],
@@ -3773,7 +3860,10 @@
       "source_file": "FormalConjectures/Util/Attributes/Basic.lean",
       "theorem_header": "theorem a_solved_problem_with_formal_proof : ...",
       "theorem_name": "a_solved_problem_with_formal_proof",
-      "uses_answer_sorry": false
+      "uses_answer_sorry": false,
+      "v1_0_0_status": "deferred",
+      "v1_0_0_triage_bucket": "missing or placeholder proof source",
+      "v1_0_0_triage_note": "Selected URL is a placeholder proof link."
     },
     {
       "ams_tags": [
@@ -4043,5 +4133,13 @@
     "lean_toolchain": "leanprover/lean4:v4.27.0",
     "mathlib_commit": "a3a10db0e9d66acbebf76c5e6a135066525ac900",
     "mathlib_input_rev": "v4.27.0"
+  },
+  "release": {
+    "current_version": "1.0.0",
+    "released_at": "2026-05-02",
+    "included_count": 71,
+    "deferred_count": 30,
+    "source_excluded_count": 5,
+    "policy": "v1.0.0 includes only tasks with bundled local verifier-clean oracles; remaining candidates are explicitly deferred for later repair."
   }
 }

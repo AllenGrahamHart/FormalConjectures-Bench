@@ -2,10 +2,14 @@
 
 Date: 2026-05-02
 
-This matrix tracks the 30 remaining candidates after 71 of the 101 generated
-candidate tasks were promoted. The goal is to separate promising repair work
-from cases that are blocked by missing proofs, unjustified axioms, or dependency
-decisions.
+This matrix tracks the 30 generated candidates deferred from the v1.0.0 release
+after 71 of the 101 generated candidate tasks were promoted. The goal is to
+separate promising repair work from cases that are blocked by missing proofs,
+unjustified axioms, or dependency decisions.
+
+These 30 entries remain `candidate` in `manifest/manifest.json` for future work,
+but are marked with `v1_0_0_status = "deferred"` and are not part of the
+v1.0.0 benchmark.
 
 Potential upstream Formal Conjectures feedback is tracked separately in
 `docs/upstream-feedback-notes.md`.

@@ -43,7 +43,7 @@ should be removed or pinned before a paper-grade release.
 
 ## Future Archival Hardening
 
-Before freezing a public benchmark release:
+Before freezing a paper-grade archival release:
 
 1. Publish the base image to an immutable registry location, preferably GHCR.
 2. Reference the base image by OCI digest in generated task Dockerfiles.
@@ -60,6 +60,6 @@ Before freezing a public benchmark release:
 8. Attach a source tarball plus base-image digest, and optionally an OCI image
    archive, to the release.
 
-Do this after the task list and verifier template are stable. Until then, keep
-the lightweight checks strict enough that included tasks cannot depend on live
-proof URLs or unbundled oracle files.
+Do this after the v1.0.0 task list and verifier template have had more external
+exercise. Until then, keep the lightweight checks strict enough that included
+tasks cannot depend on live proof URLs or unbundled oracle files.
