@@ -39,9 +39,9 @@ if $D$ is even, then $(D + 2)^2 \cdot i(G) \leq (D^2 + 4) \cdot n$.
 def formal_conjectures_bench_statement : Prop :=
   ∀ {V : Type*} [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj] (hIso : 0 < G.minDegree) (hEven : Even G.maxDegree),
     let D := G.maxDegree
-        let i := G.indepDominationNumber
-        let n := Fintype.card V
-        (D + 2)^2 * i ≤ (D^2 + 4) * n
+    let i := G.indepDominationNumber
+    let n := Fintype.card V
+    (D + 2)^2 * i ≤ (D^2 + 4) * n
 
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :

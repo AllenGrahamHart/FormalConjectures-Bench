@@ -259,7 +259,31 @@ def renamed_theorem_header(header: str, new_name: str) -> str:
 def theorem_binders_and_result(header: str) -> tuple[str, str]:
     _, rest = split_theorem_header(header)
     colon = top_level_type_colon(rest)
-    return rest[:colon].strip(), rest[colon + 1 :].strip()
+    return rest[:colon].strip(), normalize_result_layout(rest[colon + 1 :].strip())
+
+
+def normalize_result_layout(result: str) -> str:
+    lines = result.splitlines()
+    if len(lines) <= 1 or not starts_with_let_binding(lines[0]):
+        return result
+
+    body_indents = [leading_spaces(line) for line in lines[1:] if line.strip()]
+    if not body_indents:
+        return result
+
+    shift = min(body_indents)
+    if shift == 0:
+        return result
+
+    normalized = [lines[0]]
+    for line in lines[1:]:
+        if not line.strip():
+            normalized.append(line)
+        elif leading_spaces(line) >= shift:
+            normalized.append(line[shift:])
+        else:
+            normalized.append(line.lstrip(" "))
+    return "\n".join(normalized)
 
 
 def indent_block(text: str, spaces: int) -> list[str]:

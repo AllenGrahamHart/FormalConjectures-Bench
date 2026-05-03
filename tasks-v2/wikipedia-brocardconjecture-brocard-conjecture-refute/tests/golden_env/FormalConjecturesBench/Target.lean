@@ -39,8 +39,8 @@ there are at least four prime numbers.
 def formal_conjectures_bench_statement : Prop :=
   ∀ (n : ℕ) (hn : 1 ≤ n),
     letI prev := n.nth Nat.Prime;
-        letI next := (n+1).nth Nat.Prime;
-        4 ≤ ((Ioo (prev^2) (next^2)).filter Nat.Prime).card
+    letI next := (n+1).nth Nat.Prime;
+    4 ≤ ((Ioo (prev^2) (next^2)).filter Nat.Prime).card
 
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :

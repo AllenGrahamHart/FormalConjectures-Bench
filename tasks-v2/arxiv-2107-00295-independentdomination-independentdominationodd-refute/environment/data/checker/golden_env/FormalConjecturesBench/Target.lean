@@ -52,9 +52,9 @@ if $D$ is odd, then $(D + 1)(D + 3) \cdot i(G) \leq (D^2 + 3) \cdot n$.
 def formal_conjectures_bench_statement : Prop :=
   ∀ {V : Type*} [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj] (hIso : 0 < G.minDegree) (hOdd : Odd G.maxDegree),
     let D := G.maxDegree
-        let i := G.indepDominationNumber
-        let n := Fintype.card V
-        (D + 1) * (D + 3) * i ≤ (D^2 + 3) * n
+    let i := G.indepDominationNumber
+    let n := Fintype.card V
+    (D + 1) * (D + 3) * i ≤ (D^2 + 3) * n
 
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :

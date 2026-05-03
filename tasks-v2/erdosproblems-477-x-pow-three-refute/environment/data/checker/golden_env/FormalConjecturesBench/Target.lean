@@ -70,7 +70,7 @@ Probably there is no such $A$ for the polynomial $X^3$.
 
 def formal_conjectures_bench_statement : Prop :=
   letI f := X ^ 3
-      ∀ A : Set ℤ, ∃ z, ¬ ∃! a ∈ A ×ˢ (f.eval '' {n | 0 < n}), z = a.1 + a.2
+  ∀ A : Set ℤ, ∃ z, ¬ ∃! a ∈ A ×ˢ (f.eval '' {n | 0 < n}), z = a.1 + a.2
 
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
