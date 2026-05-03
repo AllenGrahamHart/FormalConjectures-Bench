@@ -235,7 +235,7 @@ def required_closers(lines: Iterable[str]) -> list[str]:
 
 def declaration_header_match(header: str) -> re.Match[str]:
     match = re.match(
-        r"^(\s*(?:(?:noncomputable|private|protected)\s+)*(?:theorem|lemma)\s+)(\S+)(.*)\Z",
+        r"^(\s*(?:(?:noncomputable|private|protected)\s+)*(?:theorem|lemma)\s+)([^\s:{(\[]+)(.*)\Z",
         header,
         flags=re.S,
     )

@@ -15,10 +15,10 @@ open SimpleGraph
 
 namespace Erdos705
 
-theorem formal_conjectures_bench_expected_type
+theorem formal_conjectures_bench_expected_type:
   answer(False) ↔ ∃ k, ∀ V : Set ℝ², V.Finite →
     (UnitDistancePlaneGraph V).girth ≥ k → (UnitDistancePlaneGraph V).chromaticNumber ≤ 3 := by
-  exact Erdos705.erdos_705 False
+  exact Erdos705.erdos_705
 
 end Erdos705
 
