@@ -1,65 +1,80 @@
 # FormalConjectures-Bench
 
-FormalConjectures-Bench is a Harbor benchmark of Lean 4 theorem-proving tasks
-derived from the formally proved subset of Google DeepMind's Formal
-Conjectures project.
+FormalConjectures-Bench is a Harbor-native benchmark of Lean 4 theorem-proving
+tasks derived from Google DeepMind's Formal Conjectures project.
 
-Version `1.0.0` freezes a conservative set of 71 tasks. Each included task has
-a static Harbor task directory under `tasks/`, a bundled local oracle under
-`oracles/`, and a generated verifier that checks the submitted Lean proof in a
-hidden golden project.
+The current `main` branch has two checked-in task roots:
 
-This repository is Harbor-native. It is not a Terminal-Bench 3.0 fork, although
-the verifier design borrows hardening lessons from Terminal-Bench task review.
+- `tasks/`: 72 gold-solution tasks with bundled local Lean oracles. These run
+  with internet access disabled.
+- `tasks-v2/`: 1,448 non-gold tasks without bundled oracles. These run with
+  internet access enabled so agents can use external literature while trying to
+  produce new Lean proofs.
+
+The combined v2 manifest records 1,520 task instances: the 72 gold instances are
+emitted under `tasks/`, and the remaining 1,448 instances are emitted under
+`tasks-v2/`.
 
 ## Benchmark Card
 
 | Field | Value |
 | --- | --- |
-| Version | `1.0.0` |
-| Release date | 2026-05-02 |
-| Included tasks | 71 |
-| Reviewed candidate pool | 101 generated candidates; 30 deferred for later repair |
-| Upstream extraction exclusions | 5 entries excluded before task generation |
+| Current task instances | 1,520 |
+| Gold task root | `tasks/` |
+| Gold tasks | 72 |
+| Non-gold v2 task root | `tasks-v2/` |
+| Non-gold v2 tasks | 1,448 |
+| V2 batch manifests | `manifest/v2_batches/batch-001.json` through `batch-015.json` |
 | Language | Lean 4 |
 | Lean toolchain | `leanprover/lean4:v4.27.0` |
 | Mathlib | `v4.27.0`, commit `a3a10db0e9d66acbebf76c5e6a135066525ac900` |
 | Formal Conjectures commit | `233a10e857ef78e79fd9fe661d37db724089170a` |
-| Runtime internet | Disabled in generated task metadata |
-| Oracle policy | Included tasks use committed local oracle files; proof URLs are provenance only |
 | Verifier policy | Hidden golden project, theorem-header lock, banned escape hatches, axiom audit, and `sorry` canary |
 
-Included tasks cover:
+## Task Buckets
 
-| Source area | Tasks |
-| --- | ---: |
-| `ErdosProblems` | 46 |
-| `Paper` | 11 |
-| `Wikipedia` | 6 |
-| `GreensOpenProblems` | 4 |
-| `Mathoverflow` | 2 |
-| `OpenQuantumProblems` | 2 |
+| Bucket | Count | Task root | Internet | Oracle |
+| --- | ---: | --- | --- | --- |
+| `gold_solution` | 72 | `tasks/` | Off | Bundled local oracle |
+| `informal_proof` | 723 | `tasks-v2/` | On | None |
+| `deferred_formal_candidate` | 29 | `tasks-v2/` | On | None |
+| `open_problem` | 696 | `tasks-v2/` | On | None |
 
-See [docs/benchmark-card.md](docs/benchmark-card.md) for the same release card
-with notes on the v1 boundary.
+The `open_problem` bucket consists of 348 prove/refute pairs. Each pair has one
+task asking for the original Formal Conjectures statement and one task asking
+for the formal negation of the frozen statement. Pair metadata lives in
+`manifest/v2_open_pairs.json`; benchmark-level scoring should count a pair as
+passed if at least one side passes and should flag any pair where both sides
+pass.
+
+The `deferred_formal_candidate` bucket contains the old deferred candidates from
+the gold-task repair pass. For v2 benchmark purposes they are treated as
+non-gold, internet-enabled tasks with no bundled oracle.
 
 ## Repository Layout
 
-- `manifest/manifest.json` is the source of truth for task inclusion.
-- `oracles/<instance_id>/` stores bundled canonical Lean oracle files for
-  included tasks.
+- `manifest/manifest.json` is the source of truth for the 72 gold tasks emitted
+  under `tasks/`.
+- `manifest/v2_candidates.json` records all 1,520 v2 instances and their
+  benchmark buckets.
+- `manifest/v2_batches/` records deterministic batches used to generate
+  `tasks-v2/`.
+- `manifest/v2_open_pairs.json` records open-problem prove/refute pair
+  metadata.
+- `oracles/<instance_id>/` stores bundled canonical Lean oracle files for gold
+  tasks.
 - `generators/generate_tasks.py` renders Harbor task directories from the
-  manifest, templates, and oracle files.
-- `tasks/<instance_id>/` contains generated Harbor tasks. Treat these as build
-  artifacts and do not hand-edit them.
-- `docs/remaining-failures-matrix.md` records why the remaining 30 generated
-  candidates are deferred from v1.0.0.
-- `docs/reproducibility.md` records the current reproducibility invariants and
-  remaining archival-hardening work.
+  manifests, templates, and oracle files.
+- `tasks/<instance_id>/` and `tasks-v2/<instance_id>/` contain generated Harbor
+  tasks. Treat these as build artifacts and do not hand-edit them.
+- `docs/benchmark-card.md` records the original v1.0.0 release card. This
+  README describes the current `main` branch after the v2 expansion.
+- `docs/remaining-failures-matrix.md` records the old deferred-candidate repair
+  notes from the v1 gold-task pass.
 
-## Checking The Release
+## Checking
 
-The lightweight release checks are:
+The gold-task checks are:
 
 ```bash
 make check
@@ -68,18 +83,31 @@ make check
 This validates that:
 
 - `manifest/manifest.json` is valid JSON;
-- every included task has bundled local oracle files;
+- every included gold task has bundled local oracle files;
 - bundled oracle metadata records redistribution as local/bundled;
 - generated `solution/` files match `oracles/`;
 - generated task metadata records the pinned Lean/FormalConjectures/Mathlib
   versions; and
-- checked-in included tasks match the generator output.
+- checked-in gold tasks match the generator output.
 
-For the individual checks:
+To check one v2 batch:
 
 ```bash
-make check-oracles
-make check-generated
+make check-v2-batch V2_BATCH=batch-015
+```
+
+To smoke-test a small Lean sample from one v2 batch:
+
+```bash
+make smoke-v2-batch V2_BATCH=batch-015 V2_LEAN_SMOKE=10
+```
+
+To check every v2 batch:
+
+```bash
+for batch in manifest/v2_batches/batch-*.json; do
+  make check-v2-batch V2_BATCH="$(basename "$batch" .json)"
+done
 ```
 
 ## Regenerating Tasks
@@ -92,33 +120,51 @@ git clone https://github.com/google-deepmind/formal-conjectures.git .cache/forma
 git -C .cache/formal-conjectures checkout 233a10e857ef78e79fd9fe661d37db724089170a
 ```
 
-Then regenerate the included task set:
+Regenerate the gold task set:
 
 ```bash
 make generate
 ```
 
-For exploratory work on a deferred candidate, pass
-`--include-candidates --only <instance_id>` through the pilot Make targets:
+Regenerate the v2 candidate manifest and batch manifests:
+
+```bash
+make v2-candidates V2_BATCH_SIZE=100
+```
+
+Regenerate a v2 batch:
+
+```bash
+make generate-v2-batch V2_BATCH=batch-015
+```
+
+For exploratory work on a gold candidate, pass `--include-candidates --only
+<instance_id>` through the pilot Make targets:
 
 ```bash
 make generate-pilot ONLY=<instance_id>
 make check-pilot-generated ONLY=<instance_id>
 ```
 
-Pilot-generated candidate artifacts are not part of the v1.0.0 release unless
-the manifest entry is promoted to `included` and bundled oracle files are added.
+Pilot-generated artifacts are not part of the tracked benchmark unless the
+manifest entry is promoted and the generated task directory is committed.
 
 ## Running With Harbor
 
-Harbor can consume the checked-in task directory as a local dataset path:
+Run the offline gold bucket:
 
 ```bash
 harbor run -p tasks
 ```
 
-Use Harbor's usual agent/model flags to choose the solver. On a clean checkout
-of tag `v1.0.0`, `tasks/` contains only the 71 included release tasks.
+Run the internet-enabled non-gold v2 buckets:
+
+```bash
+harbor run -p tasks-v2
+```
+
+Use Harbor's usual agent/model flags to choose the solver. Bucket information is
+recorded in each task's `task.toml` under `metadata.benchmark_bucket`.
 
 ## Verification Model
 
@@ -131,16 +177,15 @@ Each generated task verifier checks that:
 - `#print axioms` for the target theorem contains only allowed axioms; and
 - a local `sorry` canary is detected by the axiom-audit path.
 
-Generated tasks set `allow_internet = false`. Docker image builds may fetch
-pinned dependencies, but the agent and verifier run offline.
+Gold tasks set `environment.allow_internet = false`. Non-gold v2 tasks set
+`environment.allow_internet = true`. Docker image builds may fetch pinned
+dependencies in both cases.
 
-## Release Boundary
+## Release Notes
 
-The v1.0.0 line is intentionally conservative. The 30 deferred candidates are
-documented in [docs/remaining-failures-matrix.md](docs/remaining-failures-matrix.md)
-and marked in the manifest with `v1_0_0_status = "deferred"`. They are left as
-future work because they require statement bridges, substantial Lean porting,
-dependency decisions, axiom elimination, or replacement proof sources.
+The original v1.0.0 line was a conservative gold-only release. The current
+`main` branch keeps that gold bucket and adds the v2 non-gold benchmark task set
+for internet-enabled formalization attempts.
 
 See [docs/reproducibility.md](docs/reproducibility.md) for the archival
 hardening plan that should be completed before a paper-grade immutable release.
