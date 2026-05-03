@@ -233,16 +233,25 @@ def required_closers(lines: Iterable[str]) -> list[str]:
     return closers
 
 
-def split_theorem_header(header: str) -> tuple[str, str]:
-    match = re.match(r"^(\s*theorem\s+)(\S+)(.*)\Z", header, flags=re.S)
+def declaration_header_match(header: str) -> re.Match[str]:
+    match = re.match(
+        r"^(\s*(?:(?:noncomputable|private|protected)\s+)*(?:theorem|lemma)\s+)(\S+)(.*)\Z",
+        header,
+        flags=re.S,
+    )
     if not match:
-        raise ValueError(f"Expected theorem header, got: {header[:80]!r}")
+        raise ValueError(f"Expected theorem/lemma header, got: {header[:80]!r}")
+    return match
+
+
+def split_theorem_header(header: str) -> tuple[str, str]:
+    match = declaration_header_match(header)
     return match.group(2), match.group(3)
 
 
 def renamed_theorem_header(header: str, new_name: str) -> str:
-    old_name, rest = split_theorem_header(header)
-    return header.replace(f"theorem {old_name}", f"theorem {new_name}", 1)
+    match = declaration_header_match(header)
+    return f"{match.group(1)}{new_name}{match.group(3)}"
 
 
 def top_level_type_colon(text: str) -> int:
@@ -358,7 +367,7 @@ def target_source(source_root: Path, instance: dict) -> tuple[str, str, str, str
     declaration_line = instance["declaration_line"]
     header_end_index, body_col = find_header_end(lines, declaration_line)
 
-    prefix_lines = add_submission_import(lines[:attr_start_index])
+    prefix_lines = [line.rstrip() for line in add_submission_import(lines[:attr_start_index])]
     header_lines = lines[declaration_line - 1 : header_end_index + 1]
     header_lines[-1] = header_lines[-1][:body_col].rstrip()
     header = "\n".join(line.rstrip() for line in header_lines).strip()

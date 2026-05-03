@@ -28,7 +28,7 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "8f3a29f636723852b502aef611b28dec5fe246b9d7348caabe2cfc064b13627e"
+EXPECTED_PREFIX_SHA256 = "90935f3729942a1a0e64a7480fc049416090600f24682257e4ffe7d37e72112f"
 EXPECTED_HEADER = "theorem erdos_263.parts.ii : answer(False) \u2194\n    \u2200 a : \u2115 \u2192 \u2115,\n      IsIrrationalitySequence a \u2192\n        atTop.Tendsto (fun n : \u2115 => (a n : \u211d) ^ (1 / (n : \u211d))) atTop"
 THEOREM_NAME = "Erdos263.erdos_263.parts.ii"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])

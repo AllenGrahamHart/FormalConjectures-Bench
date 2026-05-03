@@ -52,7 +52,7 @@ theorem erdos_263.parts.i : answer(sorry) â†” IsIrrationalitySequence (fun n : â
 
 /--
 Must every irrationality sequence $a_n$ in the above sense
-satisfy $a_n^{1/n} \to \infty$ as $n \to \infty$? 
+satisfy $a_n^{1/n} \to \infty$ as $n \to \infty$?
 Answer: false.
 -/
 
