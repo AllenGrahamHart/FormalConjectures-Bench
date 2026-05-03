@@ -4,6 +4,7 @@ TASKS_DIR ?= tasks
 V2_MANIFEST ?= manifest/v2_candidates.json
 V2_BATCHES_DIR ?= manifest/v2_batches
 V2_EXCLUSIONS ?= manifest/v2_exclusions.csv
+V2_OPEN_PAIRS ?= manifest/v2_open_pairs.json
 V2_BATCH ?= batch-001
 V2_TASKS_DIR ?= tasks-v2
 V2_BATCH_SIZE ?= 100
@@ -44,7 +45,7 @@ check-oracles:
 check: check-manifest check-oracles check-generated
 
 v2-candidates:
-	python3 manifest/build_v2_candidates.py --source "$(FORMAL_CONJECTURES_DIR)" --current-manifest "$(MANIFEST)" --out "$(V2_MANIFEST)" --batches-dir "$(V2_BATCHES_DIR)" --exclusions "$(V2_EXCLUSIONS)" --batch-size "$(V2_BATCH_SIZE)"
+	python3 manifest/build_v2_candidates.py --source "$(FORMAL_CONJECTURES_DIR)" --current-manifest "$(MANIFEST)" --out "$(V2_MANIFEST)" --batches-dir "$(V2_BATCHES_DIR)" --exclusions "$(V2_EXCLUSIONS)" --open-pairs "$(V2_OPEN_PAIRS)" --batch-size "$(V2_BATCH_SIZE)"
 
 generate-v2-batch:
 	python3 generators/generate_tasks.py --manifest "$(V2_MANIFEST)" --formal-conjectures-source "$(FORMAL_CONJECTURES_DIR)" --tasks-dir "$(V2_TASKS_DIR)" --oracles-dir oracles --all --id-file "$(V2_BATCHES_DIR)/$(V2_BATCH).json"

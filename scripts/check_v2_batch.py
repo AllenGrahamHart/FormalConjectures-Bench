@@ -81,7 +81,12 @@ def main() -> None:
 
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
     by_id = {item["instance_id"]: item for item in manifest["instances"]}
+    pair_by_task_id = {}
+    for pair in manifest.get("open_problem_pairs", []):
+        pair_by_task_id[pair.get("prove_task_id")] = (pair, "prove")
+        pair_by_task_id[pair.get("refute_task_id")] = (pair, "refute")
     ids = load_ids(args.batch)
+    id_set = set(ids)
     issues: list[str] = []
     counts: dict[str, int] = {}
 
@@ -119,6 +124,27 @@ def main() -> None:
             issues.append(
                 f"{instance_id}: allow_internet={environment.get('allow_internet')!r}, expected {expected_internet!r}"
             )
+        if bucket == "open_problem":
+            pair_id = instance.get("open_problem_pair_id")
+            polarity = instance.get("open_problem_polarity")
+            if not pair_id or polarity not in {"prove", "refute"}:
+                issues.append(f"{instance_id}: open_problem task is missing pair metadata")
+            pair_info = pair_by_task_id.get(instance_id)
+            if pair_info is None:
+                issues.append(f"{instance_id}: missing from manifest open_problem_pairs")
+            else:
+                pair, expected_polarity = pair_info
+                if polarity != expected_polarity:
+                    issues.append(
+                        f"{instance_id}: open_problem_polarity={polarity!r}, expected {expected_polarity!r}"
+                    )
+                counterpart = (
+                    pair.get("refute_task_id")
+                    if expected_polarity == "prove"
+                    else pair.get("prove_task_id")
+                )
+                if counterpart not in id_set:
+                    issues.append(f"{instance_id}: paired task {counterpart} is not in this batch")
 
         text = target.read_text(encoding="utf-8")
         if TARGET_MARKER not in text:
@@ -128,6 +154,11 @@ def main() -> None:
             proof_region = text.split(TARGET_MARKER, 1)[1]
         if normalized_contains_answer_sorry(proof_region):
             issues.append(f"{instance_id}: target theorem region still contains answer(sorry)")
+        if bucket == "open_problem" and instance.get("open_problem_polarity") == "refute":
+            if "def formal_conjectures_bench_statement : Prop :=" not in text.split(TARGET_MARKER, 1)[0]:
+                issues.append(f"{instance_id}: refutation task is missing frozen statement definition")
+            if "¬ formal_conjectures_bench_statement" not in proof_region:
+                issues.append(f"{instance_id}: refutation target does not negate the frozen statement")
         if bucket != "gold_solution" and solution_target.exists():
             issues.append(f"{instance_id}: non-gold task unexpectedly has solution/Target.lean")
         if bucket == "gold_solution" and not solution_target.exists():

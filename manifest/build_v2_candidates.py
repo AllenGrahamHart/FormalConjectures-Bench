@@ -7,7 +7,9 @@ The v2 scope is deliberately narrower than all Formal Conjectures declarations:
 * keep current deferred formal-proof candidates as internet-enabled non-gold
   tasks;
 * add `category research solved` declarations without bundled oracles;
-* exclude `answer(sorry)` statements and genuinely open research problems.
+* add paired prove/refute tasks for `category research open` declarations whose
+  statements do not use `answer(sorry)`;
+* exclude `answer(sorry)` statements.
 """
 
 from __future__ import annotations
@@ -25,6 +27,10 @@ from pathlib import Path
 BUCKET_GOLD = "gold_solution"
 BUCKET_DEFERRED = "deferred_formal_candidate"
 BUCKET_INFORMAL = "informal_proof"
+BUCKET_OPEN = "open_problem"
+
+OPEN_PROVE = "prove"
+OPEN_REFUTE = "refute"
 
 
 def load_build_manifest_module():
@@ -203,6 +209,61 @@ def v2_instance(instance: dict, bucket: str) -> dict:
     return result
 
 
+def open_problem_task_id(base: str, polarity: str, used_ids: set[str]) -> str:
+    candidate = f"{base}-{polarity}"
+    suffix = 2
+    while candidate in used_ids:
+        candidate = f"{base}-{polarity}-{suffix}"
+        suffix += 1
+    used_ids.add(candidate)
+    return candidate
+
+
+def theorem_name_in_namespace(namespace: list[str], local_name: str) -> str:
+    return ".".join([*namespace, local_name]) if namespace else local_name
+
+
+def open_problem_pair(record: dict, used_ids: set[str]) -> tuple[list[dict], dict]:
+    source_instance_id = record["instance_id"]
+    pair_id = f"open-problem/{source_instance_id}"
+    namespace = record.get("namespace", [])
+    source_theorem_name = record["theorem_name"]
+
+    prove = v2_instance(record, BUCKET_OPEN)
+    prove["instance_id"] = open_problem_task_id(source_instance_id, OPEN_PROVE, used_ids)
+    prove["open_problem_pair_id"] = pair_id
+    prove["open_problem_polarity"] = OPEN_PROVE
+    prove["source_instance_id"] = source_instance_id
+    prove["source_theorem_name"] = source_theorem_name
+
+    refute = v2_instance(record, BUCKET_OPEN)
+    refute["instance_id"] = open_problem_task_id(source_instance_id, OPEN_REFUTE, used_ids)
+    refute["open_problem_pair_id"] = pair_id
+    refute["open_problem_polarity"] = OPEN_REFUTE
+    refute["source_instance_id"] = source_instance_id
+    refute["source_theorem_name"] = source_theorem_name
+    refute["source_local_declaration_name"] = record["local_declaration_name"]
+    refute["local_declaration_name"] = "formal_conjectures_bench_refutation"
+    refute["declaration_kind"] = "theorem"
+    refute["theorem_name"] = theorem_name_in_namespace(
+        namespace,
+        refute["local_declaration_name"],
+    )
+
+    pair = {
+        "pair_id": pair_id,
+        "source_instance_id": source_instance_id,
+        "source_theorem_name": source_theorem_name,
+        "source_file": record["source_file"],
+        "declaration_line": record["declaration_line"],
+        "prove_task_id": prove["instance_id"],
+        "refute_task_id": refute["instance_id"],
+        "benchmark_bucket": BUCKET_OPEN,
+        "allow_internet": True,
+    }
+    return [prove, refute], pair
+
+
 def exclusion_row(instance: dict, reason: str, detail: str = "") -> dict[str, str]:
     return {
         "instance_id": instance.get("instance_id", ""),
@@ -257,12 +318,16 @@ def extract_category_records(
     return records
 
 
-def build_v2_instances(source: Path, current_manifest: Path) -> tuple[list[dict], list[dict[str, str]], dict]:
+def build_v2_instances(
+    source: Path,
+    current_manifest: Path,
+) -> tuple[list[dict], list[dict[str, str]], dict, list[dict]]:
     current = json.loads(current_manifest.read_text(encoding="utf-8"))
     current_by_name, current_by_source_local, current_by_id = current_manifest_maps(current_manifest)
     used_ids = set(current_by_id)
     selected_by_id: dict[str, dict] = {}
     exclusions: list[dict[str, str]] = []
+    open_pairs: list[dict] = []
 
     for instance in current["instances"]:
         if instance.get("inclusion_status") == "included":
@@ -283,19 +348,23 @@ def build_v2_instances(source: Path, current_manifest: Path) -> tuple[list[dict]
         if record.get("uses_answer_sorry"):
             exclusions.append(exclusion_row(record, "answer_sorry"))
         elif has_research_open(category):
-            exclusions.append(exclusion_row(record, "research_open"))
+            tasks, pair = open_problem_pair(record, used_ids)
+            for task in tasks:
+                selected_by_id[task["instance_id"]] = task
+            open_pairs.append(pair)
         elif has_research_solved(category):
             selected_by_id[record["instance_id"]] = v2_instance(record, BUCKET_INFORMAL)
         else:
             exclusions.append(exclusion_row(record, "out_of_scope_category"))
 
-    bucket_order = {BUCKET_GOLD: 0, BUCKET_DEFERRED: 1, BUCKET_INFORMAL: 2}
+    bucket_order = {BUCKET_GOLD: 0, BUCKET_DEFERRED: 1, BUCKET_INFORMAL: 2, BUCKET_OPEN: 3}
     instances = sorted(
         selected_by_id.values(),
         key=lambda item: (
             bucket_order.get(item["benchmark_bucket"], 99),
             item["source_file"],
             item["declaration_line"],
+            item.get("open_problem_polarity", ""),
             item["instance_id"],
         ),
     )
@@ -303,7 +372,8 @@ def build_v2_instances(source: Path, current_manifest: Path) -> tuple[list[dict]
     source_metadata["v2_generated_at"] = dt.datetime.now(dt.UTC).replace(microsecond=0).isoformat()
     source_metadata["v2_instance_count"] = len(instances)
     source_metadata["v2_exclusion_count"] = len(exclusions)
-    return instances, exclusions, source_metadata
+    source_metadata["v2_open_problem_pair_count"] = len(open_pairs)
+    return instances, exclusions, source_metadata, open_pairs
 
 
 def write_json(path: Path, data: dict) -> None:
@@ -320,13 +390,25 @@ def write_exclusions(path: Path, rows: list[dict[str, str]]) -> None:
         writer.writerows(rows)
 
 
-def write_batches(path: Path, instances: list[dict], batch_size: int, source_metadata: dict) -> None:
-    path.mkdir(parents=True, exist_ok=True)
-    non_gold = [item for item in instances if item["benchmark_bucket"] != BUCKET_GOLD]
-    for index in range(0, len(non_gold), batch_size):
-        batch_no = index // batch_size + 1
-        chunk = non_gold[index : index + batch_size]
-        write_json(
+def write_batch_if_changed(path: Path, payload: dict) -> None:
+    if path.exists():
+        current = json.loads(path.read_text(encoding="utf-8"))
+        if current.get("instance_ids") == payload.get("instance_ids"):
+            return
+    write_json(path, payload)
+
+
+def write_batch_chunks(
+    path: Path,
+    instances: list[dict],
+    batch_size: int,
+    source_metadata: dict,
+    start_batch_no: int,
+) -> int:
+    batch_no = start_batch_no
+    for index in range(0, len(instances), batch_size):
+        chunk = instances[index : index + batch_size]
+        write_batch_if_changed(
             path / f"batch-{batch_no:03d}.json",
             {
                 "schema_version": 1,
@@ -336,6 +418,20 @@ def write_batches(path: Path, instances: list[dict], batch_size: int, source_met
                 "instance_ids": [item["instance_id"] for item in chunk],
             },
         )
+        batch_no += 1
+    return batch_no
+
+
+def write_batches(path: Path, instances: list[dict], batch_size: int, source_metadata: dict) -> None:
+    path.mkdir(parents=True, exist_ok=True)
+    known_non_gold = [
+        item
+        for item in instances
+        if item["benchmark_bucket"] not in {BUCKET_GOLD, BUCKET_OPEN}
+    ]
+    open_problem_tasks = [item for item in instances if item["benchmark_bucket"] == BUCKET_OPEN]
+    next_batch_no = write_batch_chunks(path, known_non_gold, batch_size, source_metadata, 1)
+    write_batch_chunks(path, open_problem_tasks, batch_size, source_metadata, next_batch_no)
 
 
 def main() -> None:
@@ -345,10 +441,14 @@ def main() -> None:
     parser.add_argument("--out", type=Path, default=Path("manifest/v2_candidates.json"))
     parser.add_argument("--batches-dir", type=Path, default=Path("manifest/v2_batches"))
     parser.add_argument("--exclusions", type=Path, default=Path("manifest/v2_exclusions.csv"))
+    parser.add_argument("--open-pairs", type=Path, default=Path("manifest/v2_open_pairs.json"))
     parser.add_argument("--batch-size", type=int, default=100)
     args = parser.parse_args()
 
-    instances, exclusions, source_metadata = build_v2_instances(args.source.resolve(), args.current_manifest)
+    instances, exclusions, source_metadata, open_pairs = build_v2_instances(
+        args.source.resolve(),
+        args.current_manifest,
+    )
     counts: dict[str, int] = {}
     for instance in instances:
         counts[instance["benchmark_bucket"]] = counts.get(instance["benchmark_bucket"], 0) + 1
@@ -359,17 +459,32 @@ def main() -> None:
             "schema_version": 2,
             "source": source_metadata,
             "v2_scope": {
-                "included_buckets": [BUCKET_GOLD, BUCKET_DEFERRED, BUCKET_INFORMAL],
+                "included_buckets": [BUCKET_GOLD, BUCKET_DEFERRED, BUCKET_INFORMAL, BUCKET_OPEN],
                 "excluded_statement_shapes": ["answer(sorry)"],
-                "excluded_categories": ["research open", "API", "test", "textbook"],
+                "excluded_categories": ["API", "test", "textbook"],
             },
             "bucket_counts": counts,
+            "open_problem_pairs": open_pairs,
             "instances": instances,
+        },
+    )
+    write_json(
+        args.open_pairs,
+        {
+            "schema_version": 1,
+            "source": source_metadata,
+            "pair_count": len(open_pairs),
+            "scoring": {
+                "pass_condition": "at least one of prove_task_id or refute_task_id passes",
+                "flag_condition": "both prove_task_id and refute_task_id pass",
+            },
+            "pairs": open_pairs,
         },
     )
     write_exclusions(args.exclusions, exclusions)
     write_batches(args.batches_dir, instances, args.batch_size, source_metadata)
     print(f"Wrote {args.out} with {len(instances)} v2 instance(s): {counts}")
+    print(f"Wrote {args.open_pairs} with {len(open_pairs)} open-problem pair(s)")
     print(f"Wrote {args.exclusions} with {len(exclusions)} exclusion row(s)")
     print(f"Wrote batches in {args.batches_dir}")
 
