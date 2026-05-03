@@ -208,12 +208,12 @@ def required_closers(lines: Iterable[str]) -> list[str]:
         if not line:
             continue
 
-        match = re.match(r"^namespace\s+([A-Za-z0-9_'.]+)\b", line)
+        match = re.match(r"^namespace\s+(\S+)", line)
         if match:
             stack.append(("namespace", match.group(1)))
             continue
 
-        match = re.match(r"^(?:noncomputable\s+)?section(?:\s+([A-Za-z0-9_'.]+))?\b", line)
+        match = re.match(r"^(?:noncomputable\s+)?section(?:\s+(\S+))?\b", line)
         if match:
             stack.append(("section", match.group(1)))
             continue
@@ -332,13 +332,16 @@ def namespace_block(namespaces: list[str]) -> tuple[str, str]:
 
 
 def open_context(lines: list[str]) -> str:
-    """Replay source `open` commands needed to elaborate copied theorem headers."""
+    """Replay source header context needed to elaborate copied theorem headers."""
     stripper = LeanCommentStripper()
     result: list[str] = []
     seen: set[str] = set()
     for raw in lines:
         stripped = stripper.strip_line(raw).strip()
-        if not stripped.startswith("open "):
+        if not (
+            stripped.startswith("open ")
+            or re.match(r"^(?:local\s+|scoped\s+)?notation\b", stripped)
+        ):
             continue
         line = raw.rstrip()
         if line not in seen:
@@ -376,15 +379,69 @@ def target_source(source_root: Path, instance: dict) -> tuple[str, str, str, str
     return generated, frozen_prefix, header, open_context(prefix_lines)
 
 
-def selected_instances(manifest: dict, include_candidates: bool, only: set[str]) -> list[dict]:
+def load_id_file(path: Path | None) -> set[str]:
+    if path is None:
+        return set()
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if isinstance(data, list):
+        return {str(item) for item in data}
+    if isinstance(data, dict):
+        if "instance_ids" in data:
+            return {str(item) for item in data["instance_ids"]}
+        if "instances" in data:
+            return {str(item["instance_id"]) for item in data["instances"]}
+    raise ValueError(f"Could not read instance ids from {path}")
+
+
+def selected_instances(
+    manifest: dict,
+    include_candidates: bool,
+    include_all: bool,
+    only: set[str],
+    id_file_ids: set[str],
+    buckets: set[str],
+) -> list[dict]:
     result = []
     for instance in manifest["instances"]:
-        if only and instance["instance_id"] not in only:
+        instance_id = instance["instance_id"]
+        if only and instance_id not in only:
+            continue
+        if id_file_ids and instance_id not in id_file_ids:
+            continue
+        if buckets and instance.get("benchmark_bucket") not in buckets:
             continue
         status = instance.get("inclusion_status")
-        if status == "included" or (include_candidates and status == "candidate"):
+        if include_all or status == "included" or (include_candidates and status == "candidate"):
             result.append(instance)
     return result
+
+
+def default_bucket(instance: dict, oracle_status: str) -> str:
+    if instance.get("benchmark_bucket"):
+        return instance["benchmark_bucket"]
+    if oracle_status == "bundled":
+        return "gold_solution"
+    return "informal_proof"
+
+
+def task_allows_internet(instance: dict, bucket: str) -> bool:
+    if "allow_internet" in instance:
+        return bool(instance["allow_internet"])
+    return bucket != "gold_solution"
+
+
+def solution_explanation(bucket: str, oracle_status: str) -> str:
+    if oracle_status == "bundled":
+        return "The oracle is the canonical licence-reviewed Lean proof associated with the manifest entry."
+    if bucket == "deferred_formal_candidate":
+        return "No bundled oracle is provided. The manifest records an external formal proof candidate, but this task is evaluated as a non-gold internet-enabled formalization task."
+    return "No bundled oracle is provided. This task is intended for internet-enabled formalization of a statement known to be solved informally."
+
+
+def internet_note(allow_internet: bool) -> str:
+    if allow_internet:
+        return "Internet access is enabled for this task. You may use external literature and web resources, but the final Lean proof must pass the local verifier."
+    return "The task is offline. Do not try to fetch external proof sources."
 
 
 def clean_task_dir(path: Path) -> None:
@@ -517,7 +574,9 @@ def generate_task(
     target, frozen_prefix, header, theorem_open_context = target_source(source_root, instance)
     rendered_open_context = f"{theorem_open_context}\n\n" if theorem_open_context else ""
     oracle_dir = oracles_dir / instance["instance_id"]
-    oracle_status = "bundled" if (oracle_dir / "Target.lean").exists() else "missing"
+    oracle_status = "bundled" if (oracle_dir / "Target.lean").exists() else instance.get("oracle_status", "missing")
+    bucket = default_bucket(instance, oracle_status)
+    allow_internet = task_allows_internet(instance, bucket)
     namespace_open, namespace_close = namespace_block(instance.get("namespace", []))
     expected_theorem_args = explicit_binder_names(header)
     expected_theorem_qualified_name = ".".join([*instance.get("namespace", []), EXPECTED_THEOREM_NAME])
@@ -532,6 +591,7 @@ def generate_task(
         "formal_conjectures_commit": source_metadata.get("formal_conjectures_commit", ""),
         "lean_toolchain": source_metadata.get("lean_toolchain", ""),
         "mathlib_commit": source_metadata.get("mathlib_commit", ""),
+        "benchmark_bucket": bucket,
         "allowed_axioms_json": json.dumps(ALLOWED_AXIOMS),
         "allowed_axioms_text": ", ".join(f"`{name}`" for name in ALLOWED_AXIOMS),
         "expected_prefix_sha256": sha256_text(frozen_prefix),
@@ -549,6 +609,9 @@ def generate_task(
         "editable_rel": EDITABLE_REL,
         "base_image": "formal-conjectures-bench-base:v4.27.0-fc233a10e",
         "oracle_status": oracle_status,
+        "allow_internet": str(allow_internet).lower(),
+        "solution_explanation": solution_explanation(bucket, oracle_status),
+        "internet_note": internet_note(allow_internet),
     }
 
     write(task_dir / "instruction.md", render_template("instruction.md.tmpl", values))
@@ -591,6 +654,9 @@ def main() -> None:
     parser.add_argument("--tasks-dir", type=Path, default=Path("tasks"))
     parser.add_argument("--oracles-dir", type=Path, default=Path("oracles"))
     parser.add_argument("--include-candidates", action="store_true")
+    parser.add_argument("--all", action="store_true", help="Generate every selected manifest instance regardless of inclusion_status")
+    parser.add_argument("--bucket", action="append", default=[], help="Restrict to benchmark bucket; may be passed more than once")
+    parser.add_argument("--id-file", type=Path, help="JSON file containing instance_ids or instances to select")
     parser.add_argument("--only", action="append", default=[], help="Instance id to generate")
     parser.add_argument(
         "--check",
@@ -601,9 +667,11 @@ def main() -> None:
 
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
     only = set(args.only)
-    instances = selected_instances(manifest, args.include_candidates, only)
+    id_file_ids = load_id_file(args.id_file)
+    buckets = set(args.bucket)
+    instances = selected_instances(manifest, args.include_candidates, args.all, only, id_file_ids, buckets)
     if not instances:
-        print("No instances selected. Mark entries as included or pass --include-candidates.")
+        print("No instances selected. Mark entries as included, pass --include-candidates, or pass --all.")
         return
 
     if args.check:

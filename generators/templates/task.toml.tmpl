@@ -15,9 +15,10 @@ formal_conjectures_commit = "$formal_conjectures_commit"
 lean_toolchain = "$lean_toolchain"
 mathlib_commit = "$mathlib_commit"
 theorem_name = "$theorem_name"
+benchmark_bucket = "$benchmark_bucket"
 oracle_status = "$oracle_status"
 difficulty_explanation = "The agent must construct a Lean 4 proof of a research-mathematics-adjacent theorem against a pinned Mathlib/Formal Conjectures environment."
-solution_explanation = "The oracle is the canonical licence-reviewed Lean proof associated with the manifest entry."
+solution_explanation = "$solution_explanation"
 verification_explanation = "The verifier builds the Lean project, checks the theorem header and frozen prefix, bans known escape hatches, audits theorem axioms, and checks the sorry-detection canary."
 
 [verifier]
@@ -32,4 +33,4 @@ cpus = 4
 memory_mb = 8192
 storage_mb = 30720
 gpus = 0
-allow_internet = false
+allow_internet = $allow_internet

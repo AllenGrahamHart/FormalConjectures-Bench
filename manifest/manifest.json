@@ -19,7 +19,7 @@
           "url": "https://github.com/logical-intelligence/proofs/blob/0dbb9215f472c532ca8af1376ed58a7ebca6dec2/LI/Conj63.lean#L8845"
         }
       ],
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "instance_id": "arxiv-0911-2077-conjecture6-3-conjecture6-3",
       "local_declaration_name": "arxiv.id0911_2077.conjecture6_3",
       "namespace": [
@@ -28,8 +28,8 @@
       "selected_oracle": {
         "formal_proof_kind": "lean4",
         "kind": "external_lean4",
-        "licence_status": "unreviewed",
-        "redistribution_status": "unreviewed",
+        "licence_status": "MIT",
+        "redistribution_status": "bundled",
         "url": "https://github.com/logical-intelligence/proofs/blob/0dbb9215f472c532ca8af1376ed58a7ebca6dec2/LI/Conj63.lean#L8845"
       },
       "source_file": "FormalConjectures/Arxiv/0911.2077/Conjecture6_3.lean",
@@ -4137,8 +4137,8 @@
   "release": {
     "current_version": "1.0.0",
     "released_at": "2026-05-02",
-    "included_count": 71,
-    "deferred_count": 30,
+    "included_count": 72,
+    "deferred_count": 29,
     "source_excluded_count": 5,
     "policy": "v1.0.0 includes only tasks with bundled local verifier-clean oracles; remaining candidates are explicitly deferred for later repair."
   }

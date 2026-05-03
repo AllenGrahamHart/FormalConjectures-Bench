@@ -110,19 +110,19 @@ def namespace_stack_before(lines: list[str], one_based_line: int) -> list[str]:
         if not line:
             continue
 
-        match = re.match(r"^namespace\s+([A-Za-z0-9_'.]+)\b", line)
+        match = re.match(r"^namespace\s+(\S+)", line)
         if match:
             name = match.group(1)
             blocks.append(("namespace", name))
             namespaces.append(name)
             continue
 
-        match = re.match(r"^(?:noncomputable\s+)?section(?:\s+([A-Za-z0-9_'.]+))?\b", line)
+        match = re.match(r"^(?:noncomputable\s+)?section(?:\s+(\S+))?\b", line)
         if match:
             blocks.append(("section", match.group(1)))
             continue
 
-        match = re.match(r"^end(?:\s+([A-Za-z0-9_'.]+))?\b", line)
+        match = re.match(r"^end(?:\s+(\S+))?", line)
         if match and blocks:
             kind, name = blocks.pop()
             if kind == "namespace" and namespaces:
