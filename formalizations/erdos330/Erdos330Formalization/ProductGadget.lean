@@ -651,4 +651,38 @@ theorem crtProduct_allowed_add_T_eq_univ {ι : Type*}
       (productT p0 p β e data h u1 u2)
       (productAllowed_add_productT_eq_univ p p0 hp0_3 hp0_23 hp7 α h u1 u2 β e data))
 
+theorem exists_crtProduct_gadget_core {ι : Type*}
+    [Fintype ι] [DecidableEq ι]
+    (M p0 : ℕ) [NeZero M] [Fact p0.Prime] [NeZero p0]
+    (p : ι → ℕ) [∀ i, Fact (Nat.Prime (p i))]
+    (hp7 : ∀ i, 7 ≤ p i) (hp0_3 : p0 % 4 = 3) (hp0_23 : 23 ≤ p0)
+    (φ : ZMod M ≃+ ProductSpace p0 p) (a : ZMod M)
+    (α : ZMod p0) (β e : ∀ i : ι, ZMod (p i))
+    (data : ∀ i, SafePairData (ZMod (p i)) (e i))
+    (ha1 : (φ a).1 = α) (he : e = affineNormalize p β (φ a).2) :
+    ∃ h u1 u2 : ZMod p0,
+      crtProductTbaseFinset M p0 p φ β h u1 u2 ⊆
+        crtProductTFinset M p0 p φ β e data h u1 u2 ∧
+      crtProductTFinset M p0 p φ β e data h u1 u2 ⊆
+        crtProductAllowedFinset M p0 p φ α β ∧
+      crtProductPstarFinset M p0 p φ a β e h ⊆
+        crtProductAllowedFinset M p0 p φ α β ∧
+      ((crtProductTFinset M p0 p φ β e data h u1 u2 : Set (ZMod M)) +
+          (crtProductTFinset M p0 p φ β e data h u1 u2 : Set (ZMod M))) =
+        Set.univ \ ((fun x : ZMod M => a + x) ''
+          (crtProductPstarFinset M p0 p φ a β e h : Set (ZMod M))) ∧
+      ((crtProductAllowedFinset M p0 p φ α β : Set (ZMod M)) +
+          (crtProductTFinset M p0 p φ β e data h u1 u2 : Set (ZMod M))) = Set.univ := by
+  obtain ⟨h, u1, u2, hu1QR, hu2QR, hu12, hτ_ne, hu1_pos, hu2_pos, hu1_neg, hu2_neg,
+    hbase_sum, _hselected_full, hQavoid⟩ :=
+    exists_selected_coordinate_strong_pair_data p0 hp0_3 hp0_23 α
+  refine ⟨h, u1, u2, ?_, ?_, ?_, ?_, ?_⟩
+  · exact crtProductTbase_subset_T M p0 p φ β e data h u1 u2
+  · exact crtProductT_subset_allowed M p0 p φ α h u1 u2 β e data hu1_pos hu2_pos
+      hu1_neg hu2_neg hQavoid
+  · exact crtProductPstar_subset_allowed M p0 p φ a α β e h ha1 he hτ_ne
+  · exact crtProduct_T_add_T_compl_private M p0 p hp7 hp0_3 φ a β e data h u1 u2
+      hu1QR hu2QR hu12 hbase_sum
+  · exact crtProduct_allowed_add_T_eq_univ M p0 p hp7 hp0_3 hp0_23 φ α h u1 u2 β e data
+
 end Erdos330Formalization
