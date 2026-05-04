@@ -41,6 +41,37 @@ lemma exists_reservoir_helper_avoiding_zmod (st : StageState)
     exact nat_eq_of_zmod_eq_of_le_lt huX hvX hpX (hu_forbid.trans hv_forbid.symm)
   · exact ⟨u, huBlock, huS, hu_forbid⟩
 
+lemma exists_helper_window (H X N L C n : ℕ)
+    (hHCX : H + C ≤ X) (hCL : C ≤ L)
+    (hnlo : H + N + C ≤ n) (hnhi : n + C ≤ X + N + L) :
+    ∃ Jlo : ℕ, H ≤ Jlo ∧ Jlo + C ≤ X ∧
+      n - (N + L) ≤ Jlo ∧ Jlo + C ≤ n - N := by
+  refine ⟨max H (n - (N + L)), ?_, ?_, ?_, ?_⟩
+  · exact le_max_left _ _
+  · omega
+  · exact le_max_right _ _
+  · omega
+
+lemma exists_reservoir_helper_for_gadget_in_window (st : StageState) {a Jlo : ℕ}
+    (G : CRTGadget st.P st.m st.M a st.D)
+    (hJlo : st.H ≤ Jlo) (hJhi : Jlo + 3 * st.M ≤ st.X) (γ : ZMod st.M) :
+    ∃ u : ℕ, u ∈ st.S ∧ Jlo ≤ u ∧ u ≤ Jlo + 3 * st.M ∧
+      γ - (u : ZMod st.M) ∈ G.T := by
+  classical
+  have hγ : γ ∈ (st.D : Set (ZMod st.M)) + (G.T : Set (ZMod st.M)) := by
+    rw [G.D_add_T_full]
+    exact Set.mem_univ γ
+  rcases hγ with ⟨ρ, hρ, t, ht, hsum⟩
+  obtain ⟨u, huBlock, _v, _hvBlock, _hne, huS, _hvS⟩ :=
+    st.reservoir_multiplicity Jlo hJlo hJhi ρ hρ
+  rw [mem_residueBlockFinset] at huBlock
+  refine ⟨u, huS, huBlock.1, huBlock.2.1, ?_⟩
+  have huρ : (u : ZMod st.M) = ρ := by simpa using huBlock.2.2
+  have hdiff : γ - (u : ZMod st.M) = t := by
+    rw [huρ, ← hsum]
+    ring
+  rwa [hdiff]
+
 theorem exists_reservoir_helper_for_gadget (st : StageState) {a : ℕ}
     (G : CRTGadget st.P st.m st.M a st.D) (γ : ZMod st.M) :
     ∃ u : ℕ, u ∈ st.S ∧ γ - (u : ZMod st.M) ∈ G.T := by
@@ -58,6 +89,41 @@ theorem exists_reservoir_helper_for_gadget (st : StageState) {a : ℕ}
     rw [huρ, ← hsum]
     ring
   rwa [hdiff]
+
+theorem residueBlock_helper_cover (M H X N L C : ℕ) (Ω : Finset (ZMod M))
+    (S : Finset ℕ)
+    (hhelper : ∀ Jlo, H ≤ Jlo → Jlo + C ≤ X → ∀ γ : ZMod M,
+      ∃ u : ℕ, u ∈ S ∧ Jlo ≤ u ∧ u ≤ Jlo + C ∧ γ - (u : ZMod M) ∈ Ω)
+    (hHCX : H + C ≤ X) (hCL : C ≤ L) {n : ℕ}
+    (hnlo : H + N + C ≤ n) (hnhi : n + C ≤ X + N + L) :
+    n ∈ twoFoldFinset (S ∪ residueBlockFinset M Ω N (N + L)) := by
+  obtain ⟨Jlo, hJlo, hJhi, _hJlow, _hJn⟩ :=
+    exists_helper_window H X N L C n hHCX hCL hnlo hnhi
+  obtain ⟨u, huS, huJlo, huJhi, huΩ⟩ := hhelper Jlo hJlo hJhi (n : ZMod M)
+  have hu_le_n : u ≤ n := by omega
+  have hN : N ≤ n - u := by omega
+  have hNL : n - u ≤ N + L := by omega
+  have hcast : ((n - u : ℕ) : ZMod M) = (n : ZMod M) - (u : ZMod M) := by
+    rw [Nat.cast_sub hu_le_n]
+  have hyΩ : ((n - u : ℕ) : ZMod M) ∈ Ω := by
+    rwa [hcast]
+  have hyBlock : n - u ∈ residueBlockFinset M Ω N (N + L) := by
+    rw [mem_residueBlockFinset]
+    exact ⟨hN, hNL, hyΩ⟩
+  refine ⟨u, Finset.mem_union.mpr (Or.inl huS), n - u,
+    Finset.mem_union.mpr (Or.inr hyBlock), ?_⟩
+  omega
+
+theorem gadget_residueBlock_cover (st : StageState) {a N L n : ℕ}
+    (G : CRTGadget st.P st.m st.M a st.D)
+    (hCL : 3 * st.M ≤ L)
+    (hnlo : st.H + N + 3 * st.M ≤ n)
+    (hnhi : n + 3 * st.M ≤ st.X + N + L) :
+    n ∈ twoFoldFinset (st.S ∪ residueBlockFinset st.M G.T N (N + L)) := by
+  refine residueBlock_helper_cover st.M st.H st.X N L (3 * st.M) G.T st.S ?_
+    st.reservoir_long hCL hnlo hnhi
+  intro Jlo hJlo hJhi γ
+  exact exists_reservoir_helper_for_gadget_in_window st G hJlo hJhi γ
 
 theorem exists_reservoir_helper_for_gadget_avoiding (st : StageState) {a p : ℕ}
     [NeZero p] (G : CRTGadget st.P st.m st.M a st.D)
