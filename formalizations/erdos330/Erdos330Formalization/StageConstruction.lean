@@ -142,4 +142,128 @@ theorem activatedM_pos (st : StageState) {b p : ℕ}
     exact Finset.prod_pos fun c hc => st.modulus_pos hc
   exact Nat.mul_pos hp.prime.pos hMpos
 
+/--
+Concrete numeric and CRT choices for one service-and-tail stage after activating
+`b`.  The inequality fields are intentionally added only as later lemmas need
+them; this structure starts by naming the three new finite blocks.
+-/
+structure StageParams (st : StageState) (a b p : ℕ) where
+  Dplus : Finset (ZMod (activatedM st b p))
+  G : CRTGadget (activatedActiveSet st b) (activatedModulus st b p)
+    (activatedM st b p) a Dplus
+  N : ℕ
+  L : ℕ
+  LZ : ℕ
+
+namespace StageParams
+
+def Mplus {st : StageState} {a b p : ℕ} (_params : StageParams st a b p) : ℕ :=
+  activatedM st b p
+
+/-- Endpoint reached after the service block and private block. -/
+def serviceR {st : StageState} {a b p : ℕ} (params : StageParams st a b p) : ℕ :=
+  2 * params.N + 2 * params.L - params.Mplus
+
+/-- Endpoint of the protected private sums, before the tail starts. -/
+def protectedEndpoint {st : StageState} {a b p : ℕ} (params : StageParams st a b p) : ℕ :=
+  params.serviceR - st.X
+
+/-- Lower endpoint of the next tail reservoir. -/
+def K {st : StageState} {a b p : ℕ} (params : StageParams st a b p) : ℕ :=
+  params.protectedEndpoint + 1
+
+def nextX {st : StageState} {a b p : ℕ} (params : StageParams st a b p) : ℕ :=
+  params.K + params.LZ
+
+def nextR {st : StageState} {a b p : ℕ} (params : StageParams st a b p) : ℕ :=
+  2 * params.K + 2 * params.LZ - params.Mplus
+
+/-- The service block using the CRT gadget's `T` residues. -/
+def lowerBlock {st : StageState} {a b p : ℕ} (params : StageParams st a b p) :
+    Finset ℕ :=
+  residueBlockFinset params.Mplus params.G.T params.N (params.N + params.L)
+
+/-- The private-partner block whose translate by `a` is protected. -/
+def privateBlock {st : StageState} {a b p : ℕ} (params : StageParams st a b p) :
+    Finset ℕ :=
+  residueBlockFinset params.Mplus params.G.Pstar
+    (2 * params.N + params.Mplus - a) (params.serviceR - a)
+
+/-- The tail reservoir for the next stage. -/
+def tailBlock {st : StageState} {a b p : ℕ} (params : StageParams st a b p) :
+    Finset ℕ :=
+  residueBlockFinset params.Mplus params.Dplus params.K params.nextX
+
+/-- The finite set after adding all three new blocks. -/
+def nextS {st : StageState} {a b p : ℕ} (params : StageParams st a b p) :
+    Finset ℕ :=
+  ((st.S ∪ params.lowerBlock) ∪ params.privateBlock) ∪ params.tailBlock
+
+theorem old_subset_nextS {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p) :
+    st.S ⊆ params.nextS := by
+  intro n hn
+  simp [nextS, hn]
+
+theorem lowerBlock_subset_nextS {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p) :
+    params.lowerBlock ⊆ params.nextS := by
+  intro n hn
+  simp [nextS, hn]
+
+theorem privateBlock_subset_nextS {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p) :
+    params.privateBlock ⊆ params.nextS := by
+  intro n hn
+  simp [nextS, hn]
+
+theorem tailBlock_subset_nextS {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p) :
+    params.tailBlock ⊆ params.nextS := by
+  intro n hn
+  simp [nextS, hn]
+
+theorem mem_lowerBlock {st : StageState} {a b p n : ℕ}
+    {params : StageParams st a b p} :
+    n ∈ params.lowerBlock ↔
+      params.N ≤ n ∧ n ≤ params.N + params.L ∧ (n : ZMod params.Mplus) ∈ params.G.T := by
+  simp [lowerBlock, mem_residueBlockFinset]
+
+theorem mem_privateBlock {st : StageState} {a b p n : ℕ}
+    {params : StageParams st a b p} :
+    n ∈ params.privateBlock ↔
+      2 * params.N + params.Mplus - a ≤ n ∧ n ≤ params.serviceR - a ∧
+        (n : ZMod params.Mplus) ∈ params.G.Pstar := by
+  simp [privateBlock, mem_residueBlockFinset]
+
+theorem mem_tailBlock {st : StageState} {a b p n : ℕ}
+    {params : StageParams st a b p} :
+    n ∈ params.tailBlock ↔
+      params.K ≤ n ∧ n ≤ params.nextX ∧ (n : ZMod params.Mplus) ∈ params.Dplus := by
+  simp [tailBlock, mem_residueBlockFinset, nextX]
+
+theorem privateBlock_lo_gt_X {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p) (ha : a ∈ st.P) (hN : st.X < params.N) :
+    st.X < 2 * params.N + params.Mplus - a := by
+  have haX : a ≤ st.X := st.active_le_X ha
+  omega
+
+theorem nextS_new_elements_above_old_X {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p) (ha : a ∈ st.P)
+    (hN : st.X < params.N) (hK : st.X < params.K) :
+    ∀ n ∈ params.nextS, n ∉ st.S → st.X < n := by
+  classical
+  intro n hn hnotS
+  simp [nextS] at hn
+  rcases hn with hnS | hnLower | hnPrivate | hnTail
+  · exact (hnotS hnS).elim
+  · rw [mem_lowerBlock] at hnLower
+    exact lt_of_lt_of_le hN hnLower.1
+  · rw [mem_privateBlock] at hnPrivate
+    exact lt_of_lt_of_le (params.privateBlock_lo_gt_X ha hN) hnPrivate.1
+  · rw [mem_tailBlock] at hnTail
+    exact lt_of_lt_of_le hK hnTail.1
+
+end StageParams
+
 end Erdos330Formalization
