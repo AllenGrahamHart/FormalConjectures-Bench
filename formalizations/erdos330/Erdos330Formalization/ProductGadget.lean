@@ -574,6 +574,40 @@ theorem crtProductPstar_subset_allowed_of_subset {ι : Type*} [Fintype ι]
   rw [crtProductAllowedFinset, coe_addEquivPreimageFinset]
   exact hsubset hx
 
+theorem productPrivateSlice_translate_subset_allowed {ι : Type*}
+    (p0 : ℕ) (p : ι → ℕ)
+    (α : ZMod p0) (β e : ∀ i : ι, ZMod (p i)) (h : ZMod p0)
+    (a : ProductSpace p0 p)
+    (ha1 : a.1 = α) (he : e = affineNormalize p β a.2)
+    (hτ_ne : h + h ≠ α + α) :
+    {x : ProductSpace p0 p | a + x ∈ productPrivateSlice p0 p β e h} ⊆
+      productAllowed p0 p α β := by
+  intro x hx
+  rcases hx with ⟨hxsel, hxnotcoord⟩
+  refine ⟨?_, ?_⟩
+  · intro hxα
+    have hαα : α + α = h + h := by
+      simpa [ha1, hxα] using hxsel
+    exact hτ_ne hαα.symm
+  · intro i hxi
+    apply hxnotcoord
+    refine ⟨i, ?_⟩
+    rw [he]
+    simp [affineDoubleNormalize, affineNormalize, hxi]
+
+theorem crtProductPstar_subset_allowed {ι : Type*} [Fintype ι]
+    (M p0 : ℕ) [NeZero M] (p : ι → ℕ)
+    (φ : ZMod M ≃+ ProductSpace p0 p) (a : ZMod M)
+    (α : ZMod p0) (β e : ∀ i : ι, ZMod (p i)) (h : ZMod p0)
+    (ha1 : (φ a).1 = α) (he : e = affineNormalize p β (φ a).2)
+    (hτ_ne : h + h ≠ α + α) :
+    crtProductPstarFinset M p0 p φ a β e h ⊆
+      crtProductAllowedFinset M p0 p φ α β := by
+  refine crtProductPstar_subset_allowed_of_subset M p0 p φ a α β e h ?_
+  intro x hx
+  exact productPrivateSlice_translate_subset_allowed p0 p α β e h (φ a) ha1 he hτ_ne
+    (by simpa [φ.map_add] using hx)
+
 theorem crtProduct_T_add_T_compl_private {ι : Type*}
     [Fintype ι] [DecidableEq ι]
     (M p0 : ℕ) [NeZero M] [Fact p0.Prime] [NeZero p0]
