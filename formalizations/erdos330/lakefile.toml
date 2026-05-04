@@ -1,0 +1,19 @@
+name = "erdos330_formalization"
+defaultTargets = ["Erdos330Formalization"]
+
+[leanOptions]
+pp.unicode.fun = true
+autoImplicit = false
+relaxedAutoImplicit = false
+maxHeartbeats = 0
+maxRecDepth = 4000
+synthInstance.maxHeartbeats = 20000
+synthInstance.maxSize = 128
+
+[[require]]
+name = "formal_conjectures"
+path = "../../.cache/formal-conjectures"
+
+[[lean_lib]]
+name = "Erdos330Formalization"
+
