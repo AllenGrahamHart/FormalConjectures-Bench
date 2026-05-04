@@ -511,6 +511,71 @@ theorem natCast_mem_activatedCRTTbaseFinsetAtM_iff (st : StageState) {a b p n : 
     (activatedM_eq_selected_mul_nonselected (a := a) (b := b) (p := p) st ha)]
   exact natCast_mem_activatedCRTTbaseFinsetExact_iff st ha hbDormant hp h u1 u2
 
+def activatedSelectedOfOld (st : StageState) {a b p : ℕ}
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (x : ZMod (st.m a)) :
+    ZMod (activatedModulus st b p a) :=
+  Eq.mp (congrArg ZMod (activatedModulus_old_of_mem st (p := p) hbDormant ha).symm) x
+
+theorem shiftedQRDelete_cast_mem {M M' n : ℕ} (hM : M = M')
+    [NeZero M] [NeZero M'] (h u1 u2 : ZMod M') :
+    (n : ZMod M') ∈ shiftedQRDelete M' h ({u1, u2} : Finset (ZMod M')) →
+      (n : ZMod M) ∈ shiftedQRDelete M
+        (Eq.mp (congrArg ZMod hM.symm) h)
+        ({Eq.mp (congrArg ZMod hM.symm) u1,
+          Eq.mp (congrArg ZMod hM.symm) u2} : Finset (ZMod M)) := by
+  cases hM
+  simp
+
+theorem activatedShiftedQRDelete_mem_of_stage (st : StageState) {a b p n : ℕ}
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p)
+    (h u1 u2 : ZMod (st.m a)) :
+    (n : ZMod (st.m a)) ∈ stageShiftedQRDelete st ha h u1 u2 →
+      (n : ZMod (activatedModulus st b p a)) ∈
+        activatedShiftedQRDelete st ha hbDormant hp
+          (activatedSelectedOfOld st ha hbDormant h)
+          (activatedSelectedOfOld st ha hbDormant u1)
+          (activatedSelectedOfOld st ha hbDormant u2) := by
+  intro hn
+  dsimp [activatedShiftedQRDelete, stageShiftedQRDelete, activatedSelectedOfOld] at hn ⊢
+  letI : NeZero (activatedModulus st b p a) :=
+    NeZero.of_pos
+      ((activated_m_prime st hbDormant hp a (activated_active_mem_old st ha)).pos)
+  letI : NeZero (st.m a) := NeZero.of_pos (st.modulus_pos ha)
+  exact shiftedQRDelete_cast_mem
+    (activatedModulus_old_of_mem st (p := p) hbDormant ha) h u1 u2 hn
+
+theorem activatedTbase_projection_lift_of_stageTbase (st : StageState) {a b p : ℕ}
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p)
+    (h u1 u2 : ZMod (st.m a)) :
+    ∀ y : ZMod (activatedM st b p),
+      activatedOldProjection st hbDormant y ∈ stageCRTTbaseFinsetAtM st ha h u1 u2 →
+        activatedFreshProjection st b p y ≠ (b : ZMod p) →
+          y ∈ activatedCRTTbaseFinsetAtM st ha hbDormant hp
+            (activatedSelectedOfOld st ha hbDormant h)
+            (activatedSelectedOfOld st ha hbDormant u1)
+            (activatedSelectedOfOld st ha hbDormant u2) := by
+  letI : NeZero (activatedM st b p) := NeZero.of_pos (activatedM_pos st hbDormant hp)
+  intro y hyOld hyFresh
+  obtain ⟨n, rfl⟩ := ZMod.natCast_zmod_surjective y
+  have hnOld : (n : ZMod st.M) ∈ stageCRTTbaseFinsetAtM st ha h u1 u2 := by
+    simpa [activatedOldProjection_natCast] using hyOld
+  have hnFresh : (n : ZMod p) ≠ (b : ZMod p) := by
+    simpa [activatedFreshProjection_natCast] using hyFresh
+  rw [natCast_mem_stageCRTTbaseFinsetAtM_iff st ha h u1 u2] at hnOld
+  rw [natCast_mem_activatedCRTTbaseFinsetAtM_iff st ha hbDormant hp]
+  constructor
+  · exact activatedShiftedQRDelete_mem_of_stage st ha hbDormant hp h u1 u2 hnOld.1
+  · intro i
+    rcases Finset.mem_erase.mp i.property with ⟨hia, hiActive⟩
+    simp [activatedActiveSet] at hiActive
+    rcases hiActive with hib | hiP
+    · rw [hib, activatedModulus_new]
+      exact hnFresh
+    · let j : NonselectedIndex st.P a := ⟨(i : ℕ), Finset.mem_erase.mpr ⟨hia, hiP⟩⟩
+      have hj := hnOld.2 j
+      rw [activatedModulus_old_of_mem st hbDormant hiP]
+      exact hj
+
 theorem activatedCRTAllowedFinsetExact_add_self_eq_univ (st : StageState) {a b p : ℕ}
     (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p) :
     ((activatedCRTAllowedFinsetExact st ha hbDormant hp : Set
@@ -1655,6 +1720,52 @@ theorem stageParams_T_lift_of_oldD_add_oldSet_and_projection_lift {st : StageSta
             (activatedFreshProjection st b p γ - (u : ZMod p)) := by abel
       _ = activatedFreshProjection st b p γ - (b : ZMod p) := by rw [hy]
   exact hmem y hyOld hyFresh
+
+theorem stageParams_T_projection_lift_of_stageTbase_eq {st : StageState}
+    {a b p : ℕ} (params : StageParams st a b p)
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p)
+    (h u1 u2 : ZMod (st.m a))
+    (hTbase :
+      params.G.Tbase =
+        activatedCRTTbaseFinsetAtM st ha hbDormant hp
+          (activatedSelectedOfOld st ha hbDormant h)
+          (activatedSelectedOfOld st ha hbDormant u1)
+          (activatedSelectedOfOld st ha hbDormant u2)) :
+    ∀ y : ZMod (activatedM st b p),
+      activatedOldProjection st hbDormant y ∈ stageCRTTbaseFinsetAtM st ha h u1 u2 →
+        activatedFreshProjection st b p y ≠ (b : ZMod p) → y ∈ params.G.T := by
+  intro y hyOld hyFresh
+  have hyBase :
+      y ∈ activatedCRTTbaseFinsetAtM st ha hbDormant hp
+        (activatedSelectedOfOld st ha hbDormant h)
+        (activatedSelectedOfOld st ha hbDormant u1)
+        (activatedSelectedOfOld st ha hbDormant u2) :=
+    activatedTbase_projection_lift_of_stageTbase st ha hbDormant hp h u1 u2
+      y hyOld hyFresh
+  exact params.G.Tbase_subset_T (by
+    rw [hTbase]
+    exact hyBase)
+
+theorem stageParams_T_lift_of_stageTbase_eq {st : StageState}
+    {a b p : ℕ} (params : StageParams st a b p)
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p)
+    (h u1 u2 : ZMod (st.m a))
+    (hcover :
+      ((st.D : Set (ZMod st.M)) +
+        (stageCRTTbaseFinsetAtM st ha h u1 u2 : Set (ZMod st.M))) = Set.univ)
+    (hTbase :
+      params.G.Tbase =
+        activatedCRTTbaseFinsetAtM st ha hbDormant hp
+          (activatedSelectedOfOld st ha hbDormant h)
+          (activatedSelectedOfOld st ha hbDormant u1)
+          (activatedSelectedOfOld st ha hbDormant u2)) :
+    ∀ γ : ZMod (activatedM st b p), ∃ ρ ∈ st.D, ∀ u : ℕ,
+      (u : ZMod st.M) = ρ →
+        (u : ZMod p) ≠ activatedFreshProjection st b p γ - (b : ZMod p) →
+          γ - (u : ZMod (activatedM st b p)) ∈ params.G.T := by
+  exact stageParams_T_lift_of_oldD_add_oldSet_and_projection_lift params hbDormant
+    (stageCRTTbaseFinsetAtM st ha h u1 u2) hcover
+    (stageParams_T_projection_lift_of_stageTbase_eq params ha hbDormant hp h u1 u2 hTbase)
 
 theorem stageParams_nextS_coverage_of_helpers {st : StageState} {a b p : ℕ}
     (params : StageParams st a b p) [NeZero (activatedM st b p)]
