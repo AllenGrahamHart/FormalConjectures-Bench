@@ -773,4 +773,57 @@ theorem stageParams_nextS_coverage_of_helpers {st : StageState} {a b p : ℕ}
     (stageParams_tail_helper_cover params D_helper hCLZ htail_start htail_end)
     (stageParams_tail_middle_cover params hDplus_add hMLZ)
 
+noncomputable def nextStageStateOfParams (st : StageState) {a b p : ℕ}
+    (params : StageParams st a b p)
+    (hbS : b ∈ st.S) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p)
+    (hS_le : ∀ n ∈ params.nextS, n ≤ params.nextX)
+    (hisolated :
+      ∀ c ∈ activatedActiveSet st b, ∀ s ∈ params.nextS,
+        (s : ZMod (activatedModulus st b p c)) =
+          (c : ZMod (activatedModulus st b p c)) → s = c)
+    (hreservoir_long : params.K + 3 * params.Mplus ≤ params.nextX)
+    (hheadroom : params.K + params.nextX + 3 * params.Mplus ≤ params.nextR)
+    (hcoverage :
+      ∀ n : ℕ, st.coverStart ≤ n → n ≤ params.nextR → n ∈ twoFoldFinset params.nextS)
+    (hexists_dormant : ∃ c ∈ params.nextS, c ∉ activatedActiveSet st b) :
+    StageState := by
+  classical
+  letI : NeZero (activatedM st b p) := NeZero.of_pos (activatedM_pos st hbDormant hp)
+  exact {
+    S := params.nextS
+    P := activatedActiveSet st b
+    m := activatedModulus st b p
+    M := activatedM st b p
+    D := params.Dplus
+    H := params.K
+    X := params.nextX
+    R := params.nextR
+    coverStart := st.coverStart
+    P_subset_S := by
+      intro c hc
+      rw [activatedActiveSet] at hc
+      rcases Finset.mem_insert.mp hc with rfl | hcP
+      · exact params.old_subset_nextS hbS
+      · exact params.old_subset_nextS (st.active_mem_state hcP)
+    S_le_X := hS_le
+    m_prime := activated_m_prime st hbDormant hp
+    m_ge23 := activated_m_ge23 st hbDormant hp
+    m_mod4 := activated_m_mod4 st hbDormant hp
+    m_pairwise_coprime := activated_m_pairwise_coprime st hbDormant hp
+    M_def := rfl
+    isolated := hisolated
+    reservoir_subset := by
+      intro n hn
+      simpa [StageParams.tailBlock, StageParams.Mplus] using
+        (params.tailBlock_subset_nextS hn)
+    reservoir_multiplicity := by
+      intro Jlo hJlo hJhi ρ hρ
+      simpa [StageParams.Mplus] using
+        (stageParams_tail_reservoir_multiplicity params hJlo hJhi ρ hρ)
+    reservoir_long := hreservoir_long
+    headroom := hheadroom
+    coverage := hcoverage
+    exists_dormant := hexists_dormant
+  }
+
 end Erdos330Formalization
