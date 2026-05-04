@@ -157,4 +157,74 @@ theorem exists_crtProduct_CRTGadget_for_exact_product
       (fun i : NonselectedIndex P a => m (i : ℕ)) hcop0 hcop a i
     simpa using hsnd.symm
 
+theorem prod_eq_selected_mul_nonselected (P : Finset ℕ) (m : ℕ → ℕ) {a : ℕ}
+    (ha : a ∈ P) :
+    P.prod m = m a * ∏ i : NonselectedIndex P a, m (i : ℕ) := by
+  classical
+  rw [← Finset.mul_prod_erase _ _ ha]
+  congr 1
+  rw [← Finset.prod_subtype (s := P.erase a) (p := fun b => b ∈ P.erase a) (f := m)]
+  intro b
+  rfl
+
+lemma stage_M_eq_selected_mul_nonselected (st : StageState) {a : ℕ} (ha : a ∈ st.P) :
+    st.M = st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ) := by
+  rw [st.M_def, prod_eq_selected_mul_nonselected st.P st.m ha]
+
+lemma stage_selected_coprime_nonselected_prod (st : StageState) {a : ℕ} (ha : a ∈ st.P) :
+    Nat.Coprime (st.m a) (∏ i : NonselectedIndex st.P a, st.m (i : ℕ)) := by
+  classical
+  rw [Nat.coprime_fintype_prod_right_iff]
+  intro i
+  rcases Finset.mem_erase.mp i.property with ⟨hia, hiP⟩
+  exact st.m_pairwise_coprime ha hiP hia.symm
+
+lemma stage_pairwise_coprime_nonselected (st : StageState) {a : ℕ} :
+    Pairwise fun i j : NonselectedIndex st.P a =>
+      Nat.Coprime (st.m (i : ℕ)) (st.m (j : ℕ)) := by
+  intro i j hij
+  rcases Finset.mem_erase.mp i.property with ⟨_hia, hiP⟩
+  rcases Finset.mem_erase.mp j.property with ⟨_hja, hjP⟩
+  exact st.m_pairwise_coprime hiP hjP (fun hijNat => hij (Subtype.ext hijNat))
+
+lemma stage_nonselected_product_pos (st : StageState) {a : ℕ} :
+    0 < ∏ i : NonselectedIndex st.P a, st.m (i : ℕ) := by
+  classical
+  exact Finset.prod_pos fun i _hi =>
+    st.modulus_pos ((Finset.mem_erase.mp i.property).2)
+
+lemma stage_exact_product_pos (st : StageState) {a : ℕ} (ha : a ∈ st.P) :
+    0 < st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ) := by
+  exact Nat.mul_pos (st.modulus_pos ha) (stage_nonselected_product_pos st)
+
+theorem exists_stage_exact_product_CRTGadget (st : StageState) {a : ℕ} (ha : a ∈ st.P) :
+    ∃ D : Finset (ZMod (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ))),
+      Nonempty (CRTGadget st.P st.m
+        (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ)) a D) := by
+  classical
+  letI : Fact (Nat.Prime (st.m a)) := ⟨st.m_prime a ha⟩
+  letI : NeZero (st.m a) := NeZero.of_pos (st.modulus_pos ha)
+  letI : NeZero (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ)) :=
+    NeZero.of_pos (stage_exact_product_pos st ha)
+  letI : (i : NonselectedIndex st.P a) → Fact (Nat.Prime (st.m (i : ℕ))) := fun i =>
+    ⟨st.m_prime (i : ℕ) ((Finset.mem_erase.mp i.property).2)⟩
+  letI : (i : NonselectedIndex st.P a) → NeZero (st.m (i : ℕ)) := fun i =>
+    NeZero.of_pos (st.modulus_pos ((Finset.mem_erase.mp i.property).2))
+  letI : (i : NonselectedIndex st.P a) → Fintype (ZMod (st.m (i : ℕ))) := fun _ =>
+    inferInstance
+  obtain ⟨_, _, _, G, _⟩ :=
+    exists_crtProduct_CRTGadget_for_exact_product st.P st.m a
+      (st.m_ge23 a ha) (st.m_mod4 a ha)
+      (fun i => by
+        have h23 := st.m_ge23 (i : ℕ) ((Finset.mem_erase.mp i.property).2)
+        omega)
+      (stage_selected_coprime_nonselected_prod st ha)
+      (stage_pairwise_coprime_nonselected st (a := a))
+  exact ⟨_, ⟨G⟩⟩
+
+theorem exists_stage_CRTGadget (st : StageState) {a : ℕ} (ha : a ∈ st.P) :
+    ∃ D : Finset (ZMod st.M), Nonempty (CRTGadget st.P st.m st.M a D) := by
+  rw [stage_M_eq_selected_mul_nonselected st ha]
+  exact exists_stage_exact_product_CRTGadget st ha
+
 end Erdos330Formalization
