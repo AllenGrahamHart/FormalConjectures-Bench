@@ -7,3 +7,5 @@ import Erdos330Formalization.UpperDensity
 import Erdos330Formalization.PrimeSupply
 import Erdos330Formalization.QuadraticResidue
 import Erdos330Formalization.FiniteChoice
+import Erdos330Formalization.SafePairs
+import Erdos330Formalization.CRTBridge
