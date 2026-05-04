@@ -1446,4 +1446,59 @@ noncomputable def serviceExtensionOfParamsWithResidueDensity {st : StageState} {
     (params.protectedSumBlock_density_of_residue_subblock (lo := lo) (hi := hi)
       hlohi hlo_private hhi_private hlo_sum hhi_sum harith)
 
+noncomputable def serviceExtensionOfParamsFromHelpers {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p) [NeZero (activatedM st b p)]
+    (ha : a ∈ st.P) (hbS : b ∈ st.S) (hbDormant : b ∉ st.P)
+    (hp : FreshPrimeData st p)
+    (hN : st.X < params.N) (hK : st.X < params.K)
+    (hX_next : st.X ≤ params.nextX) (hR_next : st.R ≤ params.nextR)
+    (hlower_height : params.N + params.L ≤ params.nextX)
+    (hprivate_height : params.serviceR ≤ params.nextX)
+    (hnew_avoid :
+      ∀ c ∈ activatedActiveSet st b, ∀ s ∈ params.nextS, s ∉ st.S →
+        (s : ZMod (activatedModulus st b p c)) ≠
+          (c : ZMod (activatedModulus st b p c)))
+    (hreservoir_long : params.K + 3 * params.Mplus ≤ params.nextX)
+    (hheadroom : params.K + params.nextX + 3 * params.Mplus ≤ params.nextR)
+    (hexists_dormant : ∃ c ∈ params.nextS, c ∉ activatedActiveSet st b)
+    (hendpoint_le_nextX : params.protectedEndpoint ≤ params.nextX)
+    (T_helper : ∀ Jlo, st.H ≤ Jlo → Jlo + 3 * st.M ≤ st.X →
+      ∀ γ : ZMod (activatedM st b p),
+        ∃ u : ℕ, u ∈ st.S ∧ Jlo ≤ u ∧ u ≤ Jlo + 3 * st.M ∧
+          γ - (u : ZMod (activatedM st b p)) ∈ params.G.T)
+    (D_helper : ∀ Jlo, st.H ≤ Jlo → Jlo + 3 * st.M ≤ st.X →
+      ∀ γ : ZMod (activatedM st b p),
+        ∃ u : ℕ, u ∈ st.S ∧ Jlo ≤ u ∧ u ≤ Jlo + 3 * st.M ∧
+          γ - (u : ZMod (activatedM st b p)) ∈ params.Dplus)
+    (hDplus_add :
+      ((params.Dplus : Set (ZMod (activatedM st b p))) +
+        (params.Dplus : Set (ZMod (activatedM st b p)))) = Set.univ)
+    (hCL : 3 * st.M ≤ params.L)
+    (hlower_start : st.H + params.N + 3 * st.M ≤ st.R + 1)
+    (hlower_end :
+      2 * params.N + params.Mplus + 3 * st.M ≤ st.X + params.N + params.L + 1)
+    (hML : params.Mplus ≤ params.L)
+    (hCLZ : 3 * st.M ≤ params.LZ)
+    (htail_start : st.H + params.K + 3 * st.M ≤ params.serviceR + 1)
+    (htail_end :
+      2 * params.K + params.Mplus + 3 * st.M ≤ st.X + params.K + params.LZ + 1)
+    (hMLZ : params.Mplus ≤ params.LZ)
+    {densityNumerator densityDenominator lo hi : ℕ}
+    (hdensityDenominator_pos : 0 < densityDenominator)
+    (hlohi : lo ≤ hi)
+    (hlo_private : 2 * params.N + params.Mplus - a ≤ lo)
+    (hhi_private : hi ≤ params.serviceR - a)
+    (hlo_sum : st.X + params.N + params.L < a + lo)
+    (hhi_sum : a + hi < params.protectedEndpoint)
+    (harith :
+      densityNumerator * params.protectedEndpoint ≤
+        densityDenominator * (params.G.Pstar.card * ((hi - lo) / params.Mplus))) :
+    Σ st' : StageState, ServiceExtension st st' a :=
+  serviceExtensionOfParamsWithResidueDensity params ha hbS hbDormant hp hN hK hX_next
+    hR_next hlower_height hprivate_height hnew_avoid hreservoir_long hheadroom
+    (stageParams_nextS_coverage_of_helpers params ha hN T_helper D_helper hDplus_add hCL
+      hlower_start hlower_end hML hCLZ htail_start htail_end hMLZ)
+    hexists_dormant hendpoint_le_nextX hdensityDenominator_pos hlohi hlo_private
+    hhi_private hlo_sum hhi_sum harith
+
 end Erdos330Formalization
