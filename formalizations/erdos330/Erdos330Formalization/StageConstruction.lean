@@ -666,6 +666,13 @@ theorem protectedSumBlock_ne_lower_add_lower {st : StageState} {a b p n x y : �
   rw [params.G.T_add_T_compl_private] at hsum_mem
   exact hsum_mem.2 hprivateSlice
 
+theorem protectedSumBlock_card_eq_partner {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p) :
+    params.protectedSumBlock.card = params.protectedPartnerBlock.card := by
+  classical
+  rw [protectedSumBlock]
+  exact Finset.card_image_of_injective _ (fun x y hxy => Nat.add_left_cancel hxy)
+
 def protectedBlockCertificate_of_sumBlock {st : StageState} {a b p : ℕ}
     (params : StageParams st a b p) {densityNumerator densityDenominator : ℕ}
     (hdensityDenominator_pos : 0 < densityDenominator)
