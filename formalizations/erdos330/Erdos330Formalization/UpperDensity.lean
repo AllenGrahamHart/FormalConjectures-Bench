@@ -88,6 +88,20 @@ theorem upperDensity_pos_of_frequent_finset_blocks {S : Set ℕ} {numerator deno
   refine le_partialDensity_univ_nat_of_finset (S := S) (B := B) hendpoint_pos hB ?_
   exact ratio_mul_le_of_nat_mul_le hdenominator hcount
 
+theorem finalSet_upperDensity_pos_of_frequent_stage_blocks {st : ℕ → StageState}
+    {numerator denominator : ℕ}
+    (hnumerator : 0 < numerator) (hdenominator : 0 < denominator)
+    (hfreq : ∀ N : ℕ, ∃ k endpoint : ℕ, ∃ B : Finset ℕ,
+      N ≤ endpoint ∧ (∀ n ∈ B, n ∈ (st k).S ∧ n < endpoint) ∧
+        numerator * endpoint ≤ denominator * B.card) :
+    HasPositiveUpperDensity (finalSet st) := by
+  refine upperDensity_pos_of_frequent_finset_blocks hnumerator hdenominator ?_
+  intro N
+  obtain ⟨k, endpoint, B, hN_endpoint, hB, hcount⟩ := hfreq N
+  refine ⟨endpoint, B, hN_endpoint, ?_, hcount⟩
+  intro n hn
+  exact ⟨mem_finalSet_of_mem_stage (hB n hn).1, (hB n hn).2⟩
+
 theorem protectedBlock_partialDensity_lower {st : ℕ → StageState} (chain : StageChain st)
     {k a endpoint : ℕ} (hendpoint : endpoint ≤ (st k).X) (hendpoint_pos : 0 < endpoint)
     (cert : ProtectedBlockCertificate (st k).S a endpoint) :
