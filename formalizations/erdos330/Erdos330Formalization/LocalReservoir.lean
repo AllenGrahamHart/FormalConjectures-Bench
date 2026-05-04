@@ -72,6 +72,41 @@ lemma exists_reservoir_helper_for_gadget_in_window (st : StageState) {a Jlo : �
     ring
   rwa [hdiff]
 
+lemma exists_reservoir_helper_for_gadget_base_avoiding_in_window (st : StageState)
+    {a Jlo p : ℕ} [NeZero p]
+    (G : CRTGadget st.P st.m st.M a st.D)
+    (hJlo : st.H ≤ Jlo) (hJhi : Jlo + 3 * st.M ≤ st.X)
+    (hpX : st.X < p) (forbidden : ZMod p) (γ : ZMod st.M) :
+    ∃ u : ℕ, u ∈ st.S ∧ Jlo ≤ u ∧ u ≤ Jlo + 3 * st.M ∧
+      γ - (u : ZMod st.M) ∈ G.Tbase ∧ (u : ZMod p) ≠ forbidden := by
+  classical
+  have hγ : γ ∈ (st.D : Set (ZMod st.M)) + (G.Tbase : Set (ZMod st.M)) := by
+    rw [G.D_add_Tbase_full]
+    exact Set.mem_univ γ
+  rcases hγ with ⟨ρ, hρ, t, ht, hsum⟩
+  obtain ⟨u, huBlock, huS, hup⟩ :=
+    exists_reservoir_helper_avoiding_zmod st hρ hJlo hJhi hpX forbidden
+  rw [mem_residueBlockFinset] at huBlock
+  refine ⟨u, huS, huBlock.1, huBlock.2.1, ?_, hup⟩
+  have huρ : (u : ZMod st.M) = ρ := by
+    simpa using huBlock.2.2
+  have hdiff : γ - (u : ZMod st.M) = t := by
+    rw [huρ, ← hsum]
+    ring
+  rwa [hdiff]
+
+lemma exists_reservoir_helper_for_gadget_avoiding_in_window (st : StageState)
+    {a Jlo p : ℕ} [NeZero p]
+    (G : CRTGadget st.P st.m st.M a st.D)
+    (hJlo : st.H ≤ Jlo) (hJhi : Jlo + 3 * st.M ≤ st.X)
+    (hpX : st.X < p) (forbidden : ZMod p) (γ : ZMod st.M) :
+    ∃ u : ℕ, u ∈ st.S ∧ Jlo ≤ u ∧ u ≤ Jlo + 3 * st.M ∧
+      γ - (u : ZMod st.M) ∈ G.T ∧ (u : ZMod p) ≠ forbidden := by
+  obtain ⟨u, huS, huLo, huHi, huBase, hup⟩ :=
+    exists_reservoir_helper_for_gadget_base_avoiding_in_window st G hJlo hJhi hpX
+      forbidden γ
+  exact ⟨u, huS, huLo, huHi, G.Tbase_subset_T huBase, hup⟩
+
 theorem exists_reservoir_helper_for_gadget (st : StageState) {a : ℕ}
     (G : CRTGadget st.P st.m st.M a st.D) (γ : ZMod st.M) :
     ∃ u : ℕ, u ∈ st.S ∧ γ - (u : ZMod st.M) ∈ G.T := by
