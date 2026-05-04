@@ -167,4 +167,25 @@ theorem mainTarget_of_frequent_services {st : ℕ → StageState} (chain : Stage
   obtain ⟨numerator, denominator, hnumerator, hdenominator, hfreq⟩ := hservices a ha
   exact private_upperDensity_pos_of_frequent_services chain hnumerator hdenominator hfreq
 
+theorem mainTarget_of_frequent_stage_blocks_and_services {st : ℕ → StageState}
+    (chain : StageChain st)
+    (hR_unbounded : ∀ n : ℕ, ∃ k : ℕ, n ≤ (st k).R)
+    {setNumerator setDenominator : ℕ}
+    (hsetNumerator : 0 < setNumerator) (hsetDenominator : 0 < setDenominator)
+    (hsetBlocks : ∀ N : ℕ, ∃ k endpoint : ℕ, ∃ B : Finset ℕ,
+      N ≤ endpoint ∧ (∀ n ∈ B, n ∈ (st k).S ∧ n < endpoint) ∧
+        setNumerator * endpoint ≤ setDenominator * B.card)
+    (hservices :
+      ∀ a ∈ finalSet st, ∃ numerator denominator : ℕ,
+        0 < numerator ∧ 0 < denominator ∧
+          ∀ N : ℕ, ∃ k : ℕ, ∃ svc : ServiceExtension (st k) (st (k + 1)) a,
+            N ≤ svc.protectedEndpoint ∧
+              svc.protectedBlock.densityNumerator = numerator ∧
+              svc.protectedBlock.densityDenominator = denominator) :
+    MainTarget :=
+  mainTarget_of_frequent_services chain hR_unbounded
+    (finalSet_upperDensity_pos_of_frequent_stage_blocks hsetNumerator hsetDenominator
+      hsetBlocks)
+    hservices
+
 end Erdos330Formalization
