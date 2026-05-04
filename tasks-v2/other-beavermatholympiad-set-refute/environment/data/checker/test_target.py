@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "02c8dd2e38f0d77a71a92f7b7d51e267af29778a4566fb33c4389163d1e58174"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "adb7fc02584f011f0fee3486c744b32c983e53c1d3fed2c95fd309e03863e95f"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2200 (a : \u2115 \u2192 \u2115) (a_ini : a 0 = 8)\n        (a_rec : \u2200 n, a (n + 1) = (3 * a n) / 2) (n : \u2115),\n        ((Finset.Ico 0 n).filter fun x \u21a6 Odd (a x)).card \u2264\n              2 * ((Finset.Ico 0 n).filter fun x \u21a6 Even (a x)).card\n    )"
 THEOREM_NAME = "BeaverMathOlympiad.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

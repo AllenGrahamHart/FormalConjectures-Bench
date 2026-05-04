@@ -62,13 +62,12 @@ suffice for all even integers.
 Ref: Granville, A. and Soundararajan, K., _A Binary Additive Problem of Erdős and the Order of $2$ mod $p^2$_
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  {n : ℕ | Odd n ∧ 1 < n} ⊆ sumPrimeAndTwoPows 3 ∧
-        {n : ℕ | Even n ∧ n ≠ 0} ⊆ sumPrimeAndTwoPows 4
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      {n : ℕ | Odd n ∧ 1 < n} ⊆ sumPrimeAndTwoPows 3 ∧
+            {n : ℕ | Even n ∧ n ≠ 0} ⊆ sumPrimeAndTwoPows 4
+    ) := by
   sorry
 
 end Erdos10

@@ -99,13 +99,12 @@ where $\pi(z)$ denotes the prime-counting function, giving the number of primes 
 and including $z$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {x y : ℕ} (hx : 2 ≤ x) (hy : 2 ≤ y),
-    SecondHardyLittlewoodConjectureFor x y
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {x y : ℕ} (hx : 2 ≤ x) (hy : 2 ≤ y),
+        SecondHardyLittlewoodConjectureFor x y
+    ) := by
   sorry
 
 end HardyLittlewood

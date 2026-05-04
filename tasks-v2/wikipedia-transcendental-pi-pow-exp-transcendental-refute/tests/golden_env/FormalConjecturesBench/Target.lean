@@ -60,12 +60,11 @@ theorem exp_exp_transcendental : Transcendental ℚ (exp (exp 1)) := by
 $\pi^e$ is transcendental.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  Transcendental ℚ (π ^ (exp 1))
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      Transcendental ℚ (π ^ (exp 1))
+    ) := by
   sorry
 
 end Transcendental

@@ -15,7 +15,9 @@ open Polynomial
 namespace ClassNumberProblem
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      { d : ℤ | Squarefree d ∧ d > 1 ∧ IsClassNumberOne d }.Infinite
+    ) := by
   exact ClassNumberProblem.formal_conjectures_bench_refutation
 
 end ClassNumberProblem

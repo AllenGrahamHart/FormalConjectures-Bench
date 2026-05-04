@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "d9471d464dfc031c01a9145a6d964c6269acee34374be0fbf36ba9a1604a9046"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "a28403ef5f56098baf45255fb2797479469ef5e7e1d49f6f961cddfe83720c34"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2200 (n : \u2115) (hn : 4208 < n) (h : Even n),\n        \u2203 p q : \u2115,\n              IsTwinPrime p \u2227\n              IsTwinPrime q \u2227\n              p + q = n\n    )"
 THEOREM_NAME = "DubnerConjecture.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

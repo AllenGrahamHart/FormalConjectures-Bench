@@ -15,7 +15,10 @@ open Topology Set Function Filter Bornology Metric MeasureTheory
 namespace Mandelbrot
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {n : ℕ},
+        volume (frontier (multibrotSet n)) = 0
+    ) := by
   exact Mandelbrot.formal_conjectures_bench_refutation
 
 end Mandelbrot

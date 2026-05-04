@@ -15,7 +15,11 @@ open scoped Topology
 namespace Erdos242
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (a : ℕ) (ha : 0 < a),
+        ∀ᶠ (n : ℕ) in Filter.atTop, ∃ x y z : ℕ, 1 ≤ x ∧ x < y ∧ y < z ∧
+              (a / n : ℚ) = 1 / x + 1 / y + 1 / z
+    ) := by
   exact Erdos242.formal_conjectures_bench_refutation
 
 end Erdos242

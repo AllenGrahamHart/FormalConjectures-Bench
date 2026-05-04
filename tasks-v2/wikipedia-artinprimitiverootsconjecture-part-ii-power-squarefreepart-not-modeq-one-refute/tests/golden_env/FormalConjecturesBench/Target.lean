@@ -154,14 +154,13 @@ $$C\prod_{p \mid m} \frac{p(p - 2)}{p^2 - p - 1}$$,
 where $C$ is Artin's constant.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (a m b : ℕ) (ha : a = b ^ m) (hb : ∀ u v, 1 < u → b ≠ v^u) (hm₁ : 1 < m)
-    (hm₂ : Odd m) (hb' : ¬ b.squarefreePart ≡ 1 [MOD 4]),
-    (S a).HasDensity (ArtinConstant * powCorrectionFactor m) {p | p.Prime}
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (a m b : ℕ) (ha : a = b ^ m) (hb : ∀ u v, 1 < u → b ≠ v^u) (hm₁ : 1 < m)
+        (hm₂ : Odd m) (hb' : ¬ b.squarefreePart ≡ 1 [MOD 4]),
+        (S a).HasDensity (ArtinConstant * powCorrectionFactor m) {p | p.Prime}
+    ) := by
   sorry
 
 end ArtinPrimitiveRootsConjecture

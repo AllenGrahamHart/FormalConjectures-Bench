@@ -71,12 +71,11 @@ theorem erdos_770.parts.iii : answer(sorry) ↔ ∀ ε > 0, ∀ᶠ n in atTop,
 
 /-- It is probably true that `h n = 3` for infinitely many `n`. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  {n | h n = 3}.Infinite
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      {n | h n = 3}.Infinite
+    ) := by
   sorry
 
 end Erdos770

@@ -16,7 +16,12 @@ open scoped EuclideanGeometry
 namespace Erdos100
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ᶠ n in atTop, ∀ A : Finset ℝ²,
+            A.card = n →
+            DistancesSeparated A →
+            diam (A : Set ℝ²) ≥ n - 1
+    ) := by
   exact Erdos100.formal_conjectures_bench_refutation
 
 end Erdos100

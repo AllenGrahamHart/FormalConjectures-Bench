@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "cbdb17ad1ab24c567825f4f7cba8e009eeb8dbc87de761418cc4a1bf7576368f"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "5b7bc87b494dff4dc8fb4397cecbcca6bb3a5d9ac83f0a9e2bf9b6f536520c7e"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2200 (K : Type*) [Field K] [NumberField K] (s : \u2102)\n        (hs : NumberField.dedekindZeta K s = 0)\n        (hs_nontrivial : s \u2209 Int.cast '' trivialZeros K)\n        (hs_ne_one : s \u2260 1),\n        s.re = 1 / 2\n    )"
 THEOREM_NAME = "ExtendedRiemannHypothesis.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

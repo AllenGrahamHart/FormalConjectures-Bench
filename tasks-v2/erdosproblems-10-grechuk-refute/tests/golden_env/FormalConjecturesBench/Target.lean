@@ -91,12 +91,11 @@ are many integers not the sum of a prime and $2$ powers of $2$ suggest that ther
 infinitely many even integers which are not the sum of a prime and at most $3$ powers of $2$).
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  Set.Infinite <| {n : ℕ | Even n} \ sumPrimeAndTwoPows 3
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      Set.Infinite <| {n : ℕ | Even n} \ sumPrimeAndTwoPows 3
+    ) := by
   sorry
 
 end Erdos10

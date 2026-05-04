@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "225c63f5095c8f814f3544098a2fe0e75b61b87180266dce7d67c4683e1640ab"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "e3123f8102e015b0536bc42c116f0822a53bead0f53628c60f14de52a9af00c9"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2200 {V : Type*} [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj] (hIso : 0 < G.minDegree) (hOdd : Odd G.maxDegree),\n        let D := G.maxDegree\n        let i := G.indepDominationNumber\n        let n := Fintype.card V\n        (D + 1) * (D + 3) * i \u2264 (D^2 + 3) * n\n    )"
 THEOREM_NAME = "Arxiv.«2107.00295».formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

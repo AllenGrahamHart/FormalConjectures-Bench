@@ -61,13 +61,12 @@ theorem isSumOfFourSquaresWithPowers_5 : IsSumOfFourSquaresWithPowers 5 :=
 $(2^a \cdot 3^b)^2 + (2^c \cdot 5^d)^2 + x^2 + y^2$ for nonnegative integers $a, b, c, d, x, y$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ) (hn : 1 < n),
-    IsSumOfFourSquaresWithPowers n
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : 1 < n),
+        IsSumOfFourSquaresWithPowers n
+    ) := by
   sorry
 
 end OeisA308734

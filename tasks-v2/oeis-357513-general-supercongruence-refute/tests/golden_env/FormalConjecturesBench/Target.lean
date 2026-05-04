@@ -93,14 +93,13 @@ We conjecture that $u(p-1) == 0 (mod p^4)$ for all primes $p$,
 with a finite number of exceptions that depend on $m$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (m : ℕ),
-    ∃ (exceptions : Finset ℕ), ∀ p, p.Prime →
-        p ∉ exceptions → u m (p - 1) = (0 : ZMod (p ^ 4))
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (m : ℕ),
+        ∃ (exceptions : Finset ℕ), ∀ p, p.Prime →
+            p ∉ exceptions → u m (p - 1) = (0 : ZMod (p ^ 4))
+    ) := by
   sorry
 
 end OeisA357513

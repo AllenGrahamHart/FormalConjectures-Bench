@@ -41,13 +41,12 @@ noncomputable def firoozbakhtSeq (n : ℕ) : ℝ :=
 The inequality $\sqrt[n+1]{p_{n+1}} < \sqrt[n]{p_n}$ holds for all prime numbers $p_n$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ),
-    firoozbakhtSeq (n+1) < firoozbakhtSeq n
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ),
+        firoozbakhtSeq (n+1) < firoozbakhtSeq n
+    ) := by
   sorry
 
 end Firoozbakht

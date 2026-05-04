@@ -143,12 +143,11 @@ theorem no_attractingCycle_period_zero (f : ℂ → ℂ) (z : ℂ) : ¬ IsAttrac
 /-- The density of hyperbolicity conjecture, stating that the set of all parameters `c` for which
 `fun z ↦ z ^ 2 + c` has an attracting cycle is dense in the Mandelbrot set. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  mandelbrotSet ⊆ closure {c | ∃ m z, IsAttractingCycle (fun z ↦ z ^ 2 + c) m z}
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      mandelbrotSet ⊆ closure {c | ∃ m z, IsAttractingCycle (fun z ↦ z ^ 2 + c) m z}
+    ) := by
   sorry
 
 end Mandelbrot

@@ -123,13 +123,12 @@ theorem _02062_le_density_rank_zero : 0.2062 ≤ atTop.liminf
 /-- From [PPVW2016], Section 3.1: "from the mid-1960s to the present,
 it seems that most experts conjectured unboundedness." -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ),
-    ∃ E : RatEllipticCurve, n ≤ E.rank
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ),
+        ∃ E : RatEllipticCurve, n ≤ E.rank
+    ) := by
   sorry
 
 end RatEllipticCurve

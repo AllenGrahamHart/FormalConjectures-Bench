@@ -66,18 +66,17 @@ If both congruences hold, then $n$ is either prime or $n^2 \equiv 1 \pmod{r}$.
 This variant was proposed by Roman B. Popovych in 2018.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n r : ℕ), n > 1 → r > 0 → n.gcd r = 1 →
-      let R := Polynomial (ZMod n)
-      let X : R := Polynomial.X
-      let I : Ideal R := Ideal.span ({X^r - 1} : Set R)
-      Ideal.Quotient.mk I ((X - 1)^n) = Ideal.Quotient.mk I (X^n - 1) →
-      Ideal.Quotient.mk I ((X + 2)^n) = Ideal.Quotient.mk I (X^n + 2) →
-      (n.Prime ∨ (n^2 : ZMod r) = 1)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n r : ℕ), n > 1 → r > 0 → n.gcd r = 1 →
+          let R := Polynomial (ZMod n)
+          let X : R := Polynomial.X
+          let I : Ideal R := Ideal.span ({X^r - 1} : Set R)
+          Ideal.Quotient.mk I ((X - 1)^n) = Ideal.Quotient.mk I (X^n - 1) →
+          Ideal.Quotient.mk I ((X + 2)^n) = Ideal.Quotient.mk I (X^n + 2) →
+          (n.Prime ∨ (n^2 : ZMod r) = 1)
+    ) := by
   sorry
 
 end AgrawalConjecture

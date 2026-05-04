@@ -15,7 +15,12 @@ open scoped Polynomial
 namespace PierceBirkhoff
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {n : ℕ} (f : (Fin n → ℝ) → ℝ)
+        (hf : IsPiecewiseMvPolynomial f),
+        ∃ (ι κ : Type) (g : ι → κ → MvPolynomial (Fin n) ℝ), Finite ι ∧ Finite κ ∧
+              ∀ x, f x = ⨆ i, ⨅ j, MvPolynomial.eval x (g i j)
+    ) := by
   exact PierceBirkhoff.formal_conjectures_bench_refutation
 
 end PierceBirkhoff

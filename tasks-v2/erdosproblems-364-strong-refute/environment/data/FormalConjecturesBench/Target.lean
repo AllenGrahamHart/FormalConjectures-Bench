@@ -41,13 +41,12 @@ then $n_{k+2} - n_k > n_k^c$ for some constant $c > 0$.
 [Er76d] Erdős, P., Problems and results on number theoretic properties of consecutive integers and related questions. Proceedings of the Fifth Manitoba Conference on Numerical Mathematics (Univ. Manitoba, Winnipeg, Man., 1975) (1976), 25-44.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ (c : ℝ) (h : c > 0), ∀ (k : ℕ),
-      Nat.nth Powerful (k + 2) - Nat.nth Powerful k > (Nat.nth Powerful k : ℝ) ^ c
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ (c : ℝ) (h : c > 0), ∀ (k : ℕ),
+          Nat.nth Powerful (k + 2) - Nat.nth Powerful k > (Nat.nth Powerful k : ℝ) ^ c
+    ) := by
   sorry
 
 end Erdos364

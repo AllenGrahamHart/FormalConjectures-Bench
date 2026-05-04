@@ -15,7 +15,9 @@ open scoped Function
 namespace FermatCatalanConjecture
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      fermatCatalanConjecture
+    ) := by
   exact FermatCatalanConjecture.formal_conjectures_bench_refutation
 
 end FermatCatalanConjecture

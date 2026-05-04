@@ -49,15 +49,14 @@ theorem erdos_100 :
 
 /-- Stronger conjecture: diameter $\geq n - 1$ for sufficiently large $n$. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ᶠ n in atTop, ∀ A : Finset ℝ²,
-        A.card = n →
-        DistancesSeparated A →
-        diam (A : Set ℝ²) ≥ n - 1
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ᶠ n in atTop, ∀ A : Finset ℝ²,
+            A.card = n →
+            DistancesSeparated A →
+            diam (A : Set ℝ²) ≥ n - 1
+    ) := by
   sorry
 
 end Erdos100

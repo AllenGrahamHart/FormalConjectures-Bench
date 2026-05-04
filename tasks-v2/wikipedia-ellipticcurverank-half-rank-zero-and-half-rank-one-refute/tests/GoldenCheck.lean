@@ -21,7 +21,11 @@ namespace EllipticCurveRank
 namespace RatEllipticCurve
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (r : ℕ) (hr : r = 0 ∨ r = 1),
+        atTop.Tendsto
+              (fun H ↦ ({E ∈ heightLE H | E.rank = r}.ncard / (heightLE H).ncard : ℝ)) (𝓝 (1 / 2))
+    ) := by
   exact EllipticCurveRank.RatEllipticCurve.formal_conjectures_bench_refutation
 
 end RatEllipticCurve

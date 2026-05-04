@@ -15,7 +15,9 @@ open Filter
 namespace Erdos853
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      atTop.Tendsto r atTop
+    ) := by
   exact Erdos853.formal_conjectures_bench_refutation
 
 end Erdos853

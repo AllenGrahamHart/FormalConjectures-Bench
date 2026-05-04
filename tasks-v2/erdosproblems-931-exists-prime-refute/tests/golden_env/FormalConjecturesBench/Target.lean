@@ -71,15 +71,14 @@ Erdős was unable to prove that if the two products have the same factors
 then there must exist a prime between $n_1$ and $n_2$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (k₁ k₂ n₁ n₂ : ℕ) (h₁ : k₂ ≤ k₁) (h₂ : 3 ≤ k₂)
-    (h₃ : n₁ + k₁ ≤ n₂) (h₄ : (∏ i ∈ Finset.Icc 1 k₁, (n₁ + i)).primeFactors =
-      (∏ j ∈ Finset.Icc 1 k₂, (n₂ + j)).primeFactors),
-    ∃ (p : ℕ), p.Prime ∧ n₁ ≤ p ∧ p ≤ n₂
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (k₁ k₂ n₁ n₂ : ℕ) (h₁ : k₂ ≤ k₁) (h₂ : 3 ≤ k₂)
+        (h₃ : n₁ + k₁ ≤ n₂) (h₄ : (∏ i ∈ Finset.Icc 1 k₁, (n₁ + i)).primeFactors =
+          (∏ j ∈ Finset.Icc 1 k₂, (n₂ + j)).primeFactors),
+        ∃ (p : ℕ), p.Prime ∧ n₁ ≤ p ∧ p ≤ n₂
+    ) := by
   sorry
 
 end Erdos931

@@ -15,7 +15,9 @@ open Filter Real
 namespace Erdos233
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      (fun N => ((∑ n ∈ Finset.range N, (primeGap n) ^ 2) : ℝ)) =O[atTop] fun N => N * (log N)^2
+    ) := by
   exact Erdos233.formal_conjectures_bench_refutation
 
 end Erdos233

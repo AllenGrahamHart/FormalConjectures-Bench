@@ -13,7 +13,10 @@ import FormalConjecturesBench.Target
 namespace Arxiv.«2107.12475»
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : 8 < n),
+        2 ∈ Nat.digits 3 (2^n)
+    ) := by
   exact Arxiv.«2107.12475».formal_conjectures_bench_refutation
 
 end Arxiv.«2107.12475»

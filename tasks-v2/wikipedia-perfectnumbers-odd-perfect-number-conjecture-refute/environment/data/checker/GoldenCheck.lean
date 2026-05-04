@@ -15,7 +15,10 @@ open Nat
 namespace PerfectNumbers
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : Perfect n),
+        Even n
+    ) := by
   exact PerfectNumbers.formal_conjectures_bench_refutation
 
 end PerfectNumbers

@@ -78,12 +78,11 @@ of $p+1$ is in some class $\leq r-1$, with equality for at least one prime facto
 If $p_r$ is the least prime in class $r$, then how does $p_r^{1/r}$ behave?
 Selfridge conjectured that this is bounded. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ M, ∀ r, (p r : ℝ) ^ (1 / r : ℝ) ≤ M
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ M, ∀ r, (p r : ℝ) ^ (1 / r : ℝ) ≤ M
+    ) := by
   sorry
 
 end Erdos1055

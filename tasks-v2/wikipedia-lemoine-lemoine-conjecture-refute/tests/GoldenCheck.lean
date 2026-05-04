@@ -13,7 +13,10 @@ import FormalConjecturesBench.Target
 namespace Lemoine
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : 6 < n) (odd : Odd n),
+        ∃ (p q : ℕ), p.Prime ∧ q.Prime ∧ p + 2 * q = n
+    ) := by
   exact Lemoine.formal_conjectures_bench_refutation
 
 end Lemoine

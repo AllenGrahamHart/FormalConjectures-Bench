@@ -81,13 +81,12 @@ $$
 $$
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {k : ℕ} (m : Fin k.succ → ℕ),
-    FirstHardyLittlewoodConjectureFor m
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {k : ℕ} (m : Fin k.succ → ℕ),
+        FirstHardyLittlewoodConjectureFor m
+    ) := by
   sorry
 
 end HardyLittlewood

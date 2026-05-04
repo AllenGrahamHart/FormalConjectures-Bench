@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "f50fe8fd259c776d1c948cc1cd4cec81750787f7095398900bbe967a81bafb19"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "785136ec5425c3131e392b8ea0e1c1bcce8ae8cf5b863e3688cf43ec4aa21912"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2200 (\u03b5 : \u211d) (h\u03b5 : 0 < \u03b5),\n        {(a, b, c) : \u2115 \u00d7 \u2115 \u00d7 \u2115 | 0 < a \u2227 0 < b \u2227 0 < c \u2227 ({a, b, c} : Set \u2115).Pairwise Nat.Coprime \u2227\n            a + b = c \u2227 quality a b c > (1 + \u03b5)}.Finite\n    )"
 THEOREM_NAME = "ABC.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

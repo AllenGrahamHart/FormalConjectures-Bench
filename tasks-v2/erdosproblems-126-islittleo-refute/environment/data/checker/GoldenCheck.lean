@@ -15,7 +15,11 @@ open Filter
 namespace Erdos126
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (f : ℕ → ℕ)
+        (hf : IsMaximalAddFactorsCard f),
+        (fun (n : ℕ) => (f n : ℝ)) =o[atTop] (fun (n : ℕ) => n / Real.log n)
+    ) := by
   exact Erdos126.formal_conjectures_bench_refutation
 
 end Erdos126

@@ -46,13 +46,12 @@ $$h(n) \sim c \left(\frac{n}{\log n}\right)^{1/2}$$
 as $n\to \infty$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ c > 0,
-      (fun n => (h n : ℝ)) ~[atTop] (fun n => c * (n / Real.log n) ^ (1 / 2 : ℝ))
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ c > 0,
+          (fun n => (h n : ℝ)) ~[atTop] (fun n => c * (n / Real.log n) ^ (1 / 2 : ℝ))
+    ) := by
   sorry
 
 end Erdos912

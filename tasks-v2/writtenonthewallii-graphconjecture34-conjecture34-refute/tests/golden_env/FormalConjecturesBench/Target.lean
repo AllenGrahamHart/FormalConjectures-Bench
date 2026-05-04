@@ -44,13 +44,12 @@ Then
 `path(G) ≥ ceil( distavg(G, center) + distavg(G, maxEccentricityVertices G) )`.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {α : Type*} [Fintype α] [DecidableEq α] [Nontrivial α] (G : SimpleGraph α) (h_conn : G.Connected),
-    Int.ceil (distavg G (graphCenter G) + distavg G (maxEccentricityVertices G)) ≤ (path G : ℤ)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {α : Type*} [Fintype α] [DecidableEq α] [Nontrivial α] (G : SimpleGraph α) (h_conn : G.Connected),
+        Int.ceil (distavg G (graphCenter G) + distavg G (maxEccentricityVertices G)) ≤ (path G : ℤ)
+    ) := by
   sorry
 
 end WrittenOnTheWallII.GraphConjecture34

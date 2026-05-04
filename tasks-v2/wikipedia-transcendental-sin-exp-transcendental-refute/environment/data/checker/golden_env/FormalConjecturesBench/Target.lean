@@ -122,12 +122,11 @@ theorem rlog_rlog_two_transcendental : Transcendental ℚ ((2 : ℝ).log.log) :=
 $\sin(e)$ is transcendental.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  Transcendental ℚ (Real.sin (exp 1))
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      Transcendental ℚ (Real.sin (exp 1))
+    ) := by
   sorry
 
 end Transcendental

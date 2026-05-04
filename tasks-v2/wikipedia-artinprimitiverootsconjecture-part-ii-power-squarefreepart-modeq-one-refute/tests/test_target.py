@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "a2d3bfcd41eaf75a14d532cd2edbeb6b87a8258574f70a49fd1b2e6b4db5498f"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "8a3b4ee18b2d04ac057a665e3b0d84227edb2171e3fa28596427163ef735004f"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2200 (a m b : \u2115) (ha : a = b ^ m) (hb : \u2200 u v, 1 < u \u2192 b \u2260 v ^ u) (hm\u2081 : 1 < m)\n        (hm\u2082 : Odd m) (hb' : b.squarefreePart \u2261 1 [MOD 4]),\n        (S a).HasDensity\n              (ArtinConstant * powCorrectionFactor m * entanglementFactor b m)\n              {p | p.Prime}\n    )"
 THEOREM_NAME = "ArtinPrimitiveRootsConjecture.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

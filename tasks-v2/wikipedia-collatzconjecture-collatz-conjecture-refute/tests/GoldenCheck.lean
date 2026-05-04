@@ -13,7 +13,10 @@ import FormalConjecturesBench.Target
 namespace CollatzConjecture
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : n > 0),
+        ∃ m, collatzStep^[m] n = 1
+    ) := by
   exact CollatzConjecture.formal_conjectures_bench_refutation
 
 end CollatzConjecture

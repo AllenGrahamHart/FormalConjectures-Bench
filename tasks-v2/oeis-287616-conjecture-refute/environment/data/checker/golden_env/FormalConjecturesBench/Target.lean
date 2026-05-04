@@ -64,13 +64,12 @@ a triangular number $x(x+1)/2$, a generalized pentagonal number $y(3y+1)/2$, and
 heptagonal number $z(5z+1)/2$, where $x, y, z$ are nonnegative integers.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ),
-    IsSumOfTriangularAndGeneralizedPolygonal n
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ),
+        IsSumOfTriangularAndGeneralizedPolygonal n
+    ) := by
   sorry
 
 end OeisA287616

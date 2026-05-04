@@ -13,7 +13,12 @@ import FormalConjecturesBench.Target
 namespace GRH
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q)
+        (hχ : χ.IsPrimitive) (s : ℂ) (hs : χ.LFunction s = 0)
+        (hs_nontrivial : s ∉ Int.cast '' trivialZeros χ),
+        s.re = 1 / 2
+    ) := by
   exact GRH.formal_conjectures_bench_refutation
 
 end GRH

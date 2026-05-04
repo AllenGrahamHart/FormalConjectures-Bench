@@ -13,7 +13,9 @@ import FormalConjecturesBench.Target
 namespace Erdos218
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      {n | primeGap n = primeGap (n + 1)}.Infinite
+    ) := by
   exact Erdos218.formal_conjectures_bench_refutation
 
 end Erdos218

@@ -74,13 +74,12 @@ theorem KotherConjecture.variants.two_by_two_matrix {I : TwoSidedIdeal R} (hI : 
 
 /-- The **Köthe conjecture**: for any positive integer `n`, the Köthe radical of `R` is the matrix ideal `M_2(Nil*(R))`. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {R : Type*} [Ring R] {I : TwoSidedIdeal R} (hI : IsNil I) (n : Type*) [Fintype n],
-    matrix n (Nil* R) = Nil* (Matrix n n R)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {R : Type*} [Ring R] {I : TwoSidedIdeal R} (hI : IsNil I) (n : Type*) [Fintype n],
+        matrix n (Nil* R) = Nil* (Matrix n n R)
+    ) := by
   sorry
 
 end Koethe

@@ -16,7 +16,12 @@ open scoped Asymptotics
 namespace Erdos865
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ C > 0, ∀ᶠ (N : ℕ) in atTop,
+            ∀ A ⊆ Icc 1 N, A.card ≥ (5 / 8 : ℝ) * N + C →
+            ∃ a ∈ A, ∃ b ∈ A, ∃ c ∈ A, a ≠ b ∧ a ≠ c ∧ b ≠ c ∧
+            a + b ∈ A ∧ a + c ∈ A ∧ b + c ∈ A
+    ) := by
   exact Erdos865.formal_conjectures_bench_refutation
 
 end Erdos865

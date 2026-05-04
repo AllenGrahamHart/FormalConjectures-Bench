@@ -13,7 +13,9 @@ import FormalConjecturesBench.Target
 namespace AmicableNumbers
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      type_of% Erdos830.erdos_830.parts.i
+    ) := by
   exact AmicableNumbers.formal_conjectures_bench_refutation
 
 end AmicableNumbers

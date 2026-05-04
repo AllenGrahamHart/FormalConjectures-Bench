@@ -169,13 +169,12 @@ theorem volume_frontier_mandelbrotSet_eq_zero : volume (frontier mandelbrotSet) 
 Note that we don't need to exclude the trivial cases `n = 0` and `n = 1` because the conjecture
 holds for them. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {n : ℕ},
-    volume (frontier (multibrotSet n)) = 0
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {n : ℕ},
+        volume (frontier (multibrotSet n)) = 0
+    ) := by
   sorry
 
 end Mandelbrot

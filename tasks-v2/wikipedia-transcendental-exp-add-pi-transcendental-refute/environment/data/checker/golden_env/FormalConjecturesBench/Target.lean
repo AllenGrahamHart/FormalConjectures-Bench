@@ -32,12 +32,11 @@ namespace Transcendental
 $e + \pi$ is transcendental.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  Transcendental ℚ (exp 1 + π)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      Transcendental ℚ (exp 1 + π)
+    ) := by
   sorry
 
 end Transcendental

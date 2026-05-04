@@ -15,7 +15,10 @@ open Finset Function Classical
 namespace StrongSensitivityConjecture
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {n : ℕ} (f : (Fin n → Bool) → Bool),
+        blockSensitivity f ≤ sensitivity f ^ 2
+    ) := by
   exact StrongSensitivityConjecture.formal_conjectures_bench_refutation
 
 end StrongSensitivityConjecture

@@ -183,6 +183,12 @@ theorem theorem2 (G : SimpleGraph α) [DecidableRel G.Adj] (h_conn: G.Connected)
 
 /-- `F n` is the smallest number of vertices of a triangle-free graph
 with chromatic number `n` and `f = 3`. -/
+@[category research solved, AMS 5]
+noncomputable def F (n : ℕ) : ℕ :=
+  sInf { p | ∃ (G : SimpleGraph (Fin p)) (_ : DecidableRel G.Adj),
+    G.CliqueFree 3 ∧ G.chromaticNumber = n ∧ degreeSequenceMultiplicity G = 3 }
+
+/-- The smallest number of vertices of a triangle-free graph with chromatic number 3 and f=3 is 7. -/
 
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem F_three : F 3 = 7 := by

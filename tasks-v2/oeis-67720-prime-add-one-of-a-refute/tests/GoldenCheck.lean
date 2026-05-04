@@ -15,7 +15,10 @@ open Nat
 namespace OeisA67720
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {k : ℕ} (h : a k) (hne : k ≠ 8),
+        (k + 1).Prime
+    ) := by
   exact OeisA67720.formal_conjectures_bench_refutation
 
 end OeisA67720

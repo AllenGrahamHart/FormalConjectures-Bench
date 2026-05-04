@@ -15,7 +15,9 @@ open Classical
 namespace Erdos1055
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ M, ∀ r, (p r : ℝ) ^ (1 / r : ℝ) ≤ M
+    ) := by
   exact Erdos1055.formal_conjectures_bench_refutation
 
 end Erdos1055

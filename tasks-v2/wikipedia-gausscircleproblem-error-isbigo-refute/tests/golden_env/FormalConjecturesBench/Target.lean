@@ -88,13 +88,12 @@ $$
 See also https://arxiv.org/abs/2305.03549
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ (o : ℝ → ℝ) (_ : Tendsto o atTop (𝓝 0)),
-      E =O[atTop] fun r => r ^ (1/2 + o r)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ (o : ℝ → ℝ) (_ : Tendsto o atTop (𝓝 0)),
+          E =O[atTop] fun r => r ^ (1/2 + o r)
+    ) := by
   sorry
 
 end GaussCircleProblem

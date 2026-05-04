@@ -52,14 +52,13 @@ The discriminant of this number is the quantity $a^2 - 4b$. It is conjectured th
 infinitely many Lucas–Wieferich primes of any given discriminant.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {D : ℕ} (hD₀ : 0 < D)
-    (hD : D ≡ 0 [MOD 4] ∨ D ≡ 1 [MOD 4]),
-    {p : ℕ | ∃ a b : ℕ, a ^ 2 - 4 * b = D ∧ IsLucasWieferichPrime a b p}.Infinite
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {D : ℕ} (hD₀ : 0 < D)
+        (hD : D ≡ 0 [MOD 4] ∨ D ≡ 1 [MOD 4]),
+        {p : ℕ | ∃ a b : ℕ, a ^ 2 - 4 * b = D ∧ IsLucasWieferichPrime a b p}.Infinite
+    ) := by
   sorry
 
 end WallSunSun

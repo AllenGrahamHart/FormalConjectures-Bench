@@ -16,7 +16,10 @@ open scoped Topology Nat
 namespace ArtinPrimitiveRootsConjecture
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (a : ℤ) (ha : ¬IsSquare a) (ha' : a ≠ -1),
+        ∃ x > 0, (S a).HasDensity x {p | p.Prime}
+    ) := by
   exact ArtinPrimitiveRootsConjecture.formal_conjectures_bench_refutation
 
 end ArtinPrimitiveRootsConjecture

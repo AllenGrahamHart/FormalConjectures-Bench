@@ -13,7 +13,10 @@ import FormalConjecturesBench.Target
 namespace PebblingNumberConjecture
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {V : Type} [DecidableEq V] [Fintype V] (G H : SimpleGraph V),
+        PebblingNumber (G □ H) ≤ PebblingNumber G * PebblingNumber H
+    ) := by
   exact PebblingNumberConjecture.formal_conjectures_bench_refutation
 
 end PebblingNumberConjecture

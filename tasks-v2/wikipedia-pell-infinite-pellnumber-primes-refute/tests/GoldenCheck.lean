@@ -13,7 +13,9 @@ import FormalConjecturesBench.Target
 namespace PellNumbers
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      Infinite {n : ℕ | Prime (pellNumber n)}
+    ) := by
   exact PellNumbers.formal_conjectures_bench_refutation
 
 end PellNumbers

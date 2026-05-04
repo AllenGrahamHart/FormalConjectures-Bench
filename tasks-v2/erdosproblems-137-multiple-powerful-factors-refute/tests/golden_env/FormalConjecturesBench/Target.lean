@@ -55,17 +55,16 @@ $p\mid m(m+1)\cdots (m+n)$ and yet $p^2$ does not divide the right hand side.
 [Er82c] Erdős, Paul, "Miscellaneous problems in number theory". Congr. Numer. (1982), 25-45.,
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (k : ℕ),
-    ∀ᶠ n in Filter.atTop,
-        ∀ (m : ℕ) (hm : 0 < m),
-        letI N := ∏ x ∈ Finset.Ioc m (m + n), x
-        ∃ P : Finset ℕ, P.card = k ∧ ∀ p ∈ P, p.Prime ∧
-        p ∣ N ∧ ¬ p ^ 2 ∣ N
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (k : ℕ),
+        ∀ᶠ n in Filter.atTop,
+            ∀ (m : ℕ) (hm : 0 < m),
+            letI N := ∏ x ∈ Finset.Ioc m (m + n), x
+            ∃ P : Finset ℕ, P.card = k ∧ ∀ p ∈ P, p.Prime ∧
+            p ∣ N ∧ ¬ p ^ 2 ∣ N
+    ) := by
   sorry
 
 end Erdos137

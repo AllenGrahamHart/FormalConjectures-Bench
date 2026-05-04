@@ -35,13 +35,12 @@ def OddPrime (n : ℕ) : Prop :=
 For all odd integers $n ≥ 7$ there are prime numbers $p,q$ such that $n = p+2q$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ) (hn : 6 < n) (odd : Odd n),
-    ∃ (p q : ℕ), p.Prime ∧ q.Prime ∧ p + 2 * q = n
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : 6 < n) (odd : Odd n),
+        ∃ (p q : ℕ), p.Prime ∧ q.Prime ∧ p + 2 * q = n
+    ) := by
   sorry
 
 end Lemoine

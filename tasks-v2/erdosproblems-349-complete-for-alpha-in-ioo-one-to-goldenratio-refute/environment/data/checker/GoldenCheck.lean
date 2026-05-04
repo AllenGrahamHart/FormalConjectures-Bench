@@ -15,7 +15,11 @@ open Set Filter Real Nat Function
 namespace Erdos349
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (t α : ℝ) (ht : 0 < t)
+        (hα : α ∈ Set.Ioo 1 ((1 + √5) / 2)),
+        IsGoodPair t α
+    ) := by
   exact Erdos349.formal_conjectures_bench_refutation
 
 end Erdos349

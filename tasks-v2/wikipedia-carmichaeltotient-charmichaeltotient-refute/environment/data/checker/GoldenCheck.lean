@@ -15,7 +15,9 @@ open Nat
 namespace CarmichaelTotient
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ ⦃n : ℕ⦄, 0 < n → CarmichaelTotientFor n
+    ) := by
   exact CarmichaelTotient.formal_conjectures_bench_refutation
 
 end CarmichaelTotient

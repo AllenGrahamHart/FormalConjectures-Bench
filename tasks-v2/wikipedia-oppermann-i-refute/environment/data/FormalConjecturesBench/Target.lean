@@ -34,13 +34,12 @@ namespace Oppermann
 For every integer $x \ge 2$ there exists a prime between $x(x-1)$ and $x^2$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (x : ℕ) (hx : 2 ≤ x),
-    ∃ p ∈ Ioo (x * (x - 1)) (x^2), p.Prime
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (x : ℕ) (hx : 2 ≤ x),
+        ∃ p ∈ Ioo (x * (x - 1)) (x^2), p.Prime
+    ) := by
   sorry
 
 end Oppermann

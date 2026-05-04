@@ -16,7 +16,12 @@ open scoped ArithmeticFunction.omega
 namespace Erdos891
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (k : ℕ) (hk : k ≥ 2),
+        ∃ᶠ n in atTop,
+              ∀ m ∈ Ico n (n + (∏ i ∈ range k, i.nth Nat.Prime) - 1),
+              ω m ≤ k
+    ) := by
   exact Erdos891.formal_conjectures_bench_refutation
 
 end Erdos891

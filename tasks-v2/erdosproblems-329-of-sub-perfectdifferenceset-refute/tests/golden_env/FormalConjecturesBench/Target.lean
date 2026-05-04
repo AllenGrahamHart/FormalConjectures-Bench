@@ -84,14 +84,13 @@ If any finite Sidon set can be embedded in a perfect difference set,
 then the maximum density would be 1.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  (∀ (A : Finset ℕ), IsSidon (A : Set ℕ) → ∃ (D : Set ℕ) (n : ℕ),
-        ↑A ⊆ D ∧ IsPerfectDifferenceSet D n) →
-      sSup {sidonUpperDensity A | (A : Set ℕ) (_ : IsSidon A)} = 1
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      (∀ (A : Finset ℕ), IsSidon (A : Set ℕ) → ∃ (D : Set ℕ) (n : ℕ),
+            ↑A ⊆ D ∧ IsPerfectDifferenceSet D n) →
+          sSup {sidonUpperDensity A | (A : Set ℕ) (_ : IsSidon A)} = 1
+    ) := by
   sorry
 
 end Erdos329

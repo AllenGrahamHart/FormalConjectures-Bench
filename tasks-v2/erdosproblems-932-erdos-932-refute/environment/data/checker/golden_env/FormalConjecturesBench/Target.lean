@@ -31,13 +31,12 @@ Let $p_k$ denote the $k$th prime. For infinitely many $r$ there are at least two
 integers $p_r < n < p_{r+1}$ all of whose prime factors are $< p_{r + 1} - p_r$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  { r : ℕ | 2 ≤ (Finset.Ioo (r.nth Nat.Prime) (r.succ.nth Nat.Prime) |>.filter
-        (fun m => m.maxPrimeFac < r.succ.nth Nat.Prime - r.nth Nat.Prime)).card }.Infinite
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      { r : ℕ | 2 ≤ (Finset.Ioo (r.nth Nat.Prime) (r.succ.nth Nat.Prime) |>.filter
+            (fun m => m.maxPrimeFac < r.succ.nth Nat.Prime - r.nth Nat.Prime)).card }.Infinite
+    ) := by
   sorry
 
 end Erdos932

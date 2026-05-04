@@ -44,13 +44,12 @@ The four exponential conjecture would imply that for any irrational number $t$,
 at least one of the numbers $2^t$ and $3^t$ is transcendental.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (t : ℝ) (h : Irrational t),
-    Transcendental ℚ (2 ^ t : ℝ) ∨ Transcendental ℚ (3 ^ t : ℝ)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (t : ℝ) (h : Irrational t),
+        Transcendental ℚ (2 ^ t : ℝ) ∨ Transcendental ℚ (3 ^ t : ℝ)
+    ) := by
   sorry
 
 end Exponentials

@@ -102,6 +102,10 @@ def starts_with_let_binding(line: str) -> bool:
     return re.match(r"\s*(?:let|letI)\b", line) is not None
 
 
+def has_inline_let_binding(prefix: str) -> bool:
+    return re.search(r"(?:^|[:=,])\s*(?:let|letI)\b", prefix) is not None
+
+
 def leading_spaces(line: str) -> int:
     return len(line) - len(line.lstrip(" "))
 
@@ -165,7 +169,7 @@ def find_header_end(lines: list[str], declaration_line: int) -> tuple[int, int]:
                 continue
 
             if line.startswith(":=", i) and depth == 0:
-                if pending_let_assignment or starts_with_let_binding(line[:i]):
+                if pending_let_assignment or starts_with_let_binding(line[:i]) or has_inline_let_binding(line[:i]):
                     pending_let_assignment = False
                     if is_by_block_start(line, i):
                         skip_by_block_indent = leading_spaces(line)
@@ -402,8 +406,15 @@ def theorem_statement_prop(header: str, context_binders: str = "") -> str:
     )
 
 
-def refutation_theorem_header() -> str:
-    return f"theorem {REFUTATION_THEOREM_NAME} :\n    ¬ {REFUTATION_STATEMENT_NAME}"
+def refutation_theorem_header(statement_prop: str) -> str:
+    return "\n".join(
+        [
+            f"theorem {REFUTATION_THEOREM_NAME} :",
+            "    ¬ (",
+            *["    " + line for line in statement_prop.splitlines()],
+            "    )",
+        ]
+    )
 
 
 def top_level_type_colon(text: str) -> int:
@@ -520,27 +531,25 @@ def target_source(source_root: Path, instance: dict) -> tuple[str, str, str, str
     header_end_index, body_col = find_header_end(lines, declaration_line)
 
     prefix_lines = [line.rstrip() for line in add_submission_import(lines[:attr_start_index])]
+    attribute_line_prefix = lines[attr_start_index].split("@[", 1)[0].rstrip()
+    if attribute_line_prefix:
+        prefix_lines.append(attribute_line_prefix)
     header_lines = lines[declaration_line - 1 : header_end_index + 1]
     header_lines[-1] = header_lines[-1][:body_col].rstrip()
     header = "\n".join(line.rstrip() for line in header_lines).strip()
 
     if instance.get("open_problem_polarity") == "refute":
-        statement_lines = [
-            f"def {REFUTATION_STATEMENT_NAME} : Prop :=",
-            theorem_statement_prop(header, active_variable_binders(lines[:attr_start_index], header)),
-        ]
-        target_header = refutation_theorem_header()
+        statement_prop = theorem_statement_prop(header, active_variable_binders(lines[:attr_start_index], header))
+        target_header = refutation_theorem_header(statement_prop)
         generated_lines = [
             f"-- {CANARY}",
             *prefix_lines,
-            "",
-            *statement_lines,
             "",
             TARGET_MARKER,
             target_header + " := by",
             "  sorry",
             "",
-            *required_closers([*prefix_lines, *statement_lines, target_header + " := by", "  sorry"]),
+            *required_closers([*prefix_lines, target_header + " := by", "  sorry"]),
             "",
         ]
         header = target_header

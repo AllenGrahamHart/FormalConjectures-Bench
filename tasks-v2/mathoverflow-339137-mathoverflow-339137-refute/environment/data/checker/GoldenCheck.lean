@@ -15,7 +15,12 @@ open scoped Polynomial
 namespace Mathoverflow339137
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (P Q R : ℝ[X]) (hP: P.Monic) (hQ : Q.Monic)
+        (hp : ∀ c ∈ P.coeffs, 0 ≤ c) (hq : ∀ c ∈ Q.coeffs, 0 ≤ c)
+        (h : R = P * Q) (hR : IsZeroOne R),
+        IsZeroOne P ∧ IsZeroOne Q
+    ) := by
   exact Mathoverflow339137.formal_conjectures_bench_refutation
 
 end Mathoverflow339137

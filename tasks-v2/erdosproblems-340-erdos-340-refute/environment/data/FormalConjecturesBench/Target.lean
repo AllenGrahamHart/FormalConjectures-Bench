@@ -101,14 +101,13 @@ order of growth of $A$? Is it true that $|A \cap \{1, \ldots, N\}| \gg N^{1/2 - 
 for all $\varepsilon > 0$ and large $N$?
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (ε : ℝ) (hε : ε > 0),
-    (fun n : ℕ ↦ √n / n ^ ε) =O[atTop]
-          fun n : ℕ ↦ ((Set.range greedySidon ∩ Set.Icc 1 n).ncard : ℝ)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (ε : ℝ) (hε : ε > 0),
+        (fun n : ℕ ↦ √n / n ^ ε) =O[atTop]
+              fun n : ℕ ↦ ((Set.range greedySidon ∩ Set.Icc 1 n).ncard : ℝ)
+    ) := by
   sorry
 
 end Erdos340

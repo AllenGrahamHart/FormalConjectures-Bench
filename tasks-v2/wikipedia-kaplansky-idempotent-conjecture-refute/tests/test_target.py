@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "7ac51dbfe55c3ed16fe487d664d53c6a52864062e02ae1654589ca412d10a2a3"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "38177876f1be5ddb2c30b9030571f98c82817bd5d37572710bba508fb02c69f7"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2200 (K : Type*) [Field K] (G : Type*) [Group G] (hG : IsMulTorsionFree G) (a : MonoidAlgebra K G) (h : IsIdempotentElem a),\n        a = 0 \u2228 a = 1\n    )"
 THEOREM_NAME = "Kaplansky.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

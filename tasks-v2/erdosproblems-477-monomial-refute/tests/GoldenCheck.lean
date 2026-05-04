@@ -15,7 +15,11 @@ open Polynomial Set
 namespace Erdos477
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (k : ℕ) (hk : 2 ≤ k),
+        letI f := X ^ k
+        ∀ A : Set ℤ, ∃ z, ¬ ∃! a ∈ A ×ˢ (f.eval '' {n | 0 < n}), z = a.1 + a.2
+    ) := by
   exact Erdos477.formal_conjectures_bench_refutation
 
 end Erdos477

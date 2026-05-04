@@ -15,7 +15,12 @@ open Finset Filter
 namespace Brocard
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : 1 ≤ n),
+        letI prev := n.nth Nat.Prime;
+        letI next := (n+1).nth Nat.Prime;
+        4 ≤ ((Ioo (prev^2) (next^2)).filter Nat.Prime).card
+    ) := by
   exact Brocard.formal_conjectures_bench_refutation
 
 end Brocard

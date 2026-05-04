@@ -33,14 +33,13 @@ If a finite set of polynomials $f_i$ satisfies both Schinzel and Bunyakovsky con
 there exist infinitely many natural numbers $n$ such that $f_i(n)$ are primes for all $i$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (fs : Finset ℤ[X]) (hfs : ∀ f ∈ fs, BunyakovskyCondition f)
-    (hfs' : SchinzelCondition fs),
-    Infinite {n : ℕ | ∀ f ∈ fs, (f.eval (n : ℤ)).natAbs.Prime}
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (fs : Finset ℤ[X]) (hfs : ∀ f ∈ fs, BunyakovskyCondition f)
+        (hfs' : SchinzelCondition fs),
+        Infinite {n : ℕ | ∀ f ∈ fs, (f.eval (n : ℤ)).natAbs.Prime}
+    ) := by
   sorry
 
 end Schinzel

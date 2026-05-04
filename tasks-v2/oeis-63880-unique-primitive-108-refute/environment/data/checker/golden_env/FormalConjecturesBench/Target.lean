@@ -93,13 +93,12 @@ theorem powerful_of_isPrimitiveTerm {n : ℕ} (h : isPrimitiveTerm n) : n.Powerf
 
 /-- $108$ is the only primitive term. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {n : ℕ} (h : isPrimitiveTerm n),
-    n = 108
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {n : ℕ} (h : isPrimitiveTerm n),
+        n = 108
+    ) := by
   sorry
 
 end OeisA63880

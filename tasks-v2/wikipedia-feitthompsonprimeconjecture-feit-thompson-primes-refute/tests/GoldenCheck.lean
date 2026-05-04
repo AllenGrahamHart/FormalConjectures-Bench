@@ -13,7 +13,10 @@ import FormalConjecturesBench.Target
 namespace FeitThompsonPrimeConjecture
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (p q : ℕ) (hp : p.Prime) (hq : q.Prime) (h : p < q),
+        ¬ (q ^ p - 1) / (q - 1) ∣ (p ^ q - 1) / (p - 1)
+    ) := by
   exact FeitThompsonPrimeConjecture.formal_conjectures_bench_refutation
 
 end FeitThompsonPrimeConjecture

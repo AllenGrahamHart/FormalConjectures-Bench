@@ -47,13 +47,12 @@ theorem erdos_1093.parts.i :
 Are there only finitely many binomial coefficients with deficiency > 1?
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  {x : ℕ × ℕ | let k := x.1; let n := x.2; 2 * k ≤ n ∧ deficiency n k > 1 ∧
-        ∀ p, p.Prime → (p ∣ choose n k) → k < p}.Finite
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      {x : ℕ × ℕ | let k := x.1; let n := x.2; 2 * k ≤ n ∧ deficiency n k > 1 ∧
+            ∀ p, p.Prime → (p ∣ choose n k) → k < p}.Finite
+    ) := by
   sorry
 
 end Erdos1093

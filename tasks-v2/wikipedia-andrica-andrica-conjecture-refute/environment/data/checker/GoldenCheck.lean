@@ -15,7 +15,10 @@ open Filter
 namespace Andrica
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ),
+        Real.sqrt ((n+1).nth Nat.Prime) - Real.sqrt (n.nth Nat.Prime) < 1
+    ) := by
   exact Andrica.formal_conjectures_bench_refutation
 
 end Andrica

@@ -142,14 +142,13 @@ When `r = 1`, the exponent is `20 / 24 = 5 / 6`, which agrees with the exponent 
 `card_heightLE_div_pow_five_div_six_tensto` and is consistent with
 `half_rank_zero_and_half_rank_one`. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (r : ℕ) (h₁ : 1 ≤ r) (h₂ : r ≤ 20),
-    ∃ f : ℕ → ℝ, atTop.Tendsto f (𝓝 0) ∧
-          ∀ H : ℕ, 1 < H → {E ∈ heightLE H | r ≤ E.rank}.ncard = (H : ℝ) ^ ((21 - r) / 24 + f H)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (r : ℕ) (h₁ : 1 ≤ r) (h₂ : r ≤ 20),
+        ∃ f : ℕ → ℝ, atTop.Tendsto f (𝓝 0) ∧
+              ∀ H : ℕ, 1 < H → {E ∈ heightLE H | r ≤ E.rank}.ncard = (H : ℝ) ^ ((21 - r) / 24 + f H)
+    ) := by
   sorry
 
 end RatEllipticCurve

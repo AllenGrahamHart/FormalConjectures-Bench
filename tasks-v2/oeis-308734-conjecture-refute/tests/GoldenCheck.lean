@@ -13,7 +13,10 @@ import FormalConjecturesBench.Target
 namespace OeisA308734
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : 1 < n),
+        IsSumOfFourSquaresWithPowers n
+    ) := by
   exact OeisA308734.formal_conjectures_bench_refutation
 
 end OeisA308734

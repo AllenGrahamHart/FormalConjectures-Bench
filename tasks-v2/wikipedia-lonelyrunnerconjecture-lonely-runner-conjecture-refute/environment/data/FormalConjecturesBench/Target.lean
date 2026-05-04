@@ -35,19 +35,18 @@ least $\frac 1 n$ from every other runner. The lonely runner conjecture states t
 runner is lonely at some time, no matter the choice of speeds.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ)
-    (speed : Fin n ↪ ℝ) (lonely : Fin n → ℝ → Prop)
-    (lonely_def :
-      ∀ r t, lonely r t ↔
-        ∀ r2 : Fin n, r2 ≠ r →
-        dist (t * speed r : UnitAddCircle) (t * speed r2) ≥ 1 / n)
-    (r : Fin n),
-    ∃ t ≥ 0, lonely r t
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ)
+        (speed : Fin n ↪ ℝ) (lonely : Fin n → ℝ → Prop)
+        (lonely_def :
+          ∀ r t, lonely r t ↔
+            ∀ r2 : Fin n, r2 ≠ r →
+            dist (t * speed r : UnitAddCircle) (t * speed r2) ≥ 1 / n)
+        (r : Fin n),
+        ∃ t ≥ 0, lonely r t
+    ) := by
   sorry
 
 end LonelyRunnerConjecture

@@ -77,12 +77,11 @@ While many amicable pairs are known, it remains open whether there are infinitel
 [erdosproblems.com/830](https://www.erdosproblems.com/830)
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  type_of% Erdos830.erdos_830.parts.i
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      type_of% Erdos830.erdos_830.parts.i
+    ) := by
   sorry
 
 end AmicableNumbers

@@ -132,12 +132,11 @@ In other words, there are only finitely many elliptic curves over ℚ (up to iso
 with rank greater than 21.
 Notice that this contradicts the previous conjecture. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  {E : RatEllipticCurve | 21 < E.rank}.Finite
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      {E : RatEllipticCurve | 21 < E.rank}.Finite
+    ) := by
   sorry
 
 end RatEllipticCurve

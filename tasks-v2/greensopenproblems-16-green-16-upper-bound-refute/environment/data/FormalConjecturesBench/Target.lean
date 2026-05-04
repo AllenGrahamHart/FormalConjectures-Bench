@@ -58,12 +58,11 @@ theorem green_16_lower_bound :
 
 /-- From [Schoen and Sisask] $f(N) \ll N \cdot e^{-c(\log N)^{1/7}}$. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ c > (0 : ℝ), (fun N ↦ (f N : ℝ)) ≪ fun N ↦ (N : ℝ) * exp (-c * (log N) ^ (1 / 7 : ℝ))
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ c > (0 : ℝ), (fun N ↦ (f N : ℝ)) ≪ fun N ↦ (N : ℝ) * exp (-c * (log N) ^ (1 / 7 : ℝ))
+    ) := by
   sorry
 
 end Green16

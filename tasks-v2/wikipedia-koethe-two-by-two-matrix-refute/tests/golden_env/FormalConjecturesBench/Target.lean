@@ -68,13 +68,12 @@ theorem KotherConjecture.variants.general_matrix {I : TwoSidedIdeal R} (hI : IsN
 /-- The **Köthe conjecture**: for any nil ideal `I` of `R`, the matrix ideal `M_2(I)` is a nil ideal
 of the matrix ring `M_2(R)`. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {R : Type*} [Ring R] {I : TwoSidedIdeal R} (hI : IsNil I),
-    IsNil (matrix (Fin 2) I)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {R : Type*} [Ring R] {I : TwoSidedIdeal R} (hI : IsNil I),
+        IsNil (matrix (Fin 2) I)
+    ) := by
   sorry
 
 end Koethe

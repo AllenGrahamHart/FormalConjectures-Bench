@@ -67,12 +67,11 @@ theorem erdos_683.variant.erdos_log :
 Standard heuristics suggest that $P(n, k) > e^{c\sqrt{k}}$ for some constant $c > 0$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ c > 0, ∀ n k : ℕ, 0 < k ∧ k ≤ n / 2 → P n k > Real.exp (c * Real.sqrt k)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ c > 0, ∀ n k : ℕ, 0 < k ∧ k ≤ n / 2 → P n k > Real.exp (c * Real.sqrt k)
+    ) := by
   sorry
 
 end Erdos683

@@ -37,12 +37,11 @@ theorem irrational_five : ∃ x, Irrational x ∧ riemannZeta 5 = x := by
 $\zeta(7)$ is irrational.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ x, Irrational x ∧ riemannZeta 7 = x
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ x, Irrational x ∧ riemannZeta 7 = x
+    ) := by
   sorry
 
 end RiemannZetaValues

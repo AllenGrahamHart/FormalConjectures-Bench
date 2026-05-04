@@ -60,13 +60,12 @@ end SumS
 $S(k)$ is positive.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (k : ℕ) (hprim : k.Prime) (hodd : Odd k),
-    0 < S k
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (k : ℕ) (hprim : k.Prime) (hodd : Odd k),
+        0 < S k
+    ) := by
   sorry
 
 end Arxiv.«2501.03234»

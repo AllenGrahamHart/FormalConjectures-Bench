@@ -61,12 +61,11 @@ def AgohGiugaSum : Prop := ∀ p ≥ 2, p.Prime ↔
 
 /-- The **Agoh-Giuga Conjecture**, Agoh's formulation -/
 
-def formal_conjectures_bench_statement : Prop :=
-  AgohGiugaCongr
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      AgohGiugaCongr
+    ) := by
   sorry
 
 end AgohGiuga

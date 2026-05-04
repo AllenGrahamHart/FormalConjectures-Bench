@@ -107,12 +107,11 @@ theorem mandelbrotSet_eq : mandelbrotSet = {c | ∀ k, ‖(fun z ↦ z ^ 2 + c)^
 
 /-- The MLC conjecture, stating that the mandelbrot set is locally connected. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  LocallyConnectedSpace mandelbrotSet
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      LocallyConnectedSpace mandelbrotSet
+    ) := by
   sorry
 
 end Mandelbrot

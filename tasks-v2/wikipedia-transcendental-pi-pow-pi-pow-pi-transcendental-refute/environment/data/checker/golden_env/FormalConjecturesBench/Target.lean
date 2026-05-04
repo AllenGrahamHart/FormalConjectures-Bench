@@ -81,12 +81,11 @@ theorem pi_pow_pi_transcendental : Transcendental ℚ (π ^ π) := by
 $\pi^{\pi^{\pi}}$ is transcendental.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  Transcendental ℚ (π ^ (π ^ π))
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      Transcendental ℚ (π ^ (π ^ π))
+    ) := by
   sorry
 
 end Transcendental

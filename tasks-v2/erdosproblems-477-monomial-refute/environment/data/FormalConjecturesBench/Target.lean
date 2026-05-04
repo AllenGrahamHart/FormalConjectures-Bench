@@ -77,14 +77,13 @@ theorem erdos_477.variants.X_pow_three :
 Probably there is no such $A$ for the polynomial $X^k$ for any $k \ge 2$. This is asked in [Sek59].
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (k : ℕ) (hk : 2 ≤ k),
-    letI f := X ^ k
-    ∀ A : Set ℤ, ∃ z, ¬ ∃! a ∈ A ×ˢ (f.eval '' {n | 0 < n}), z = a.1 + a.2
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (k : ℕ) (hk : 2 ≤ k),
+        letI f := X ^ k
+        ∀ A : Set ℤ, ∃ z, ¬ ∃! a ∈ A ×ˢ (f.eval '' {n | 0 < n}), z = a.1 + a.2
+    ) := by
   sorry
 
 end Erdos477

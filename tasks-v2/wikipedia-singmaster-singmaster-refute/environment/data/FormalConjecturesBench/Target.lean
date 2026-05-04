@@ -45,13 +45,12 @@ Singmaster's conjecture: the number of times any number $t > 1$ appears in
 Pascal's triangle is bounded.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ (C : ℕ), ∀ (t : ℕ), t > 1 →
-      (Singmaster.solutions t).Finite ∧ (Singmaster.solutions t).ncard ≤ C
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ (C : ℕ), ∀ (t : ℕ), t > 1 →
+          (Singmaster.solutions t).Finite ∧ (Singmaster.solutions t).ncard ≤ C
+    ) := by
   sorry
 
 end Singmaster

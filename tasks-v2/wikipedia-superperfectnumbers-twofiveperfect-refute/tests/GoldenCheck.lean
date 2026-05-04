@@ -15,7 +15,9 @@ open ArithmeticFunction.sigma
 namespace Superperfect
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ¬ ∃ n, PerfectFor n 2 5
+    ) := by
   exact Superperfect.formal_conjectures_bench_refutation
 
 end Superperfect

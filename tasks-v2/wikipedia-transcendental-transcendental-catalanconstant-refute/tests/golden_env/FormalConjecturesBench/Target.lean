@@ -145,12 +145,11 @@ theorem transcendental_catalanConstant_or_gompertzConstant :
 The Catalan constant $G$ is transcendental.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  Transcendental ℚ catalanConstant
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      Transcendental ℚ catalanConstant
+    ) := by
   sorry
 
 end Transcendental

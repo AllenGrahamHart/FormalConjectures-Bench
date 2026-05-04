@@ -40,13 +40,12 @@ For a simple connected graph `G`,
 the neighbourhoods of the vertices of `G`.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {α : Type*} [Fintype α] [DecidableEq α] [Nontrivial α] (G : SimpleGraph α) (h : G.Connected),
-    2 * (l G - 1) ≤ Ls G
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {α : Type*} [Fintype α] [DecidableEq α] [Nontrivial α] (G : SimpleGraph α) (h : G.Connected),
+        2 * (l G - 1) ≤ Ls G
+    ) := by
   sorry
 
 end WrittenOnTheWallII.GraphConjecture2

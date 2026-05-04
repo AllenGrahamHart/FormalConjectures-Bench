@@ -41,13 +41,12 @@ theorem erdos_1060.parts.i :
 
 /-- Part (ii) of Erdős Problem 1060: bound on the number of $k \le n$ with $k \sigma_1(k) = n$. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ (C : ℝ), (fun n ↦ (#{k ≤ n | k * σ 1 k = n} : ℝ)) =O[atTop]
-        (fun n ↦ log n ^ C)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ (C : ℝ), (fun n ↦ (#{k ≤ n | k * σ 1 k = n} : ℝ)) =O[atTop]
+            (fun n ↦ log n ^ C)
+    ) := by
   sorry
 
 end Erdos1060

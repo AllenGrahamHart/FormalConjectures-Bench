@@ -68,12 +68,11 @@ of $p+1$ is in some class $\leq r-1$, with equality for at least one prime facto
 If $p_r$ is the least prime in class $r$, then how does $p_r^{1/r}$ behave?
 Erdos conjectured that this tends to infinity. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  Filter.atTop.Tendsto (fun r ↦ (p r : ℝ) ^ (1 / r : ℝ)) Filter.atTop
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      Filter.atTop.Tendsto (fun r ↦ (p r : ℝ) ^ (1 / r : ℝ)) Filter.atTop
+    ) := by
   sorry
 
 end Erdos1055

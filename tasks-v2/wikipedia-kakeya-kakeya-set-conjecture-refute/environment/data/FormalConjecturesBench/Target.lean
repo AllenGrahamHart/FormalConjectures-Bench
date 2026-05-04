@@ -58,13 +58,12 @@ def KakeyaSetConjectureDim (n : ℕ) : Prop :=
 
 /-- The Kakeya set conjecture: Kakeya sets in $\mathbb{R}^n$ have Hausdorff dimension $n$. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ) (hn : n > 0),
-    KakeyaSetConjectureDim n
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : n > 0),
+        KakeyaSetConjectureDim n
+    ) := by
   sorry
 
 end Kakeya

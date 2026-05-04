@@ -61,14 +61,13 @@ theorem KotherConjecture.variants.le_KotherRadical {I : Ideal R} (hI : IsNil I) 
 /-- The **Köthe conjecture**: for any nil ideal `I` of `R`, the matrix ideal `M_n(I)` is a nil ideal
 of the matrix ring `M_n(R)`. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {R : Type*} [Ring R] {I : TwoSidedIdeal R} (hI : IsNil I)
-    (n : Type*) [Fintype n],
-    IsNil (matrix n I)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {R : Type*} [Ring R] {I : TwoSidedIdeal R} (hI : IsNil I)
+        (n : Type*) [Fintype n],
+        IsNil (matrix n I)
+    ) := by
   sorry
 
 end Koethe

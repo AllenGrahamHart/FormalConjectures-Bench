@@ -79,15 +79,14 @@ def trivialZeros {q : ℕ} (χ : DirichletCharacter ℂ q) : Set ℤ :=
 Dirichlet $L$-function $L(\chi, s)$ of a primitive Dirichlet character $\chi$ have real part
 $\frac{1}{2}$. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q)
-    (hχ : χ.IsPrimitive) (s : ℂ) (hs : χ.LFunction s = 0)
-    (hs_nontrivial : s ∉ Int.cast '' trivialZeros χ),
-    s.re = 1 / 2
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q)
+        (hχ : χ.IsPrimitive) (s : ℂ) (hs : χ.LFunction s = 0)
+        (hs_nontrivial : s ∉ Int.cast '' trivialZeros χ),
+        s.re = 1 / 2
+    ) := by
   sorry
 
 end GRH

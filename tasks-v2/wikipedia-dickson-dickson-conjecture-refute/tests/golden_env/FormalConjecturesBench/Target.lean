@@ -39,14 +39,13 @@ If a finite set of linear integer forms $f_i(n) = a_i n+b_i$ satisfies Schinzel 
 there exist infinitely many natural numbers $m$ such that $f_i(m)$ are primes for all $i$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (fs : Finset ℤ[X]) (hfs : ∀ f ∈ fs, f.degree = 1 ∧ BunyakovskyCondition f)
-    (hfs' : SchinzelCondition fs),
-    Infinite {n : ℕ | ∀ f ∈ fs, (f.eval (n : ℤ)).natAbs.Prime}
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (fs : Finset ℤ[X]) (hfs : ∀ f ∈ fs, f.degree = 1 ∧ BunyakovskyCondition f)
+        (hfs' : SchinzelCondition fs),
+        Infinite {n : ℕ | ∀ f ∈ fs, (f.eval (n : ℤ)).natAbs.Prime}
+    ) := by
   sorry
 
 end Dickson

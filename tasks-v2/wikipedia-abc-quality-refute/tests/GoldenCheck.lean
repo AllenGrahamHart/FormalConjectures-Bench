@@ -13,7 +13,11 @@ import FormalConjecturesBench.Target
 namespace ABC
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (ε : ℝ) (hε : 0 < ε),
+        {(a, b, c) : ℕ × ℕ × ℕ | 0 < a ∧ 0 < b ∧ 0 < c ∧ ({a, b, c} : Set ℕ).Pairwise Nat.Coprime ∧
+            a + b = c ∧ quality a b c > (1 + ε)}.Finite
+    ) := by
   exact ABC.formal_conjectures_bench_refutation
 
 end ABC

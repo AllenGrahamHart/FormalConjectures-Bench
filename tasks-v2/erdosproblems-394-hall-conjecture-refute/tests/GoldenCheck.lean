@@ -16,7 +16,11 @@ open scoped Asymptotics Topology Nat
 namespace Erdos394
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ c < Real.log 2, (fun x ↦ ∑ n ∈ Icc 1 ⌊x⌋₊,
+          (t 2 n : ℝ)) =o[atTop]
+          (fun x ↦ x ^ 2 / (Real.log x) ^ c)
+    ) := by
   exact Erdos394.formal_conjectures_bench_refutation
 
 end Erdos394

@@ -13,7 +13,10 @@ import FormalConjecturesBench.Target
 namespace Selfridge
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (p : ℕ) (hp : IsSelfridge p),
+        p.Prime
+    ) := by
   exact Selfridge.formal_conjectures_bench_refutation
 
 end Selfridge

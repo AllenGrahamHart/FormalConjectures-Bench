@@ -43,13 +43,12 @@ namespace SimpleGraph
 /-- The Latin Tableau Conjecture: If G is the simple graph
   of a Young diagram, then G is CDS-colorable. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {α : Type*} [DecidableEq α] (μ : YoungDiagram),
-    μ.toSimpleGraph.CDSColorable
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {α : Type*} [DecidableEq α] (μ : YoungDiagram),
+        μ.toSimpleGraph.CDSColorable
+    ) := by
   sorry
 
 end SimpleGraph

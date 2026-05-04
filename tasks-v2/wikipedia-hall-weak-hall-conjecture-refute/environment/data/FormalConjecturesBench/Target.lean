@@ -79,13 +79,12 @@ theorem danilov (δ : ℝ) (h : δ > 0) : ¬ HallConjectureExp (2⁻¹ + δ) := 
 Weak form of Hall's conjecture: relax the exponent from $1/2$ to $1/2 - \varepsilon$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (ε : ℝ) (hε : ε > 0),
-    HallConjectureExp (2⁻¹ - ε)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (ε : ℝ) (hε : ε > 0),
+        HallConjectureExp (2⁻¹ - ε)
+    ) := by
   sorry
 
 end Hall

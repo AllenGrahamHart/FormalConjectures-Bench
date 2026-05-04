@@ -63,12 +63,11 @@ def IsPrimaryPseudoperfect (n : ℕ) : Prop := ∃ P, (n, P) ∈ erdos313Solutio
 It is conjectured that the set of primary pseudoperfect numbers is infinite.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  Set.Infinite {n | IsPrimaryPseudoperfect n}
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      Set.Infinite {n | IsPrimaryPseudoperfect n}
+    ) := by
   sorry
 
 end Erdos313

@@ -29,7 +29,7 @@ TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
 EXPECTED_PREFIX_SHA256 = "9f3dee034d7ed8cd1e2b331219e5579db00ac770e330d9fb274705bc196b6969"
-EXPECTED_HEADER = "theorem erdos_779 (n : \u2115) (hn : n \u2265 1): let P"
+EXPECTED_HEADER = "theorem erdos_779 (n : \u2115) (hn : n \u2265 1): let P := \u220f i \u2208 range (n + 1), nth Nat.Prime i\n    \u2203 p, p.Prime \u2227 (P + p).Prime \u2227 nth Nat.Prime n < p \u2227 p < P"
 THEOREM_NAME = "Erdos779.erdos_779"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

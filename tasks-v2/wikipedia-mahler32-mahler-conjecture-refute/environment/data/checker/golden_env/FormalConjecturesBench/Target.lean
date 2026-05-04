@@ -43,13 +43,12 @@ def IsZNumber (x : ℝ) : Prop :=
 
 /-- The **Mahler Conjecture** states that there are no non-zero Z-numbers. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (x : ℝ) (h : x ≠ 0) (hx : IsZNumber x),
-    False
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (x : ℝ) (h : x ≠ 0) (hx : IsZNumber x),
+        False
+    ) := by
   sorry
 
 end Mahler32

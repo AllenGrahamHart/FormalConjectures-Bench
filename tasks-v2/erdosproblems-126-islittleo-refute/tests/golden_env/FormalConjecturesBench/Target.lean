@@ -64,14 +64,13 @@ theorem erdos_126.variants.IsBigO
 Erdős says that $f(n) = o(\frac{n}{\log n})$ has never been proved.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (f : ℕ → ℕ)
-    (hf : IsMaximalAddFactorsCard f),
-    (fun (n : ℕ) => (f n : ℝ)) =o[atTop] (fun (n : ℕ) => n / Real.log n)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (f : ℕ → ℕ)
+        (hf : IsMaximalAddFactorsCard f),
+        (fun (n : ℕ) => (f n : ℝ)) =o[atTop] (fun (n : ℕ) => n / Real.log n)
+    ) := by
   sorry
 
 end Erdos126

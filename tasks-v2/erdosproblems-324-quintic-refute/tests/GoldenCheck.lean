@@ -15,7 +15,9 @@ open scoped Polynomial
 namespace Erdos324
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      {(a, b) : ℕ × ℕ | a < b}.InjOn fun (a, b) => a ^ 5 + b ^ 5
+    ) := by
   exact Erdos324.formal_conjectures_bench_refutation
 
 end Erdos324

@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "afc2eb18746f99b5c68b86b513035a5509678a9af29ab2f202a140f9c5476cce"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "2c9f0ee008a0709b02bb0b0a3feaec5e3e26aba25ea9826978c0edb0cf834280"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2200 {n : Type*} [DecidableEq n] {A : Finset (Finset n)} [Nonempty n] (hA : A \u2260 {\u2205} \u2227 A \u2260 \u2205) (hA : IsUnionClosed A)\n        (UCC_tight : \u2200 i, #{x \u2208 A | i \u2208 x} = (1 / 2 : \u211d) * #A),\n        \u2203 k, #A = 2 ^ k\n    )"
 THEOREM_NAME = "UnionClosed.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

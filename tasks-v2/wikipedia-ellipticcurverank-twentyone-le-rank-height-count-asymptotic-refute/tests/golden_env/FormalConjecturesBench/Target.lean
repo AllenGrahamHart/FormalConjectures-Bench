@@ -150,13 +150,12 @@ theorem rank_height_count_asymptotic (r : ℕ) (h₁ : 1 ≤ r) (h₂ : r ≤ 20
 /-- [PPVW2016] 8.2(c): the number of elliptic curves over ℚ with rank ≥ 21 and naïve height
 at most `H` is asymptotically at most `H ^ o(1)`. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ f : ℕ → ℝ, atTop.Tendsto f (𝓝 0) ∧
-        ∀ H : ℕ, 1 < H → {E ∈ heightLE H | 21 ≤ E.rank}.ncard ≤ (H : ℝ) ^ f H
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ f : ℕ → ℝ, atTop.Tendsto f (𝓝 0) ∧
+            ∀ H : ℕ, 1 < H → {E ∈ heightLE H | 21 ≤ E.rank}.ncard ≤ (H : ℝ) ^ f H
+    ) := by
   sorry
 
 end RatEllipticCurve

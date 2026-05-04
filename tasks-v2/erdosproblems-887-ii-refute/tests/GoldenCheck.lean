@@ -15,7 +15,10 @@ open Filter Finset Real
 namespace Erdos887
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ K, ∀ C > (0 : ℝ), ∀ᶠ n in atTop,
+          #{ d ∈ Ioo ⌊√n⌋₊ ⌈√n + C * n^((1 : ℝ) / 4)⌉₊ | d ∣ n } ≤ K
+    ) := by
   exact Erdos887.formal_conjectures_bench_refutation
 
 end Erdos887

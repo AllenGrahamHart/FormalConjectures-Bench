@@ -15,7 +15,9 @@ open Nat
 namespace Erdos364
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ¬ ∃ (n : ℕ), Powerful n ∧ Powerful (n + 1) ∧ Powerful (n + 2)
+    ) := by
   exact Erdos364.formal_conjectures_bench_refutation
 
 end Erdos364

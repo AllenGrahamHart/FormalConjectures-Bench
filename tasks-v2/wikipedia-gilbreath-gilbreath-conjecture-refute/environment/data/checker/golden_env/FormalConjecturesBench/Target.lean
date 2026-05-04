@@ -41,13 +41,12 @@ open Gilbreath
 Gilbreath's conjecture states that every term in the sequence $d^k_0$ for $k > 0$ is equal to 1.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (k : ℕ+),
-    d k 0 = 1
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (k : ℕ+),
+        d k 0 = 1
+    ) := by
   sorry
 
 end Gilbreath

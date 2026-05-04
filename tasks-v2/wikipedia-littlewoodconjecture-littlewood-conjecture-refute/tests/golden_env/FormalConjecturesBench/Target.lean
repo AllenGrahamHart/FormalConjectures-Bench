@@ -42,13 +42,12 @@ where $\||x\|| := \min(|x - \lfloor x \rfloor|, |x - \lceil x \rceil|)$ is the d
 to the nearest integer.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (α β : ℝ),
-    atTop.liminf (fun (n : ℕ) ↦ n * distToNearestInt (n * α) * distToNearestInt (n * β)) = 0
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (α β : ℝ),
+        atTop.liminf (fun (n : ℕ) ↦ n * distToNearestInt (n * α) * distToNearestInt (n * β)) = 0
+    ) := by
   sorry
 
 end LittlewoodConjecture

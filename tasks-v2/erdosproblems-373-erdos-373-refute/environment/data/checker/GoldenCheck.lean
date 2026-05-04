@@ -15,7 +15,9 @@ open scoped Nat
 namespace Erdos373
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      S.Finite
+    ) := by
   exact Erdos373.formal_conjectures_bench_refutation
 
 end Erdos373

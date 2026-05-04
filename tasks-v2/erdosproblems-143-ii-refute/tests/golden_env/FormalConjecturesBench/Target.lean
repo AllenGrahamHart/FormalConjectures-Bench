@@ -55,13 +55,12 @@ $$
 $$
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (A : Set ℝ) (h : WellSeparatedSet A),
-    Summable fun (x : A) ↦ 1 / (x * Real.log x)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (A : Set ℝ) (h : WellSeparatedSet A),
+        Summable fun (x : A) ↦ 1 / (x * Real.log x)
+    ) := by
   sorry
 
 end Erdos143

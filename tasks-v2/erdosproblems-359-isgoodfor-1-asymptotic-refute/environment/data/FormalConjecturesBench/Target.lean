@@ -62,13 +62,12 @@ theorem erdos_359.variants.isGoodFor_1_low_values (A : ℕ → ℕ) (hA : IsGood
 smallest natural number that cannot be written as a sum of consecutive terms of `A 0, ..., A j`.
 Then it is conjectured that $$a_k ~ \frac{k \log k}{\log \log k}$$. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (A : ℕ → ℕ) (hA : IsGoodFor A 1),
-    (fun k ↦ (A k : ℝ)) ~[atTop] (fun k ↦ k * (k : ℝ).log / (k : ℝ).log.log)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (A : ℕ → ℕ) (hA : IsGoodFor A 1),
+        (fun k ↦ (A k : ℝ)) ~[atTop] (fun k ↦ k * (k : ℝ).log / (k : ℝ).log.log)
+    ) := by
   sorry
 
 end Erdos359

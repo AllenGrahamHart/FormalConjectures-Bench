@@ -65,12 +65,11 @@ theorem coe_pellNumber_eq : ∀ n, (pellNumber n : ℝ) = ((1 + √2) ^ n - (1 -
 
 /-- There are infinitely many prime Pell numbers -/
 
-def formal_conjectures_bench_statement : Prop :=
-  Infinite {n : ℕ | Prime (pellNumber n)}
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      Infinite {n : ℕ | Prime (pellNumber n)}
+    ) := by
   sorry
 
 end PellNumbers

@@ -86,13 +86,12 @@ formalisation has been written with this in mind. -/
 There exists a Hadamard matrix for all $n = 4k$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (k : ℕ),
-    ∃ M, IsHadamard (n := 4 * k) M
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (k : ℕ),
+        ∃ M, IsHadamard (n := 4 * k) M
+    ) := by
   sorry
 
 end Hadamard

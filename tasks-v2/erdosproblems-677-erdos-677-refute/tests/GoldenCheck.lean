@@ -15,7 +15,9 @@ open Finset
 namespace Erdos677
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (m n k : ℕ), k > 0 → m ≥ n + k → lcmInterval m k ≠ lcmInterval n k
+    ) := by
   exact Erdos677.formal_conjectures_bench_refutation
 
 end Erdos677

@@ -49,13 +49,12 @@ local notation "Nil* " R => KotheRadical R
 
 /-- The **Köthe conjecture**: In any ring, the sum of two nil left ideals is nil. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {R : Type*} [Ring R] (I J : Ideal R) (hI : IsNil I) (hJ : IsNil J),
-    IsNil (I + J)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {R : Type*} [Ring R] (I J : Ideal R) (hI : IsNil I) (hJ : IsNil J),
+        IsNil (I + J)
+    ) := by
   sorry
 
 end Koethe

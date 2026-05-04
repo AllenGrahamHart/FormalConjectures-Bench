@@ -39,12 +39,11 @@ namespace CardinalityLindelof
 Is there a Lindelöf space with singletons as Gδ sets with cardinality greater than the continuum?
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ (X : Type) (_ : TopologicalSpace X), HasGδSingletons X ∧ LindelofSpace X ∧ 𝔠 < #X
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ (X : Type) (_ : TopologicalSpace X), HasGδSingletons X ∧ LindelofSpace X ∧ 𝔠 < #X
+    ) := by
   sorry
 
 end CardinalityLindelof

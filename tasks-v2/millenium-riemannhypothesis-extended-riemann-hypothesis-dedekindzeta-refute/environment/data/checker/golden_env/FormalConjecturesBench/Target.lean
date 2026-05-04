@@ -126,16 +126,15 @@ In the formal statement below, `hs_nontrivial` excludes the chosen set of trivia
 `hs_ne_one` excludes the (simple) pole at $s = 1$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (K : Type*) [Field K] [NumberField K] (s : ℂ)
-    (hs : NumberField.dedekindZeta K s = 0)
-    (hs_nontrivial : s ∉ Int.cast '' trivialZeros K)
-    (hs_ne_one : s ≠ 1),
-    s.re = 1 / 2
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (K : Type*) [Field K] [NumberField K] (s : ℂ)
+        (hs : NumberField.dedekindZeta K s = 0)
+        (hs_nontrivial : s ∉ Int.cast '' trivialZeros K)
+        (hs_ne_one : s ≠ 1),
+        s.re = 1 / 2
+    ) := by
   sorry
 
 end ExtendedRiemannHypothesis

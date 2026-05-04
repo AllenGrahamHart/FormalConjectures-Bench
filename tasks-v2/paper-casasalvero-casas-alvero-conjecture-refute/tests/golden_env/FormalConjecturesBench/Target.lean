@@ -122,13 +122,12 @@ The Casas-Alvero conjecture states that in characteristic zero, if a monic polyn
 has the Casas-Alvero property, then `P = (X - α)ᵈ` for some `α`.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {K L : Type*} [Field K] [Field L] {f : K →+* L} [CharZero K] (P : K[X]) (hP : Monic P) (hP' : HasCasasAlveroProp P),
-    ∃ α : K, P = (X - C α) ^ P.natDegree
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {K L : Type*} [Field K] [Field L] {f : K →+* L} [CharZero K] (P : K[X]) (hP : Monic P) (hP' : HasCasasAlveroProp P),
+        ∃ α : K, P = (X - C α) ^ P.natDegree
+    ) := by
   sorry
 
 end conjecture

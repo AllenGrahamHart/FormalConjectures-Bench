@@ -16,7 +16,11 @@ open IntermediateField
 namespace Schanuel
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (z : Fin n → ℂ) (h : LinearIndependent ℚ z),
+        let hinj := algebraMap ℚ (adjoin ℚ (Set.range z ∪ Set.range (cexp ∘ z))) |>.injective
+        n ≤ Algebra.trdeg ℚ (adjoin ℚ (Set.range z ∪ Set.range (cexp ∘ z)))
+    ) := by
   exact Schanuel.formal_conjectures_bench_refutation
 
 end Schanuel

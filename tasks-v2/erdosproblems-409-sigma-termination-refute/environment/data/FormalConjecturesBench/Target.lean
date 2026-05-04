@@ -114,13 +114,12 @@ theorem erdos_409.variants.sigma (n : ℕ) (hn : n > 1) :
 Note: this is open — it is not clear that the σ iteration always terminates,
 since it is non-decreasing (unlike the φ iteration which is strictly decreasing). -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ) (hn : n > 1),
-    ∃ i, (σ 1 · - 1)^[i] n |>.Prime
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : n > 1),
+        ∃ i, (σ 1 · - 1)^[i] n |>.Prime
+    ) := by
   sorry
 
 end Erdos409

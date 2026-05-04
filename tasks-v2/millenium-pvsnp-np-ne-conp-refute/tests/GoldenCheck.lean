@@ -15,7 +15,9 @@ open Computability Turing
 namespace ComplexityTheory
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      NP ≠ coNP
+    ) := by
   exact ComplexityTheory.formal_conjectures_bench_refutation
 
 end ComplexityTheory

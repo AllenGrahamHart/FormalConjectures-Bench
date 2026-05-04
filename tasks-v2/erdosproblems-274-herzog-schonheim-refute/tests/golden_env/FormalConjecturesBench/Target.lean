@@ -81,14 +81,13 @@ Herzog and Schönheim conjectured that if $A$ forms a partition of $G$ with $k >
 indices $[G:G_1], \dots, [G:G_k]$ cannot be distinct.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {G : Type*} [Group G] (hG : 1 < ENat.card G) {ι : Type*} [Fintype ι]
-    (hι : 1 < Fintype.card ι) (P : Group.ExactCovering G ι),
-    ∃ i j, i ≠ j ∧ (P.parts i).index = (P.parts j).index
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {G : Type*} [Group G] (hG : 1 < ENat.card G) {ι : Type*} [Fintype ι]
+        (hι : 1 < Fintype.card ι) (P : Group.ExactCovering G ι),
+        ∃ i j, i ≠ j ∧ (P.parts i).index = (P.parts j).index
+    ) := by
   sorry
 
 end Erdos274

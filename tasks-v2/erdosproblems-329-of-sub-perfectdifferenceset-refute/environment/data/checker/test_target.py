@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "b2f64f79a301d187fba52c53c0c5247301a86d0f61db9a08e701dff4ed691b29"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "357e8900febed881a089d14168174fa66cc5c1c3e83468f275dfa457a99b1daa"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      (\u2200 (A : Finset \u2115), IsSidon (A : Set \u2115) \u2192 \u2203 (D : Set \u2115) (n : \u2115),\n            \u2191A \u2286 D \u2227 IsPerfectDifferenceSet D n) \u2192\n          sSup {sidonUpperDensity A | (A : Set \u2115) (_ : IsSidon A)} = 1\n    )"
 THEOREM_NAME = "Erdos329.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

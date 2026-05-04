@@ -15,7 +15,10 @@ open Classical SimpleGraph Filter
 namespace Erdos82
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {V : Type*} [Fintype V],
+        Tendsto (fun n => F n / Real.log n) atTop atTop
+    ) := by
   exact Erdos82.formal_conjectures_bench_refutation
 
 end Erdos82

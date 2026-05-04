@@ -13,7 +13,9 @@ import FormalConjecturesBench.Target
 namespace Erdos913
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      { p | p.Prime ∧ (8 * p ^ 2 - 1).Prime }.Infinite
+    ) := by
   exact Erdos913.formal_conjectures_bench_refutation
 
 end Erdos913

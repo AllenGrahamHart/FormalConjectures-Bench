@@ -65,14 +65,13 @@ $$ \{ z \in \mathbb{C} \mid |f(z)| < 1 \} $$
 which connects two of the roots of $f$?
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ) (f : ℂ[X]) (hn : n ≥ 2) (hnum : f.natDegree = n) (h_monic : f.Monic) (h : f.rootSet ℂ ⊆ Metric.ball 0 1),
-    ∃ (z₁ z₂ : ℂ) (h : ({z₁, z₂} : Multiset ℂ) ≤ f.roots) (γ : Path z₁ z₂),
-          Set.range γ ⊆ { z : ℂ | ‖f.eval z‖ < 1 } ∧ length (Set.range γ) < 2
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (f : ℂ[X]) (hn : n ≥ 2) (hnum : f.natDegree = n) (h_monic : f.Monic) (h : f.rootSet ℂ ⊆ Metric.ball 0 1),
+        ∃ (z₁ z₂ : ℂ) (h : ({z₁, z₂} : Multiset ℂ) ≤ f.roots) (γ : Path z₁ z₂),
+              Set.range γ ⊆ { z : ℂ | ‖f.eval z‖ < 1 } ∧ length (Set.range γ) < 2
+    ) := by
   sorry
 
 end Erdos1041

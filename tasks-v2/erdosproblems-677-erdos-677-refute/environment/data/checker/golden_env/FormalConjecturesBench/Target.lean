@@ -40,12 +40,11 @@ Denote by $M(n, k)$ the least common multiple of the finite set $\{n+1, \dotsc, 
 Is it true that for all $m \geq n + k$, we get $M(m, k) \neq M(n, k)$?
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (m n k : ℕ), k > 0 → m ≥ n + k → lcmInterval m k ≠ lcmInterval n k
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (m n k : ℕ), k > 0 → m ≥ n + k → lcmInterval m k ≠ lcmInterval n k
+    ) := by
   sorry
 
 end Erdos677

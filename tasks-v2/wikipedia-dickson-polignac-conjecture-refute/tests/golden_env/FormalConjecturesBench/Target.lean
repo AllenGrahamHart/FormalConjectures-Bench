@@ -50,13 +50,12 @@ theorem dickson_conjecture (fs : Finset ℤ[X]) (hfs : ∀ f ∈ fs, f.degree = 
 For any integer $k$ there are infinitely many primes $p$ such that $p + 2k$ is prime.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (k : ℕ),
-    Infinite {p : ℕ | p.Prime ∧ (p + 2 * k).Prime}
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (k : ℕ),
+        Infinite {p : ℕ | p.Prime ∧ (p + 2 * k).Prime}
+    ) := by
   sorry
 
 end Dickson

@@ -30,12 +30,11 @@ namespace RiemannZetaValues
 $\zeta(5)$ is irrational.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ x, Irrational x ∧ riemannZeta 5 = x
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ x, Irrational x ∧ riemannZeta 5 = x
+    ) := by
   sorry
 
 end RiemannZetaValues

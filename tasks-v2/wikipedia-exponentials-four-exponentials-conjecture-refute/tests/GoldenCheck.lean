@@ -15,7 +15,11 @@ open Complex
 namespace Exponentials
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (x : Fin 2 → ℂ) (y : Fin 2 → ℂ)
+        (h1 : LinearIndependent ℚ x) (h2 : LinearIndependent ℚ y),
+        ∃ i j : Fin 2, Transcendental ℚ (exp (x i * y j))
+    ) := by
   exact Exponentials.formal_conjectures_bench_refutation
 
 end Exponentials

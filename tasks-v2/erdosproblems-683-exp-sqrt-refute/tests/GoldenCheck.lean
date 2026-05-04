@@ -15,7 +15,9 @@ open Filter Real Erdos961
 namespace Erdos683
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ c > 0, ∀ n k : ℕ, 0 < k ∧ k ≤ n / 2 → P n k > Real.exp (c * Real.sqrt k)
+    ) := by
   exact Erdos683.formal_conjectures_bench_refutation
 
 end Erdos683

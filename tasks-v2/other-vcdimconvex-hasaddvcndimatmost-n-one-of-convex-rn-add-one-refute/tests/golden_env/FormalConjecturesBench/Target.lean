@@ -68,14 +68,13 @@ lemma exists_hasAddVCNDimAtMost_n_of_convex_rn_add_one (n : ℕ) :
 /-- If $n \ge 2$, every convex set in $\mathbb R^{n + 1}$ has $\mathrm{VC}_n$ dimension at most 1.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {n : ℕ} (hn : 2 ≤ n) {C : Set (Fin (n + 1) → ℝ)}
-    (hC : Convex ℝ C),
-    HasAddVCNDimAtMost C n 1
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {n : ℕ} (hn : 2 ≤ n) {C : Set (Fin (n + 1) → ℝ)}
+        (hC : Convex ℝ C),
+        HasAddVCNDimAtMost C n 1
+    ) := by
   sorry
 
 end VCDimConvex

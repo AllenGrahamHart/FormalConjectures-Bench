@@ -71,13 +71,12 @@ then all three must hold:
 3. Exists a number `k` such that $p = 2^k \\pm 1$ or $p = 4^k \\pm 3$
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (p : ℕ) (hp : Odd p),
-    NewMersenneConjectureStatement p
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (p : ℕ) (hp : Odd p),
+        NewMersenneConjectureStatement p
+    ) := by
   sorry
 
 end Mersenne

@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "90c27136a763c3b3a7750399a6f71eeef0c04f2f152201b5faac2cfe7c3b22c0"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "76632244d533c38067a9057371a40b638ee50f5657537214a6ae2a32daeed687"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2203 (o : \u211d \u2192 \u211d) (_ : Tendsto o atTop (\ud835\udcdd 0)),\n          E =O[atTop] fun r => r ^ (1/2 + o r)\n    )"
 THEOREM_NAME = "GaussCircleProblem.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

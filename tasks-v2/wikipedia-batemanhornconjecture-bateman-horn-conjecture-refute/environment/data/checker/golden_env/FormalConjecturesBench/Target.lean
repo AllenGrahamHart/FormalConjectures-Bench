@@ -73,17 +73,16 @@ such that $p$ does not divide the product $f_(n) f_2(n) \dotsb f_(n)$, which gua
 infinite product converges to a positive value.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (polys : Finset ℤ[X])
-    (h_nonempty : polys.Nonempty)
-    (h_irreducible : ∀ f ∈ polys, BunyakovskyCondition f)
-    (h_compat : SchinzelCondition polys),
-    (fun x : ℝ => (CountSimultaneousPrimes polys x : ℝ)) ~[atTop]
-        (fun x : ℝ => BatemanHornConstant polys * x / (Real.log x) ^ polys.card)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (polys : Finset ℤ[X])
+        (h_nonempty : polys.Nonempty)
+        (h_irreducible : ∀ f ∈ polys, BunyakovskyCondition f)
+        (h_compat : SchinzelCondition polys),
+        (fun x : ℝ => (CountSimultaneousPrimes polys x : ℝ)) ~[atTop]
+            (fun x : ℝ => BatemanHornConstant polys * x / (Real.log x) ^ polys.card)
+    ) := by
   sorry
 
 end BatemanHornConjecture

@@ -81,13 +81,12 @@ theorem conjecture_4_2 (k : ℕ) (hprim : k.Prime) (hodd : Odd k) (hgt : k > 233
 **Conjecture 4.3**: For any prime $k$ larger than $3119$, $S(k) > 3k$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (k : ℕ) (hprim : k.Prime) (hodd : Odd k) (hgt : k > 3119),
-    3 * k < S k
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (k : ℕ) (hprim : k.Prime) (hodd : Odd k) (hgt : k > 3119),
+        3 * k < S k
+    ) := by
   sorry
 
 end Arxiv.«2501.03234»

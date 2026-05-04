@@ -15,7 +15,10 @@ open Mersenne
 namespace Mersenne
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (p : ℕ) (hp : Odd p),
+        NewMersenneConjectureStatement p
+    ) := by
   exact Mersenne.formal_conjectures_bench_refutation
 
 end Mersenne

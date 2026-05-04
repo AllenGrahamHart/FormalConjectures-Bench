@@ -32,13 +32,12 @@ namespace GoldbachConjecture
 Can every even integer greater than 2 be written as the sum of two primes?
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ) (hn : 2 < n) (hn_even : Even n),
-    ∃ p q, Prime p ∧ Prime q ∧ n = p + q
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : 2 < n) (hn_even : Even n),
+        ∃ p q, Prime p ∧ Prime q ∧ n = p + q
+    ) := by
   sorry
 
 end GoldbachConjecture

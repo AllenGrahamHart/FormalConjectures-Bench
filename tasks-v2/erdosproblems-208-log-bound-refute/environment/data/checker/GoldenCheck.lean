@@ -16,7 +16,9 @@ open erdos208
 namespace Erdos208
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      (fun n ↦ (s (n + 1) - s n : ℝ)) =O[atTop] fun n ↦ log (s n)
+    ) := by
   exact Erdos208.formal_conjectures_bench_refutation
 
 end Erdos208

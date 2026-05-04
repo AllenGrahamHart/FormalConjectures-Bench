@@ -44,13 +44,12 @@ Show that $r_k(N) = o_k(N / \log N)$, where $r_k(N)$ the largest possible size o
 of $\{1, \dots, N\}$ that does not contain any non-trivial $k$-term arithmetic progression.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (k : ℕ) (hk : 1 < k),
-    (fun N => (r k N : ℝ)) =o[atTop] (fun N : ℕ => N / (N : ℝ).log)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (k : ℕ) (hk : 1 < k),
+        (fun N => (r k N : ℝ)) =o[atTop] (fun N : ℕ => N / (N : ℝ).log)
+    ) := by
   sorry
 
 end Erdos142

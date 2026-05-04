@@ -125,12 +125,11 @@ theorem erdos_1074.variants.PillaiPrimes_init :
 /-- Regarding the first question, Hardy and Subbarao computed all EHS numbers up to $2^{10}$, and
 write "...if this trend conditions we expect [the limit] to be around 0.5, if it exists." -/
 
-def formal_conjectures_bench_statement : Prop :=
-  EHSNumbers.HasDensity (1 / 2)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      EHSNumbers.HasDensity (1 / 2)
+    ) := by
   sorry
 
 end Erdos1074

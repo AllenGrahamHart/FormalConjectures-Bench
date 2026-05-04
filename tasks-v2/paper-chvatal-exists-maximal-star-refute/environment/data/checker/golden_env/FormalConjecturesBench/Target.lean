@@ -45,14 +45,13 @@ x of α such that the family consisting of all members of F containing x is an i
 subfamily of F with maximal cardinality.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {α : Type} [Fintype α] [DecidableEq α] [Nonempty α],
-    ∀ F : Finset (Finset α), Decreasing F →
-            ∃ x : α, ∀ G, G ⊆ F → Intersecting G → G.card ≤ { A ∈ F | x ∈ A }.card
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {α : Type} [Fintype α] [DecidableEq α] [Nonempty α],
+        ∀ F : Finset (Finset α), Decreasing F →
+                ∃ x : α, ∀ G, G ⊆ F → Intersecting G → G.card ≤ { A ∈ F | x ∈ A }.card
+    ) := by
   sorry
 
 end Chvatal

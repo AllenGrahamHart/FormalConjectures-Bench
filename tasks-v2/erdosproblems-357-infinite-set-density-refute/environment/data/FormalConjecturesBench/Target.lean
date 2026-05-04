@@ -113,14 +113,13 @@ theorem erdos_357.variants.infinite_set_lower_density (A : ℕ → ℕ) (hA : St
 /--  Suppose $A$ is an infinite set such that all finite sums of consecutive terms of $A$ are distinct.
 Then it is conjectured that $A$ has density 0. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (A : ℕ → ℕ) (hA : StrictMono A)
-    (hA : HasDistinctSums A),
-    (Set.range A).HasDensity 0
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (A : ℕ → ℕ) (hA : StrictMono A)
+        (hA : HasDistinctSums A),
+        (Set.range A).HasDensity 0
+    ) := by
   sorry
 
 end Erdos357

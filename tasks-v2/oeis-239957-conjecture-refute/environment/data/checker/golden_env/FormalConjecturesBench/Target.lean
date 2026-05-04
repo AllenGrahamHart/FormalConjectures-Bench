@@ -37,14 +37,13 @@ namespace OeisA239957
 form $k^2 + 1$, where $k$ is an integer.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (p : ℕ) (hp : p.Prime),
-    ∃ k : ℤ, k ^ 2 + 1 < p ∧
-          orderOf (k ^ 2 + 1 : ZMod p) = p - 1
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (p : ℕ) (hp : p.Prime),
+        ∃ k : ℤ, k ^ 2 + 1 < p ∧
+              orderOf (k ^ 2 + 1 : ZMod p) = p - 1
+    ) := by
   sorry
 
 end OeisA239957

@@ -55,13 +55,12 @@ Pollock's (tetrahedral numbers) conjecture:
 every integer is the sum of at most $5$ tetrahedral numbers.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (N : ℕ),
-    ∃ f : Fin 5 → ℕ, N = ∑ i, tetrahedral (f i)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (N : ℕ),
+        ∃ f : Fin 5 → ℕ, N = ∑ i, tetrahedral (f i)
+    ) := by
   sorry
 
 end PollocksConjecture

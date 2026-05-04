@@ -16,7 +16,10 @@ open scoped EuclideanGeometry Real Topology
 namespace GaussCircleProblem
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ (o : ℝ → ℝ) (_ : Tendsto o atTop (𝓝 0)),
+          E =O[atTop] fun r => r ^ (1/2 + o r)
+    ) := by
   exact GaussCircleProblem.formal_conjectures_bench_refutation
 
 end GaussCircleProblem

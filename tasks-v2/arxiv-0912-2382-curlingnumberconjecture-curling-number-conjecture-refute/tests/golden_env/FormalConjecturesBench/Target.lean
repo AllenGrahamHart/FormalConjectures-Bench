@@ -52,13 +52,12 @@ noncomputable def S (S₀ : List ℤ) (n : ℕ) : List ℤ :=
 The sequence will eventually reach $1$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (S₀ : List ℤ) (h : S₀ ≠ []),
-    ∃ m, k (S S₀ m) = 1
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (S₀ : List ℤ) (h : S₀ ≠ []),
+        ∃ m, k (S S₀ m) = 1
+    ) := by
   sorry
 
 end Arxiv.«0912.2382»

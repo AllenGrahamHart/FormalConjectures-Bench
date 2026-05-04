@@ -13,7 +13,11 @@ import FormalConjecturesBench.Target
 namespace OeisA239957
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (p : ℕ) (hp : p.Prime),
+        ∃ k : ℤ, k ^ 2 + 1 < p ∧
+              orderOf (k ^ 2 + 1 : ZMod p) = p - 1
+    ) := by
   exact OeisA239957.formal_conjectures_bench_refutation
 
 end OeisA239957

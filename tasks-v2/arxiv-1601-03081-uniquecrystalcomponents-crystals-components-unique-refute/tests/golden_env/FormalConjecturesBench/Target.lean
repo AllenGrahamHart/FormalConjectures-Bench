@@ -47,14 +47,13 @@ positive integers $c, d > 1$, different from the couple $a, b$, such that $n = c
 $B(c, d) ∈ ℕ$, i.e., the components of the crystals are unique.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n a b c d : ℕ)
-    (hab : IsCrystalWithComponents n a b) (hcd : IsCrystalWithComponents n c d),
-    ({a, b} : Finset ℕ) = {c, d}
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n a b c d : ℕ)
+        (hab : IsCrystalWithComponents n a b) (hcd : IsCrystalWithComponents n c d),
+        ({a, b} : Finset ℕ) = {c, d}
+    ) := by
   sorry
 
 end Arxiv.«1601.03081»

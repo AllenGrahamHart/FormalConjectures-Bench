@@ -152,12 +152,11 @@ theorem transcendental_catalanConstant : Transcendental ℚ catalanConstant := b
 The Gompertz constant $\delta$ is transcendental.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  Transcendental ℚ gompertzConstant
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      Transcendental ℚ gompertzConstant
+    ) := by
   sorry
 
 end Transcendental

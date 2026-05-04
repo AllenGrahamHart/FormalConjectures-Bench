@@ -48,13 +48,12 @@ noncomputable def F (n : ℕ) : ℕ :=
 $F(n) / \log n \to \infty as n \to \infty$
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {V : Type*} [Fintype V],
-    Tendsto (fun n => F n / Real.log n) atTop atTop
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {V : Type*} [Fintype V],
+        Tendsto (fun n => F n / Real.log n) atTop atTop
+    ) := by
   sorry
 
 end Erdos82

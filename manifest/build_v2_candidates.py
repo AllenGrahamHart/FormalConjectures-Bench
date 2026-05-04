@@ -333,7 +333,10 @@ def build_v2_instances(
         if instance.get("inclusion_status") == "included":
             selected_by_id[instance["instance_id"]] = v2_instance(instance, BUCKET_GOLD)
         elif instance.get("inclusion_status") == "candidate" and instance.get("v1_0_0_status") == "deferred":
-            if instance.get("uses_answer_sorry"):
+            source_file = instance.get("source_file", "")
+            if source_file.startswith(("FormalConjectures/Util/", "FormalConjectures/Subsets/")):
+                exclusions.append(exclusion_row(instance, "support_file", "deferred candidate"))
+            elif instance.get("uses_answer_sorry"):
                 exclusions.append(exclusion_row(instance, "answer_sorry", "deferred formal candidate"))
             else:
                 selected_by_id[instance["instance_id"]] = v2_instance(instance, BUCKET_DEFERRED)
@@ -385,7 +388,7 @@ def write_exclusions(path: Path, rows: list[dict[str, str]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     fieldnames = ["instance_id", "theorem_name", "source_file", "declaration_line", "category", "reason", "detail"]
     with path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 

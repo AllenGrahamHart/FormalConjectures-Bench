@@ -101,12 +101,11 @@ as it could in principle be proven by direct computation.
 *Reference:* [YouTube](https://www.youtube.com/watch?v=BdHFLfv-ThQ)
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ¬ ∃ (n : ℤ), π ^ π ^ π ^ π = n
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ¬ ∃ (n : ℤ), π ^ π ^ π ^ π = n
+    ) := by
   sorry
 
 end Transcendental

@@ -81,14 +81,13 @@ theorem isEquidistributedModuloOne_three_halves_pow :
 /-- For any transcendental number `x`, the sequence `x * (3 / 2) ^ n` is
 equidistributed modulo 1. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (x : ℝ)
-    (hx : Transcendental ℚ x),
-    IsEquidistributedModuloOne (fun n ↦ x * (3 / 2 : ℝ) ^ n)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (x : ℝ)
+        (hx : Transcendental ℚ x),
+        IsEquidistributedModuloOne (fun n ↦ x * (3 / 2 : ℝ) ^ n)
+    ) := by
   sorry
 
 end Equidistribution

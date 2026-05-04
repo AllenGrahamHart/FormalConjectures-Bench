@@ -15,7 +15,9 @@ open Finset Nat Filter Topology
 namespace Erdos889
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ l, Tendsto (v_l l) atTop (𝓝 ⊤)
+    ) := by
   exact Erdos889.formal_conjectures_bench_refutation
 
 end Erdos889

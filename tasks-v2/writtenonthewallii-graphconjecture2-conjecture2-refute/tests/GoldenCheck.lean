@@ -15,7 +15,10 @@ open Classical SimpleGraph
 namespace WrittenOnTheWallII.GraphConjecture2
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {α : Type*} [Fintype α] [DecidableEq α] [Nontrivial α] (G : SimpleGraph α) (h : G.Connected),
+        2 * (l G - 1) ≤ Ls G
+    ) := by
   exact WrittenOnTheWallII.GraphConjecture2.formal_conjectures_bench_refutation
 
 end WrittenOnTheWallII.GraphConjecture2

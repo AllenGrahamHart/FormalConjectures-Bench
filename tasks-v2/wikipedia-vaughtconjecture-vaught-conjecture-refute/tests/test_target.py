@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "9aa7ef289fe73e98d7f3e2bdc265c491ae257d1e92aade3732f0838d41264fc3"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "7a0e4f7fc4562b1e1058419aaa7baddf917699ca2c4e436f4161bd6e4ed0d88e"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2200 {L : FirstOrder.Language} (hL : Countable L.Symbols)\n                              {T : L.Theory} (hT : T.IsComplete),\n        numberOfCountableModels T \u2264 Cardinal.aleph0 \u2228 numberOfCountableModels T = Cardinal.continuum\n    )"
 THEOREM_NAME = "VaughtConjecture.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

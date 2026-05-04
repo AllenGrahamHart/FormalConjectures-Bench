@@ -15,7 +15,10 @@ open scoped ArithmeticFunction.sigma
 namespace OeisA63880
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {n : ℕ} (h : a n),
+        n % 216 = 108
+    ) := by
   exact OeisA63880.formal_conjectures_bench_refutation
 
 end OeisA63880

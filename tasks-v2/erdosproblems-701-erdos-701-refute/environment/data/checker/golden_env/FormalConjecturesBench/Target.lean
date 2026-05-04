@@ -35,16 +35,15 @@ whenever $\mathcal{F}'\subseteq \mathcal{F}$ is an intersecting subfamily we hav
 $$\lvert \mathcal{F}'\rvert \leq \lvert \{ A\in \mathcal{F} : x\in A\}\rvert.$$
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {X : Type*} [Nonempty X],
-    ∀ (F : Set (Set X)), IsLowerSet F →
-          ∃ x : X, ∀ᵉ (F' ⊆ F),
-            F'.Intersecting →
-              (#F' ≤ #{ A : Set X | A ∈ F ∧ x ∈ A })
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {X : Type*} [Nonempty X],
+        ∀ (F : Set (Set X)), IsLowerSet F →
+              ∃ x : X, ∀ᵉ (F' ⊆ F),
+                F'.Intersecting →
+                  (#F' ≤ #{ A : Set X | A ∈ F ∧ x ∈ A })
+    ) := by
   sorry
 
 end Erdos701

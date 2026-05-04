@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "ffbbc0dee976785494a221e399b97ed5a64892e8468abc770540d169df1609de"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "7e87689493e50d43de5913adfe2fc52ef42568556eb7974ac47e41376dc78fc2"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2200 (n r : \u2115), n > 1 \u2192 r > 0 \u2192 n.gcd r = 1 \u2192\n          let R := Polynomial (ZMod n)\n          let X : R := Polynomial.X\n          let I : Ideal R := Ideal.span ({X^r - 1} : Set R)\n          Ideal.Quotient.mk I ((X - 1)^n) = Ideal.Quotient.mk I (X^n - 1) \u2192\n          Ideal.Quotient.mk I ((X + 2)^n) = Ideal.Quotient.mk I (X^n + 2) \u2192\n          (n.Prime \u2228 (n^2 : ZMod r) = 1)\n    )"
 THEOREM_NAME = "AgrawalConjecture.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

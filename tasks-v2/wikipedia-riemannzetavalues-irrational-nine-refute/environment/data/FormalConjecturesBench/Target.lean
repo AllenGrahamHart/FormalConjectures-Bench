@@ -44,12 +44,11 @@ theorem irrational_seven : ∃ x, Irrational x ∧ riemannZeta 7 = x := by
 $\zeta(9)$ is irrational.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ x, Irrational x ∧ riemannZeta 9 = x
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ x, Irrational x ∧ riemannZeta 9 = x
+    ) := by
   sorry
 
 end RiemannZetaValues

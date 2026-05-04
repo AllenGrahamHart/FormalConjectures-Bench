@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "1164a54ec5d3c78d5f420d304b18627012e95eb4cca523f2d4655b418c48c455"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "97d4504326934d683b1e228b07d2a747c512c4f3cdb574a4ed537c738bb91807"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2200 {K L : Type*} [Field K] [Field L] {f : K \u2192+* L} [CharZero K] (P : K[X]) (hP : Monic P) (hP' : HasCasasAlveroProp P),\n        \u2203 \u03b1 : K, P = (X - C \u03b1) ^ P.natDegree\n    )"
 THEOREM_NAME = "CasasAlvero.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

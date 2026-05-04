@@ -42,13 +42,12 @@ theorem oppermann_conjecture.parts.i (x : ℕ) (hx : 2 ≤ x) :
 For every integer $x \ge 2$ there exists a prime between $x^2$ and $x(x+1)$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (x : ℕ) (hx : 2 ≤ x),
-    ∃ p ∈ Ioo (x^2) (x * (x + 1)), p.Prime
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (x : ℕ) (hx : 2 ≤ x),
+        ∃ p ∈ Ioo (x^2) (x * (x + 1)), p.Prime
+    ) := by
   sorry
 
 end Oppermann

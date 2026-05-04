@@ -13,7 +13,10 @@ import FormalConjecturesBench.Target
 namespace InverseGalois
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {G : Type*} [Fintype G] [Group G],
+        IsRealizable ℚ G
+    ) := by
   exact InverseGalois.formal_conjectures_bench_refutation
 
 end InverseGalois

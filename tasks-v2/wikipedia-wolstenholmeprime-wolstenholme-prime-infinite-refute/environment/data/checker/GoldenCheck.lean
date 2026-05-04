@@ -13,7 +13,9 @@ import FormalConjecturesBench.Target
 namespace WolstenholmePrime
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      {p : ℕ | IsWolstenholmePrime p}.Infinite
+    ) := by
   exact WolstenholmePrime.formal_conjectures_bench_refutation
 
 end WolstenholmePrime

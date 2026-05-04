@@ -15,7 +15,10 @@ open Filter Real
 namespace Erdos282
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {x : ℚ} (hx : x ∈ Set.Ioo 0 1) (hx_den : Odd x.den),
+        greedyUnitFractionRem { n | Odd n } x =ᶠ[atTop] 0
+    ) := by
   exact Erdos282.formal_conjectures_bench_refutation
 
 end Erdos282

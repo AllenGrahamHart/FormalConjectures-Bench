@@ -52,14 +52,13 @@ $$x_1^5 + x_2^5 + x_3^5 \neq y^5.$$
 This corresponds to the case $k = 5$, $n = 3$, $m = 1$ of the general conjecture,
 where $n + m = 4 < 5 = k$ would be required to yield a counterexample. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ x₁ x₂ x₃ y : ℕ,
-        0 < x₁ → 0 < x₂ → 0 < x₃ → 0 < y →
-        x₁ ^ 5 + x₂ ^ 5 + x₃ ^ 5 ≠ y ^ 5
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ x₁ x₂ x₃ y : ℕ,
+            0 < x₁ → 0 < x₂ → 0 < x₃ → 0 < y →
+            x₁ ^ 5 + x₂ ^ 5 + x₃ ^ 5 ≠ y ^ 5
+    ) := by
   sorry
 
 end LanderParkinSelfridge

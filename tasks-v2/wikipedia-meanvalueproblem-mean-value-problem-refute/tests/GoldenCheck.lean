@@ -13,7 +13,11 @@ import FormalConjecturesBench.Target
 namespace MeanValueProblem
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (p : Polynomial ℂ) (hp : 2 ≤ p.degree) (z : ℂ) (K : ℝ),
+        ∃ c : ℂ, p.derivative.eval c = 0 ∧
+              ‖p.eval z - p.eval c‖ / ‖z - c‖ ≤ ‖p.derivative.eval z‖
+    ) := by
   exact MeanValueProblem.formal_conjectures_bench_refutation
 
 end MeanValueProblem

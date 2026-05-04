@@ -51,12 +51,11 @@ integer $t$ such that $d_n = t$ has no solutions for $n \le x$.
 
 Is it true that $r(x) / \log x \to \infty$? -/
 
-def formal_conjectures_bench_statement : Prop :=
-  atTop.Tendsto (fun n ↦ r n / Real.log n) atTop
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      atTop.Tendsto (fun n ↦ r n / Real.log n) atTop
+    ) := by
   sorry
 
 end Erdos853

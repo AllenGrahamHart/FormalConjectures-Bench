@@ -108,12 +108,11 @@ theorem pi_pow_pi_pow_pi_pow_pi_not_integer : ¬ ∃ (n : ℤ), π ^ π ^ π ^ �
 $\log(\pi)$ is transcendental.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  Transcendental ℚ (log π)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      Transcendental ℚ (log π)
+    ) := by
   sorry
 
 end Transcendental

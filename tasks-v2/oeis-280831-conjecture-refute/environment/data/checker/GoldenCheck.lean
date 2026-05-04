@@ -13,7 +13,10 @@ import FormalConjecturesBench.Target
 namespace OeisA280831
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ),
+        HasSquareCondition n
+    ) := by
   exact OeisA280831.formal_conjectures_bench_refutation
 
 end OeisA280831

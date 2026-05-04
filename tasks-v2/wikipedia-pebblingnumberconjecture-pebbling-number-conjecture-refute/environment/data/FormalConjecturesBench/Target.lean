@@ -127,13 +127,12 @@ the pebbling number of a Cartesian product of graphs is at most equal to the pro
 pebbling numbers of the factors.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {V : Type} [DecidableEq V] [Fintype V] (G H : SimpleGraph V),
-    PebblingNumber (G □ H) ≤ PebblingNumber G * PebblingNumber H
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {V : Type} [DecidableEq V] [Fintype V] (G H : SimpleGraph V),
+        PebblingNumber (G □ H) ≤ PebblingNumber G * PebblingNumber H
+    ) := by
   sorry
 
 end PebblingNumberConjecture

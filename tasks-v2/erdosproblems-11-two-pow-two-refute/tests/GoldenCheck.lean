@@ -13,7 +13,10 @@ import FormalConjecturesBench.Target
 namespace Erdos11
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : Odd n) (hn' : 1 < n),
+        ∃ k l m : ℕ , Squarefree k ∧ n = k + 2^l + 2^m
+    ) := by
   exact Erdos11.formal_conjectures_bench_refutation
 
 end Erdos11

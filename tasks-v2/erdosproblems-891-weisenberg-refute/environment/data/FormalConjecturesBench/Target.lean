@@ -72,15 +72,14 @@ $n'$ such that $\frac{L_k}{m}n'+1$ is prime for all $1\leq m < p_1\cdots p_k$. I
 if $n=L_kn'+1$, then all integers in $[n,n+p_1\cdots p_k-1)$ have at most $k$ prime factors.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (k : ℕ) (hk : k ≥ 2),
-    ∃ᶠ n in atTop,
-          ∀ m ∈ Ico n (n + (∏ i ∈ range k, i.nth Nat.Prime) - 1),
-          ω m ≤ k
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (k : ℕ) (hk : k ≥ 2),
+        ∃ᶠ n in atTop,
+              ∀ m ∈ Ico n (n + (∏ i ∈ range k, i.nth Nat.Prime) - 1),
+              ω m ≤ k
+    ) := by
   sorry
 
 end Erdos891

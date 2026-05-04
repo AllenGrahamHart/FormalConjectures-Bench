@@ -79,13 +79,12 @@ The Odd Perfect Number Conjecture states that all perfect numbers are even.
 [Wikipedia](https://en.wikipedia.org/wiki/Perfect_number#Odd_perfect_numbers)
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ) (hn : Perfect n),
-    Even n
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : Perfect n),
+        Even n
+    ) := by
   sorry
 
 end PerfectNumbers

@@ -17,7 +17,10 @@ open SimpleGraph
 namespace WrittenOnTheWallII.GraphConjecture34
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {α : Type*} [Fintype α] [DecidableEq α] [Nontrivial α] (G : SimpleGraph α) (h_conn : G.Connected),
+        Int.ceil (distavg G (graphCenter G) + distavg G (maxEccentricityVertices G)) ≤ (path G : ℤ)
+    ) := by
   exact WrittenOnTheWallII.GraphConjecture34.formal_conjectures_bench_refutation
 
 end WrittenOnTheWallII.GraphConjecture34

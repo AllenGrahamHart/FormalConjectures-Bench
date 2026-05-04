@@ -16,7 +16,9 @@ namespace Green24
 namespace variants
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      gamma = 1/3
+    ) := by
   exact Green24.variants.formal_conjectures_bench_refutation
 
 end variants

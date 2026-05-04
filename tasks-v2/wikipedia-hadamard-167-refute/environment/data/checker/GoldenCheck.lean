@@ -13,7 +13,9 @@ import FormalConjecturesBench.Target
 namespace Hadamard
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ M, IsHadamard (n := 4 * 167) M
+    ) := by
   exact Hadamard.formal_conjectures_bench_refutation
 
 end Hadamard

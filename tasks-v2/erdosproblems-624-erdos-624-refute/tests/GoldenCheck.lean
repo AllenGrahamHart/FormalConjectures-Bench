@@ -15,7 +15,9 @@ open Filter Finset
 namespace Erdos624
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      atTop.Tendsto (fun n : ℕ => H n - Real.logb 2 (n : ℝ)) atTop
+    ) := by
   exact Erdos624.formal_conjectures_bench_refutation
 
 end Erdos624

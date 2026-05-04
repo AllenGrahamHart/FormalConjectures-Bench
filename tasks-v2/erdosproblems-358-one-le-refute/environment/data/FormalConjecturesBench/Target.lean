@@ -113,12 +113,11 @@ $$n=\sum_{u\leq i\leq v}a_i$$ such that the sum has at least two terms, then for
 $1 \leq g(n)$ for sufficiently large $n$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ A, StrictMono A ∧ ∀ᶠ n in atTop, 1 ≤ g A n
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ A, StrictMono A ∧ ∀ᶠ n in atTop, 1 ≤ g A n
+    ) := by
   sorry
 
 end Erdos358

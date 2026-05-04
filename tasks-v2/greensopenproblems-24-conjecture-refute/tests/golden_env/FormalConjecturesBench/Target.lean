@@ -86,12 +86,11 @@ theorem lower_HL : gamma ≥ 1/12 := by
 
 /-- Conjecture p.579 in [Aa19]: $\left({1}{3} + o(1)\right) n^2$. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  gamma = 1/3
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      gamma = 1/3
+    ) := by
   sorry
 
 end variants

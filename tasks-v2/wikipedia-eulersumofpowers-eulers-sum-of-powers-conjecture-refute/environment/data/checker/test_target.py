@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "3730e3269688118784b09ccee7e1ba7f586031f7234109edb471e35a513ab2e7"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "b9c3d43d27369c00cb26ecc209283af7608903aed28feb2268aec3cb4f9aa8a0"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2200 (n k b : \u2115) (hn : 1 < n) (hk : 5 < k) (a : Fin n \u2192 \u2115)\n        (ha : \u2200 i, a i > 0) (hsum : \u2211 i, (a i) ^ k = b ^ k),\n        k \u2264 n\n    )"
 THEOREM_NAME = "EulerSumOfPowers.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

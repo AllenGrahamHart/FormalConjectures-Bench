@@ -69,13 +69,12 @@ $x$ as the sum of distinct unit fractions with denominators from $A$.
 Does this process always terminate if $x$ has odd denominator and $A$ is the
 set of odd numbers? -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {x : ℚ} (hx : x ∈ Set.Ioo 0 1) (hx_den : Odd x.den),
-    greedyUnitFractionRem { n | Odd n } x =ᶠ[atTop] 0
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {x : ℚ} (hx : x ∈ Set.Ioo 0 1) (hx_den : Odd x.den),
+        greedyUnitFractionRem { n | Odd n } x =ᶠ[atTop] 0
+    ) := by
   sorry
 
 end Erdos282

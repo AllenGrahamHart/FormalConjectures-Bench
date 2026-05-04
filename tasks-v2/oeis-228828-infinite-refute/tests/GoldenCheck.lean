@@ -15,7 +15,9 @@ open scoped Nat.Prime
 namespace OeisA228828
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      {a n | n}.Infinite
+    ) := by
   exact OeisA228828.formal_conjectures_bench_refutation
 
 end OeisA228828

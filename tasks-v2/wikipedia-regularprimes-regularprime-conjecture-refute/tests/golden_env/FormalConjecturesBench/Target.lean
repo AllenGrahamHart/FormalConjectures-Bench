@@ -79,13 +79,12 @@ def RegularPrimeConjecture : Prop :=
 
 /-- Conjecture: The set of regular primes is infinite. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (p : ℕ),
-    RegularPrimeConjecture
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (p : ℕ),
+        RegularPrimeConjecture
+    ) := by
   sorry
 
 end RegularPrimes

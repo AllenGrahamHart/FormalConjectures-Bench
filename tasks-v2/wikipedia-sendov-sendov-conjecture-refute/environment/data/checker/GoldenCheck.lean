@@ -16,7 +16,10 @@ open Sendov
 namespace Sendov
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : 2 ≤ n),
+        n.SatisfiesSendovConjecture
+    ) := by
   exact Sendov.formal_conjectures_bench_refutation
 
 end Sendov

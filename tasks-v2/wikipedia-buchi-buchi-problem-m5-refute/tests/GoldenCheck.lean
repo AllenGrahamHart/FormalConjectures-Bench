@@ -13,7 +13,9 @@ import FormalConjecturesBench.Target
 namespace Buchi
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      IsBuchi 5
+    ) := by
   exact Buchi.formal_conjectures_bench_refutation
 
 end Buchi

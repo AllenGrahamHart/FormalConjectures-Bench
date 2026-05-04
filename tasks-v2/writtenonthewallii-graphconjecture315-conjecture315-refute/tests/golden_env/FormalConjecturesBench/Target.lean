@@ -40,14 +40,13 @@ Let `G` be a simple connected graph and let `P` denote the set of pendant vertic
 (vertices of degree 1). If `α(G) = |P|`, then `G` is well totally dominated.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {α : Type*} [Fintype α] [DecidableEq α] (G : SimpleGraph α) [DecidableRel G.Adj] (hG : G.Connected)
-    (h : G.indepNum = (pendantVertices G).card),
-    IsWellTotallyDominated G
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {α : Type*} [Fintype α] [DecidableEq α] (G : SimpleGraph α) [DecidableRel G.Adj] (hG : G.Connected)
+        (h : G.indepNum = (pendantVertices G).card),
+        IsWellTotallyDominated G
+    ) := by
   sorry
 
 end WrittenOnTheWallII.GraphConjecture315

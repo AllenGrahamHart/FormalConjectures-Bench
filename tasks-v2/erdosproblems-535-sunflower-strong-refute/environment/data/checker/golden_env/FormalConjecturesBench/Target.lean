@@ -116,17 +116,16 @@ i.e. prime factors counted with multiplicity; this stronger statement would impl
 the conjectured upper bound for $f_r(N)$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {r : ℕ} (hr : 3 ≤ r),
-    ∃ c_r > (0 : ℝ),
-          ∀ k : ℕ, ∀ A : Finset ℕ,
-            AllBigOmega k A →
-            NoConstantPairwiseGcdCoprimeSubsets r A →
-            (A.card : ℝ) ≤ c_r ^ k
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {r : ℕ} (hr : 3 ≤ r),
+        ∃ c_r > (0 : ℝ),
+              ∀ k : ℕ, ∀ A : Finset ℕ,
+                AllBigOmega k A →
+                NoConstantPairwiseGcdCoprimeSubsets r A →
+                (A.card : ℝ) ≤ c_r ^ k
+    ) := by
   sorry
 
 end Erdos535

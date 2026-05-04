@@ -58,13 +58,12 @@ theorem irrational_eleven : ∃ x, Irrational x ∧ riemannZeta 11 = x := by
 $\zeta(2n + 1)$ is irrational for any $n\in\mathbb{N}^{+}$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ) (hn : 0 < n),
-    ∃ x, Irrational x ∧ riemannZeta (2 * n + 1) = x
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : 0 < n),
+        ∃ x, Irrational x ∧ riemannZeta (2 * n + 1) = x
+    ) := by
   sorry
 
 end RiemannZetaValues

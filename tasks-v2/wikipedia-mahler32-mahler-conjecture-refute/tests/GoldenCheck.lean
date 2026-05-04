@@ -13,7 +13,10 @@ import FormalConjecturesBench.Target
 namespace Mahler32
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (x : ℝ) (h : x ≠ 0) (hx : IsZNumber x),
+        False
+    ) := by
   exact Mahler32.formal_conjectures_bench_refutation
 
 end Mahler32

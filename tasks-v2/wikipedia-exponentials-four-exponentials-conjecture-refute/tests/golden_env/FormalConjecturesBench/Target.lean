@@ -34,14 +34,13 @@ Let $x_0, x_1$ and $y_0, y_1$ be $\mathbb Q$-linearly independent pairs of compl
 then some $e^{x_i y_j}$ is transcendental.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (x : Fin 2 → ℂ) (y : Fin 2 → ℂ)
-    (h1 : LinearIndependent ℚ x) (h2 : LinearIndependent ℚ y),
-    ∃ i j : Fin 2, Transcendental ℚ (exp (x i * y j))
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (x : Fin 2 → ℂ) (y : Fin 2 → ℂ)
+        (h1 : LinearIndependent ℚ x) (h2 : LinearIndependent ℚ y),
+        ∃ i j : Fin 2, Transcendental ℚ (exp (x i * y j))
+    ) := by
   sorry
 
 end Exponentials

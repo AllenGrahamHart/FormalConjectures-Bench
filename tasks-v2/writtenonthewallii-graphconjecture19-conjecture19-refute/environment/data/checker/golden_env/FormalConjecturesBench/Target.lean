@@ -43,14 +43,13 @@ satisfies
 eccentricity and `l(G)` is the independence number of neighbourhoods.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {α : Type*} [Fintype α] [DecidableEq α] (G : SimpleGraph α) [Nontrivial α] (h_conn : G.Connected),
-    FLOOR ((∑ v ∈ Finset.univ, ecc G v) / (Fintype.card α : ℝ) + sSup (Set.range (indepNeighbors G)))
-          ≤ b G
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {α : Type*} [Fintype α] [DecidableEq α] (G : SimpleGraph α) [Nontrivial α] (h_conn : G.Connected),
+        FLOOR ((∑ v ∈ Finset.univ, ecc G v) / (Fintype.card α : ℝ) + sSup (Set.range (indepNeighbors G)))
+              ≤ b G
+    ) := by
   sorry
 
 end WrittenOnTheWallII.GraphConjecture19

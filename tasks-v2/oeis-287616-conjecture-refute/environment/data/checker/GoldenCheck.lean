@@ -13,7 +13,10 @@ import FormalConjecturesBench.Target
 namespace OeisA287616
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ),
+        IsSumOfTriangularAndGeneralizedPolygonal n
+    ) := by
   exact OeisA287616.formal_conjectures_bench_refutation
 
 end OeisA287616

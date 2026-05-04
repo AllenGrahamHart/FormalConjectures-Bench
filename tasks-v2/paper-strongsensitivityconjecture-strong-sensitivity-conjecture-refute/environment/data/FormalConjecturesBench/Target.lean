@@ -98,13 +98,12 @@ conjecture only asked for a polynomial bound in terms of `s(f)`. Huang's
 celebrated result (often called the sensitivity theorem) gives a quartic bound,
 `bs(f) ≤ s(f)^4`, thereby settling the original conjecture. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {n : ℕ} (f : (Fin n → Bool) → Bool),
-    blockSensitivity f ≤ sensitivity f ^ 2
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {n : ℕ} (f : (Fin n → Bool) → Bool),
+        blockSensitivity f ≤ sensitivity f ^ 2
+    ) := by
   sorry
 
 end Sensitivity

@@ -22,7 +22,9 @@ namespace EllipticCurveRank
 namespace WeierstrassCurve
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      finrank ℤ elkiesKlagsbrun29⟮ℚ⟯ = 29
+    ) := by
   exact EllipticCurveRank.WeierstrassCurve.formal_conjectures_bench_refutation
 
 end WeierstrassCurve

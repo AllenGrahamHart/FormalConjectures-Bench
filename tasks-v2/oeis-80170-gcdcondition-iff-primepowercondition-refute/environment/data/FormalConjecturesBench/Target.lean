@@ -62,13 +62,12 @@ def PrimePowerCondition (k : ℕ) : Prop :=
 Conjecture: The gcd condition is equivalent to the prime power condition.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (k : ℕ) (hk : 2 ≤ k),
-    GCDCondition k ↔ PrimePowerCondition (k - 1)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (k : ℕ) (hk : 2 ≤ k),
+        GCDCondition k ↔ PrimePowerCondition (k - 1)
+    ) := by
   sorry
 
 end OeisA80170

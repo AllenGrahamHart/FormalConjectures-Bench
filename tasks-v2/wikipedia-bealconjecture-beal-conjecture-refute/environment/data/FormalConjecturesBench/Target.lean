@@ -35,12 +35,11 @@ The **Beal Conjecture**: if we are given positive integers $A, B, C, x, y, z$ su
 $x, y, z > 2$ and $A^x + B^y = C^z$ then $A, B, C$ have a common divisor.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  bealConjecture
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      bealConjecture
+    ) := by
   sorry
 
 end BealConjecture

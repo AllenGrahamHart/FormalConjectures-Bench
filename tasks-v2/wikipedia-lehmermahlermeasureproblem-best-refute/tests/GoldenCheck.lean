@@ -15,7 +15,11 @@ open Polynomial LehmerMahlerMeasureProblem
 namespace LehmerMahlerMeasureProblem
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (f : ℤ[X])
+        (hf : mahlerMeasureZ f > 1),
+        mahlerMeasureZ f ≥ mahlerMeasureZ lehmerPolynomial
+    ) := by
   exact LehmerMahlerMeasureProblem.formal_conjectures_bench_refutation
 
 end LehmerMahlerMeasureProblem

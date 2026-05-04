@@ -108,13 +108,12 @@ theorem Tunnell_odd_converse (n : ℕ) (hsqf : Squarefree n) (hodd : Odd n) :
 
 /-- Tunnell's theorem (sufficient condition assuming BSD) for even squarefree congruent numbers. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ) (hsqf : Squarefree n) (heven : Even n),
-    2 * (C n).ncard = (D n).ncard → congruentNumber n
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hsqf : Squarefree n) (heven : Even n),
+        2 * (C n).ncard = (D n).ncard → congruentNumber n
+    ) := by
   sorry
 
 end CongruentNumber

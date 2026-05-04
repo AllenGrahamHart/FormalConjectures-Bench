@@ -52,18 +52,17 @@ def IsDecomposition {V : Type*} (G : SimpleGraph V) (D : Finset G.Subgraph) : Pr
 Any graph on $n$ vertices can be decomposed into $O(n)$ many edge-disjoint cycles and edges.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ f : ℕ → ℝ,
-        (f =O[atTop] fun n : ℕ ↦ (n : ℝ)) ∧
-        ∀ {V : Type*} [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-        ∃ (D : Finset G.Subgraph),
-          (∀ H ∈ D, IsCycleOrEdge H.coe) ∧
-          IsDecomposition G D ∧
-          (D.card : ℝ) ≤ f (Fintype.card V)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ f : ℕ → ℝ,
+            (f =O[atTop] fun n : ℕ ↦ (n : ℝ)) ∧
+            ∀ {V : Type*} [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+            ∃ (D : Finset G.Subgraph),
+              (∀ H ∈ D, IsCycleOrEdge H.coe) ∧
+              IsDecomposition G D ∧
+              (D.card : ℝ) ≤ f (Fintype.card V)
+    ) := by
   sorry
 
 end Erdos184

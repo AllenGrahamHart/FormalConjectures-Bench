@@ -98,12 +98,11 @@ theorem poincare_conjecture.variants.smooth_known_cases (n : ℕ) (hn : n ∈ Sm
 /-- The four dimensional case of the smooth version of the conjecture is still open.
 See [Wang2017]. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  SmoothConjectureFor 4
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      SmoothConjectureFor 4
+    ) := by
   sorry
 
 end PoincareConjecture

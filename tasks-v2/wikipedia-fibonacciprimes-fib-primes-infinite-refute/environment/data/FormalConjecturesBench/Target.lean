@@ -33,12 +33,11 @@ https://arxiv.org/html/2505.13938v1 (see Figure 8).
 
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  {n : ℕ | (∃ m : ℕ, m.fib = n) ∧ n.Prime}.Infinite
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      {n : ℕ | (∃ m : ℕ, m.fib = n) ∧ n.Prime}.Infinite
+    ) := by
   sorry
 
 end FibonacciPrimes

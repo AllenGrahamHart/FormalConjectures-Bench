@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "fa46e94d6503ee4fb6d65fa4b83fe0c5dce230b55adb185edc94614d5980536b"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "b73d7018ea7149e1f25041d0b7633d5e68e8928eeacf4315f1a980f3ad58e199"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2200 (a b c : \u2115) (ha : 0 < a) (hb : 0 < b) (hc : 0 < c),\n        { (x, y, m, n) : (\u2115 \u00d7 \u2115 \u00d7 \u2115 \u00d7 \u2115) |\n              1 < x \u2227 1 < y \u2227 1 < m \u2227 1 < n \u2227 (m, n) \u2260 (2, 2) \u2227\n              a * x^n - b * y^m = c }.Finite\n    )"
 THEOREM_NAME = "Catalan.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

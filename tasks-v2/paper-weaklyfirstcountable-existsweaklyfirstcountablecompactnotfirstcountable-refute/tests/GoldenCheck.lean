@@ -16,7 +16,9 @@ open scoped Cardinal
 namespace WeaklyFirstCountable
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ExistsWeaklyFirstCountableCompactNotFirstCountable
+    ) := by
   exact WeaklyFirstCountable.formal_conjectures_bench_refutation
 
 end WeaklyFirstCountable

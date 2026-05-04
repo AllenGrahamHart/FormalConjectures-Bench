@@ -35,13 +35,12 @@ If $A ⊆ \mathbb{N}$ is such that $A + A$ contains all but finitely many intege
  $\limsup 1_A ∗ 1_A(n) = \infty$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (A : Set ℕ) (h : (A + A)ᶜ.Finite),
-    limsup (fun (n : ℕ) => (sumRep A n : ℕ∞)) atTop = (⊤ : ℕ∞)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (A : Set ℕ) (h : (A + A)ᶜ.Finite),
+        limsup (fun (n : ℕ) => (sumRep A n : ℕ∞)) atTop = (⊤ : ℕ∞)
+    ) := by
   sorry
 
 end Erdos28

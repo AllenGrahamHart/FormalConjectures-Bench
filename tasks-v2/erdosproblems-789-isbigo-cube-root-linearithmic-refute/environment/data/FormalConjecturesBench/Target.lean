@@ -116,13 +116,12 @@ theorem erdos_789.variants.cube_root_linearithmic_isBigO :
 /-- By the solved variant `erdos_789.variants.cube_root_linearithmic_isBigO`, in order to prove
 `erdos_789.variants.cube_root_linarithmic` it suffices to show $h(n) = O((n\log(n))^{1/3})$. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  (fun n ↦ (subsetSumThreshold n : ℝ)) =O[atTop]
-        fun n ↦ (n * Real.log n) ^ ((1 : ℝ) / 3)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      (fun n ↦ (subsetSumThreshold n : ℝ)) =O[atTop]
+            fun n ↦ (n * Real.log n) ^ ((1 : ℝ) / 3)
+    ) := by
   sorry
 
 end Erdos789

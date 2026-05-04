@@ -77,14 +77,13 @@ theorem abc.variants.lt_constant_mul (ε : ℝ) (hε : 0 < ε) : ∃ K,
 For every positive real number ε, there exist only finitely many triples `(a, b, c)` of coprime positive integers with `a + b = c` such that `q(a, b, c) > 1 + ε`.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (ε : ℝ) (hε : 0 < ε),
-    {(a, b, c) : ℕ × ℕ × ℕ | 0 < a ∧ 0 < b ∧ 0 < c ∧ ({a, b, c} : Set ℕ).Pairwise Nat.Coprime ∧
-        a + b = c ∧ quality a b c > (1 + ε)}.Finite
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (ε : ℝ) (hε : 0 < ε),
+        {(a, b, c) : ℕ × ℕ × ℕ | 0 < a ∧ 0 < b ∧ 0 < c ∧ ({a, b, c} : Set ℕ).Pairwise Nat.Coprime ∧
+            a + b = c ∧ quality a b c > (1 + ε)}.Finite
+    ) := by
   sorry
 
 end ABC

@@ -13,7 +13,10 @@ import FormalConjecturesBench.Target
 namespace CongruentNumber
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hsqf : Squarefree n) (hodd : Odd n),
+        2 * (A n).ncard = (B n).ncard → congruentNumber n
+    ) := by
   exact CongruentNumber.formal_conjectures_bench_refutation
 
 end CongruentNumber

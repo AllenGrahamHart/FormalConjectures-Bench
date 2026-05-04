@@ -30,12 +30,11 @@ namespace WoodallPrimes
 
 /-- There are infinitely many prime numbers of the form `k * 2 ^ k - 1` for `k > 1`. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  {k : ℕ | 1 < k ∧ (k * 2 ^ k - 1).Prime}.Infinite
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      {k : ℕ | 1 < k ∧ (k * 2 ^ k - 1).Prime}.Infinite
+    ) := by
   sorry
 
 end WoodallPrimes

@@ -15,7 +15,9 @@ open scoped Nat
 namespace AgohGiuga
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      AgohGiugaSum
+    ) := by
   exact AgohGiuga.formal_conjectures_bench_refutation
 
 end AgohGiuga

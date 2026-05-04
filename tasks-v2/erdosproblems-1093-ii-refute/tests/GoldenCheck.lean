@@ -15,7 +15,10 @@ open Finset Nat
 namespace Erdos1093
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      {x : ℕ × ℕ | let k := x.1; let n := x.2; 2 * k ≤ n ∧ deficiency n k > 1 ∧
+            ∀ p, p.Prime → (p ∣ choose n k) → k < p}.Finite
+    ) := by
   exact Erdos1093.formal_conjectures_bench_refutation
 
 end Erdos1093

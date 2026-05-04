@@ -13,7 +13,12 @@ import FormalConjecturesBench.Target
 namespace BabaiSeressConjectures
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ C : ℕ,
+          ∀ (G : Type) [Group G] [Fintype G] [IsSimpleGroup G],
+          (∃ a b : G, a * b ≠ b * a) →
+          (groupDiam G : ℝ) ≤ (Real.log (Fintype.card G : ℝ)) ^ C
+    ) := by
   exact BabaiSeressConjectures.formal_conjectures_bench_refutation
 
 end BabaiSeressConjectures

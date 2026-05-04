@@ -13,7 +13,9 @@ import FormalConjecturesBench.Target
 namespace Erdos10
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      Set.Infinite <| {n : ℕ | Even n} \ sumPrimeAndTwoPows 3
+    ) := by
   exact Erdos10.formal_conjectures_bench_refutation
 
 end Erdos10

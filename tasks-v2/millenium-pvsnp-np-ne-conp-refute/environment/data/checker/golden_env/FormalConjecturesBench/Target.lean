@@ -97,12 +97,11 @@ theorem P_ne_NP : P ≠ NP := by sorry
 The conjecture that the complexity classes NP and coNP are not equal.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  NP ≠ coNP
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      NP ≠ coNP
+    ) := by
   sorry
 
 end ComplexityTheory

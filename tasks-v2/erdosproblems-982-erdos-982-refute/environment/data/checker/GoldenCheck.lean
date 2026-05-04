@@ -15,7 +15,11 @@ open EuclideanGeometry
 namespace Erdos982
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : 3 ≤ n) (p : Fin n → ℝ²) (hp : Function.Injective p)
+        (hp' : EuclideanGeometry.IsConvexPolygon p),
+        ∃ (i : Fin n), { d : ℝ | ∃ j : Fin n, j ≠ i ∧ d = dist (p i) (p j) }.ncard ≥ n / 2
+    ) := by
   exact Erdos982.formal_conjectures_bench_refutation
 
 end Erdos982

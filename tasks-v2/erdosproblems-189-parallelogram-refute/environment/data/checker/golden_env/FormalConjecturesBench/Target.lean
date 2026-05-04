@@ -77,16 +77,15 @@ theorem erdos_189.variants.square :
 Seems to be open, as of January 2025.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ¬ Erdos189For
-        (fun a b c d ↦
-          line[ℝ, a, b] ∥ line[ℝ, c, d] ∧
-          line[ℝ, a, d] ∥ line[ℝ, b, c])
-        (fun a b c d ↦ dist a b * dist b c * (∡ a b c).sin)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ¬ Erdos189For
+            (fun a b c d ↦
+              line[ℝ, a, b] ∥ line[ℝ, c, d] ∧
+              line[ℝ, a, d] ∥ line[ℝ, b, c])
+            (fun a b c d ↦ dist a b * dist b c * (∡ a b c).sin)
+    ) := by
   sorry
 
 end Erdos189

@@ -13,7 +13,11 @@ import FormalConjecturesBench.Target
 namespace InvariantSubspaceProblem
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [TopologicalSpace.SeparableSpace H]
+        [CompleteSpace H] (hdim : 2 ≤ Module.rank ℂ H) (T : H →L[ℂ] H),
+        Nonempty (ClosedInvariantSubspace T)
+    ) := by
   exact InvariantSubspaceProblem.formal_conjectures_bench_refutation
 
 end InvariantSubspaceProblem

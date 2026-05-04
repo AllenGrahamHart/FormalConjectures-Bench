@@ -58,13 +58,12 @@ theorem hasPrimeRepresentation_8 : HasPrimeRepresentation 8 :=
 $x, y > 0$ such that both $x + ny$ and $x^2 + ny^2$ are prime.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ) (hn : 1 < n),
-    HasPrimeRepresentation n
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : 1 < n),
+        HasPrimeRepresentation n
+    ) := by
   sorry
 
 end OeisA232174

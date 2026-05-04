@@ -53,13 +53,12 @@ theorem kurepa_conjecture (n : ℕ) (h_n : 2 < n) : (!n : ℕ) % n ≠ 0 := by
 This statement can be reduced to the prime case only.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (p : ℕ) (h_p : 2 < p),
-    p.Prime → (!p : ℕ) % p ≠ 0
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (p : ℕ) (h_p : 2 < p),
+        p.Prime → (!p : ℕ) % p ≠ 0
+    ) := by
   sorry
 
 end Kurepa

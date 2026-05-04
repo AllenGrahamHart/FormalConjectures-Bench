@@ -30,13 +30,12 @@ namespace Erdos11
 Is every odd $n > 1$ the sum of a squarefree number and a power of 2?
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ) (hn : Odd n) (hn' : 1 < n),
-    ∃ k l : ℕ, Squarefree k ∧ n = k + 2 ^ l
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : Odd n) (hn' : 1 < n),
+        ∃ k l : ℕ, Squarefree k ∧ n = k + 2 ^ l
+    ) := by
   sorry
 
 end Erdos11

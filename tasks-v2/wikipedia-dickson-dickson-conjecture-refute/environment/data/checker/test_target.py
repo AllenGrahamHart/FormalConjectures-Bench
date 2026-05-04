@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "0981b680d807de348ae88c8ba3089078857ac4a81e2701b01ba2900bf3491699"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "209d32f8bf0c210a18305517a53c5a39e9040a6b866db7a61d8174476a643554"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2200 (fs : Finset \u2124[X]) (hfs : \u2200 f \u2208 fs, f.degree = 1 \u2227 BunyakovskyCondition f)\n        (hfs' : SchinzelCondition fs),\n        Infinite {n : \u2115 | \u2200 f \u2208 fs, (f.eval (n : \u2124)).natAbs.Prime}\n    )"
 THEOREM_NAME = "Dickson.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

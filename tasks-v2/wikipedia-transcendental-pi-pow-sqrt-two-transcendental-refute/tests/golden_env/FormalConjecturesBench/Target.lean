@@ -67,12 +67,11 @@ theorem pi_pow_exp_transcendental : Transcendental ℚ (π ^ (exp 1)) := by
 $\pi^{\sqrt{2}}$ is transcendental.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  Transcendental ℚ (π ^ √2)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      Transcendental ℚ (π ^ √2)
+    ) := by
   sorry
 
 end Transcendental

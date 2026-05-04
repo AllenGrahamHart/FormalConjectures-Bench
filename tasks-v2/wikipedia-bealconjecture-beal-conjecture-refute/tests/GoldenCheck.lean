@@ -13,7 +13,9 @@ import FormalConjecturesBench.Target
 namespace BealConjecture
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      bealConjecture
+    ) := by
   exact BealConjecture.formal_conjectures_bench_refutation
 
 end BealConjecture

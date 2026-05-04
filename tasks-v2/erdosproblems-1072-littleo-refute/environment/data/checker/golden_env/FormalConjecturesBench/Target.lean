@@ -51,13 +51,12 @@ is $o(x/\log x)$.
 Amer. Math. Monthly (2002), 554--559.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  (fun x ↦ (({p | p.Prime ∧ f p = p - 1} ∩ Icc 0 x).ncard : ℝ)) =o[atTop]
-        (fun x ↦ x / Real.log x)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      (fun x ↦ (({p | p.Prime ∧ f p = p - 1} ∩ Icc 0 x).ncard : ℝ)) =o[atTop]
+            (fun x ↦ x / Real.log x)
+    ) := by
   sorry
 
 end Erdos1072

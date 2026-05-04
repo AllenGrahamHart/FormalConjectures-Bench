@@ -15,7 +15,10 @@ open Real
 namespace Firoozbakht
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ),
+        firoozbakhtSeq (n+1) < firoozbakhtSeq n
+    ) := by
   exact Firoozbakht.formal_conjectures_bench_refutation
 
 end Firoozbakht

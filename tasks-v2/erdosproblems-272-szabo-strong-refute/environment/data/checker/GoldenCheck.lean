@@ -15,7 +15,9 @@ open Filter Asymptotics Finset
 namespace Erdos272
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      (fun N ↦ (maxArithInterCard N - N ^ 2 / 2 : ℝ)) =O[atTop] fun N : ℕ ↦ (N : ℝ)
+    ) := by
   exact Erdos272.formal_conjectures_bench_refutation
 
 end Erdos272

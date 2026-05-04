@@ -100,15 +100,14 @@ There are no indecomposable vector bundles of rank 2 on $\mathbb{P}^n$ for $n \g
 This is conjecture 6.3 in _VARIETIES OF SMALL CODIMENSION IN PROJECTIVE SPACE_, R. Hartshorne
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (S : Scheme.{u}) (n : ℕ) (hn : 7 ≤ n)
-    (𝓕 : VectorBundles ℙ(Fin (n + 1); Spec (.of ℂ)))
-    (h𝓕 : 𝓕.rank = 2),
-    Nonempty (𝓕.Splitting (Fin 2))
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (S : Scheme.{u}) (n : ℕ) (hn : 7 ≤ n)
+        (𝓕 : VectorBundles ℙ(Fin (n + 1); Spec (.of ℂ)))
+        (h𝓕 : 𝓕.rank = 2),
+        Nonempty (𝓕.Splitting (Fin 2))
+    ) := by
   sorry
 
 end HartshorneConjecture

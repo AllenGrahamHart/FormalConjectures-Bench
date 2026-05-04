@@ -122,14 +122,13 @@ theorem erdos_357.variants.infinite_set_density (A : ℕ → ℕ) (hA : StrictMo
 /-- Suppose $A$ is an infinite set such that all finite sums of consecutive terms of $A$ are distinct.
 Then it is conjectured that the sum $\sum_k \frac{1}{a_k}$ converges. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (A : ℕ → ℕ) (hA : StrictMono A)
-    (hA : HasDistinctSums A),
-    Summable (fun i ↦ (1 : ℝ) / A i)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (A : ℕ → ℕ) (hA : StrictMono A)
+        (hA : HasDistinctSums A),
+        Summable (fun i ↦ (1 : ℝ) / A i)
+    ) := by
   sorry
 
 end Erdos357

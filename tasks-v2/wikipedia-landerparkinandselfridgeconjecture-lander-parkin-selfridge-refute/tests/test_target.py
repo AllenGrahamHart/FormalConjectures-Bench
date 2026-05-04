@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "883b88b735f4af3dfe5d3a1e7301912c82d407e5c52b2e4d654500102627df21"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "3492cf158bb3496d4972e0dbd69e09b4847b2988097c019bffa694124ba4e525"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2200 (k n m : \u2115) (x : Fin n \u2192 \u2115) (y : Fin m \u2192 \u2115),\n            (\u2200 i, 0 < x i) \u2192 (\u2200 j, 0 < y j) \u2192\n            (\u2200 i j, x i \u2260 y j) \u2192\n            \u2211 i, x i ^ k = \u2211 j, y j ^ k \u2192\n            k \u2264 n + m\n    )"
 THEOREM_NAME = "LanderParkinSelfridge.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

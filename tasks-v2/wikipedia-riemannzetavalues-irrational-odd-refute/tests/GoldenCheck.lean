@@ -13,7 +13,10 @@ import FormalConjecturesBench.Target
 namespace RiemannZetaValues
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : 0 < n),
+        ∃ x, Irrational x ∧ riemannZeta (2 * n + 1) = x
+    ) := by
   exact RiemannZetaValues.formal_conjectures_bench_refutation
 
 end RiemannZetaValues

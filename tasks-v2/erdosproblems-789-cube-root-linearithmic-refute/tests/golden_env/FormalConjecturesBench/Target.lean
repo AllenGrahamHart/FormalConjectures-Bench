@@ -101,13 +101,12 @@ $a_1+\cdots+a_r=b_1+\cdots+b_s$ with $a_i,b_i\in B$ then $r=s$.
 Is $h(n) = \Theta((n\log(n)))^{1/3})$?
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  (fun n ↦ (subsetSumThreshold n : ℝ)) =Θ[atTop]
-        fun n ↦ (n * Real.log n) ^ ((1 : ℝ) / 3)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      (fun n ↦ (subsetSumThreshold n : ℝ)) =Θ[atTop]
+            fun n ↦ (n * Real.log n) ^ ((1 : ℝ) / 3)
+    ) := by
   sorry
 
 end Erdos789

@@ -59,13 +59,12 @@ $2$ or $3$. In general, a prime $p$ is in class $r$ if every prime factor
 of $p+1$ is in some class $\leq r-1$, with equality for at least one prime factor.
 Are there infinitely many primes in each class?-/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (r),
-    {p | p.Prime ∧ IsOfClass r p}.Infinite
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (r),
+        {p | p.Prime ∧ IsOfClass r p}.Infinite
+    ) := by
   sorry
 
 end Erdos1055

@@ -32,14 +32,13 @@ If $n$ distinct points in $\mathbb{R}^2$ form a convex polygon then some vertex 
 $\lfloor\frac{n}{2}\rfloor$ different distances to other vertices.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ) (hn : 3 ≤ n) (p : Fin n → ℝ²) (hp : Function.Injective p)
-    (hp' : EuclideanGeometry.IsConvexPolygon p),
-    ∃ (i : Fin n), { d : ℝ | ∃ j : Fin n, j ≠ i ∧ d = dist (p i) (p j) }.ncard ≥ n / 2
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : 3 ≤ n) (p : Fin n → ℝ²) (hp : Function.Injective p)
+        (hp' : EuclideanGeometry.IsConvexPolygon p),
+        ∃ (i : Fin n), { d : ℝ | ∃ j : Fin n, j ≠ i ∧ d = dist (p i) (p j) }.ncard ≥ n / 2
+    ) := by
   sorry
 
 end Erdos982

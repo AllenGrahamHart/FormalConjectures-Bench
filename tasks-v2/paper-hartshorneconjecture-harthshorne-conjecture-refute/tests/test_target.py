@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "b23579c468c113c6a790249849526fff40534a8b47057ca76960c4cda8c44f7e"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "690b4d81fa2abafe152712850c47b0e6c10e042fb3756d2cba89cc7d951eb2b6"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2200 (S : Scheme.{u}) (n : \u2115) (hn : 7 \u2264 n)\n        (\ud835\udcd5 : VectorBundles \u2119(Fin (n + 1); Spec (.of \u2102)))\n        (h\ud835\udcd5 : \ud835\udcd5.rank = 2),\n        Nonempty (\ud835\udcd5.Splitting (Fin 2))\n    )"
 THEOREM_NAME = "HartshorneConjecture.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

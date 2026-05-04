@@ -43,13 +43,12 @@ Let `A ⊆ ℕ` be an infinite set such that the triple sums `a + b + c` are all
 `liminf n → ∞ |A ∩ {1, …, N}| / N^(1/3) = 0`?
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {α : Type} [AddCommMonoid α] (A : Set ℕ) (h_triple : NtupleCondition A 3) (h_infinite : A.Infinite),
-    Filter.atTop.liminf (fun N => (A ∩ Icc 1 N).ncard / (N : ℝ)^(1/3 : ℝ)) = 0
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {α : Type} [AddCommMonoid α] (A : Set ℕ) (h_triple : NtupleCondition A 3) (h_infinite : A.Infinite),
+        Filter.atTop.liminf (fun N => (A ∩ Icc 1 N).ncard / (N : ℝ)^(1/3 : ℝ)) = 0
+    ) := by
   sorry
 
 end Erdos41

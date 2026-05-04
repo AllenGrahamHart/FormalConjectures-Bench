@@ -192,12 +192,11 @@ theorem twentynine_le_rank_elkiesKlagsbrun29 : 29 ≤ finrank ℤ elkiesKlagsbru
 
 /-- The rank of the Elkies-Klagsbrun curve is exactly 29. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  finrank ℤ elkiesKlagsbrun29⟮ℚ⟯ = 29
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      finrank ℤ elkiesKlagsbrun29⟮ℚ⟯ = 29
+    ) := by
   sorry
 
 end WeierstrassCurve

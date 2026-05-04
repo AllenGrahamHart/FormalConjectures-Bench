@@ -40,13 +40,12 @@ Source: *Hardness of Busy Beaver Value BB(15)*: https://link.springer.com/chapte
 This is also https://arxiv.org/abs/2107.12475.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ) (hn : 8 < n),
-    2 ∈ Nat.digits 3 (2^n)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : 8 < n),
+        2 ∈ Nat.digits 3 (2^n)
+    ) := by
   sorry
 
 end Arxiv.«2107.12475»

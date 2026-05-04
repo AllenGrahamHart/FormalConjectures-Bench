@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "3b356ec3432655bba71bb533308dda0e60b5dd1cc5e6e29c23d34c64d14ba6ce"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "ccacafafca07150824e126cea1d00230cab8b2d9178aac16ba2677dc986e6580"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2200 (n : \u2115) (f : \u2102[X]) (hn : n \u2265 2) (hnum : f.natDegree = n) (h_monic : f.Monic) (h : f.rootSet \u2102 \u2286 Metric.ball 0 1),\n        \u2203 (z\u2081 z\u2082 : \u2102) (h : ({z\u2081, z\u2082} : Multiset \u2102) \u2264 f.roots) (\u03b3 : Path z\u2081 z\u2082),\n              Set.range \u03b3 \u2286 { z : \u2102 | \u2016f.eval z\u2016 < 1 } \u2227 length (Set.range \u03b3) < 2\n    )"
 THEOREM_NAME = "Erdos1041.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

@@ -16,7 +16,12 @@ open scoped MatrixGroups Polynomial
 namespace Margulis
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {n : ℕ} (hn : 3 ≤ n)
+        (g : SL(n, ℝ) ⧸ Subgroup.map (map (Int.castRingHom ℝ)) ⊤)
+        (hg : IsCompact <| closure (MulAction.orbit (diagonalSubgroup (Fin n) ℝ) g)),
+        IsClosed <| MulAction.orbit (diagonalSubgroup (Fin n) ℝ) g
+    ) := by
   exact Margulis.formal_conjectures_bench_refutation
 
 end Margulis

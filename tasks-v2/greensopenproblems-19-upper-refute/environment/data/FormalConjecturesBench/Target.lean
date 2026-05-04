@@ -90,12 +90,11 @@ theorem green_19.lower : C >= 3.13 := by
 
 /-- [Ma21] showed that $C \leq 4$. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  C <= 4
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      C <= 4
+    ) := by
   sorry
 
 end Green19

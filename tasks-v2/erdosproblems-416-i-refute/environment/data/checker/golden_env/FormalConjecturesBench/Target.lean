@@ -37,12 +37,11 @@ noncomputable abbrev V (x : ℝ) : ℝ :=
 Let `V(x)` count the number of `n≤x` such that `ϕ(m)=n` is solvable. Does `V(2x)/V(x)→2` ?
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  Filter.Tendsto (fun x => (V (2 * x) / V (x))) Filter.atTop (𝓝 2)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      Filter.Tendsto (fun x => (V (2 * x) / V (x))) Filter.atTop (𝓝 2)
+    ) := by
   sorry
 
 end Erdos416

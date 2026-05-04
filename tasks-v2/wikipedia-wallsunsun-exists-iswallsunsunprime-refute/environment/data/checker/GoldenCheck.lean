@@ -13,7 +13,9 @@ import FormalConjecturesBench.Target
 namespace WallSunSun
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ p, IsWallSunSunPrime p
+    ) := by
   exact WallSunSun.formal_conjectures_bench_refutation
 
 end WallSunSun

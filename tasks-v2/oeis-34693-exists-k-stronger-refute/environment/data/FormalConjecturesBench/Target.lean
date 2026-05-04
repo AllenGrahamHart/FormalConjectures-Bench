@@ -63,14 +63,13 @@ theorem exists_k {n : ℕ} (hn : 1 < n) : ∃ k < n, (n * k + 1).Prime := by
 /-- A stronger conjecture: for every n there exists a number $k < 1 + n^{0.75}$ such that
 $nk + 1$ is a prime. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {n : ℕ} (hn : 0 < n),
-    ∃ k : ℕ,
-        k < 1 + (Real.nthRoot 4 n) ^ 3 ∧ (n * k + 1).Prime
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {n : ℕ} (hn : 0 < n),
+        ∃ k : ℕ,
+            k < 1 + (Real.nthRoot 4 n) ^ 3 ∧ (n * k + 1).Prime
+    ) := by
   sorry
 
 end OeisA34693

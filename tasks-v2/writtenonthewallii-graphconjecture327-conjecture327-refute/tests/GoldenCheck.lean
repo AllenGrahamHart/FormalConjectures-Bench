@@ -15,7 +15,11 @@ open SimpleGraph
 namespace WrittenOnTheWallII.GraphConjecture327
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {α : Type*} [Fintype α] [DecidableEq α] (G : SimpleGraph α) [DecidableRel G.Adj] (hG : G.Connected)
+        (h : 3 * G.dominationNumber = G.indepDominationNumber),
+        IsWellTotallyDominated G
+    ) := by
   exact WrittenOnTheWallII.GraphConjecture327.formal_conjectures_bench_refutation
 
 end WrittenOnTheWallII.GraphConjecture327

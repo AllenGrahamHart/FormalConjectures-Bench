@@ -16,7 +16,12 @@ open RegularFunction
 namespace JacobianConjecture
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ [Field k] [CharZero k] [Fintype σ] (F : RegularFunction k σ σ)
+        (H : IsUnit F.Jacobian.det),
+        ∃ (G : RegularFunction k σ σ), G.comp F = id k σ ∧
+            F.comp G = id k σ
+    ) := by
   exact JacobianConjecture.formal_conjectures_bench_refutation
 
 end JacobianConjecture

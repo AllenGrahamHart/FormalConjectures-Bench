@@ -16,7 +16,9 @@ open EuclideanGeometry
 namespace Erdos89
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      (fun (n : ℕ) => n/(n : ℝ).log.sqrt) =O[atTop] (fun n => (minimalDistinctDistances n : ℝ))
+    ) := by
   exact Erdos89.formal_conjectures_bench_refutation
 
 end Erdos89

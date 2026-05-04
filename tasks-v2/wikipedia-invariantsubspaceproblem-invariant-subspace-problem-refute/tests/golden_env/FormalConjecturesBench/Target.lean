@@ -44,14 +44,13 @@ at least 2 has a non-trivial closed `T`-invariant subspace: a closed linear subs
 which is different from `H` and from `{0}`, such that `T ( W ) ⊂ W`. One needs the assumption that
 the dimension of `H` is at least 2 because otherwise any subspace would be either `H` or `{0}`. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [TopologicalSpace.SeparableSpace H]
-    [CompleteSpace H] (hdim : 2 ≤ Module.rank ℂ H) (T : H →L[ℂ] H),
-    Nonempty (ClosedInvariantSubspace T)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [TopologicalSpace.SeparableSpace H]
+        [CompleteSpace H] (hdim : 2 ≤ Module.rank ℂ H) (T : H →L[ℂ] H),
+        Nonempty (ClosedInvariantSubspace T)
+    ) := by
   sorry
 
 end InvariantSubspaceProblem

@@ -15,7 +15,13 @@ open Cardinal
 namespace Erdos701
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {X : Type*} [Nonempty X],
+        ∀ (F : Set (Set X)), IsLowerSet F →
+              ∃ x : X, ∀ᵉ (F' ⊆ F),
+                F'.Intersecting →
+                  (#F' ≤ #{ A : Set X | A ∈ F ∧ x ∈ A })
+    ) := by
   exact Erdos701.formal_conjectures_bench_refutation
 
 end Erdos701

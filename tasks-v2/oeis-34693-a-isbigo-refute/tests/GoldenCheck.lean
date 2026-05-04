@@ -15,7 +15,9 @@ open Filter
 namespace OeisA34693
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      (fun n ↦ (a n : ℝ)) =O[atTop] (fun n ↦ Real.log n * Real.log (Real.log n))
+    ) := by
   exact OeisA34693.formal_conjectures_bench_refutation
 
 end OeisA34693

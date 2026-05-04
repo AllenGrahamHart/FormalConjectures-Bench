@@ -68,12 +68,11 @@ theorem infinite_safe_primes :
 There are infinitely many primes $p$ such that $p + 4$ is prime.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  Infinite {p : ℕ | Prime p ∧ Prime (p + 4)}
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      Infinite {p : ℕ | Prime p ∧ Prime (p + 4)}
+    ) := by
   sorry
 
 end Dickson

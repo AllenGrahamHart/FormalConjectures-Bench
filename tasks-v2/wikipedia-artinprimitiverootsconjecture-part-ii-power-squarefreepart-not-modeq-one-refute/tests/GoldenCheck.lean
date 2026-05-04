@@ -16,7 +16,11 @@ open scoped Topology Nat
 namespace ArtinPrimitiveRootsConjecture
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (a m b : ℕ) (ha : a = b ^ m) (hb : ∀ u v, 1 < u → b ≠ v^u) (hm₁ : 1 < m)
+        (hm₂ : Odd m) (hb' : ¬ b.squarefreePart ≡ 1 [MOD 4]),
+        (S a).HasDensity (ArtinConstant * powCorrectionFactor m) {p | p.Prime}
+    ) := by
   exact ArtinPrimitiveRootsConjecture.formal_conjectures_bench_refutation
 
 end ArtinPrimitiveRootsConjecture

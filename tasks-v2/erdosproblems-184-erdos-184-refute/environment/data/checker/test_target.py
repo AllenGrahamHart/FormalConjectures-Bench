@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "879b9056e9752e40d2bcfd4197dbf4a2d1390954b0d59a2924405f4c2916ec3b"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "a5edb9329161a64e62bf8d96d8f6e79cc595852854583b126bd182ba7f95b02d"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2203 f : \u2115 \u2192 \u211d,\n            (f =O[atTop] fun n : \u2115 \u21a6 (n : \u211d)) \u2227\n            \u2200 {V : Type*} [Fintype V] [DecidableEq V] (G : SimpleGraph V),\n            \u2203 (D : Finset G.Subgraph),\n              (\u2200 H \u2208 D, IsCycleOrEdge H.coe) \u2227\n              IsDecomposition G D \u2227\n              (D.card : \u211d) \u2264 f (Fintype.card V)\n    )"
 THEOREM_NAME = "Erdos184.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

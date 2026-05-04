@@ -118,12 +118,11 @@ def CuboidTwo : Prop := ∀ ⦃a b : ℕ⦄, a.Coprime b → 0 < a → 0 < b →
 
 /-- The second Cuboid conjecture -/
 
-def formal_conjectures_bench_statement : Prop :=
-  CuboidTwo
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      CuboidTwo
+    ) := by
   sorry
 
 end Cuboid

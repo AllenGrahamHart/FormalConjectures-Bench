@@ -40,13 +40,12 @@ For a connected graph `G`, the size `f(G)` of a largest induced forest satisfies
 bipartite subgraph and `l(v)` is the independence number of `G.neighborSet v`.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {α : Type*} [Fintype α] [DecidableEq α] [Nontrivial α] (G : SimpleGraph α) (hG : G.Connected),
-    Nat.ceil (G.b / G.l_avg) ≤ G.largestInducedForestSize
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {α : Type*} [Fintype α] [DecidableEq α] [Nontrivial α] (G : SimpleGraph α) (hG : G.Connected),
+        Nat.ceil (G.b / G.l_avg) ≤ G.largestInducedForestSize
+    ) := by
   sorry
 
 end WrittenOnTheWallII.GraphConjecture58

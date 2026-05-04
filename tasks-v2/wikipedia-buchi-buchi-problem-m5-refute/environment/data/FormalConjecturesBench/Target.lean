@@ -51,12 +51,11 @@ then $a = 0$.
 Non-trivial sequences of length 3 and 4 are known to exist, so $M = 5$ is the first open case.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  IsBuchi 5
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      IsBuchi 5
+    ) := by
   sorry
 
 end Buchi

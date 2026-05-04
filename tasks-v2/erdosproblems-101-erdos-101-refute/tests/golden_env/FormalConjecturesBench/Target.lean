@@ -50,12 +50,11 @@ Given $n$ points in $\mathbb{R}^2$, no five of which are on a line, the number o
 lines containing four points is $o(n^2)$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  (fun n => (numLinesWithFourPointMax n : ℝ)) =o[atTop] (fun n => (n : ℝ)^2)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      (fun n => (numLinesWithFourPointMax n : ℝ)) =o[atTop] (fun n => (n : ℝ)^2)
+    ) := by
   sorry
 
 end Erdos101

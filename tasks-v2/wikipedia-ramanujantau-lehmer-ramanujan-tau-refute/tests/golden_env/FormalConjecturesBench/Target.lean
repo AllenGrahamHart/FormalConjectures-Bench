@@ -65,12 +65,11 @@ theorem ramanujan_petersson : ∀ p : ℕ, Prime p → abs (τ p) ≤ 2 * (p : �
 
 /-- Lehmer's conjecture: $\tau(n) \ne 0$ for all $n > 0$. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ n > 0, τ n ≠ 0
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ n > 0, τ n ≠ 0
+    ) := by
   sorry
 
 end RamanujanTau

@@ -13,7 +13,10 @@ import FormalConjecturesBench.Target
 namespace Green72
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {k : ℕ} {N : ℕ} (hk : 1 < k) (h : k ≤ N),
+        NoKInLineFor k N
+    ) := by
   exact Green72.formal_conjectures_bench_refutation
 
 end Green72

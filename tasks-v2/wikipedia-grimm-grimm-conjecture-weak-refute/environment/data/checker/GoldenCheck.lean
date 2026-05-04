@@ -15,7 +15,11 @@ open Function
 namespace Grimm
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n k : ℕ) (hn : 1 ≤ n) (hk : 1 ≤ k)
+        (h : ∀ i : Fin k, (n + i).Composite),
+        ∃ ps : Fin k ↪ ℕ,  ∀ i : Fin k, (ps i).Prime ∧ ∃ j : Fin k, ps i ∣ (n + j)
+    ) := by
   exact Grimm.formal_conjectures_bench_refutation
 
 end Grimm

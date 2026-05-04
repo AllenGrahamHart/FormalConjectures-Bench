@@ -51,12 +51,11 @@ theorem irrational_nine : ∃ x, Irrational x ∧ riemannZeta 9 = x := by
 $\zeta(11)$ is irrational.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ x, Irrational x ∧ riemannZeta 11 = x
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ x, Irrational x ∧ riemannZeta 11 = x
+    ) := by
   sorry
 
 end RiemannZetaValues

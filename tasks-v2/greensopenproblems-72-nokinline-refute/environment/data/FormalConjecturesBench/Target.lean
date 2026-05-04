@@ -61,13 +61,12 @@ For $N \geq k$ and $k > 1$, the AllowedSetSize in $(k - 1) * N$, i. e. on an $N 
 there is a set of $k * N$ points for which no $k$ lie on a line (and not such a set of bigger size).
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {k : ℕ} {N : ℕ} (hk : 1 < k) (h : k ≤ N),
-    NoKInLineFor k N
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {k : ℕ} {N : ℕ} (hk : 1 < k) (h : k ≤ N),
+        NoKInLineFor k N
+    ) := by
   sorry
 
 end Green72

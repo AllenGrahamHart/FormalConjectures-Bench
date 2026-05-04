@@ -13,7 +13,10 @@ import FormalConjecturesBench.Target
 namespace LebesgueNagell
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (p : ℕ) (hp : p.Prime) (hodd : Odd p) (x y : ℤ),
+        x ^ 2 - 2 = y ^ p ↔ (x = 1 ∨ x = -1) ∧ y = -1
+    ) := by
   exact LebesgueNagell.formal_conjectures_bench_refutation
 
 end LebesgueNagell

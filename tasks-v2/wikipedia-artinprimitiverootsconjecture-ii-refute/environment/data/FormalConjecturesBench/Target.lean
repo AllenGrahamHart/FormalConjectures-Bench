@@ -113,15 +113,14 @@ $S(a)$ of primes $p$ such that $a$ is a primitive root modulo $p$ is independent
 equals Artin's constant.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (a a_0 b : ℤ) (ha : a = a_0 * b ^ 2)
-    (ha' : ∀ n m, m ≠ 1 → a ≠ n ^ m) (ha_0 : Squarefree a_0)
-    (ha_0' : ¬a_0 ≡ 1 [ZMOD 4]),
-    (S a).HasDensity ArtinConstant {p | p.Prime}
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (a a_0 b : ℤ) (ha : a = a_0 * b ^ 2)
+        (ha' : ∀ n m, m ≠ 1 → a ≠ n ^ m) (ha_0 : Squarefree a_0)
+        (ha_0' : ¬a_0 ≡ 1 [ZMOD 4]),
+        (S a).HasDensity ArtinConstant {p | p.Prime}
+    ) := by
   sorry
 
 end ArtinPrimitiveRootsConjecture

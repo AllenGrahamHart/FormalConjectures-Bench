@@ -103,12 +103,11 @@ When $A =\{a_1 < \cdots\}$ corresponds to the set of primes, it is conjectured t
 numbers $n$ that have representations $$n=\sum_{u\leq i\leq v}a_i$$ has positive upper density.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  0 < {n : ℕ | intervalRepresentations (Nat.nth Nat.Prime) n |>.Nonempty}.upperDensity
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      0 < {n : ℕ | intervalRepresentations (Nat.nth Nat.Prime) n |>.Nonempty}.upperDensity
+    ) := by
   sorry
 
 end Erdos358

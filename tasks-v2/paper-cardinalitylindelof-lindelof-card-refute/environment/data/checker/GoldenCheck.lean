@@ -15,7 +15,9 @@ open Cardinal
 namespace CardinalityLindelof
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ (X : Type) (_ : TopologicalSpace X), HasGδSingletons X ∧ LindelofSpace X ∧ 𝔠 < #X
+    ) := by
   exact CardinalityLindelof.formal_conjectures_bench_refutation
 
 end CardinalityLindelof

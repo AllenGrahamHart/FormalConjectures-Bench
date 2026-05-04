@@ -15,7 +15,10 @@ open Filter
 namespace Erdos142
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (k : ℕ) (hk : 1 < k),
+        (fun N => (r k N : ℝ)) =o[atTop] (fun N : ℕ => N / (N : ℝ).log)
+    ) := by
   exact Erdos142.formal_conjectures_bench_refutation
 
 end Erdos142

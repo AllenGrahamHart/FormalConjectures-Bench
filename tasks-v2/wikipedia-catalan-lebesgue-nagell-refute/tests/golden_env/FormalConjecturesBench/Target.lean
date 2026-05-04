@@ -64,13 +64,12 @@ are $(x, y) = (\pm 1, -1)$.
 [arXiv:2507.12397](https://arxiv.org/abs/2507.12397)
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (p : ℕ) (hp : p.Prime) (hodd : Odd p) (x y : ℤ),
-    x ^ 2 - 2 = y ^ p ↔ (x = 1 ∨ x = -1) ∧ y = -1
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (p : ℕ) (hp : p.Prime) (hodd : Odd p) (x y : ℤ),
+        x ^ 2 - 2 = y ^ p ↔ (x = 1 ∨ x = -1) ∧ y = -1
+    ) := by
   sorry
 
 end LebesgueNagell

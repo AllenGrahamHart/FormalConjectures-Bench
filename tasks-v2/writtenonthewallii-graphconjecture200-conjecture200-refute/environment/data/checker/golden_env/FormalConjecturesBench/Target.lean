@@ -41,14 +41,13 @@ of the neighbourhood.
 A Hamiltonian path is a walk visiting every vertex exactly once.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {α : Type*} [Fintype α] [DecidableEq α] [Nontrivial α] (G : SimpleGraph α) (h : G.Connected)
-    (htree : (largestInducedTreeSize G : ℝ) = ⌈1 + l G⌉),
-    ∃ a b : α, ∃ p : G.Walk a b, p.IsHamiltonian
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {α : Type*} [Fintype α] [DecidableEq α] [Nontrivial α] (G : SimpleGraph α) (h : G.Connected)
+        (htree : (largestInducedTreeSize G : ℝ) = ⌈1 + l G⌉),
+        ∃ a b : α, ∃ p : G.Walk a b, p.IsHamiltonian
+    ) := by
   sorry
 
 end WrittenOnTheWallII.GraphConjecture200

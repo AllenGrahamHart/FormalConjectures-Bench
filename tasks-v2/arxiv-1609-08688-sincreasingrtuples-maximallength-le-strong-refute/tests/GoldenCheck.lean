@@ -16,7 +16,10 @@ open Filter in
 namespace Arxiv.«1609.08688»
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ),
+        F n ≤ Real.sqrt n ^ 3
+    ) := by
   exact Arxiv.«1609.08688».formal_conjectures_bench_refutation
 
 end Arxiv.«1609.08688»

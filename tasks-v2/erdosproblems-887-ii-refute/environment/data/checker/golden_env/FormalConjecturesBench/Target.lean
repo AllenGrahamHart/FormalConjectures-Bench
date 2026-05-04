@@ -44,13 +44,12 @@ Is there an absolute constant $K$ such that, for every $C > 0$, if $n$ is suffic
 $n$ has at most $K$ divisors in $(n^{\frac{1}{2}}, n^{\frac{1}{2}} + C n^{\frac{1}{4}})$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ K, ∀ C > (0 : ℝ), ∀ᶠ n in atTop,
-      #{ d ∈ Ioo ⌊√n⌋₊ ⌈√n + C * n^((1 : ℝ) / 4)⌉₊ | d ∣ n } ≤ K
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ K, ∀ C > (0 : ℝ), ∀ᶠ n in atTop,
+          #{ d ∈ Ioo ⌊√n⌋₊ ⌈√n + C * n^((1 : ℝ) / 4)⌉₊ | d ∣ n } ≤ K
+    ) := by
   sorry
 
 end Erdos887

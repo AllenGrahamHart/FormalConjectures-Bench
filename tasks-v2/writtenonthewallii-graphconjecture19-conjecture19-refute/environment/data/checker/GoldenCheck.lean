@@ -16,7 +16,11 @@ open SimpleGraph
 namespace WrittenOnTheWallII.GraphConjecture19
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {α : Type*} [Fintype α] [DecidableEq α] (G : SimpleGraph α) [Nontrivial α] (h_conn : G.Connected),
+        FLOOR ((∑ v ∈ Finset.univ, ecc G v) / (Fintype.card α : ℝ) + sSup (Set.range (indepNeighbors G)))
+              ≤ b G
+    ) := by
   exact WrittenOnTheWallII.GraphConjecture19.formal_conjectures_bench_refutation
 
 end WrittenOnTheWallII.GraphConjecture19

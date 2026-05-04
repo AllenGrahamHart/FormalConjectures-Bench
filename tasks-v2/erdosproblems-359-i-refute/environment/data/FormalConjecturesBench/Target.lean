@@ -38,13 +38,12 @@ def IsGoodFor (A : ℕ → ℕ) (n : ℕ) : Prop := A 0 = n ∧ StrictMono A ∧
 /-- Let $a_1< a_2 < ⋯ $ be an infinite sequence of integers such that $a_1=1$ and $a_{i+1}$ is the
 least integer which is not a sum of consecutive earlier $a_j$s. Show that $a_k / k \to \infty$. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (A : ℕ → ℕ) (hA : IsGoodFor A 1),
-    atTop.Tendsto (fun k ↦ (A k : ℝ) / k) atTop
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (A : ℕ → ℕ) (hA : IsGoodFor A 1),
+        atTop.Tendsto (fun k ↦ (A k : ℝ) / k) atTop
+    ) := by
   sorry
 
 end Erdos359

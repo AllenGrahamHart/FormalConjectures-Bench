@@ -67,12 +67,11 @@ theorem erdos_539 :
 set$$\left\{ \frac{a}{(a,b)}: a,b\in A\right\}$$has size at least $h(n)$.
 Is $h(n) = \Theta(\sqrt{n})$? -/
 
-def formal_conjectures_bench_statement : Prop :=
-  (fun n ↦ (cofactorThreshold n : ℝ)) =Θ[atTop] fun n ↦ √n
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      (fun n ↦ (cofactorThreshold n : ℝ)) =Θ[atTop] fun n ↦ √n
+    ) := by
   sorry
 
 end Erdos539

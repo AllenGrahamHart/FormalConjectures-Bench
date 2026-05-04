@@ -71,14 +71,13 @@ theorem Finite.Equation677_not_implies_Equation255 :
 
 Probably this is false. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (G : Type) [Magma G] [Finite G]
-    (h : Equation677 G),
-    Equation255 G
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (G : Type) [Magma G] [Finite G]
+        (h : Equation677 G),
+        Equation255 G
+    ) := by
   sorry
 
 end EquationalTheories_677_255

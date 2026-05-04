@@ -13,7 +13,14 @@ import FormalConjecturesBench.Target
 namespace Erdos137
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (k : ℕ),
+        ∀ᶠ n in Filter.atTop,
+            ∀ (m : ℕ) (hm : 0 < m),
+            letI N := ∏ x ∈ Finset.Ioc m (m + n), x
+            ∃ P : Finset ℕ, P.card = k ∧ ∀ p ∈ P, p.Prime ∧
+            p ∣ N ∧ ¬ p ^ 2 ∣ N
+    ) := by
   exact Erdos137.formal_conjectures_bench_refutation
 
 end Erdos137

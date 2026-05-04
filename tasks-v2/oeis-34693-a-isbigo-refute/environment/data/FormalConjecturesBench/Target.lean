@@ -75,12 +75,11 @@ theorem exists_k_best_possible : ∃ n > (0 : ℕ), ∀ (k : ℕ),
 
 /-- Conjecture: $a(n) = O(\log(n)\log(\log(n)))$. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  (fun n ↦ (a n : ℝ)) =O[atTop] (fun n ↦ Real.log n * Real.log (Real.log n))
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      (fun n ↦ (a n : ℝ)) =O[atTop] (fun n ↦ Real.log n * Real.log (Real.log n))
+    ) := by
   sorry
 
 end OeisA34693

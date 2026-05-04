@@ -100,15 +100,14 @@ theorem hilbert_smith_conjecture.variants.dimension_three {X : Type*}
 faithfully on any connected finite-dimensional topological manifold. By the Gleason–Yamabe
 theorem, this is equivalent to `hilbert_smith_conjecture`. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {G : Type*} [Group G] [TopologicalSpace G] {n : ℕ} {X : Type*} [TopologicalSpace X] [T2Space X] [ConnectedSpace X] (p : ℕ) [Fact p.Prime]
-    [AddAction (PadicInt p) X] [ContinuousVAdd (PadicInt p) X]
-    [FaithfulVAdd (PadicInt p) X],
-    False
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {G : Type*} [Group G] [TopologicalSpace G] {n : ℕ} {X : Type*} [TopologicalSpace X] [T2Space X] [ConnectedSpace X] (p : ℕ) [Fact p.Prime]
+        [AddAction (PadicInt p) X] [ContinuousVAdd (PadicInt p) X]
+        [FaithfulVAdd (PadicInt p) X],
+        False
+    ) := by
   sorry
 
 end Hilbert5

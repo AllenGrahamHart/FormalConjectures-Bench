@@ -15,7 +15,10 @@ open Nat
 namespace Erdos364
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ (c : ℝ) (h : c > 0), ∀ (k : ℕ),
+          Nat.nth Powerful (k + 2) - Nat.nth Powerful k > (Nat.nth Powerful k : ℝ) ^ c
+    ) := by
   exact Erdos364.formal_conjectures_bench_refutation
 
 end Erdos364

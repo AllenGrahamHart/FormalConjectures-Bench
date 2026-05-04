@@ -15,7 +15,13 @@ open Affine EuclideanGeometry
 namespace Erdos189
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ¬ Erdos189For
+            (fun a b c d ↦
+              line[ℝ, a, b] ∥ line[ℝ, c, d] ∧
+              line[ℝ, a, d] ∥ line[ℝ, b, c])
+            (fun a b c d ↦ dist a b * dist b c * (∡ a b c).sin)
+    ) := by
   exact Erdos189.formal_conjectures_bench_refutation
 
 end Erdos189

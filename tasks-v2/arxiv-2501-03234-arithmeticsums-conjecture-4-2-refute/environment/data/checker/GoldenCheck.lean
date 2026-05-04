@@ -15,7 +15,10 @@ open Nat Finset BigOperators in
 namespace Arxiv.«2501.03234»
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (k : ℕ) (hprim : k.Prime) (hodd : Odd k) (hgt : k > 233),
+        2 * k < S k
+    ) := by
   exact Arxiv.«2501.03234».formal_conjectures_bench_refutation
 
 end Arxiv.«2501.03234»

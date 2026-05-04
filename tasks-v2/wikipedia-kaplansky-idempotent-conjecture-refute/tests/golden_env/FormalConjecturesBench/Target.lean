@@ -45,13 +45,12 @@ theorem zero_divisor_conjecture : NoZeroDivisors (MonoidAlgebra K G) := by
 If `G` is torsion-free, then `K[G]` has no non-trivial idempotents.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (K : Type*) [Field K] (G : Type*) [Group G] (hG : IsMulTorsionFree G) (a : MonoidAlgebra K G) (h : IsIdempotentElem a),
-    a = 0 ∨ a = 1
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (K : Type*) [Field K] (G : Type*) [Group G] (hG : IsMulTorsionFree G) (a : MonoidAlgebra K G) (h : IsIdempotentElem a),
+        a = 0 ∨ a = 1
+    ) := by
   sorry
 
 end Kaplansky

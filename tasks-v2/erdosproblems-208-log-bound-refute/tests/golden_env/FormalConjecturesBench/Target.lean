@@ -55,12 +55,11 @@ In [Er79] Erdős says perhaps $s_{n+1} - s_n \ll \log s_n$, but he is 'very doub
 [Er79] Erdős, Paul, __Some unconventional problems in number theory__. Math. Mag. (1979), 67-70.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  (fun n ↦ (s (n + 1) - s n : ℝ)) =O[atTop] fun n ↦ log (s n)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      (fun n ↦ (s (n + 1) - s n : ℝ)) =O[atTop] fun n ↦ log (s n)
+    ) := by
   sorry
 
 end Erdos208

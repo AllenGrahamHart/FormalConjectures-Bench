@@ -13,7 +13,10 @@ import FormalConjecturesBench.Target
 namespace GoldbachConjecture
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : 2 < n) (hn_even : Even n),
+        ∃ p q, Prime p ∧ Prime q ∧ n = p + q
+    ) := by
   exact GoldbachConjecture.formal_conjectures_bench_refutation
 
 end GoldbachConjecture

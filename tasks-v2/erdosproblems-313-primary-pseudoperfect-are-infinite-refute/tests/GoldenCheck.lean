@@ -13,7 +13,9 @@ import FormalConjecturesBench.Target
 namespace Erdos313
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      Set.Infinite {n | IsPrimaryPseudoperfect n}
+    ) := by
   exact Erdos313.formal_conjectures_bench_refutation
 
 end Erdos313

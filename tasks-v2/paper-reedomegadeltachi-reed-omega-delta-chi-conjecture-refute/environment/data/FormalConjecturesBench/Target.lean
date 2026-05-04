@@ -38,16 +38,15 @@ largest clique subgraph, and $\chi(G)$ to be the chromatic number. Reed's omega,
 conjecture states that $$\chi(G) \leq \lceil \frac{1}{2}(\omega(G) + \Delta(G) + 1) \rceil.$$
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {V : Type} (G : SimpleGraph V),
-      let χ := G.chromaticNumber
-      let ω := G.ecliqueNum
-      let Δ := G.emaxDegree
-      2 * χ ≤ ω + Δ + 2
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {V : Type} (G : SimpleGraph V),
+          let χ := G.chromaticNumber
+          let ω := G.ecliqueNum
+          let Δ := G.emaxDegree
+          2 * χ ≤ ω + Δ + 2
+    ) := by
   sorry
 
 end ReedOmegaDeltaChi

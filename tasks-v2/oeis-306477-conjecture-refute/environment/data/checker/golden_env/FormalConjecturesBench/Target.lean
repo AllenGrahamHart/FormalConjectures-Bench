@@ -57,13 +57,12 @@ theorem isSumOfBinomials_6 : IsSumOfBinomials 6 :=
 $\binom{w+2}{2} + \binom{x+3}{4} + \binom{y+5}{6} + \binom{z+7}{8}$ for nonnegative integers $w, x, y, z$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ) (hn : 0 < n),
-    IsSumOfBinomials n
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : 0 < n),
+        IsSumOfBinomials n
+    ) := by
   sorry
 
 end OeisA306477

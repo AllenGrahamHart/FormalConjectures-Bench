@@ -77,14 +77,13 @@ theorem erdos_394.variants.hall_bound :
 Erdős and Hall conjecture that the sum is $o(x^2/(\log x)^c)$ for any $c<\log 2$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ c < Real.log 2, (fun x ↦ ∑ n ∈ Icc 1 ⌊x⌋₊,
-      (t 2 n : ℝ)) =o[atTop]
-      (fun x ↦ x ^ 2 / (Real.log x) ^ c)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ c < Real.log 2, (fun x ↦ ∑ n ∈ Icc 1 ⌊x⌋₊,
+          (t 2 n : ℝ)) =o[atTop]
+          (fun x ↦ x ^ 2 / (Real.log x) ^ c)
+    ) := by
   sorry
 
 end Erdos394

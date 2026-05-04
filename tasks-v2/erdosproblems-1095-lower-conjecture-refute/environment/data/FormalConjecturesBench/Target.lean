@@ -67,12 +67,11 @@ Erdős, Lacampagne, and Selfridge [ELS93] write 'it is clear to every right-thin
 $g(k)\geq\exp(c\frac{k}{\log k})$ for some constant $c>0$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ c > 0, ∀ᶠ k in atTop, g k ≥ exp (c * k / log k)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ c > 0, ∀ᶠ k in atTop, g k ≥ exp (c * k / log k)
+    ) := by
   sorry
 
 end Erdos1095

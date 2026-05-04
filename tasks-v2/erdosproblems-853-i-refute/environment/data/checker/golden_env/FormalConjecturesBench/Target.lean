@@ -42,12 +42,11 @@ integer $t$ such that $d_n = t$ has no solutions for $n \le x$.
 Is it true that $r(x) \to \infty$?
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  atTop.Tendsto r atTop
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      atTop.Tendsto r atTop
+    ) := by
   sorry
 
 end Erdos853

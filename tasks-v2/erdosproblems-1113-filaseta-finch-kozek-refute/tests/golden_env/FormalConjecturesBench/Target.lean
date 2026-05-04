@@ -85,13 +85,12 @@ theorem erdos_1113 :
 or possesses a finite covering set of primes.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ k, k.IsSierpinskiNumber →
-        k.IsPerfectPower ∨ HasFinitePrimeCoveringSet k
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ k, k.IsSierpinskiNumber →
+            k.IsPerfectPower ∨ HasFinitePrimeCoveringSet k
+    ) := by
   sorry
 
 end Erdos1113

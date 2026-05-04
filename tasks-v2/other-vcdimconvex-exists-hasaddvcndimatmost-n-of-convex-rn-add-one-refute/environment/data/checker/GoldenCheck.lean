@@ -15,7 +15,10 @@ open scoped EuclideanGeometry Pointwise
 namespace VCDimConvex
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ),
+        ∃ d : ℕ, ∀ C : Set (Fin (n + 1) → ℝ), Convex ℝ C → HasAddVCNDimAtMost C n d
+    ) := by
   exact VCDimConvex.formal_conjectures_bench_refutation
 
 end VCDimConvex

@@ -195,13 +195,12 @@ theorem transcendental_gamma_one_div_six : Transcendental ℚ (1 / 6 : ℝ).Gamm
 $\Gamma(1/n)$ for `n ≥ 2` is transcendental.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ) (hn : 2 ≤ n),
-    Transcendental ℚ (1 / n : ℝ).Gamma
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : 2 ≤ n),
+        Transcendental ℚ (1 / n : ℝ).Gamma
+    ) := by
   sorry
 
 end Transcendental

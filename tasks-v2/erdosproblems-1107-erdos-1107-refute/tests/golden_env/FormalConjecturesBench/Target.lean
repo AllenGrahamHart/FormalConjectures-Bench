@@ -39,12 +39,11 @@ def SumOfRPowerful (r n : ℕ) : Prop :=
 Let $r \ge 2$. Is every large integer the sum of at most $r + 1$ many $r$-powerful numbers?
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ r ≥ 2, ∀ᶠ n in atTop, SumOfRPowerful r n
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ r ≥ 2, ∀ᶠ n in atTop, SumOfRPowerful r n
+    ) := by
   sorry
 
 end Erdos1107

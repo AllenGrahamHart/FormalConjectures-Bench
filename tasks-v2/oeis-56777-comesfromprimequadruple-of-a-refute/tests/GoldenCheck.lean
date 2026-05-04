@@ -16,7 +16,10 @@ open scoped ArithmeticFunction.sigma
 namespace OeisA56777
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {n : ℕ} (h : a n),
+        ComesFromPrimeQuadruple n
+    ) := by
   exact OeisA56777.formal_conjectures_bench_refutation
 
 end OeisA56777

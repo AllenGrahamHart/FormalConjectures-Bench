@@ -35,13 +35,12 @@ Kummer–Vandiver conjecture states that for every prime $p$, the class number o
 real subfield of $\mathbb{Q}(\zeta_p)$ is not divisible by $p$.
 --/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (p : ℕ+) (hp : p.Prime),
-    ¬ ↑p ∣ (classNumber (maximalRealSubfield (CyclotomicField p ℚ)))
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (p : ℕ+) (hp : p.Prime),
+        ¬ ↑p ∣ (classNumber (maximalRealSubfield (CyclotomicField p ℚ)))
+    ) := by
   sorry
 
 end KummerVandiver

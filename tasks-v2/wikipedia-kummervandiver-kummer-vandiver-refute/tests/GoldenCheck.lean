@@ -15,7 +15,10 @@ open NumberField CyclotomicField IsCyclotomicExtension
 namespace KummerVandiver
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (p : ℕ+) (hp : p.Prime),
+        ¬ ↑p ∣ (classNumber (maximalRealSubfield (CyclotomicField p ℚ)))
+    ) := by
   exact KummerVandiver.formal_conjectures_bench_refutation
 
 end KummerVandiver

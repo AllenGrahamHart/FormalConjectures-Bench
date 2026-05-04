@@ -13,7 +13,10 @@ import FormalConjecturesBench.Target
 namespace Kaplansky
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (K : Type*) [Field K] (G : Type*) [Group G] (hG : IsMulTorsionFree G) (a : MonoidAlgebra K G) (h : IsIdempotentElem a),
+        a = 0 ∨ a = 1
+    ) := by
   exact Kaplansky.formal_conjectures_bench_refutation
 
 end Kaplansky

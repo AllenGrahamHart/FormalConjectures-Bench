@@ -77,12 +77,11 @@ Hickerson conjectured the largest solution the equation `n!=a_1!a_2!···a_k!`,
 `n−1 > a_1 ≥ a_2 ≥ ··· ≥ a_k`, is `16!=14!5!2!`.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  (16, [14, 5, 2]) ∈ S ∧ ∀ s ∈ S, s.fst ≤ 16
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      (16, [14, 5, 2]) ∈ S ∧ ∀ s ∈ S, s.fst ≤ 16
+    ) := by
   sorry
 
 end Erdos373

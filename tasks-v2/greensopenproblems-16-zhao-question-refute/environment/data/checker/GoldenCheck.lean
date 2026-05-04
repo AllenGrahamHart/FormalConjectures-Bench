@@ -15,7 +15,9 @@ open Finset Real Filter Topology
 namespace Green16
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ¬∃ h : ℕ → ℝ, Tendsto h atTop (𝓝 0) ∧ ∀ᶠ N in atTop, (g N : ℝ) ≥ (N : ℝ) ^ (1 / 3 - h N)
+    ) := by
   exact Green16.formal_conjectures_bench_refutation
 
 end Green16

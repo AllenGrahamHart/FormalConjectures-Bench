@@ -13,7 +13,9 @@ import FormalConjecturesBench.Target
 namespace Erdos406
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      IsGreatest { n | n.isPowerOfTwo ∧ Nat.digits 3 n ⊆ [1, 2] } (2 ^ 15)
+    ) := by
   exact Erdos406.formal_conjectures_bench_refutation
 
 end Erdos406

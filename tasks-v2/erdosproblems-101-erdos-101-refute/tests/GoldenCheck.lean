@@ -15,7 +15,9 @@ open EuclideanGeometry Filter Asymptotics
 namespace Erdos101
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      (fun n => (numLinesWithFourPointMax n : ℝ)) =o[atTop] (fun n => (n : ℝ)^2)
+    ) := by
   exact Erdos101.formal_conjectures_bench_refutation
 
 end Erdos101

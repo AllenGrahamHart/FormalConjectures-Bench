@@ -15,7 +15,9 @@ open Nat Filter
 namespace Erdos1107
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ r ≥ 2, ∀ᶠ n in atTop, SumOfRPowerful r n
+    ) := by
   exact Erdos1107.formal_conjectures_bench_refutation
 
 end Erdos1107

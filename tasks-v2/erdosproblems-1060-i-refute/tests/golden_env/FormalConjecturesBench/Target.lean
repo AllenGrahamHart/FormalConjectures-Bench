@@ -35,13 +35,12 @@ $\log n$.
 -/
 
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ h : ℕ → ℝ,
-        h =o[atTop] (fun n ↦ 1 / log (log n)) ∧ ∀ᶠ n in atTop, #{k ≤ n | k * σ 1 k = n} ≤ (n : ℝ) ^ h n
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ h : ℕ → ℝ,
+            h =o[atTop] (fun n ↦ 1 / log (log n)) ∧ ∀ᶠ n in atTop, #{k ≤ n | k * σ 1 k = n} ≤ (n : ℝ) ^ h n
+    ) := by
   sorry
 
 end Erdos1060

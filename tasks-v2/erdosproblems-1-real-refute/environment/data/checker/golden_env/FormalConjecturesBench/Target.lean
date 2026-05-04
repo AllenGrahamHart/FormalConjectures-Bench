@@ -114,13 +114,12 @@ sums all differ by at least $1$ is proposed in [Er73] and [ErGr80].
 [ErGr80] Erdős, P. and Graham, R., _Old and new problems and results in combinatorial number theory_. Monographies de L'Enseignement Mathematique (1980).
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ C > (0 : ℝ), ∀ (N : ℕ) (A : Finset ℝ)
-      (_ : IsSumDistinctRealSet A N), N ≠ 0 → C * 2 ^ A.card < N
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ C > (0 : ℝ), ∀ (N : ℕ) (A : Finset ℝ)
+          (_ : IsSumDistinctRealSet A N), N ≠ 0 → C * 2 ^ A.card < N
+    ) := by
   sorry
 
 end Erdos1

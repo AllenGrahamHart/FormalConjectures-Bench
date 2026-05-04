@@ -44,12 +44,11 @@ theorem erdos_913 : answer(sorry) ↔
 It is likely that there are infinitely many primes $p$ such that $8p^2 - 1$ is also prime.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  { p | p.Prime ∧ (8 * p ^ 2 - 1).Prime }.Infinite
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      { p | p.Prime ∧ (8 * p ^ 2 - 1).Prime }.Infinite
+    ) := by
   sorry
 
 end Erdos913

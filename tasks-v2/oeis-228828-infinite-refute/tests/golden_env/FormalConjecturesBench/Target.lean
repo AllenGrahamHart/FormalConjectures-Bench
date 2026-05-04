@@ -63,12 +63,11 @@ lemma a_two : a 2 = 7 := by
 Conjecture: the sequence A228828 is infinite.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  {a n | n}.Infinite
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      {a n | n}.Infinite
+    ) := by
   sorry
 
 end OeisA228828

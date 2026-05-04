@@ -16,7 +16,10 @@ local notation "!" n => left_factorial n
 namespace Kurepa
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ),
+        2 < n → (n !).gcd (! n) = 2
+    ) := by
   exact Kurepa.formal_conjectures_bench_refutation
 
 end Kurepa

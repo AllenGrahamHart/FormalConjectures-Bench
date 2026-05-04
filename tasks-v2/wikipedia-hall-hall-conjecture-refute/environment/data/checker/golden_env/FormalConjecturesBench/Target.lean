@@ -43,12 +43,11 @@ def HallConjectureExp (e : ℝ) : Prop := ∃ C : ℝ, C > 0 ∧ HallIneq C e
 Original Hall's conjecture with exponent $1/2$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  HallConjectureExp 2⁻¹
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      HallConjectureExp 2⁻¹
+    ) := by
   sorry
 
 end Hall

@@ -15,7 +15,10 @@ open scoped NumberField
 namespace RegularPrimes
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (p : ℕ),
+        RegularPrimeConjecture
+    ) := by
   exact RegularPrimes.formal_conjectures_bench_refutation
 
 end RegularPrimes

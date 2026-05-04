@@ -67,13 +67,12 @@ theorem NoKInLine {k : ℕ} {N : ℕ} (hk : 1 < k) (h : k ≤ N) : NoKInLineFor 
 /-- **Green's Open Problem 72 / No-three-in-line problem**:
 The no-k-in-line conjecture holds for $k = 3$. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {N : ℕ} (hN : 3 ≤ N),
-    NoKInLineFor 3 N
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {N : ℕ} (hN : 3 ≤ N),
+        NoKInLineFor 3 N
+    ) := by
   sorry
 
 end Green72

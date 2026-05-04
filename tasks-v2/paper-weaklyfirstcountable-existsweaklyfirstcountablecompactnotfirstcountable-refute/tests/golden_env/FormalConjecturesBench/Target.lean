@@ -93,12 +93,11 @@ def ExistsWeaklyFirstCountableCompactNotFirstCountable : Prop :=
 /-- Problem 3 in [Ar2013]: Give an example in ZFC of a weakly first-
 countable compact space which is not first countable. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ExistsWeaklyFirstCountableCompactNotFirstCountable
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ExistsWeaklyFirstCountableCompactNotFirstCountable
+    ) := by
   sorry
 
 end WeaklyFirstCountable

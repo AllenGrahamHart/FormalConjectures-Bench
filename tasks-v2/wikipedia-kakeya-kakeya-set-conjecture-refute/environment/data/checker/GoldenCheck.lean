@@ -16,7 +16,10 @@ open scoped EuclideanGeometry
 namespace Kakeya
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : n > 0),
+        KakeyaSetConjectureDim n
+    ) := by
   exact Kakeya.formal_conjectures_bench_refutation
 
 end Kakeya

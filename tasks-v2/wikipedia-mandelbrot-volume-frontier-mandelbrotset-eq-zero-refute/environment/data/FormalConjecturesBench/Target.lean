@@ -162,12 +162,11 @@ theorem multibrotSet_frontier_measurable {n : ℕ} : MeasurableSet (frontier (mu
 
 /-- The boundary of the Mandelbrot set is conjectured to have zero area. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  volume (frontier mandelbrotSet) = 0
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      volume (frontier mandelbrotSet) = 0
+    ) := by
   sorry
 
 end Mandelbrot

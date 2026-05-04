@@ -136,14 +136,13 @@ noncomputable def g (n : ℕ) : ℕ :=
 such that all sums of the shape $\sum_{u \le i \le v} a_i$ are distinct. It is known that
 $$\left(\frac 1 3 + o(1) \right)n \leq g(n) \leq \left(\frac 2 3 + o(1) \right)n.$$ -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ (o o' : ℕ → ℝ), o =o[atTop] (1 : ℕ → ℝ) ∧
-      o' =o[atTop] (1 : ℕ → ℝ) ∧
-        ∀ᶠ n in atTop, (g n : ℝ) ∈ Set.Icc ((1 / 3 + o n) * n) ((2 / 3 + o' n)*n)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ (o o' : ℕ → ℝ), o =o[atTop] (1 : ℕ → ℝ) ∧
+          o' =o[atTop] (1 : ℕ → ℝ) ∧
+            ∀ᶠ n in atTop, (g n : ℝ) ∈ Set.Icc ((1 / 3 + o n) * n) ((2 / 3 + o' n)*n)
+    ) := by
   sorry
 
 end Erdos357

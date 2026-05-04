@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "97129c4b467eb9179e35c0e578860fd1f8fb08c9e845e344cc96816f9f1c0765"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "ec4993c1cdfc084112c7a9dcf7da9013b624ebcd4d540f8364549f1140a8910f"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2200 {n : \u2115} (f : (Fin n \u2192 \u211d) \u2192 \u211d)\n        (hf : IsPiecewiseMvPolynomial f),\n        \u2203 (\u03b9 \u03ba : Type) (g : \u03b9 \u2192 \u03ba \u2192 MvPolynomial (Fin n) \u211d), Finite \u03b9 \u2227 Finite \u03ba \u2227\n              \u2200 x, f x = \u2a06 i, \u2a05 j, MvPolynomial.eval x (g i j)\n    )"
 THEOREM_NAME = "PierceBirkhoff.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

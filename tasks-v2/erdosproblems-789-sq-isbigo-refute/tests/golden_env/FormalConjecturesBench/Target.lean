@@ -89,12 +89,11 @@ theorem erdos_789.variants.isBigO_sq :
 /-- By the solved variant `erdos_789.variants.isBigO_sq`, in order to prove
 `erdos_789.variants.sq` it suffices to show $\sqrt{n}=O(h(n))$. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  (fun n : ℕ ↦ √n) =O[atTop] fun n ↦ (subsetSumThreshold n : ℝ)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      (fun n : ℕ ↦ √n) =O[atTop] fun n ↦ (subsetSumThreshold n : ℝ)
+    ) := by
   sorry
 
 end Erdos789

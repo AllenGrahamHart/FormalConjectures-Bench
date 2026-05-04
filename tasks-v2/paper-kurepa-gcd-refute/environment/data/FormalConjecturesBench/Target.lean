@@ -92,13 +92,12 @@ theorem kurepa_conjecture.prime_reduction : (∀ n, 2 < n → (!n : ℕ) % n ≠
 An equivalent formulation in terms of the gcd of $n!$ and $!n$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ),
-    2 < n → (n !).gcd (! n) = 2
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ),
+        2 < n → (n !).gcd (! n) = 2
+    ) := by
   sorry
 
 end Kurepa

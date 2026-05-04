@@ -53,12 +53,11 @@ theorem exp_pow_pi_sq_transcendental : Transcendental ℚ (exp (π ^ 2)) := by
 $e^e$ is transcendental.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  Transcendental ℚ (exp (exp 1))
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      Transcendental ℚ (exp (exp 1))
+    ) := by
   sorry
 
 end Transcendental

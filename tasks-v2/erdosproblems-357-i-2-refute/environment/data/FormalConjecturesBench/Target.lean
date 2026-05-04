@@ -153,12 +153,11 @@ noncomputable def h (n : ℕ) : ℕ :=
 /-- Let $h(n)$ be the maximal $k$ such that there exist integers $1 \le a_1 \leq \dotsc \leq a_k \le n$
 such that all sums of the shape $\sum_{u \le i \le v} a_i$ are distinct. Is $h(n)=o(n)$? -/
 
-def formal_conjectures_bench_statement : Prop :=
-  (fun n ↦ (h n : ℝ)) =o[atTop] (fun n ↦ (n : ℝ))
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      (fun n ↦ (h n : ℝ)) =o[atTop] (fun n ↦ (n : ℝ))
+    ) := by
   sorry
 
 end Erdos357

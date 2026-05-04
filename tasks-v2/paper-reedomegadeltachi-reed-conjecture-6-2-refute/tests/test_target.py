@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "fbde8af5248fe489af93810608e4c9dd4ae8c2e2ebeaa5dbc38d3113ae3e6bf2"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "1713959fe6f72aa2ff872eb8cf64b5bf717eb9996108bed03d759d78559c930b"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2200 {V : Type} (G : SimpleGraph V), G.emaxDegree = 6 \u2227 G.cliqueNum = 2 \u2192 G.chromaticNumber \u2264 5\n    )"
 THEOREM_NAME = "ReedOmegaDeltaChi.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

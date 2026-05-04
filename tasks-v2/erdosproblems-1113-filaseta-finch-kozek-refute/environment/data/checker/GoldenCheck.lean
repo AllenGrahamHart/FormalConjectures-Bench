@@ -13,7 +13,10 @@ import FormalConjecturesBench.Target
 namespace Erdos1113
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ k, k.IsSierpinskiNumber →
+            k.IsPerfectPower ∨ HasFinitePrimeCoveringSet k
+    ) := by
   exact Erdos1113.formal_conjectures_bench_refutation
 
 end Erdos1113

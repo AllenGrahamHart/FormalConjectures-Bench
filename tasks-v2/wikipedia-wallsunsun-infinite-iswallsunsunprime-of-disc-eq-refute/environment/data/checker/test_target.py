@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "d779e0b0c6dbcc55295772d226741bf3e8786ae1bb07c5e70c2e38df3f8123a0"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "2dd1ec9927a3eb668c38e554adf456be690516958d303317d24f880a0fb4b350"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2200 {D : \u2115} (hD\u2080 : 0 < D)\n        (hD : D \u2261 0 [MOD 4] \u2228 D \u2261 1 [MOD 4]),\n        {p : \u2115 | \u2203 a b : \u2115, a ^ 2 - 4 * b = D \u2227 IsLucasWieferichPrime a b p}.Infinite\n    )"
 THEOREM_NAME = "WallSunSun.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

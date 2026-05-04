@@ -41,14 +41,13 @@ where `tree(G)` is the number of vertices of a largest induced tree subgraph,
 `l(v) = indepNeighbors G v` is the independence number of the neighbourhood of `v`.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {α : Type*} [Fintype α] [DecidableEq α] [Nontrivial α] (G : SimpleGraph α) (h : G.Connected),
-    G.girth / 2 - 1 + (Finset.univ.sup (indepNeighborsCard G)) ≤
-        largestInducedTreeSize G
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {α : Type*} [Fintype α] [DecidableEq α] [Nontrivial α] (G : SimpleGraph α) (h : G.Connected),
+        G.girth / 2 - 1 + (Finset.univ.sup (indepNeighborsCard G)) ≤
+            largestInducedTreeSize G
+    ) := by
   sorry
 
 end WrittenOnTheWallII.GraphConjecture141

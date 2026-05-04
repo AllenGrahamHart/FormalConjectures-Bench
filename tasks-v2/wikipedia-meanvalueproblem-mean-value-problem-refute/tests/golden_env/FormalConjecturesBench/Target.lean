@@ -46,14 +46,13 @@ Given a complex polynomial $p$ of degree $d ≥ 2$ and a complex number $z$
 there is a critical point $c$ of $p$, such that $|p(z)-p(c)|/|z-c| ≤ |p'(z)|$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (p : Polynomial ℂ) (hp : 2 ≤ p.degree) (z : ℂ) (K : ℝ),
-    ∃ c : ℂ, p.derivative.eval c = 0 ∧
-          ‖p.eval z - p.eval c‖ / ‖z - c‖ ≤ ‖p.derivative.eval z‖
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (p : Polynomial ℂ) (hp : 2 ≤ p.degree) (z : ℂ) (K : ℝ),
+        ∃ c : ℂ, p.derivative.eval c = 0 ∧
+              ‖p.eval z - p.eval c‖ / ‖z - c‖ ≤ ‖p.derivative.eval z‖
+    ) := by
   sorry
 
 end MeanValueProblem

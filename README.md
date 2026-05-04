@@ -7,23 +7,23 @@ The current `main` branch has two checked-in task roots:
 
 - `tasks/`: 72 gold-solution tasks with bundled local Lean oracles. These run
   with internet access disabled.
-- `tasks-v2/`: 1,448 non-gold tasks without bundled oracles. These run with
+- `tasks-v2/`: 1,444 non-gold tasks without bundled oracles. These run with
   internet access enabled so agents can use external literature while trying to
   produce new Lean proofs.
 
-The combined v2 manifest records 1,520 task instances: the 72 gold instances are
-emitted under `tasks/`, and the remaining 1,448 instances are emitted under
+The combined v2 manifest records 1,516 task instances: the 72 gold instances are
+emitted under `tasks/`, and the remaining 1,444 instances are emitted under
 `tasks-v2/`.
 
 ## Benchmark Card
 
 | Field | Value |
 | --- | --- |
-| Current task instances | 1,520 |
+| Current task instances | 1,516 |
 | Gold task root | `tasks/` |
 | Gold tasks | 72 |
 | Non-gold v2 task root | `tasks-v2/` |
-| Non-gold v2 tasks | 1,448 |
+| Non-gold v2 tasks | 1,444 |
 | V2 batch manifests | `manifest/v2_batches/batch-001.json` through `batch-015.json` |
 | Language | Lean 4 |
 | Lean toolchain | `leanprover/lean4:v4.27.0` |
@@ -36,8 +36,8 @@ emitted under `tasks/`, and the remaining 1,448 instances are emitted under
 | Bucket | Count | Task root | Internet | Oracle |
 | --- | ---: | --- | --- | --- |
 | `gold_solution` | 72 | `tasks/` | Off | Bundled local oracle |
-| `informal_proof` | 723 | `tasks-v2/` | On | None |
-| `deferred_formal_candidate` | 29 | `tasks-v2/` | On | None |
+| `informal_proof` | 722 | `tasks-v2/` | On | None |
+| `deferred_formal_candidate` | 26 | `tasks-v2/` | On | None |
 | `open_problem` | 696 | `tasks-v2/` | On | None |
 
 The `open_problem` bucket consists of 348 prove/refute pairs. Each pair has one
@@ -55,7 +55,7 @@ non-gold, internet-enabled tasks with no bundled oracle.
 
 - `manifest/manifest.json` is the source of truth for the 72 gold tasks emitted
   under `tasks/`.
-- `manifest/v2_candidates.json` records all 1,520 v2 instances and their
+- `manifest/v2_candidates.json` records all 1,516 v2 instances and their
   benchmark buckets.
 - `manifest/v2_batches/` records deterministic batches used to generate
   `tasks-v2/`.
@@ -100,6 +100,12 @@ To smoke-test a small Lean sample from one v2 batch:
 
 ```bash
 make smoke-v2-batch V2_BATCH=batch-015 V2_LEAN_SMOKE=10
+```
+
+To Lean-smoke every generated v2 target with its placeholder `sorry`:
+
+```bash
+python3 scripts/smoke_v2_targets.py --batch manifest/v2_batches/batch-001.json --batch manifest/v2_batches/batch-002.json --batch manifest/v2_batches/batch-003.json --batch manifest/v2_batches/batch-004.json --batch manifest/v2_batches/batch-005.json --batch manifest/v2_batches/batch-006.json --batch manifest/v2_batches/batch-007.json --batch manifest/v2_batches/batch-008.json --batch manifest/v2_batches/batch-009.json --batch manifest/v2_batches/batch-010.json --batch manifest/v2_batches/batch-011.json --batch manifest/v2_batches/batch-012.json --batch manifest/v2_batches/batch-013.json --batch manifest/v2_batches/batch-014.json --batch manifest/v2_batches/batch-015.json --progress-every 10
 ```
 
 To check every v2 batch:

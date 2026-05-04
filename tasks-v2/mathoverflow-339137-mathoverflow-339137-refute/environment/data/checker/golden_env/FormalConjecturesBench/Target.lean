@@ -50,15 +50,14 @@ If $R(x) = P(x)Q(x)$ is a $0,1$ polynomial (coefficients only from $\{0,1\}$), t
 are also $0, 1$ polynomials.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (P Q R : ℝ[X]) (hP: P.Monic) (hQ : Q.Monic)
-    (hp : ∀ c ∈ P.coeffs, 0 ≤ c) (hq : ∀ c ∈ Q.coeffs, 0 ≤ c)
-    (h : R = P * Q) (hR : IsZeroOne R),
-    IsZeroOne P ∧ IsZeroOne Q
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (P Q R : ℝ[X]) (hP: P.Monic) (hQ : Q.Monic)
+        (hp : ∀ c ∈ P.coeffs, 0 ≤ c) (hq : ∀ c ∈ Q.coeffs, 0 ≤ c)
+        (h : R = P * Q) (hR : IsZeroOne R),
+        IsZeroOne P ∧ IsZeroOne Q
+    ) := by
   sorry
 
 end Mathoverflow339137

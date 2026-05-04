@@ -34,14 +34,13 @@ Is there an infinite sequence of distinct Gaussian primes $x_1,x_2,\ldots$
 such that $\lvert x_{n+1}-x_n\rvert \ll 1$?
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ (x : ℕ → GaussianInt) (C : ℤ),
-      Function.Injective x ∧
-        ∀ n, Prime (x n) ∧ (x (n + 1) - x n).norm < C
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ (x : ℕ → GaussianInt) (C : ℤ),
+          Function.Injective x ∧
+            ∀ n, Prime (x n) ∧ (x (n + 1) - x n).norm < C
+    ) := by
   sorry
 
 end Erdos952

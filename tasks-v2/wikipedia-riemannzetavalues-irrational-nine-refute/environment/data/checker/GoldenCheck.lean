@@ -13,7 +13,9 @@ import FormalConjecturesBench.Target
 namespace RiemannZetaValues
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ x, Irrational x ∧ riemannZeta 9 = x
+    ) := by
   exact RiemannZetaValues.formal_conjectures_bench_refutation
 
 end RiemannZetaValues

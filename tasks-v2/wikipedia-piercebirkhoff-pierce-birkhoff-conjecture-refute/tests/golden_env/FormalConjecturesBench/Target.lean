@@ -86,15 +86,14 @@ The Pierce-Birkhoff conjecture states that for every real piecewise-polynomial f
 `f = supᵢ infⱼ(gᵢⱼ)`.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {n : ℕ} (f : (Fin n → ℝ) → ℝ)
-    (hf : IsPiecewiseMvPolynomial f),
-    ∃ (ι κ : Type) (g : ι → κ → MvPolynomial (Fin n) ℝ), Finite ι ∧ Finite κ ∧
-          ∀ x, f x = ⨆ i, ⨅ j, MvPolynomial.eval x (g i j)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {n : ℕ} (f : (Fin n → ℝ) → ℝ)
+        (hf : IsPiecewiseMvPolynomial f),
+        ∃ (ι κ : Type) (g : ι → κ → MvPolynomial (Fin n) ℝ), Finite ι ∧ Finite κ ∧
+              ∀ x, f x = ⨆ i, ⨅ j, MvPolynomial.eval x (g i j)
+    ) := by
   sorry
 
 end PierceBirkhoff

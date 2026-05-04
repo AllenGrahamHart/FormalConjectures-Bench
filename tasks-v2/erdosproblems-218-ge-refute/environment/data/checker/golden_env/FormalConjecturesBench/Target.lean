@@ -39,12 +39,11 @@ The set of indices $n$ for which a prime gap is preceeded by a larger or equal p
 natural density of $\frac 1 2$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  {n | primeGap (n + 1) ≤ primeGap n}.HasDensity <| 1 / 2
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      {n | primeGap (n + 1) ≤ primeGap n}.HasDensity <| 1 / 2
+    ) := by
   sorry
 
 end Erdos218

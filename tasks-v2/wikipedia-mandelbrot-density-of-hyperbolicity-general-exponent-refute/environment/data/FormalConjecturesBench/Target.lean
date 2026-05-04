@@ -151,13 +151,12 @@ theorem density_of_hyperbolicity :
 parameters `c` for which `fun z ↦ z ^ n + c` has an attracting cycle is dense in `multibrotSet n`.
 Note that we need to require `2 ≤ n` because the conjecture is trivially false for `n = 1`. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {n : ℕ} (hn : 2 ≤ n),
-    multibrotSet n ⊆ closure {c | ∃ m z, IsAttractingCycle (fun z ↦ z ^ n + c) m z}
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {n : ℕ} (hn : 2 ≤ n),
+        multibrotSet n ⊆ closure {c | ∃ m z, IsAttractingCycle (fun z ↦ z ^ n + c) m z}
+    ) := by
   sorry
 
 end Mandelbrot

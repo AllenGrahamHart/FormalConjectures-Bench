@@ -36,13 +36,12 @@ namespace Kaplansky
 If `G` is torsion-free, then the group algebra `K[G]` has no non-trivial zero divisors.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (K : Type*) [Field K] (G : Type*) [Group G] (hG : IsMulTorsionFree G),
-    NoZeroDivisors (MonoidAlgebra K G)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (K : Type*) [Field K] (G : Type*) [Group G] (hG : IsMulTorsionFree G),
+        NoZeroDivisors (MonoidAlgebra K G)
+    ) := by
   sorry
 
 end Kaplansky

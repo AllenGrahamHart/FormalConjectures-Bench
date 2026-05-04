@@ -49,15 +49,14 @@ Then any relatively compact $D$-orbit in
 $\mathrm{SL}_n(\mathbb{R})/ \mathrm{SL}_n(\mathbb{Z})$ is closed.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {n : ℕ} (hn : 3 ≤ n)
-    (g : SL(n, ℝ) ⧸ Subgroup.map (map (Int.castRingHom ℝ)) ⊤)
-    (hg : IsCompact <| closure (MulAction.orbit (diagonalSubgroup (Fin n) ℝ) g)),
-    IsClosed <| MulAction.orbit (diagonalSubgroup (Fin n) ℝ) g
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {n : ℕ} (hn : 3 ≤ n)
+        (g : SL(n, ℝ) ⧸ Subgroup.map (map (Int.castRingHom ℝ)) ⊤)
+        (hg : IsCompact <| closure (MulAction.orbit (diagonalSubgroup (Fin n) ℝ) g)),
+        IsClosed <| MulAction.orbit (diagonalSubgroup (Fin n) ℝ) g
+    ) := by
   sorry
 
 end Margulis

@@ -13,7 +13,9 @@ import FormalConjecturesBench.Target
 namespace Selfridge
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ¬ Monotone fermatFactors
+    ) := by
   exact Selfridge.formal_conjectures_bench_refutation
 
 end Selfridge

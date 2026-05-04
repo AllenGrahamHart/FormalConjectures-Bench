@@ -13,7 +13,11 @@ import FormalConjecturesBench.Target
 namespace WallSunSun
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {D : ℕ} (hD₀ : 0 < D)
+        (hD : D ≡ 0 [MOD 4] ∨ D ≡ 1 [MOD 4]),
+        {p : ℕ | ∃ a b : ℕ, a ^ 2 - 4 * b = D ∧ IsLucasWieferichPrime a b p}.Infinite
+    ) := by
   exact WallSunSun.formal_conjectures_bench_refutation
 
 end WallSunSun

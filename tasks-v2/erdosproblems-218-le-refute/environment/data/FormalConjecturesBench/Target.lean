@@ -31,12 +31,11 @@ The set of indices $n$ for which a prime gap is followed by a larger or equal pr
 natural density of $\frac 1 2$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  {n | primeGap n ≤ primeGap (n + 1)}.HasDensity <| 1 / 2
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      {n | primeGap n ≤ primeGap (n + 1)}.HasDensity <| 1 / 2
+    ) := by
   sorry
 
 end Erdos218

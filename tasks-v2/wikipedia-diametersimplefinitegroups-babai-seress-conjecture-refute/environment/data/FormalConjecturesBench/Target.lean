@@ -164,15 +164,14 @@ $$\operatorname{diam}(G) \leq (\log |G|)^C.$$
 *Reference:* [L. Babai and Á. Seress, *On the diameter of permutation groups*,
 European Journal of Combinatorics 13 (1992), Conjecture 1.7](https://doi.org/10.1016/S0195-6698(05)80029-0) -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ C : ℕ,
-      ∀ (G : Type) [Group G] [Fintype G] [IsSimpleGroup G],
-      (∃ a b : G, a * b ≠ b * a) →
-      (groupDiam G : ℝ) ≤ (Real.log (Fintype.card G : ℝ)) ^ C
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ C : ℕ,
+          ∀ (G : Type) [Group G] [Fintype G] [IsSimpleGroup G],
+          (∃ a b : G, a * b ≠ b * a) →
+          (groupDiam G : ℝ) ≤ (Real.log (Fintype.card G : ℝ)) ^ C
+    ) := by
   sorry
 
 end BabaiSeressConjectures

@@ -15,7 +15,11 @@ open Nat
 namespace OeisA357513
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (m : ℕ),
+        ∃ (exceptions : Finset ℕ), ∀ p, p.Prime →
+            p ∉ exceptions → u m (p - 1) = (0 : ZMod (p ^ 4))
+    ) := by
   exact OeisA357513.formal_conjectures_bench_refutation
 
 end OeisA357513

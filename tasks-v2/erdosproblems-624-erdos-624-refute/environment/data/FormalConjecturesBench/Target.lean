@@ -55,12 +55,11 @@ we have $\left\{ f(A) : A\subseteq Y\right\}=X$.
 Prove that $H(n)-\log_2 n \to \infty$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  atTop.Tendsto (fun n : ℕ => H n - Real.logb 2 (n : ℝ)) atTop
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      atTop.Tendsto (fun n : ℕ => H n - Real.logb 2 (n : ℝ)) atTop
+    ) := by
   sorry
 
 end Erdos624

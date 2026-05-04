@@ -66,13 +66,12 @@ $f_2(3n^2 + 3n + 1) < 9n^2 + 3n$.
 Note: in [Er75f] is read $9n^2 + 6n$, but this seems to be a typo.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {n : ℕ},
-    f 2 (3 * n ^ 2 + 3 * n + 1) = 9 * n ^ 2 + 3 * n
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {n : ℕ},
+        f 2 (3 * n ^ 2 + 3 * n + 1) = 9 * n ^ 2 + 3 * n
+    ) := by
   sorry
 
 end Erdos1084

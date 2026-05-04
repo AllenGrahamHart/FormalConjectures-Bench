@@ -17,7 +17,9 @@ open scoped Asymptotics Topology
 namespace Erdos1095
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      (fun k ↦ log (g k)) ~[atTop] (fun k ↦ k / log k)
+    ) := by
   exact Erdos1095.formal_conjectures_bench_refutation
 
 end Erdos1095

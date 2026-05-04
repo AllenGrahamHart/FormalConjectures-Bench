@@ -13,7 +13,10 @@ import FormalConjecturesBench.Target
 namespace Erdos10
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      {n : ℕ | Odd n ∧ 1 < n} ⊆ sumPrimeAndTwoPows 3 ∧
+            {n : ℕ | Even n ∧ n ≠ 0} ⊆ sumPrimeAndTwoPows 4
+    ) := by
   exact Erdos10.formal_conjectures_bench_refutation
 
 end Erdos10

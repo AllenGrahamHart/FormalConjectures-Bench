@@ -56,13 +56,12 @@ lemma exists_convex_rn_add_two_vc_n_forall_not_hasAddVCNDimAtMost (n : ℕ) :
 
 /-- Every convex set in $\mathbb R^3$ has $\mathrm{VC}_2$ dimension at most 1. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {C : Set ℝ³} (hC : Convex ℝ C),
-    HasAddVCNDimAtMost C 2 1
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {C : Set ℝ³} (hC : Convex ℝ C),
+        HasAddVCNDimAtMost C 2 1
+    ) := by
   sorry
 
 end VCDimConvex

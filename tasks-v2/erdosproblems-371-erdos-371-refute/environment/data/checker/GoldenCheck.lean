@@ -13,7 +13,9 @@ import FormalConjecturesBench.Target
 namespace Erdos371
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      { n | Nat.maxPrimeFac (n + 1) > Nat.maxPrimeFac n }.HasDensity (1/2)
+    ) := by
   exact Erdos371.formal_conjectures_bench_refutation
 
 end Erdos371

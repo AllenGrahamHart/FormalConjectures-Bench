@@ -61,13 +61,12 @@ theorem isSumOfTwoSquaresAndPowersOf3And5_25 : IsSumOfTwoSquaresAndPowersOf3And5
 squares, a power of 3, and a power of 5.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ) (hn : 1 < n),
-    IsSumOfTwoSquaresAndPowersOf3And5 n
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : 1 < n),
+        IsSumOfTwoSquaresAndPowersOf3And5 n
+    ) := by
   sorry
 
 end OeisA303656

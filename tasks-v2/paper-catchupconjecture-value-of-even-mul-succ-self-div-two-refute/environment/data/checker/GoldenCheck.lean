@@ -13,7 +13,10 @@ import FormalConjecturesBench.Target
 namespace CatchUp
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (N : ℕ) (h_even : Even (N * (N + 1) / 2)),
+        value (.Icc 1 N) = .draw
+    ) := by
   exact CatchUp.formal_conjectures_bench_refutation
 
 end CatchUp

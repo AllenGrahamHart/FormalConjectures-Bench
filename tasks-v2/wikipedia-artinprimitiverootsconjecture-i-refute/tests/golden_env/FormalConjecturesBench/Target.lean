@@ -92,13 +92,12 @@ of primes $p$ such that $a$ is a primitive root modulo $p$ has a positive asympt
 density inside the set of primes. In particular, $S(a)$ is infinite.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (a : ℤ) (ha : ¬IsSquare a) (ha' : a ≠ -1),
-    ∃ x > 0, (S a).HasDensity x {p | p.Prime}
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (a : ℤ) (ha : ¬IsSquare a) (ha' : a ≠ -1),
+        ∃ x > 0, (S a).HasDensity x {p | p.Prime}
+    ) := by
   sorry
 
 end ArtinPrimitiveRootsConjecture

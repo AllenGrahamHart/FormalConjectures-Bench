@@ -15,7 +15,10 @@ open Polynomial
 namespace Dickson
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (k : ℕ),
+        Infinite {p : ℕ | p.Prime ∧ (p + 2 * k).Prime}
+    ) := by
   exact Dickson.formal_conjectures_bench_refutation
 
 end Dickson

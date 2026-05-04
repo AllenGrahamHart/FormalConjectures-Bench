@@ -13,7 +13,10 @@ import FormalConjecturesBench.Target
 namespace OeisA80170
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (k : ℕ) (hk : 2 ≤ k),
+        GCDCondition k ↔ PrimePowerCondition (k - 1)
+    ) := by
   exact OeisA80170.formal_conjectures_bench_refutation
 
 end OeisA80170

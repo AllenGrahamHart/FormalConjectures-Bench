@@ -104,6 +104,7 @@ Let $f(z) ∈ $ℂ[z]$ be a monic non-constant polynomial. Can the set
 $\{z ∈ ℂ : |f(z)| ≤ 1\}$
 be covered by a set of closed discs the sum of whose radii is $≤ 2.59$?
 Solution: True. This is due to Pommerenke.
+-/
 
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem erdos_509.variants.Pommerenke_bound : answer(True) ↔ ∀ (f : ℂ[X]), f.Monic → f.natDegree ≠ 0 →

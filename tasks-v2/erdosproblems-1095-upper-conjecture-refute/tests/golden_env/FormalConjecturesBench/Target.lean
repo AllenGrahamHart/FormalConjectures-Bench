@@ -58,12 +58,11 @@ theorem erdos_1095.variants.lower_solved :
 Ecklund, Erdős, and Selfridge [EES74] conjectured $g(k)\leq \exp((1+o(1))k)$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ f : ℕ → ℝ, Tendsto f atTop (𝓝 0) ∧ ∀ᶠ k in atTop, g k ≤ exp (k * (1 + f k))
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ f : ℕ → ℝ, Tendsto f atTop (𝓝 0) ∧ ∀ᶠ k in atTop, g k ≤ exp (k * (1 + f k))
+    ) := by
   sorry
 
 end Erdos1095

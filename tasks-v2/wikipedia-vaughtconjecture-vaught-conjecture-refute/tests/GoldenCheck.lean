@@ -15,7 +15,11 @@ open FirstOrder.Language
 namespace VaughtConjecture
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {L : FirstOrder.Language} (hL : Countable L.Symbols)
+                              {T : L.Theory} (hT : T.IsComplete),
+        numberOfCountableModels T ≤ Cardinal.aleph0 ∨ numberOfCountableModels T = Cardinal.continuum
+    ) := by
   exact VaughtConjecture.formal_conjectures_bench_refutation
 
 end VaughtConjecture

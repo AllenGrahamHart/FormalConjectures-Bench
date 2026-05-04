@@ -15,7 +15,9 @@ open scoped Nat
 namespace Erdos1094
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      {(n, k) : ℕ × ℕ | 0 < k ∧ 2 * k ≤ n ∧ (n.choose k).minFac > max (n / k) k}.Finite
+    ) := by
   exact Erdos1094.formal_conjectures_bench_refutation
 
 end Erdos1094

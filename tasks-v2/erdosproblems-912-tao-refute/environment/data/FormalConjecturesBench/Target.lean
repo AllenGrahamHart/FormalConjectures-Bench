@@ -53,12 +53,11 @@ theorem erdos_912 : ∃ c > 0,
 /-- A heuristic of Tao using the Cramér model for the primes suggests this is true with
 $c=\sqrt{2\pi}$. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  (fun n => (h n : ℝ)) ~[atTop] (fun n => √(2 * Real.pi) * (n / Real.log n) ^ (1 / 2 : ℝ))
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      (fun n => (h n : ℝ)) ~[atTop] (fun n => √(2 * Real.pi) * (n / Real.log n) ^ (1 / 2 : ℝ))
+    ) := by
   sorry
 
 end Erdos912

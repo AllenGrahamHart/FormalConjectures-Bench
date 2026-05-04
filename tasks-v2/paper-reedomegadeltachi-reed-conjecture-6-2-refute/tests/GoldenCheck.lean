@@ -16,7 +16,9 @@ open scoped Finset
 namespace ReedOmegaDeltaChi
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {V : Type} (G : SimpleGraph V), G.emaxDegree = 6 ∧ G.cliqueNum = 2 → G.chromaticNumber ≤ 5
+    ) := by
   exact ReedOmegaDeltaChi.formal_conjectures_bench_refutation
 
 end ReedOmegaDeltaChi

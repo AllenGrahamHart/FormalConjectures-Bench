@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "b81534f887a45a9cb2558fac3d47b5d91903751849d50d7b1b50efc183632704"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "fe955e8fcfd730a11c5f0c8f7223fac9a815efae2bb38ce5fda4fd155c31a683"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2200 (k\u2081 k\u2082 n\u2081 n\u2082 : \u2115) (h\u2081 : k\u2082 \u2264 k\u2081) (h\u2082 : 3 \u2264 k\u2082)\n        (h\u2083 : n\u2081 + k\u2081 \u2264 n\u2082) (h\u2084 : (\u220f i \u2208 Finset.Icc 1 k\u2081, (n\u2081 + i)).primeFactors =\n          (\u220f j \u2208 Finset.Icc 1 k\u2082, (n\u2082 + j)).primeFactors),\n        \u2203 (p : \u2115), p.Prime \u2227 n\u2081 \u2264 p \u2227 p \u2264 n\u2082\n    )"
 THEOREM_NAME = "Erdos931.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

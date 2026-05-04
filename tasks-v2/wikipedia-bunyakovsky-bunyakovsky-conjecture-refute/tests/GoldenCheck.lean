@@ -15,7 +15,11 @@ open Polynomial
 namespace Bunyakovsky
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (f : ℤ[X]),
+        BunyakovskyCondition f ∧ SchinzelCondition {f} →
+            Infinite {n : ℕ | (f.eval (n : ℤ)).natAbs.Prime}
+    ) := by
   exact Bunyakovsky.formal_conjectures_bench_refutation
 
 end Bunyakovsky

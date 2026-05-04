@@ -39,13 +39,12 @@ Erdős often asked this under the weaker assumption that $n > 1$
 is not divisible by 4.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ) (hn : ¬ 4 ∣ n) (hn' : 1 < n),
-    ∃ k l : ℕ , Squarefree k ∧ n = k + 2^l
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : ¬ 4 ∣ n) (hn' : 1 < n),
+        ∃ k l : ℕ , Squarefree k ∧ n = k + 2^l
+    ) := by
   sorry
 
 end Erdos11

@@ -13,7 +13,10 @@ import FormalConjecturesBench.Target
 namespace OeisA306477
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : 0 < n),
+        IsSumOfBinomials n
+    ) := by
   exact OeisA306477.formal_conjectures_bench_refutation
 
 end OeisA306477

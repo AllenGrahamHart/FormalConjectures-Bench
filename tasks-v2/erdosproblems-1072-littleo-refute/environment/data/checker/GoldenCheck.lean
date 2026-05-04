@@ -16,7 +16,10 @@ open scoped Topology
 namespace Erdos1072
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      (fun x ↦ (({p | p.Prime ∧ f p = p - 1} ∩ Icc 0 x).ncard : ℝ)) =o[atTop]
+            (fun x ↦ x / Real.log x)
+    ) := by
   exact Erdos1072.formal_conjectures_bench_refutation
 
 end Erdos1072

@@ -223,12 +223,11 @@ theorem twentyeight_le_rank_elkies28 : 28 ≤ finrank ℤ elkies28⟮ℚ⟯ := b
 
 /-- The rank of the Elkies curve is exactly 28. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  finrank ℤ elkies28⟮ℚ⟯ = 28
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      finrank ℤ elkies28⟮ℚ⟯ = 28
+    ) := by
   sorry
 
 end WeierstrassCurve

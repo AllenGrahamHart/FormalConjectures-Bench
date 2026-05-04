@@ -74,12 +74,11 @@ def isAccumulationPoint_iff_exists_subsequence_tendsto
 The sequence `(3/2)^n` is equidistributed modulo `1`.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  IsEquidistributedModuloOne (fun n => (3 / 2 : ℝ)^n)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      IsEquidistributedModuloOne (fun n => (3 / 2 : ℝ)^n)
+    ) := by
   sorry
 
 end Equidistribution

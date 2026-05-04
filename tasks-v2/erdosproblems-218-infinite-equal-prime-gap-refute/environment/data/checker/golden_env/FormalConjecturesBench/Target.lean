@@ -48,12 +48,11 @@ at $n+1$. This is equivalent to the existence of infinitely many arithmetic prog
 length $3$, see `erdos_141.variants.infinite_three`.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  {n | primeGap n = primeGap (n + 1)}.Infinite
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      {n | primeGap n = primeGap (n + 1)}.Infinite
+    ) := by
   sorry
 
 end Erdos218

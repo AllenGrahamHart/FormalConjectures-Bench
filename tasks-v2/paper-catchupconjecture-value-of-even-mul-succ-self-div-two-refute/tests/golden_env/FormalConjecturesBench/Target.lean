@@ -178,13 +178,12 @@ If \(T_N\) is even (equivalently \(N \equiv 0 \pmod 4\) or \(N \equiv 3 \pmod 4\
 then under optimal play the game `Catch-Up(\(\{1, \ldots, N\}\))` ends in a draw.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (N : ℕ) (h_even : Even (N * (N + 1) / 2)),
-    value (.Icc 1 N) = .draw
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (N : ℕ) (h_even : Even (N * (N + 1) / 2)),
+        value (.Icc 1 N) = .draw
+    ) := by
   sorry
 
 end CatchUp

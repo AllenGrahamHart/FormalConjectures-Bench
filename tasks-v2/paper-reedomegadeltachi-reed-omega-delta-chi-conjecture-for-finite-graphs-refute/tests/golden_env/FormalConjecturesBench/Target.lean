@@ -52,16 +52,15 @@ size of the largest clique subgraph, and $\chi(G)$ to be the chromatic number. R
 delta, and chi conjecture states that $$\chi(G) \leq \lceil \frac{1}{2}(\omega(G) + \Delta(G) + 1) \rceil.$$
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {V : Type} [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],
-      let χ := G.chromaticNumber
-      let ω := G.cliqueNum
-      let Δ := G.maxDegree
-      2 * χ ≤ ω + Δ + 2
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {V : Type} [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],
+          let χ := G.chromaticNumber
+          let ω := G.cliqueNum
+          let Δ := G.maxDegree
+          2 * χ ≤ ω + Δ + 2
+    ) := by
   sorry
 
 end ReedOmegaDeltaChi

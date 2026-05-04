@@ -49,14 +49,13 @@ It seems likely that the sequence is complete for all
 for all $t>0$ and all $1 < \alpha < \frac{1+\sqrt{5}}{2}$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (t α : ℝ) (ht : 0 < t)
-    (hα : α ∈ Set.Ioo 1 ((1 + √5) / 2)),
-    IsGoodPair t α
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (t α : ℝ) (ht : 0 < t)
+        (hα : α ∈ Set.Ioo 1 ((1 + √5) / 2)),
+        IsGoodPair t α
+    ) := by
   sorry
 
 end Erdos349

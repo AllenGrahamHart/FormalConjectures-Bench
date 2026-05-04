@@ -16,7 +16,10 @@ open scoped Topology
 namespace Erdos143
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (A : Set ℝ) (h : WellSeparatedSet A),
+        Summable fun (x : A) ↦ 1 / (x * Real.log x)
+    ) := by
   exact Erdos143.formal_conjectures_bench_refutation
 
 end Erdos143

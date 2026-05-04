@@ -35,14 +35,13 @@ The conjecture is known to be false for $k = 4$ and $k = 5$,
 but remains open for $k ≥ 6$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n k b : ℕ) (hn : 1 < n) (hk : 5 < k) (a : Fin n → ℕ)
-    (ha : ∀ i, a i > 0) (hsum : ∑ i, (a i) ^ k = b ^ k),
-    k ≤ n
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n k b : ℕ) (hn : 1 < n) (hk : 5 < k) (a : Fin n → ℕ)
+        (ha : ∀ i, a i > 0) (hsum : ∑ i, (a i) ^ k = b ^ k),
+        k ≤ n
+    ) := by
   sorry
 
 end EulerSumOfPowers

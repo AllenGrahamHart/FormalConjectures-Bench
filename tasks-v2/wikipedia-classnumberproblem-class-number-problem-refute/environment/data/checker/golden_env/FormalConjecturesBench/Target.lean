@@ -37,12 +37,11 @@ There are infinitely many real quadratic fields `ℚ(√d)` with class number on
 where `d > 1` is a squarefree integer.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  { d : ℤ | Squarefree d ∧ d > 1 ∧ IsClassNumberOne d }.Infinite
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      { d : ℤ | Squarefree d ∧ d > 1 ∧ IsClassNumberOne d }.Infinite
+    ) := by
   sorry
 
 end ClassNumberProblem

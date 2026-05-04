@@ -15,7 +15,10 @@ open Finset Filter
 namespace Oppermann
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (x : ℕ) (hx : 2 ≤ x),
+        ∃ p ∈ Ioo (x * (x - 1)) (x^2), p.Prime
+    ) := by
   exact Oppermann.formal_conjectures_bench_refutation
 
 end Oppermann

@@ -15,7 +15,11 @@ open Polynomial
 namespace Arxiv.«2208.14736»
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {k : Type*} [Field k]
+        [CharZero k] {ι : Type*} [Fintype ι],
+        IsCancellative k (MvPolynomial ι k)
+    ) := by
   exact Arxiv.«2208.14736».formal_conjectures_bench_refutation
 
 end Arxiv.«2208.14736»

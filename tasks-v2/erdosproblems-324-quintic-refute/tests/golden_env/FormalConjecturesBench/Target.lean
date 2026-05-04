@@ -42,12 +42,11 @@ Probably $f(x) = x^5$ has the property that the sums $f(a)+f(b)$ with
 $a < b$ nonnegative integers are distinct.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  {(a, b) : ℕ × ℕ | a < b}.InjOn fun (a, b) => a ^ 5 + b ^ 5
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      {(a, b) : ℕ × ℕ | a < b}.InjOn fun (a, b) => a ^ 5 + b ^ 5
+    ) := by
   sorry
 
 end Erdos324

@@ -30,13 +30,12 @@ namespace FeitThompsonPrimeConjecture
 There are no distinct primes $p$ and $q$ such that $\frac{q^p - 1}{q - 1}$ divides $\frac{p^q - 1}{p - 1}$
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (p q : ℕ) (hp : p.Prime) (hq : q.Prime) (h : p < q),
-    ¬ (q ^ p - 1) / (q - 1) ∣ (p ^ q - 1) / (p - 1)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (p q : ℕ) (hp : p.Prime) (hq : q.Prime) (h : p < q),
+        ¬ (q ^ p - 1) / (q - 1) ∣ (p ^ q - 1) / (p - 1)
+    ) := by
   sorry
 
 end FeitThompsonPrimeConjecture

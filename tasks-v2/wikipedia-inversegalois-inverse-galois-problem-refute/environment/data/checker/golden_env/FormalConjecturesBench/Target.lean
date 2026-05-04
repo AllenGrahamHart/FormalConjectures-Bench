@@ -47,13 +47,12 @@ isomorphic to the Galois group of a Galois extension of the
 rationals.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {G : Type*} [Fintype G] [Group G],
-    IsRealizable ℚ G
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {G : Type*} [Fintype G] [Group G],
+        IsRealizable ℚ G
+    ) := by
   sorry
 
 end InverseGalois

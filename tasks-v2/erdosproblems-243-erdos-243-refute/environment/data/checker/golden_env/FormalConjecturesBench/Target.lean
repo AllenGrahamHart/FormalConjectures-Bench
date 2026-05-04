@@ -37,15 +37,14 @@ $\lim_{n\to\infty} \frac{a_n}{a_{n-1}^2} = 1$ and $\sum \frac{1}{a_n} \in \mathb
 Then, for all sufficiently large $n \ge 1$, $a_n = a_{n-1}^2 - a_{n-1} + 1$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (a : ℕ → ℕ) (ha₀ : StrictMono a)
-    (ha₁ : Tendsto (fun n ↦ (a n : ℝ) / a (n - 1) ^ 2) atTop (𝓝 1))
-    (ha₂ : Summable ((1 : ℚ) / a ·)),
-    ∀ᶠ n in atTop, a n = a (n - 1) ^ 2 - a (n - 1) + 1
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (a : ℕ → ℕ) (ha₀ : StrictMono a)
+        (ha₁ : Tendsto (fun n ↦ (a n : ℝ) / a (n - 1) ^ 2) atTop (𝓝 1))
+        (ha₂ : Summable ((1 : ℚ) / a ·)),
+        ∀ᶠ n in atTop, a n = a (n - 1) ^ 2 - a (n - 1) + 1
+    ) := by
   sorry
 
 end Erdos243

@@ -40,14 +40,13 @@ The Vaught conjecture states that for a countable language L and a complete L-Th
 the number of countable models of T (up to isomorphism) is finite, $\aleph_0$ or $2^{\aleph_0}$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {L : FirstOrder.Language} (hL : Countable L.Symbols)
-                          {T : L.Theory} (hT : T.IsComplete),
-    numberOfCountableModels T ≤ Cardinal.aleph0 ∨ numberOfCountableModels T = Cardinal.continuum
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {L : FirstOrder.Language} (hL : Countable L.Symbols)
+                              {T : L.Theory} (hT : T.IsComplete),
+        numberOfCountableModels T ≤ Cardinal.aleph0 ∨ numberOfCountableModels T = Cardinal.continuum
+    ) := by
   sorry
 
 end VaughtConjecture

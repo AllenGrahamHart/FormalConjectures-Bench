@@ -40,12 +40,11 @@ theorem fib_primes_infinite : {n : ℕ | (∃ m : ℕ, m.fib = n) ∧ n.Prime}.I
 There are infinitely many indices $i$, such that the $i$-th Fibonacci is prime.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  {n : ℕ | n.fib.Prime}.Infinite
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      {n : ℕ | n.fib.Prime}.Infinite
+    ) := by
   sorry
 
 end FibonacciPrimes

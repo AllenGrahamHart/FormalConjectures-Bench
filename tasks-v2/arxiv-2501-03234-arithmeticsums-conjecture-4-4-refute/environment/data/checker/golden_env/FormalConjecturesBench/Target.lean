@@ -89,13 +89,12 @@ theorem conjecture_4_3 (k : ℕ) (hprim : k.Prime) (hodd : Odd k) (hgt : k > 311
 $nk < S(k)$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ),
-    ∀ᶠ (k : ℕ) in Filter.atTop, k.Prime → Odd k → n * k < S k
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ),
+        ∀ᶠ (k : ℕ) in Filter.atTop, k.Prime → Odd k → n * k < S k
+    ) := by
   sorry
 
 end Arxiv.«2501.03234»

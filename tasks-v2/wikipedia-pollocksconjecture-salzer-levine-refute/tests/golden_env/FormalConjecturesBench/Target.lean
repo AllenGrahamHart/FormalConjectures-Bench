@@ -64,12 +64,11 @@ Salzer–Levine strengthening (as stated on Wikipedia/OEIS):
 there are exactly $241$ integers that are not a sum of $4$ tetrahedral numbers, and the largest is $343867$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  IsGreatest NotSumOfFourTetrahedral 343867
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      IsGreatest NotSumOfFourTetrahedral 343867
+    ) := by
   sorry
 
 end PollocksConjecture

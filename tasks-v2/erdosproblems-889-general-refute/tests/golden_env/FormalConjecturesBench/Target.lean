@@ -74,12 +74,11 @@ $v_l(n) \to \infty$ as $n \to \infty$
 [ErSe67] Erdős, P. and Selfridge, J. L., Some problems on the prime factors of consecutive integers. Illinois J. Math. (1967), 428--430.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ l, Tendsto (v_l l) atTop (𝓝 ⊤)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ l, Tendsto (v_l l) atTop (𝓝 ⊤)
+    ) := by
   sorry
 
 end Erdos889

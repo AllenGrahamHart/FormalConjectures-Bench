@@ -89,12 +89,11 @@ def coNP : ComplexityClass :=
 The conjecture that the complexity classes P and NP are not equal.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  P ≠ NP
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      P ≠ NP
+    ) := by
   sorry
 
 end ComplexityTheory

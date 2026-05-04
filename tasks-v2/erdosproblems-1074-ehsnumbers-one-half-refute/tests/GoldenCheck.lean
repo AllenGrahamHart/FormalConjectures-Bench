@@ -16,7 +16,9 @@ open Nat
 namespace Erdos1074
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      EHSNumbers.HasDensity (1 / 2)
+    ) := by
   exact Erdos1074.formal_conjectures_bench_refutation
 
 end Erdos1074

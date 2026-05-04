@@ -46,13 +46,12 @@ theorem erdos_359.parts.i (A : ℕ → ℕ) (hA : IsGoodFor A 1) :
 least integer which is not a sum of consecutive earlier $a_j$s. Show that $a_k / k ^ {1 + c} \to 0$
 for any $c > 0$. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (A : ℕ → ℕ) (hA : IsGoodFor A 1) (c : ℝ) (hc : 0 < c),
-    atTop.Tendsto (fun k ↦ A k / (k : ℝ) ^ (1 + c)) (nhds 0)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (A : ℕ → ℕ) (hA : IsGoodFor A 1) (c : ℝ) (hc : 0 < c),
+        atTop.Tendsto (fun k ↦ A k / (k : ℝ) ^ (1 + c)) (nhds 0)
+    ) := by
   sorry
 
 end Erdos359

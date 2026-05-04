@@ -99,12 +99,11 @@ theorem erdos_539.variants.isBigO_sq_cube_root :
 
 /-- To prove `erdos_539.variants.sq_cube_root` it suffices to show $$n^{2/3}\ll h(n)$$. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  (fun n : ℕ ↦ (n : ℝ) ^ ((2 : ℝ) / 3)) =O[atTop] fun n ↦ (cofactorThreshold n : ℝ)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      (fun n : ℕ ↦ (n : ℝ) ^ ((2 : ℝ) / 3)) =O[atTop] fun n ↦ (cofactorThreshold n : ℝ)
+    ) := by
   sorry
 
 end Erdos539

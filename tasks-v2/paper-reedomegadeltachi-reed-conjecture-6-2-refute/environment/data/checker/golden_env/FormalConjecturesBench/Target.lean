@@ -64,12 +64,11 @@ theorem reed_omega_delta_chi_conjecture_for_finite_graphs :
 The simplest open case is when $\Delta(G) = 6$ and $\omega(G) = 2$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {V : Type} (G : SimpleGraph V), G.emaxDegree = 6 ∧ G.cliqueNum = 2 → G.chromaticNumber ≤ 5
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {V : Type} (G : SimpleGraph V), G.emaxDegree = 6 ∧ G.cliqueNum = 2 → G.chromaticNumber ≤ 5
+    ) := by
   sorry
 
 end ReedOmegaDeltaChi

@@ -15,7 +15,9 @@ open Set ENat Filter
 namespace Erdos770
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      {n | h n = 3}.Infinite
+    ) := by
   exact Erdos770.formal_conjectures_bench_refutation
 
 end Erdos770

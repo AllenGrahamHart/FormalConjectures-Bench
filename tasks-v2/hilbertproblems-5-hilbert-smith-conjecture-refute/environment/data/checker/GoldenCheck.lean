@@ -15,7 +15,11 @@ open scoped Manifold ContDiff EuclideanGeometry
 namespace Hilbert5
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {G : Type*} [Group G] [TopologicalSpace G] {n : ℕ} {X : Type*} [TopologicalSpace X] [T2Space X] [ConnectedSpace X] [IsTopologicalGroup G] [LocallyCompactSpace G]
+        [MulAction G X] [ContinuousSMul G X] [FaithfulSMul G X],
+        AdmitsLieGroupStructure G
+    ) := by
   exact Hilbert5.formal_conjectures_bench_refutation
 
 end Hilbert5

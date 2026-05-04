@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "batch_id": "batch-008",
-  "batch_size": 52,
+  "batch_size": 48,
   "source": {
     "candidate_count": 106,
     "excluded_count": 5,
@@ -11,15 +11,12 @@
     "lean_toolchain": "leanprover/lean4:v4.27.0",
     "mathlib_commit": "a3a10db0e9d66acbebf76c5e6a135066525ac900",
     "mathlib_input_rev": "v4.27.0",
-    "v2_generated_at": "2026-05-03T17:45:28+00:00",
-    "v2_instance_count": 824,
-    "v2_exclusion_count": 1780
+    "v2_generated_at": "2026-05-04T00:33:58+00:00",
+    "v2_instance_count": 1516,
+    "v2_exclusion_count": 1424,
+    "v2_open_problem_pair_count": 348
   },
   "instance_ids": [
-    "wikipedia-moserworm-mosers-worm-problem-upper-bound",
-    "wikipedia-moserworm-convex-mosers-worm-problem-bound-attained",
-    "wikipedia-moserworm-convex-mosers-worm-problem-upper-bound",
-    "wikipedia-moserworm-convex-mosers-worm-problem-lower-bound",
     "wikipedia-movingsofa-sofaconstant-eq-volume-gerverssofa",
     "wikipedia-noetherproblem-noether-problem",
     "wikipedia-noetherproblem-two",

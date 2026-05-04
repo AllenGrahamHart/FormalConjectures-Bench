@@ -41,12 +41,11 @@ Show that the equation `n!=a_1!a_2!···a_k!`, with `n−1 > a_1 ≥ a_2 ≥ ·
 only finitely many solutions.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  S.Finite
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      S.Finite
+    ) := by
   sorry
 
 end Erdos373

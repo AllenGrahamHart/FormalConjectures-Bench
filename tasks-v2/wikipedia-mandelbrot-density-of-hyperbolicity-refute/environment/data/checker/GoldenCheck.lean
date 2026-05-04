@@ -15,7 +15,9 @@ open Topology Set Function Filter Bornology Metric MeasureTheory
 namespace Mandelbrot
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      mandelbrotSet ⊆ closure {c | ∃ m z, IsAttractingCycle (fun z ↦ z ^ 2 + c) m z}
+    ) := by
   exact Mandelbrot.formal_conjectures_bench_refutation
 
 end Mandelbrot

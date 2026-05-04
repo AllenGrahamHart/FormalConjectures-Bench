@@ -13,7 +13,10 @@ import FormalConjecturesBench.Target
 namespace OeisA231201
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : 1 < n),
+        PrimeCondition n
+    ) := by
   exact OeisA231201.formal_conjectures_bench_refutation
 
 end OeisA231201

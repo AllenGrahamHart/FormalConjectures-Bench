@@ -15,7 +15,9 @@ open Finset Real Filter Topology
 namespace Green16
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ c > (0 : ℝ), (fun N ↦ (N : ℝ) * exp (-c * (log N) ^ (1 / 7 : ℝ))) ≪ fun N ↦ (f N : ℝ)
+    ) := by
   exact Green16.formal_conjectures_bench_refutation
 
 end Green16

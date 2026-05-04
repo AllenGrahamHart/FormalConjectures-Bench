@@ -19,7 +19,9 @@ open scoped ENNReal
 namespace MovingSofa
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ s : Set ℝ², sofaConstant = volume s ↔ s = gerversSofa
+    ) := by
   exact MovingSofa.formal_conjectures_bench_refutation
 
 end MovingSofa

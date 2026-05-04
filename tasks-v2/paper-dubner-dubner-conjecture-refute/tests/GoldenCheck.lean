@@ -13,7 +13,13 @@ import FormalConjecturesBench.Target
 namespace DubnerConjecture
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : 4208 < n) (h : Even n),
+        ∃ p q : ℕ,
+              IsTwinPrime p ∧
+              IsTwinPrime q ∧
+              p + q = n
+    ) := by
   exact DubnerConjecture.formal_conjectures_bench_refutation
 
 end DubnerConjecture

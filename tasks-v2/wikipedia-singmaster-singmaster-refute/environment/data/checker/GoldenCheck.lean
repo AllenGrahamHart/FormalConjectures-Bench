@@ -13,7 +13,10 @@ import FormalConjecturesBench.Target
 namespace Singmaster
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ (C : ℕ), ∀ (t : ℕ), t > 1 →
+          (Singmaster.solutions t).Finite ∧ (Singmaster.solutions t).ncard ≤ C
+    ) := by
   exact Singmaster.formal_conjectures_bench_refutation
 
 end Singmaster

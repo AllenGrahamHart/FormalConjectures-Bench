@@ -49,13 +49,12 @@ The **Collatz conjecture** states that for any positive integer $n$, there exist
 $m$ such that the $m$-th term of the sequence is 1.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ) (hn : n > 0),
-    ∃ m, collatzStep^[m] n = 1
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : n > 0),
+        ∃ m, collatzStep^[m] n = 1
+    ) := by
   sorry
 
 end CollatzConjecture

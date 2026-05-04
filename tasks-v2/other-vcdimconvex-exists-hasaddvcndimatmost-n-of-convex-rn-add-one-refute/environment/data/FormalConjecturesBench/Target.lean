@@ -62,13 +62,12 @@ lemma hasAddVCNDimAtMost_two_one_of_convex_r3 {C : Set ℝ³} (hC : Convex ℝ C
 /-- For every $n$ there exists some $d$ such that every convex set in $\mathbb R^{n + 1}$ has
 $\mathrm{VC}_n$ dimension at most $d$. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ),
-    ∃ d : ℕ, ∀ C : Set (Fin (n + 1) → ℝ), Convex ℝ C → HasAddVCNDimAtMost C n d
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ),
+        ∃ d : ℕ, ∀ C : Set (Fin (n + 1) → ℝ), Convex ℝ C → HasAddVCNDimAtMost C n d
+    ) := by
   sorry
 
 end VCDimConvex

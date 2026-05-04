@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "139fadd859fada927311870040744bebfd0215ed6c085fea8aad61c78e27b072"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "4509ee9b8e923eaa9aa4ddfbac96c6ce4b87822b6f4cf9a63e5364dbebd1a91b"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2200 (\u03b1 : \u211d) (p : \u2115) (hp : p.Prime),\n        atTop.liminf (fun (n : \u2115) \u21a6 n * padicNorm p n * distToNearestInt (n * \u03b1)) = 0\n    )"
 THEOREM_NAME = "LittlewoodConjecture.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

@@ -45,13 +45,12 @@ $$
 $$
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ C > (0 : ℝ), ∀ (N : ℕ) (A : Finset ℕ) (_ : IsSumDistinctSet A N),
-      N ≠ 0 → C * 2 ^ A.card < N
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ C > (0 : ℝ), ∀ (N : ℕ) (A : Finset ℕ) (_ : IsSumDistinctSet A N),
+          N ≠ 0 → C * 2 ^ A.card < N
+    ) := by
   sorry
 
 end Erdos1

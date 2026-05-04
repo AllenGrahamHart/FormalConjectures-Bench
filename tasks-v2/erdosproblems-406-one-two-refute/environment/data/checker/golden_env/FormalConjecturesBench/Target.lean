@@ -39,12 +39,11 @@ If we only allow the digits $1$ and $2$ then $2^{15}$ seems to be the largest su
 of $2$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  IsGreatest { n | n.isPowerOfTwo ∧ Nat.digits 3 n ⊆ [1, 2] } (2 ^ 15)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      IsGreatest { n | n.isPowerOfTwo ∧ Nat.digits 3 n ⊆ [1, 2] } (2 ^ 15)
+    ) := by
   sorry
 
 end Erdos406

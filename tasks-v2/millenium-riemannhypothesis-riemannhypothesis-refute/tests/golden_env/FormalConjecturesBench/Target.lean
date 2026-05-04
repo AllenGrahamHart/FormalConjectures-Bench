@@ -57,12 +57,11 @@ This is the official Millennium Prize Problem as posed by the
 This uses the `RiemannHypothesis` type from Mathlib, which is defined as
 `∀ (s : ℂ), riemannZeta s = 0 → (¬∃ n : ℕ, s = -2 * (n + 1)) → s ≠ 1 → s.re = 1 / 2`. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  RiemannHypothesis
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      RiemannHypothesis
+    ) := by
   sorry
 
 end RiemannHypothesis

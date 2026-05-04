@@ -16,7 +16,10 @@ open scoped Topology Real
 namespace Erdos1
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ C > (0 : ℝ), ∀ (N : ℕ) (A : Finset ℕ) (_ : IsSumDistinctSet A N),
+          N ≠ 0 → C * 2 ^ A.card < N
+    ) := by
   exact Erdos1.formal_conjectures_bench_refutation
 
 end Erdos1

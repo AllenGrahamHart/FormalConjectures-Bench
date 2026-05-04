@@ -57,12 +57,11 @@ def IsGood (u : ℕ → ℕ) : Prop :=
 
 /-- 1. There is NO good sequence with polynomial growth. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ¬ ∃ u, IsGood u ∧ ∃ k : ℕ, (fun n => (u n : ℝ)) =O[atTop] (fun n => (n : ℝ) ^ k)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ¬ ∃ u, IsGood u ∧ ∃ k : ℕ, (fun n => (u n : ℝ)) =O[atTop] (fun n => (n : ℝ) ^ k)
+    ) := by
   sorry
 
 end Erdos1101

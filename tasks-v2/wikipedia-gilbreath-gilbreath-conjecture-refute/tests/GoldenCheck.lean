@@ -15,7 +15,10 @@ open Gilbreath
 namespace Gilbreath
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (k : ℕ+),
+        d k 0 = 1
+    ) := by
   exact Gilbreath.formal_conjectures_bench_refutation
 
 end Gilbreath

@@ -44,14 +44,13 @@ For all odd integers $n ≥ 9$ there are odd prime numbers $p,q,r,s$ and natural
 such that $p+2q = n$, $2+pq = 2^a+r$, $2p+q = 2^b+s$
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ) (hn : 8 < n) (odd : Odd n),
-    ∃ (p q r s a b : ℕ), OddPrime p ∧ OddPrime q ∧ OddPrime r ∧ OddPrime s ∧
-        p + 2 * q = n ∧ 2 + p * q = 2 ^ a + r ∧ 2 * p + q = 2 ^ b + s
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : 8 < n) (odd : Odd n),
+        ∃ (p q r s a b : ℕ), OddPrime p ∧ OddPrime q ∧ OddPrime r ∧ OddPrime s ∧
+            p + 2 * q = n ∧ 2 + p * q = 2 ^ a + r ∧ 2 * p + q = 2 ^ b + s
+    ) := by
   sorry
 
 end Lemoine

@@ -155,9 +155,9 @@ def main() -> None:
         if normalized_contains_answer_sorry(proof_region):
             issues.append(f"{instance_id}: target theorem region still contains answer(sorry)")
         if bucket == "open_problem" and instance.get("open_problem_polarity") == "refute":
-            if "def formal_conjectures_bench_statement : Prop :=" not in text.split(TARGET_MARKER, 1)[0]:
-                issues.append(f"{instance_id}: refutation task is missing frozen statement definition")
-            if "¬ formal_conjectures_bench_statement" not in proof_region:
+            if "theorem formal_conjectures_bench_refutation :" not in proof_region:
+                issues.append(f"{instance_id}: refutation task is missing the benchmark refutation theorem")
+            if "¬ (" not in proof_region:
                 issues.append(f"{instance_id}: refutation target does not negate the frozen statement")
         if bucket != "gold_solution" and solution_target.exists():
             issues.append(f"{instance_id}: non-gold task unexpectedly has solution/Target.lean")

@@ -15,7 +15,9 @@ open Filter Asymptotics
 namespace Erdos236
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      (fun n => (f n : ℝ)) =o[atTop] (fun n => Real.log (n : ℝ))
+    ) := by
   exact Erdos236.formal_conjectures_bench_refutation
 
 end Erdos236

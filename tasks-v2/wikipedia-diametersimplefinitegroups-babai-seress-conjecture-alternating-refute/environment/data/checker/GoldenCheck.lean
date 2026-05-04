@@ -13,7 +13,10 @@ import FormalConjecturesBench.Target
 namespace BabaiSeressConjectures
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ C : ℕ, ∀ n : ℕ,
+          (groupDiam (alternatingGroup (Fin n)) : ℝ) ≤ (n : ℝ) ^ C
+    ) := by
   exact BabaiSeressConjectures.formal_conjectures_bench_refutation
 
 end BabaiSeressConjectures

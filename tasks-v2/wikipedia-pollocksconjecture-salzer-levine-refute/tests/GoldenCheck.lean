@@ -15,7 +15,9 @@ open scoped BigOperators
 namespace PollocksConjecture
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      IsGreatest NotSumOfFourTetrahedral 343867
+    ) := by
   exact PollocksConjecture.formal_conjectures_bench_refutation
 
 end PollocksConjecture

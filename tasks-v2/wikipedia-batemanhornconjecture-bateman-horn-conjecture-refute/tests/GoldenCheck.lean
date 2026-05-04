@@ -15,7 +15,14 @@ open Polynomial Asymptotics Filter Topology
 namespace BatemanHornConjecture
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (polys : Finset ℤ[X])
+        (h_nonempty : polys.Nonempty)
+        (h_irreducible : ∀ f ∈ polys, BunyakovskyCondition f)
+        (h_compat : SchinzelCondition polys),
+        (fun x : ℝ => (CountSimultaneousPrimes polys x : ℝ)) ~[atTop]
+            (fun x : ℝ => BatemanHornConstant polys * x / (Real.log x) ^ polys.card)
+    ) := by
   exact BatemanHornConjecture.formal_conjectures_bench_refutation
 
 end BatemanHornConjecture

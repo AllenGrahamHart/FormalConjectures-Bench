@@ -16,7 +16,10 @@ open scoped Pointwise
 namespace Erdos28
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (A : Set ℕ) (h : (A + A)ᶜ.Finite),
+        limsup (fun (n : ℕ) => (sumRep A n : ℕ∞)) atTop = (⊤ : ℕ∞)
+    ) := by
   exact Erdos28.formal_conjectures_bench_refutation
 
 end Erdos28

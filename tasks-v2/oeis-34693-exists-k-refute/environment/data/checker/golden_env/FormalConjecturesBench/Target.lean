@@ -57,13 +57,12 @@ theorem seven : a 7 = 4 := by
 
 /-- Conjecture: for every $n > 1$ there exists a number $k < n$ such that $nk + 1$ is a prime. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {n : ℕ} (hn : 1 < n),
-    ∃ k < n, (n * k + 1).Prime
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {n : ℕ} (hn : 1 < n),
+        ∃ k < n, (n * k + 1).Prime
+    ) := by
   sorry
 
 end OeisA34693

@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "90b7334b72d6fd93eff9776db1092a8526a79b7336288a414f0ba3079b2581e2"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "6dd6474ba441ef902a07e796fbb064e1677f142e091cb16f6e0bc404e2d11596"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2200 {\u03b1 : Type*} [Fintype \u03b1] [DecidableEq \u03b1] (G : SimpleGraph \u03b1) [DecidableRel G.Adj] (hG : G.Connected)\n        (h : 3 * G.dominationNumber = G.indepDominationNumber),\n        IsWellTotallyDominated G\n    )"
 THEOREM_NAME = "WrittenOnTheWallII.GraphConjecture327.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "579651ce6b9bc48e90d59662d2558f4f122db8c04ab2cc935371b84dab4d8dbb"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "ce8c354990bc9fc4e33218b5cd40efac379b5f493370e6624675913e0de083d7"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2200 (polys : Finset \u2124[X])\n        (h_nonempty : polys.Nonempty)\n        (h_irreducible : \u2200 f \u2208 polys, BunyakovskyCondition f)\n        (h_compat : SchinzelCondition polys),\n        (fun x : \u211d => (CountSimultaneousPrimes polys x : \u211d)) ~[atTop]\n            (fun x : \u211d => BatemanHornConstant polys * x / (Real.log x) ^ polys.card)\n    )"
 THEOREM_NAME = "BatemanHornConjecture.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

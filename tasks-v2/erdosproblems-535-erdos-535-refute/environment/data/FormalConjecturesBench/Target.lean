@@ -72,14 +72,13 @@ for all $r \geq 3$.
 See also [536].
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ r ≥ 3, ∃ c > (0 : ℝ),
-      ∀ᶠ (N : ℕ) in atTop,
-        (f r N : ℝ) ≤ (N : ℝ) ^ (c / log (log (N : ℝ)))
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ r ≥ 3, ∃ c > (0 : ℝ),
+          ∀ᶠ (N : ℕ) in atTop,
+            (f r N : ℝ) ≤ (N : ℝ) ^ (c / log (log (N : ℝ)))
+    ) := by
   sorry
 
 end Erdos535

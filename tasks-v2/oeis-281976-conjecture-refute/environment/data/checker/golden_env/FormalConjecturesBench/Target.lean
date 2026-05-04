@@ -66,13 +66,12 @@ theorem isSumOfFourSquaresWithSquareConditions_24 : IsSumOfFourSquaresWithSquare
 with $x, y, z, w$ nonnegative integers and $z \leq w$, such that both $x$ and $x + 24y$ are squares.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ),
-    IsSumOfFourSquaresWithSquareConditions n
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ),
+        IsSumOfFourSquaresWithSquareConditions n
+    ) := by
   sorry
 
 end OeisA281976

@@ -66,12 +66,11 @@ theorem agoh_giuga : AgohGiugaCongr := by
 
 /-- The **Agoh-Giuga Conjecture**, Giuga's formulation -/
 
-def formal_conjectures_bench_statement : Prop :=
-  AgohGiugaSum
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      AgohGiugaSum
+    ) := by
   sorry
 
 end AgohGiuga

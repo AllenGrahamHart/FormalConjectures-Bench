@@ -80,12 +80,11 @@ theorem a_isBigO : (fun n ↦ (a n : ℝ)) =O[atTop] (fun n ↦ Real.log n * Rea
 
 /-- Counter-conjecture to `a_isBigO`: $a(n) / (\log n \log \log n)$ is unbounded. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ¬BddAbove (Set.range fun n ↦ a n / (Real.log n * Real.log (Real.log n)))
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ¬BddAbove (Set.range fun n ↦ a n / (Real.log n * Real.log (Real.log n)))
+    ) := by
   sorry
 
 end OeisA34693

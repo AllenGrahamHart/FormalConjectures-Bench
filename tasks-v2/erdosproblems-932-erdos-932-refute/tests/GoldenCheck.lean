@@ -13,7 +13,10 @@ import FormalConjecturesBench.Target
 namespace Erdos932
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      { r : ℕ | 2 ≤ (Finset.Ioo (r.nth Nat.Prime) (r.succ.nth Nat.Prime) |>.filter
+            (fun m => m.maxPrimeFac < r.succ.nth Nat.Prime - r.nth Nat.Prime)).card }.Infinite
+    ) := by
   exact Erdos932.formal_conjectures_bench_refutation
 
 end Erdos932

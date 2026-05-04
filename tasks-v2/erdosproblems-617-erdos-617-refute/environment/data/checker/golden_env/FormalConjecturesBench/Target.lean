@@ -38,16 +38,15 @@ In other words, there is no balanced colouring.
 A conjecture of Erdős and Gyárfás [ErGy99].
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (r : ℕ) (hr : r ≥ 3) {V : Type} [Fintype V] [DecidableEq V]
-    (hV : Fintype.card V = r^2 + 1) (coloring : Sym2 V → Fin r),
-    ∃ (S : Finset V) (k : Fin r),
-          S.card = r + 1 ∧
-          ∀ u ∈ S, ∀ v ∈ S, u ≠ v → coloring s(u, v) ≠ k
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (r : ℕ) (hr : r ≥ 3) {V : Type} [Fintype V] [DecidableEq V]
+        (hV : Fintype.card V = r^2 + 1) (coloring : Sym2 V → Fin r),
+        ∃ (S : Finset V) (k : Fin r),
+              S.card = r + 1 ∧
+              ∀ u ∈ S, ∀ v ∈ S, u ≠ v → coloring s(u, v) ≠ k
+    ) := by
   sorry
 
 end Erdos617

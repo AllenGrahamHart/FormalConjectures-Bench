@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "23e89dafb2712010da9fa9f3726a335302007ca45f79137d5d8a04e9c25bbe4b"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "e3a58a6513abd70df33010be22cac1e53d703a5f76b85d0b3fd41c0dc4d84c1c"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2200 (r : \u2115) (hr : r = 0 \u2228 r = 1),\n        atTop.Tendsto\n              (fun H \u21a6 ({E \u2208 heightLE H | E.rank = r}.ncard / (heightLE H).ncard : \u211d)) (\ud835\udcdd (1 / 2))\n    )"
 THEOREM_NAME = "EllipticCurveRank.RatEllipticCurve.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

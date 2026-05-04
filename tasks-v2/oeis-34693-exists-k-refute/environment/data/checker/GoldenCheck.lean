@@ -15,7 +15,10 @@ open Filter
 namespace OeisA34693
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {n : ℕ} (hn : 1 < n),
+        ∃ k < n, (n * k + 1).Prime
+    ) := by
   exact OeisA34693.formal_conjectures_bench_refutation
 
 end OeisA34693

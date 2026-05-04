@@ -16,7 +16,10 @@ open scoped ArithmeticFunction.sigma
 namespace Erdos1060
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ (C : ℝ), (fun n ↦ (#{k ≤ n | k * σ 1 k = n} : ℝ)) =O[atTop]
+            (fun n ↦ log n ^ C)
+    ) := by
   exact Erdos1060.formal_conjectures_bench_refutation
 
 end Erdos1060

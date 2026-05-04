@@ -15,7 +15,10 @@ open Real
 namespace Hall
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (ε : ℝ) (hε : ε > 0),
+        HallConjectureExp (2⁻¹ - ε)
+    ) := by
   exact Hall.formal_conjectures_bench_refutation
 
 end Hall

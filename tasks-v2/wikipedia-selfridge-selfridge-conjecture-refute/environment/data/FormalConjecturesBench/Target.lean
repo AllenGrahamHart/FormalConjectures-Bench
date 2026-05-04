@@ -68,13 +68,12 @@ Let $p$ be an odd number, with $p \equiv \pm 2 \pmod{5}$, $2^{p-1} \equiv 1 \pmo
 and $F_{p+1} \equiv 0 \pmod{p}$, then $p$ is a prime number.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (p : ℕ) (hp : IsSelfridge p),
-    p.Prime
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (p : ℕ) (hp : IsSelfridge p),
+        p.Prime
+    ) := by
   sorry
 
 end PrimalityTesting

@@ -46,12 +46,11 @@ theorem exp_mul_pi_transcendental : Transcendental ℚ (exp 1 * π) := by
 $e^{\pi^2}$ is transcendental.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  Transcendental ℚ (exp (π ^ 2))
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      Transcendental ℚ (exp (π ^ 2))
+    ) := by
   sorry
 
 end Transcendental

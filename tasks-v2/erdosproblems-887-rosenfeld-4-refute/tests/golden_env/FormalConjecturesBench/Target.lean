@@ -62,13 +62,12 @@ Erdős and Rosenfeld, ask whether $4$ is the best possible $K$ for the infinitud
 with (at least) $K$ divisors in $(n^{\frac{1}{2}}, n^{\frac{1}{2}} + n^{\frac{1}{4}})$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  IsGreatest {K | ∃ C > (0 : ℝ),
-        Infinite {n : ℕ | K ≤ #{ d ∈ Ioo ⌊√n⌋₊ ⌈√n + C * n^((1 : ℝ) / 4)⌉₊ | d ∣ n }}} 4
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      IsGreatest {K | ∃ C > (0 : ℝ),
+            Infinite {n : ℕ | K ≤ #{ d ∈ Ioo ⌊√n⌋₊ ⌈√n + C * n^((1 : ℝ) / 4)⌉₊ | d ∣ n }}} 4
+    ) := by
   sorry
 
 end Erdos887

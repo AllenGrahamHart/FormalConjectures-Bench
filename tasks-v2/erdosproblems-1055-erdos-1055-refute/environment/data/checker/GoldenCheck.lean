@@ -15,7 +15,10 @@ open Classical
 namespace Erdos1055
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (r),
+        {p | p.Prime ∧ IsOfClass r p}.Infinite
+    ) := by
   exact Erdos1055.formal_conjectures_bench_refutation
 
 end Erdos1055

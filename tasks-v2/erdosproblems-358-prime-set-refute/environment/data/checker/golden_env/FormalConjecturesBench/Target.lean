@@ -94,12 +94,11 @@ When $A =\{a_1 < \cdots\}$ corresponds to the set of primes, it is conjectured t
 $\limsup$ of the number of representations $$n=\sum_{u\leq i\leq v}a_i$$ is infinite.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  atTop.limsup (fun n ↦ (f (Nat.nth Nat.Prime) n : ℕ∞)) = ⊤
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      atTop.limsup (fun n ↦ (f (Nat.nth Nat.Prime) n : ℕ∞)) = ⊤
+    ) := by
   sorry
 
 end Erdos358

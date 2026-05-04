@@ -40,13 +40,12 @@ satisfies `f(G) ≥ ceil((p(G) + b(G) + 1)/2)` where `p(G)` is the path cover
 number and `b(G)` is the largest induced bipartite subgraph size.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {α : Type*} [Fintype α] [DecidableEq α] [Nontrivial α] (G : SimpleGraph α) (h_conn : G.Connected) (h_nontrivial : 1 < Fintype.card α),
-    ⌈((p G + b G + 1) / 2)⌉ ≤  G.largestInducedForestSize
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {α : Type*} [Fintype α] [DecidableEq α] [Nontrivial α] (G : SimpleGraph α) (h_conn : G.Connected) (h_nontrivial : 1 < Fintype.card α),
+        ⌈((p G + b G + 1) / 2)⌉ ≤  G.largestInducedForestSize
+    ) := by
   sorry
 
 end WrittenOnTheWallII.GraphConjecture40

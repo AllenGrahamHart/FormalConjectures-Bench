@@ -16,7 +16,9 @@ open scoped Asymptotics Finset
 namespace Erdos789
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      (fun n ↦ (subsetSumThreshold n : ℝ)) =Θ[atTop] fun n ↦ √n
+    ) := by
   exact Erdos789.formal_conjectures_bench_refutation
 
 end Erdos789

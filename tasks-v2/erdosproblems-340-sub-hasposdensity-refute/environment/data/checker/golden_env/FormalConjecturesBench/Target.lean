@@ -136,12 +136,11 @@ positive density.
 theory. Monographies de L'Enseignement Mathematique (1980).
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  Set.HasPosDensity (Set.range greedySidon - Set.range greedySidon)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      Set.HasPosDensity (Set.range greedySidon - Set.range greedySidon)
+    ) := by
   sorry
 
 end Erdos340

@@ -15,7 +15,11 @@ open scoped Pointwise Cardinal
 namespace Erdos274
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {G : Type*} [Group G] (hG : 1 < ENat.card G) {ι : Type*} [Fintype ι]
+        (hι : 1 < Fintype.card ι) (P : Group.ExactCovering G ι),
+        ∃ i j, i ≠ j ∧ (P.parts i).index = (P.parts j).index
+    ) := by
   exact Erdos274.formal_conjectures_bench_refutation
 
 end Erdos274

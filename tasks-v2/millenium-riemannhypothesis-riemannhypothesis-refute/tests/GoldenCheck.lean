@@ -13,7 +13,9 @@ import FormalConjecturesBench.Target
 namespace RiemannHypothesis
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      RiemannHypothesis
+    ) := by
   exact RiemannHypothesis.formal_conjectures_bench_refutation
 
 end RiemannHypothesis

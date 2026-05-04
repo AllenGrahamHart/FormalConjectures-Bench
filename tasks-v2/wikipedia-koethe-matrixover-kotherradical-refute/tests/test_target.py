@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "2f9ec46b4e2da8651ecd1be93fbb16536e47a853ab5865025f748ccbcce33c59"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "aa724308416207272c34a3b049aeb777eea152b8ff8dabcdec99d4e7db0504e7"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2200 {R : Type*} [Ring R] {I : TwoSidedIdeal R} (hI : IsNil I) (n : Type*) [Fintype n],\n        matrix n (Nil* R) = Nil* (Matrix n n R)\n    )"
 THEOREM_NAME = "Koethe.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

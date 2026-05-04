@@ -14,7 +14,10 @@ namespace LatinTableau
 namespace SimpleGraph
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {α : Type*} [DecidableEq α] (μ : YoungDiagram),
+        μ.toSimpleGraph.CDSColorable
+    ) := by
   exact LatinTableau.SimpleGraph.formal_conjectures_bench_refutation
 
 end SimpleGraph

@@ -129,12 +129,11 @@ theorem HadamardConjecture.variants.first_cases (k : ℕ) (h : k ≤ 166) :
 The smallest order for which no Hadamard matrix is presently known is $668 = 4 * 167$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ M, IsHadamard (n := 4 * 167) M
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ M, IsHadamard (n := 4 * 167) M
+    ) := by
   sorry
 
 end Hadamard

@@ -13,7 +13,11 @@ import FormalConjecturesBench.Target
 namespace Erdos952
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ (x : ℕ → GaussianInt) (C : ℤ),
+          Function.Injective x ∧
+            ∀ n, Prime (x n) ∧ (x (n + 1) - x n).norm < C
+    ) := by
   exact Erdos952.formal_conjectures_bench_refutation
 
 end Erdos952

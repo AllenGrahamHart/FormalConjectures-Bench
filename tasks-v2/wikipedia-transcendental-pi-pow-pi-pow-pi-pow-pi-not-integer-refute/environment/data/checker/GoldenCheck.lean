@@ -15,7 +15,9 @@ open Real
 namespace Transcendental
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ¬ ∃ (n : ℤ), π ^ π ^ π ^ π = n
+    ) := by
   exact Transcendental.formal_conjectures_bench_refutation
 
 end Transcendental

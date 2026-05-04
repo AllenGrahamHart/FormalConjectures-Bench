@@ -52,12 +52,11 @@ theorem green_16 (N : ℕ) :
 
 /-- From [Ruzsa] $f(N) \gg N^{1/2}$. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  (fun N ↦ (N : ℝ) ^ (1 / 2 : ℝ)) ≪ fun N ↦ (f N : ℝ)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      (fun N ↦ (N : ℝ) ^ (1 / 2 : ℝ)) ≪ fun N ↦ (f N : ℝ)
+    ) := by
   sorry
 
 end Green16

@@ -55,12 +55,11 @@ theorem carmichealTotientFor_odd {n : ℕ} (hn : Odd n) : CarmichaelTotientFor n
 /-- *Carmichael's totient function conjecture*: For every positive natural number $n$,
 there exists a natural number $m$ with $m ≠ n$, such that $φ(n) = φ(m)$. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ ⦃n : ℕ⦄, 0 < n → CarmichaelTotientFor n
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ ⦃n : ℕ⦄, 0 < n → CarmichaelTotientFor n
+    ) := by
   sorry
 
 end CarmichaelTotient

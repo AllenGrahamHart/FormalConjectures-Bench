@@ -33,14 +33,13 @@ namespace PrimeTuplesConjecture
 every prime `p` there exists an integer `n` such that `p ∤ ∏ i, (aᵢ n + bᵢ)`. Then there exist
 infinitely many `n` such that `aᵢ n + bᵢ` is prime for all `i`. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {k : ℕ} (hk : 2 ≤ k) (a : Fin k → ℕ+) (b : Fin k → ℕ)
-    (hab : ∀ p, p.Prime → ∃ n, ¬ p ∣ ∏ i, (a i * n + b i)),
-    Set.Infinite {n | ∀ i : Fin k, (a i * n + b i).Prime}
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {k : ℕ} (hk : 2 ≤ k) (a : Fin k → ℕ+) (b : Fin k → ℕ)
+        (hab : ∀ p, p.Prime → ∃ n, ¬ p ∣ ∏ i, (a i * n + b i)),
+        Set.Infinite {n | ∀ i : Fin k, (a i * n + b i).Prime}
+    ) := by
   sorry
 
 end PrimeTuplesConjecture

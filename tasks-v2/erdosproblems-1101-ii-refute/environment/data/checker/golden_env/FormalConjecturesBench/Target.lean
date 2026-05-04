@@ -63,12 +63,11 @@ theorem erdos_1101.parts.i :
 
 /-- 2. There is a good sequence with sub-exponential growth. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ u, IsGood u ∧ (fun n => Real.log (u n : ℝ)) =o[atTop] (fun n => (n : ℝ))
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ u, IsGood u ∧ (fun n => Real.log (u n : ℝ)) =o[atTop] (fun n => (n : ℝ))
+    ) := by
   sorry
 
 end Erdos1101

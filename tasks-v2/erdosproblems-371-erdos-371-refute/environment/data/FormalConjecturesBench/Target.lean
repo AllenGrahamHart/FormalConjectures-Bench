@@ -31,12 +31,11 @@ Let $P(n)$ denote the largest prime factor of $n$. Show that the set of $n$
 with $P(n+1) > P(n)$ has density $\frac{1}{2}$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  { n | Nat.maxPrimeFac (n + 1) > Nat.maxPrimeFac n }.HasDensity (1/2)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      { n | Nat.maxPrimeFac (n + 1) > Nat.maxPrimeFac n }.HasDensity (1/2)
+    ) := by
   sorry
 
 end Erdos371

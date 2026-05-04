@@ -15,7 +15,9 @@ open scoped Nat
 namespace Erdos373
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      (16, [14, 5, 2]) ∈ S ∧ ∀ s ∈ S, s.fst ≤ 16
+    ) := by
   exact Erdos373.formal_conjectures_bench_refutation
 
 end Erdos373

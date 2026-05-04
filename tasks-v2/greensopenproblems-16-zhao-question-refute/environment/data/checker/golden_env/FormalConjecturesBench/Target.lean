@@ -81,12 +81,11 @@ noncomputable def g (N : ℕ) : ℕ :=
 /-- From [Yufei Zhao]: Is there a subset of $\{1, \ldots, N\}$ of size
 $N^{1/3 - o(1)}$ with no nontrivial solutions to $x + 2y + 3z = x' + 2y' + 3z'$? -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ¬∃ h : ℕ → ℝ, Tendsto h atTop (𝓝 0) ∧ ∀ᶠ N in atTop, (g N : ℝ) ≥ (N : ℝ) ^ (1 / 3 - h N)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ¬∃ h : ℕ → ℝ, Tendsto h atTop (𝓝 0) ∧ ∀ᶠ N in atTop, (g N : ℝ) ≥ (N : ℝ) ^ (1 / 3 - h N)
+    ) := by
   sorry
 
 end Green16

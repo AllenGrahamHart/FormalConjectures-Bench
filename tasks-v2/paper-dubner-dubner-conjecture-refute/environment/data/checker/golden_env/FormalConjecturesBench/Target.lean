@@ -58,16 +58,15 @@ theorem t5 : ¬IsTwinPrime 100 := by
 Every even number greater than 4208 is the sum of two twin primes.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ) (hn : 4208 < n) (h : Even n),
-    ∃ p q : ℕ,
-          IsTwinPrime p ∧
-          IsTwinPrime q ∧
-          p + q = n
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : 4208 < n) (h : Even n),
+        ∃ p q : ℕ,
+              IsTwinPrime p ∧
+              IsTwinPrime q ∧
+              p + q = n
+    ) := by
   sorry
 
 end DubnerConjecture

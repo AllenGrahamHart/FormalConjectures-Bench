@@ -13,7 +13,10 @@ import FormalConjecturesBench.Target
 namespace Arxiv.«0912.2382»
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (S₀ : List ℤ) (h : S₀ ≠ []),
+        ∃ m, k (S S₀ m) = 1
+    ) := by
   exact Arxiv.«0912.2382».formal_conjectures_bench_refutation
 
 end Arxiv.«0912.2382»

@@ -63,12 +63,11 @@ Probably this is true. It would be a stronger form of
 Discussion thread here:
 https://leanprover.zulipchat.com/#narrow/channel/458659-Equational/topic/FINITE.3A.20677.20-.3E.20255 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ (G : Type) (_ : Magma G), Finite G ∧ Equation677 G ∧ ¬ Equation255 G
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ (G : Type) (_ : Magma G), Finite G ∧ Equation677 G ∧ ¬ Equation255 G
+    ) := by
   sorry
 
 end EquationalTheories_677_255

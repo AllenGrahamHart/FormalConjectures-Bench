@@ -15,7 +15,11 @@ open scoped Topology
 namespace Equidistribution
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (x : ℝ)
+        (hx : Transcendental ℚ x),
+        IsEquidistributedModuloOne (fun n ↦ x * (3 / 2 : ℝ) ^ n)
+    ) := by
   exact Equidistribution.formal_conjectures_bench_refutation
 
 end Equidistribution

@@ -13,7 +13,9 @@ import FormalConjecturesBench.Target
 namespace Erdos1135
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      type_of% CollatzConjecture.collatz_conjecture
+    ) := by
   exact Erdos1135.formal_conjectures_bench_refutation
 
 end Erdos1135

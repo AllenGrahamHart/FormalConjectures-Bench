@@ -54,14 +54,13 @@ noncomputable def lehmerPolynomial : ℤ[X] := X^10 + X^9 - X^7 - X^6 - X^5 - X^
 `μ=M(X^10 + X^9 - X^7 - X^6 - X^5 - X^4 - X^3 + X + 1)` is the best value for `lehmer_mahler_measure_problem`.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (f : ℤ[X])
-    (hf : mahlerMeasureZ f > 1),
-    mahlerMeasureZ f ≥ mahlerMeasureZ lehmerPolynomial
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (f : ℤ[X])
+        (hf : mahlerMeasureZ f > 1),
+        mahlerMeasureZ f ≥ mahlerMeasureZ lehmerPolynomial
+    ) := by
   sorry
 
 end LehmerMahlerMeasureProblem

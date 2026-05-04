@@ -17,7 +17,9 @@ open scoped Asymptotics Topology
 namespace Erdos1095
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ f : ℕ → ℝ, Tendsto f atTop (𝓝 0) ∧ ∀ᶠ k in atTop, g k ≤ exp (k * (1 + f k))
+    ) := by
   exact Erdos1095.formal_conjectures_bench_refutation
 
 end Erdos1095

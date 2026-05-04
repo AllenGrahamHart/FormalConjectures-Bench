@@ -15,7 +15,10 @@ open Filter Asymptotics
 namespace Erdos359
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (A : ℕ → ℕ) (hA : IsGoodFor A 1),
+        (fun k ↦ (A k : ℝ)) ~[atTop] (fun k ↦ k * (k : ℝ).log / (k : ℝ).log.log)
+    ) := by
   exact Erdos359.formal_conjectures_bench_refutation
 
 end Erdos359

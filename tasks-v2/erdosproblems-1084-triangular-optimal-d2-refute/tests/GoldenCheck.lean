@@ -16,7 +16,10 @@ open scoped EuclideanGeometry
 namespace Erdos1084
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {n : ℕ},
+        f 2 (3 * n ^ 2 + 3 * n + 1) = 9 * n ^ 2 + 3 * n
+    ) := by
   exact Erdos1084.formal_conjectures_bench_refutation
 
 end Erdos1084

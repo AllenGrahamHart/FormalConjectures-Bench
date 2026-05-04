@@ -15,7 +15,11 @@ open Filter Asymptotics
 namespace Erdos357
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ (o o' : ℕ → ℝ), o =o[atTop] (1 : ℕ → ℝ) ∧
+          o' =o[atTop] (1 : ℕ → ℝ) ∧
+            ∀ᶠ n in atTop, (g n : ℝ) ∈ Set.Icc ((1 / 3 + o n) * n) ((2 / 3 + o' n)*n)
+    ) := by
   exact Erdos357.formal_conjectures_bench_refutation
 
 end Erdos357

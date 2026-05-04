@@ -68,14 +68,13 @@ where $f_k(N)$ is the minimal size of a subset of $\{1, \dots, N\}$ guaranteeing
 have all pairwise sums in the set.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ᵉ (k : ℕ) (hk : 2 ≤ k),
-      (fun N ↦ (f N k : ℝ)) ~[atTop] (fun N ↦ (1 / 2 : ℝ) * (1 + ∑ r ∈ Icc 1 (k - 2),
-        (1 / 4 : ℝ) ^ r) * N)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ᵉ (k : ℕ) (hk : 2 ≤ k),
+          (fun N ↦ (f N k : ℝ)) ~[atTop] (fun N ↦ (1 / 2 : ℝ) * (1 + ∑ r ∈ Icc 1 (k - 2),
+            (1 / 4 : ℝ) ^ r) * N)
+    ) := by
   sorry
 
 end Erdos865

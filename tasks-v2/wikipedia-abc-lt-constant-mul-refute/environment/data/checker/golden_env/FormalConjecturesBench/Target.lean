@@ -68,15 +68,14 @@ theorem abc (ε : ℝ) (hε : 0 < ε) :
 For every positive real number ε, there exists a constant `K_ε` such that for all triples (a, b, c) of coprime positive integers, with a + b = c we have `c < K_ε rad(abc)^(1+ε)`.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (ε : ℝ) (hε : 0 < ε),
-    ∃ K,
-        ∀ (a b c : ℕ), 0 < a → 0 < b → 0 < c → ({a, b, c} : Set ℕ).Pairwise Nat.Coprime → a + b = c →
-        c < K * (radical <| a * b * c : ℝ)^(1 + ε)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (ε : ℝ) (hε : 0 < ε),
+        ∃ K,
+            ∀ (a b c : ℕ), 0 < a → 0 < b → 0 < c → ({a, b, c} : Set ℕ).Pairwise Nat.Coprime → a + b = c →
+            c < K * (radical <| a * b * c : ℝ)^(1 + ε)
+    ) := by
   sorry
 
 end ABC

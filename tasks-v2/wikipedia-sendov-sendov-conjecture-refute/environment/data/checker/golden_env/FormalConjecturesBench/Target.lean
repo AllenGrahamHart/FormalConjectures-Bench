@@ -51,13 +51,12 @@ $$f(z)=(z-r_{1})\cdots (z-r_{n}),\qquad (n\geq 2)$$
 with all roots $r_1, ..., r_n$ inside the closed unit disk $|z| ≤ 1$, each of the $n$ roots is at a
 distance no more than $1$ from at least one critical point. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ) (hn : 2 ≤ n),
-    n.SatisfiesSendovConjecture
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : 2 ≤ n),
+        n.SatisfiesSendovConjecture
+    ) := by
   sorry
 
 end Sendov

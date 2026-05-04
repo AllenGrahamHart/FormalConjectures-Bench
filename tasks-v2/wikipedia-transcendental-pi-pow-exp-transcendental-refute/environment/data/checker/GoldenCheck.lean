@@ -15,7 +15,9 @@ open Real
 namespace Transcendental
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      Transcendental ℚ (π ^ (exp 1))
+    ) := by
   exact Transcendental.formal_conjectures_bench_refutation
 
 end Transcendental

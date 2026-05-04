@@ -15,7 +15,10 @@ open Polynomial
 namespace CasasAlvero
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {K L : Type*} [Field K] [Field L] {f : K →+* L} [CharZero K] (P : K[X]) (hP : Monic P) (hP' : HasCasasAlveroProp P),
+        ∃ α : K, P = (X - C α) ^ P.natDegree
+    ) := by
   exact CasasAlvero.formal_conjectures_bench_refutation
 
 end CasasAlvero

@@ -206,14 +206,13 @@ If the UC conjecture is tight for some family `A` then $|A| = 2^k$ for some $k$.
 Reference: Conjecture 3 in https://www.nieuwarchief.nl/serie5/pdf/naw5-2023-24-4-225.pdf.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {n : Type*} [DecidableEq n] {A : Finset (Finset n)} [Nonempty n] (hA : A ≠ {∅} ∧ A ≠ ∅) (hA : IsUnionClosed A)
-    (UCC_tight : ∀ i, #{x ∈ A | i ∈ x} = (1 / 2 : ℝ) * #A),
-    ∃ k, #A = 2 ^ k
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {n : Type*} [DecidableEq n] {A : Finset (Finset n)} [Nonempty n] (hA : A ≠ {∅} ∧ A ≠ ∅) (hA : IsUnionClosed A)
+        (UCC_tight : ∀ i, #{x ∈ A | i ∈ x} = (1 / 2 : ℝ) * #A),
+        ∃ k, #A = 2 ^ k
+    ) := by
   sorry
 
 end UnionClosed

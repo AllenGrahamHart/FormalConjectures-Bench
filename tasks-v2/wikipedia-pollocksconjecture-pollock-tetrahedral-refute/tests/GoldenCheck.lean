@@ -15,7 +15,10 @@ open scoped BigOperators
 namespace PollocksConjecture
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (N : ℕ),
+        ∃ f : Fin 5 → ℕ, N = ∑ i, tetrahedral (f i)
+    ) := by
   exact PollocksConjecture.formal_conjectures_bench_refutation
 
 end PollocksConjecture

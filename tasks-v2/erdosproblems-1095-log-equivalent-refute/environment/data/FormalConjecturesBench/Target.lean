@@ -74,12 +74,11 @@ theorem erdos_1095.variants.lower_conjecture : ∃ c > 0, ∀ᶠ k in atTop, g k
 Sorenson, Sorenson, and Webster [SSWE20] give heuristic evidence that $\log g(k) \asymp \frac{k}{\log k}$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  (fun k ↦ log (g k)) ~[atTop] (fun k ↦ k / log k)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      (fun k ↦ log (g k)) ~[atTop] (fun k ↦ k / log k)
+    ) := by
   sorry
 
 end Erdos1095

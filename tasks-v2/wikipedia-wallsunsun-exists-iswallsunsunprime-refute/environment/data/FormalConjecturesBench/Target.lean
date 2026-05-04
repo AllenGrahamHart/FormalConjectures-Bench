@@ -33,12 +33,11 @@ A prime $p$ is a Wall–Sun–Sun prime if and only if $L_p \equiv 1 \pmod{p^2}$
 $p$-th Lucas number. It is conjectured that there is at least one Wall–Sun–Sun prime.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ p, IsWallSunSunPrime p
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ p, IsWallSunSunPrime p
+    ) := by
   sorry
 
 end WallSunSun

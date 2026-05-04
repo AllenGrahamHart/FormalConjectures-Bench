@@ -73,13 +73,12 @@ theorem a_of_primes {k : ℕ} (hk : (k + 1).Prime) (hk' : (k ^ 2 + 1).Prime) : a
 
 /-- For members of the sequence other than $8$, we have $k + 1$ is prime. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {k : ℕ} (h : a k) (hne : k ≠ 8),
-    (k + 1).Prime
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {k : ℕ} (h : a k) (hne : k ≠ 8),
+        (k + 1).Prime
+    ) := by
   sorry
 
 end OeisA67720

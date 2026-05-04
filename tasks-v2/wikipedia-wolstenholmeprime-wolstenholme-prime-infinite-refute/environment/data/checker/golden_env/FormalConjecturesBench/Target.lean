@@ -83,12 +83,11 @@ It is conjectured that there are infinitely many Wolstenholme primes.
 *Reference:* [Wikipedia](https://en.wikipedia.org/wiki/Wolstenholme_prime#Expected_number_of_Wolstenholme_primes)
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  {p : ℕ | IsWolstenholmePrime p}.Infinite
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      {p : ℕ | IsWolstenholmePrime p}.Infinite
+    ) := by
   sorry
 
 end WolstenholmePrime

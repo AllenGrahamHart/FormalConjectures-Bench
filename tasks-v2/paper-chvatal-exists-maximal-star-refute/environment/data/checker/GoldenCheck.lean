@@ -13,7 +13,11 @@ import FormalConjecturesBench.Target
 namespace Chvatal
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {α : Type} [Fintype α] [DecidableEq α] [Nonempty α],
+        ∀ F : Finset (Finset α), Decreasing F →
+                ∃ x : α, ∀ G, G ⊆ F → Intersecting G → G.card ≤ { A ∈ F | x ∈ A }.card
+    ) := by
   exact Chvatal.formal_conjectures_bench_refutation
 
 end Chvatal

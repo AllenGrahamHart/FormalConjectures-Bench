@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "e8d0262282a040480854c669dfd949b6d3f68fd066c6163e3da929e5fe00e2af"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "724bccc30b7c7fc6c3ef438577f7d252e21a2a182682a54c6d1979ea085d7c28"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2200 (n : \u2115) (z : Fin n \u2192 \u2102) (h : LinearIndependent \u211a z),\n        let hinj := algebraMap \u211a (adjoin \u211a (Set.range z \u222a Set.range (cexp \u2218 z))) |>.injective\n        n \u2264 Algebra.trdeg \u211a (adjoin \u211a (Set.range z \u222a Set.range (cexp \u2218 z)))\n    )"
 THEOREM_NAME = "Schanuel.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

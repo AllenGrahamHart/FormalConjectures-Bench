@@ -15,7 +15,11 @@ open Polynomial MeasureTheory ENNReal Classical
 namespace Erdos1041
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (f : ℂ[X]) (hn : n ≥ 2) (hnum : f.natDegree = n) (h_monic : f.Monic) (h : f.rootSet ℂ ⊆ Metric.ball 0 1),
+        ∃ (z₁ z₂ : ℂ) (h : ({z₁, z₂} : Multiset ℂ) ≤ f.roots) (γ : Path z₁ z₂),
+              Set.range γ ⊆ { z : ℂ | ‖f.eval z‖ < 1 } ∧ length (Set.range γ) < 2
+    ) := by
   exact Erdos1041.formal_conjectures_bench_refutation
 
 end Erdos1041

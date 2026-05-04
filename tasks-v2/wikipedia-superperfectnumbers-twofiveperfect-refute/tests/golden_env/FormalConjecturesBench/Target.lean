@@ -40,12 +40,11 @@ def PerfectFor (n m k : ℕ) : Prop := Nat.iterate (fun x => σ 1 x) m n = k * n
 
 /-- There does not exist a $(2,5)$-perfect number -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ¬ ∃ n, PerfectFor n 2 5
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ¬ ∃ n, PerfectFor n 2 5
+    ) := by
   sorry
 
 end Superperfect

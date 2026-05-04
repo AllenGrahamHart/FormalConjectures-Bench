@@ -17,7 +17,11 @@ open scoped omega Omega
 namespace Erdos535
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ c > (0 : ℝ),
+          ∀ᶠ (N : ℕ) in atTop,
+            (f 3 N : ℝ) ≤ (N : ℝ) ^ (c / log (log (N : ℝ)))
+    ) := by
   exact Erdos535.formal_conjectures_bench_refutation
 
 end Erdos535

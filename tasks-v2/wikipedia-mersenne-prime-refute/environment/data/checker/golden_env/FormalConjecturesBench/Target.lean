@@ -84,13 +84,12 @@ theorem new_mersenne_conjecture_of_prime :
 
 /-- The New Mersenne Conjecture statement holds for odd primes. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (p : ℕ) (hp : p.Prime) (h : Odd p),
-    NewMersenneConjectureStatement p
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (p : ℕ) (hp : p.Prime) (h : Odd p),
+        NewMersenneConjectureStatement p
+    ) := by
   sorry
 
 end Mersenne

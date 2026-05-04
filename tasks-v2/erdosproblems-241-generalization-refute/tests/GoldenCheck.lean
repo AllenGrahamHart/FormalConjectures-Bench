@@ -16,7 +16,10 @@ open scoped Asymptotics Classical
 namespace Erdos241
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (r : ℕ) (hr : r ≥ 2),
+        BoseChowlaConjecture r
+    ) := by
   exact Erdos241.formal_conjectures_bench_refutation
 
 end Erdos241

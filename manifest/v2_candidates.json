@@ -9,9 +9,9 @@
     "lean_toolchain": "leanprover/lean4:v4.27.0",
     "mathlib_commit": "a3a10db0e9d66acbebf76c5e6a135066525ac900",
     "mathlib_input_rev": "v4.27.0",
-    "v2_generated_at": "2026-05-03T19:25:49+00:00",
-    "v2_instance_count": 1520,
-    "v2_exclusion_count": 1432,
+    "v2_generated_at": "2026-05-04T04:11:22+00:00",
+    "v2_instance_count": 1516,
+    "v2_exclusion_count": 1424,
     "v2_open_problem_pair_count": 348
   },
   "v2_scope": {
@@ -32,8 +32,8 @@
   },
   "bucket_counts": {
     "gold_solution": 72,
-    "deferred_formal_candidate": 29,
-    "informal_proof": 723,
+    "deferred_formal_candidate": 26,
+    "informal_proof": 722,
     "open_problem": 696
   },
   "open_problem_pairs": [
@@ -3448,13 +3448,13 @@
       "allow_internet": true
     },
     {
-      "pair_id": "open-problem/wikipedia-toronto-of-t2-of-torontospace-2",
-      "source_instance_id": "wikipedia-toronto-of-t2-of-torontospace-2",
+      "pair_id": "open-problem/wikipedia-toronto-of-t2-of-torontospace",
+      "source_instance_id": "wikipedia-toronto-of-t2-of-torontospace",
       "source_theorem_name": "Toronto.DiscreteTopology.of_t2_of_torontoSpace",
       "source_file": "FormalConjectures/Wikipedia/Toronto.lean",
       "declaration_line": 63,
-      "prove_task_id": "wikipedia-toronto-of-t2-of-torontospace-2-prove",
-      "refute_task_id": "wikipedia-toronto-of-t2-of-torontospace-2-refute",
+      "prove_task_id": "wikipedia-toronto-of-t2-of-torontospace-prove",
+      "refute_task_id": "wikipedia-toronto-of-t2-of-torontospace-refute",
       "benchmark_bucket": "open_problem",
       "allow_internet": true
     },
@@ -7991,117 +7991,6 @@
       "v1_0_0_status": "deferred",
       "v1_0_0_triage_bucket": "source/generated target contains sorry dependency",
       "v1_0_0_triage_note": "Frozen prefix contains sorry-based data used by the target definition.",
-      "benchmark_bucket": "deferred_formal_candidate",
-      "allow_internet": true,
-      "oracle_status": "known_external"
-    },
-    {
-      "ams_tags": [],
-      "attribute_line": 56,
-      "category": [],
-      "contains_answer_elaborator": false,
-      "declaration_kind": "theorem",
-      "declaration_line": 65,
-      "exclusion_reason": null,
-      "formal_proofs": [
-        {
-          "kind": "formal_conjectures",
-          "url": "link"
-        }
-      ],
-      "inclusion_status": "candidate",
-      "instance_id": "util-attributes-basic-imo-2024-p6",
-      "local_declaration_name": "imo_2024_p6",
-      "namespace": [],
-      "selected_oracle": {
-        "formal_proof_kind": "formal_conjectures",
-        "kind": "formal_conjectures",
-        "licence_status": "unreviewed",
-        "redistribution_status": "unreviewed",
-        "url": "link"
-      },
-      "source_file": "FormalConjectures/Util/Attributes/Basic.lean",
-      "theorem_header": "theorem imo_2024_p6\n    (IsAquaesulian : (ℚ → ℚ) → Prop)\n    (IsAquaesulian_def : ∀ f, IsAquaesulian f ↔\n      ∀ x y, f (x + f y) = f x + y ∨ f (f x + y) = x + f y) :\n    IsLeast {(c : ℤ) | ∀ f, IsAquaesulian f → {(f r + f (-r)) | (r : ℚ)}.Finite ∧\n      {(f r + f (-r)) | (r : ℚ)}.ncard ≤ c} 2",
-      "theorem_name": "imo_2024_p6",
-      "uses_answer_sorry": false,
-      "v1_0_0_status": "deferred",
-      "v1_0_0_triage_bucket": "missing or placeholder proof source",
-      "v1_0_0_triage_note": "Selected URL is the literal string link.",
-      "benchmark_bucket": "deferred_formal_candidate",
-      "allow_internet": true,
-      "oracle_status": "known_external"
-    },
-    {
-      "ams_tags": [],
-      "attribute_line": 57,
-      "category": [],
-      "contains_answer_elaborator": false,
-      "declaration_kind": "theorem",
-      "declaration_line": 65,
-      "exclusion_reason": null,
-      "formal_proofs": [
-        {
-          "kind": "lean4",
-          "url": "link"
-        }
-      ],
-      "inclusion_status": "candidate",
-      "instance_id": "util-attributes-basic-imo-2024-p6-2",
-      "local_declaration_name": "imo_2024_p6",
-      "namespace": [],
-      "selected_oracle": {
-        "formal_proof_kind": "lean4",
-        "kind": "external",
-        "licence_status": "unreviewed",
-        "redistribution_status": "unreviewed",
-        "url": "link"
-      },
-      "source_file": "FormalConjectures/Util/Attributes/Basic.lean",
-      "theorem_header": "theorem imo_2024_p6\n    (IsAquaesulian : (ℚ → ℚ) → Prop)\n    (IsAquaesulian_def : ∀ f, IsAquaesulian f ↔\n      ∀ x y, f (x + f y) = f x + y ∨ f (f x + y) = x + f y) :\n    IsLeast {(c : ℤ) | ∀ f, IsAquaesulian f → {(f r + f (-r)) | (r : ℚ)}.Finite ∧\n      {(f r + f (-r)) | (r : ℚ)}.ncard ≤ c} 2",
-      "theorem_name": "imo_2024_p6",
-      "uses_answer_sorry": false,
-      "v1_0_0_status": "deferred",
-      "v1_0_0_triage_bucket": "missing or placeholder proof source",
-      "v1_0_0_triage_note": "Selected URL is the literal string link.",
-      "benchmark_bucket": "deferred_formal_candidate",
-      "allow_internet": true,
-      "oracle_status": "known_external"
-    },
-    {
-      "ams_tags": [],
-      "attribute_line": 77,
-      "category": [
-        "research",
-        "solved"
-      ],
-      "contains_answer_elaborator": false,
-      "declaration_kind": "theorem",
-      "declaration_line": 78,
-      "exclusion_reason": null,
-      "formal_proofs": [
-        {
-          "kind": "lean4",
-          "url": "https://example.com/proof"
-        }
-      ],
-      "inclusion_status": "candidate",
-      "instance_id": "util-attributes-basic-a-solved-problem-with-formal-proof",
-      "local_declaration_name": "a_solved_problem_with_formal_proof",
-      "namespace": [],
-      "selected_oracle": {
-        "formal_proof_kind": "lean4",
-        "kind": "external",
-        "licence_status": "unreviewed",
-        "redistribution_status": "unreviewed",
-        "url": "https://example.com/proof"
-      },
-      "source_file": "FormalConjectures/Util/Attributes/Basic.lean",
-      "theorem_header": "theorem a_solved_problem_with_formal_proof : ...",
-      "theorem_name": "a_solved_problem_with_formal_proof",
-      "uses_answer_sorry": false,
-      "v1_0_0_status": "deferred",
-      "v1_0_0_triage_bucket": "missing or placeholder proof source",
-      "v1_0_0_triage_note": "Selected URL is a placeholder proof link.",
       "benchmark_bucket": "deferred_formal_candidate",
       "allow_internet": true,
       "oracle_status": "known_external"
@@ -29003,41 +28892,6 @@
       "local_declaration_name": "F_three",
       "declaration_kind": "theorem",
       "source_file": "FormalConjectures/Paper/DegreeSequencesTriangleFree.lean",
-      "attribute_line": 184,
-      "declaration_line": 191,
-      "namespace": [
-        "SimpleGraph"
-      ],
-      "theorem_header": "theorem F_three : F 3 = 7",
-      "formal_proofs": [],
-      "selected_oracle": {
-        "kind": "none",
-        "formal_proof_kind": null,
-        "url": "",
-        "licence_status": "not_applicable",
-        "redistribution_status": "not_applicable"
-      },
-      "category": [
-        "research",
-        "solved"
-      ],
-      "ams_tags": [
-        "5"
-      ],
-      "contains_answer_elaborator": false,
-      "uses_answer_sorry": false,
-      "inclusion_status": "candidate",
-      "exclusion_reason": null,
-      "benchmark_bucket": "informal_proof",
-      "allow_internet": true,
-      "oracle_status": "none"
-    },
-    {
-      "instance_id": "paper-degreesequencestrianglefree-f-three-2",
-      "theorem_name": "SimpleGraph.F_three",
-      "local_declaration_name": "F_three",
-      "declaration_kind": "theorem",
-      "source_file": "FormalConjectures/Paper/DegreeSequencesTriangleFree.lean",
       "attribute_line": 190,
       "declaration_line": 191,
       "namespace": [
@@ -30200,7 +30054,7 @@
       "oracle_status": "none"
     },
     {
-      "instance_id": "wikipedia-ellipticcurverank-twentynine-le-rank-elkiesklagsbrun29-2",
+      "instance_id": "wikipedia-ellipticcurverank-twentynine-le-rank-elkiesklagsbrun29",
       "theorem_name": "EllipticCurveRank.WeierstrassCurve.twentynine_le_rank_elkiesKlagsbrun29",
       "local_declaration_name": "twentynine_le_rank_elkiesKlagsbrun29",
       "declaration_kind": "theorem",
@@ -30237,7 +30091,7 @@
       "oracle_status": "none"
     },
     {
-      "instance_id": "wikipedia-ellipticcurverank-twentyeight-le-rank-elkies28-2",
+      "instance_id": "wikipedia-ellipticcurverank-twentyeight-le-rank-elkies28",
       "theorem_name": "EllipticCurveRank.WeierstrassCurve.twentyeight_le_rank_elkies28",
       "local_declaration_name": "twentyeight_le_rank_elkies28",
       "declaration_kind": "theorem",
@@ -42246,7 +42100,7 @@
       "namespace": [
         "Erdos779"
       ],
-      "theorem_header": "theorem erdos_779 (n : ℕ) (hn : n ≥ 1): let P",
+      "theorem_header": "theorem erdos_779 (n : ℕ) (hn : n ≥ 1): let P := ∏ i ∈ range (n + 1), nth Nat.Prime i\n    ∃ p, p.Prime ∧ (P + p).Prime ∧ nth Nat.Prime n < p ∧ p < P",
       "formal_proofs": [],
       "selected_oracle": {
         "kind": "none",
@@ -42285,7 +42139,7 @@
       "namespace": [
         "Erdos779"
       ],
-      "theorem_header": "theorem erdos_779 (n : ℕ) (hn : n ≥ 1): let P",
+      "theorem_header": "theorem erdos_779 (n : ℕ) (hn : n ≥ 1): let P := ∏ i ∈ range (n + 1), nth Nat.Prime i\n    ∃ p, p.Prime ∧ (P + p).Prime ∧ nth Nat.Prime n < p ∧ p < P",
       "formal_proofs": [],
       "selected_oracle": {
         "kind": "none",
@@ -58314,7 +58168,7 @@
       "source_local_declaration_name": "twoFivePerfect"
     },
     {
-      "instance_id": "wikipedia-toronto-of-t2-of-torontospace-2-prove",
+      "instance_id": "wikipedia-toronto-of-t2-of-torontospace-prove",
       "theorem_name": "Toronto.DiscreteTopology.of_t2_of_torontoSpace",
       "local_declaration_name": "DiscreteTopology.of_t2_of_torontoSpace",
       "declaration_kind": "theorem",
@@ -58347,13 +58201,13 @@
       "benchmark_bucket": "open_problem",
       "allow_internet": true,
       "oracle_status": "none",
-      "open_problem_pair_id": "open-problem/wikipedia-toronto-of-t2-of-torontospace-2",
+      "open_problem_pair_id": "open-problem/wikipedia-toronto-of-t2-of-torontospace",
       "open_problem_polarity": "prove",
-      "source_instance_id": "wikipedia-toronto-of-t2-of-torontospace-2",
+      "source_instance_id": "wikipedia-toronto-of-t2-of-torontospace",
       "source_theorem_name": "Toronto.DiscreteTopology.of_t2_of_torontoSpace"
     },
     {
-      "instance_id": "wikipedia-toronto-of-t2-of-torontospace-2-refute",
+      "instance_id": "wikipedia-toronto-of-t2-of-torontospace-refute",
       "theorem_name": "Toronto.formal_conjectures_bench_refutation",
       "local_declaration_name": "formal_conjectures_bench_refutation",
       "declaration_kind": "theorem",
@@ -58386,9 +58240,9 @@
       "benchmark_bucket": "open_problem",
       "allow_internet": true,
       "oracle_status": "none",
-      "open_problem_pair_id": "open-problem/wikipedia-toronto-of-t2-of-torontospace-2",
+      "open_problem_pair_id": "open-problem/wikipedia-toronto-of-t2-of-torontospace",
       "open_problem_polarity": "refute",
-      "source_instance_id": "wikipedia-toronto-of-t2-of-torontospace-2",
+      "source_instance_id": "wikipedia-toronto-of-t2-of-torontospace",
       "source_theorem_name": "Toronto.DiscreteTopology.of_t2_of_torontoSpace",
       "source_local_declaration_name": "DiscreteTopology.of_t2_of_torontoSpace"
     },

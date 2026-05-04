@@ -140,12 +140,11 @@ def CuboidThree : Prop := ∀ ⦃a b c : ℤ⦄, gcd a (gcd b c) = 1 → 0 < a �
 
 /-- The third Cuboid conjecture -/
 
-def formal_conjectures_bench_statement : Prop :=
-  CuboidThree
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      CuboidThree
+    ) := by
   sorry
 
 end Cuboid

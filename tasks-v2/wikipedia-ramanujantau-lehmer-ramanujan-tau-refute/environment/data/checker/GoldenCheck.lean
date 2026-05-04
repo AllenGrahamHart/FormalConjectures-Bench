@@ -15,7 +15,9 @@ open PowerSeries PowerSeries.WithPiTopology
 namespace RamanujanTau
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ n > 0, τ n ≠ 0
+    ) := by
   exact RamanujanTau.formal_conjectures_bench_refutation
 
 end RamanujanTau

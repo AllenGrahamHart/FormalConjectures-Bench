@@ -16,7 +16,9 @@ open scoped Asymptotics Finset
 namespace Erdos539
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      (fun n ↦ (cofactorThreshold n : ℝ)) =Θ[atTop] fun n ↦ (n : ℝ) ^ ((2 : ℝ) / 3)
+    ) := by
   exact Erdos539.formal_conjectures_bench_refutation
 
 end Erdos539

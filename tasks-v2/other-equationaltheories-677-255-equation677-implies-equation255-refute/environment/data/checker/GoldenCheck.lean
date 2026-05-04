@@ -13,7 +13,11 @@ import FormalConjecturesBench.Target
 namespace EquationalTheories_677_255
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (G : Type) [Magma G] [Finite G]
+        (h : Equation677 G),
+        Equation255 G
+    ) := by
   exact EquationalTheories_677_255.formal_conjectures_bench_refutation
 
 end EquationalTheories_677_255

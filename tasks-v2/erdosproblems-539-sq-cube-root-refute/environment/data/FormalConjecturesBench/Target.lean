@@ -87,12 +87,11 @@ theorem erdos_539.variants.isBigO_sq :
 set$$\left\{ \frac{a}{(a,b)}: a,b\in A\right\}$$has size at least $h(n)$.
 Is $h(n) = \Theta(n^{2/3})$? -/
 
-def formal_conjectures_bench_statement : Prop :=
-  (fun n ↦ (cofactorThreshold n : ℝ)) =Θ[atTop] fun n ↦ (n : ℝ) ^ ((2 : ℝ) / 3)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      (fun n ↦ (cofactorThreshold n : ℝ)) =Θ[atTop] fun n ↦ (n : ℝ) ^ ((2 : ℝ) / 3)
+    ) := by
   sorry
 
 end Erdos539

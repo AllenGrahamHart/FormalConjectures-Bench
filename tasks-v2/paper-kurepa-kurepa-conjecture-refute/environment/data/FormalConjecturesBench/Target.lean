@@ -46,13 +46,12 @@ in [Unsolved Problems in Number Theory](https://doi.org/10.1007/978-0-387-26677-
 by *Richard K. Guy*
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ) (h_n : 2 < n),
-    (!n : ℕ) % n ≠ 0
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (h_n : 2 < n),
+        (!n : ℕ) % n ≠ 0
+    ) := by
   sorry
 
 end Kurepa

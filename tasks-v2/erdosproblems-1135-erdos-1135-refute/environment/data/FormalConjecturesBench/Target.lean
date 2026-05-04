@@ -42,12 +42,11 @@ namespace Erdos1135
 /-- The Collatz conjecture states that for any positive integer $n$, there exists a natural
 number $m$ such that the $m$-th term of the sequence is 1. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  type_of% CollatzConjecture.collatz_conjecture
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      type_of% CollatzConjecture.collatz_conjecture
+    ) := by
   sorry
 
 end Erdos1135

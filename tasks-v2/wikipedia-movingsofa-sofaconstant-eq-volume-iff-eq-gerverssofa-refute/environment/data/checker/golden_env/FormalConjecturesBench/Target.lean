@@ -183,12 +183,11 @@ theorem sofaConstant_eq_volume_gerversSofa : sofaConstant = volume gerversSofa :
 
 /-- Gerver's sofa is the unique sofa that attains the sofa constant. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ s : Set ℝ², sofaConstant = volume s ↔ s = gerversSofa
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ s : Set ℝ², sofaConstant = volume s ↔ s = gerversSofa
+    ) := by
   sorry
 
 end MovingSofa

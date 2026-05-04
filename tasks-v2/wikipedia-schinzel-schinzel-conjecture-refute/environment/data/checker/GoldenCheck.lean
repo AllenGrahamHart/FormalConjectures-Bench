@@ -15,7 +15,11 @@ open Polynomial
 namespace Schinzel
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (fs : Finset ℤ[X]) (hfs : ∀ f ∈ fs, BunyakovskyCondition f)
+        (hfs' : SchinzelCondition fs),
+        Infinite {n : ℕ | ∀ f ∈ fs, (f.eval (n : ℤ)).natAbs.Prime}
+    ) := by
   exact Schinzel.formal_conjectures_bench_refutation
 
 end Schinzel

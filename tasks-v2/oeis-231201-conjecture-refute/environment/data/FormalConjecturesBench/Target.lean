@@ -50,13 +50,12 @@ theorem primeCondition_53 : PrimeCondition 53 :=
 
 /-- The conjecture for sequence A231201: for any $n > 1$, there exist $x, y > 0$ such that $n = x + y$ and $2^x + y$ is prime. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ) (hn : 1 < n),
-    PrimeCondition n
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : 1 < n),
+        PrimeCondition n
+    ) := by
   sorry
 
 end OeisA231201

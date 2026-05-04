@@ -93,13 +93,12 @@ $A\subseteq \{1,\ldots,N\}$ with all $r$-fold sums distinct (aside from the triv
 then $\lvert A\rvert \sim N^{1/r}.$
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (r : ℕ) (hr : r ≥ 2),
-    BoseChowlaConjecture r
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (r : ℕ) (hr : r ≥ 2),
+        BoseChowlaConjecture r
+    ) := by
   sorry
 
 end Erdos241

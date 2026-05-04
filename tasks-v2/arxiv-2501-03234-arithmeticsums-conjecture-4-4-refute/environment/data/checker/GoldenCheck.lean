@@ -15,7 +15,10 @@ open Nat Finset BigOperators in
 namespace Arxiv.«2501.03234»
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ),
+        ∀ᶠ (k : ℕ) in Filter.atTop, k.Prime → Odd k → n * k < S k
+    ) := by
   exact Arxiv.«2501.03234».formal_conjectures_bench_refutation
 
 end Arxiv.«2501.03234»

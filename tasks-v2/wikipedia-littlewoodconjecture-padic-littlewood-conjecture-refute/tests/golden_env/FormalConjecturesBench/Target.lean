@@ -55,13 +55,12 @@ where $\||x\|| := \min(|x - \lfloor x \rfloor|, |x - \lceil x \rceil|)$ is the d
 to the nearest integer, and $|x|_{p}$ is the $p$-adic norm.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (α : ℝ) (p : ℕ) (hp : p.Prime),
-    atTop.liminf (fun (n : ℕ) ↦ n * padicNorm p n * distToNearestInt (n * α)) = 0
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (α : ℝ) (p : ℕ) (hp : p.Prime),
+        atTop.liminf (fun (n : ℕ) ↦ n * padicNorm p n * distToNearestInt (n * α)) = 0
+    ) := by
   sorry
 
 end LittlewoodConjecture

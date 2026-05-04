@@ -42,15 +42,14 @@ the eigenvalues of $A$ and $B$, and $\sigma$ is an element of the symmetric
 group $S_n$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : Type) [Fintype n] [DecidableEq n]
-    (d1 d2 : n → ℂ) (U1 U2 : unitary (Matrix n n ℂ)),
-    (U1 * Matrix.diagonal d1 * star U1 + U2 * Matrix.diagonal d2 * star U2).det
-          ∈ convexHull ℝ { ∏ i, (d1 i + d2 (σ i)) | σ : Equiv.Perm n }
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : Type) [Fintype n] [DecidableEq n]
+        (d1 d2 : n → ℂ) (U1 U2 : unitary (Matrix n n ℂ)),
+        (U1 * Matrix.diagonal d1 * star U1 + U2 * Matrix.diagonal d2 * star U2).det
+              ∈ convexHull ℝ { ∏ i, (d1 i + d2 (σ i)) | σ : Equiv.Perm n }
+    ) := by
   sorry
 
 end DeterminantalConjecture

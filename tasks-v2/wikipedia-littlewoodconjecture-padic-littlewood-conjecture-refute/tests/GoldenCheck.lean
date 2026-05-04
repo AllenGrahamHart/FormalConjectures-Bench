@@ -15,7 +15,10 @@ open Filter
 namespace LittlewoodConjecture
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (α : ℝ) (p : ℕ) (hp : p.Prime),
+        atTop.liminf (fun (n : ℕ) ↦ n * padicNorm p n * distToNearestInt (n * α)) = 0
+    ) := by
   exact LittlewoodConjecture.formal_conjectures_bench_refutation
 
 end LittlewoodConjecture

@@ -15,7 +15,9 @@ open Filter Finset
 namespace Erdos358
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      atTop.limsup (fun n ↦ (f (Nat.nth Nat.Prime) n : ℕ∞)) = ⊤
+    ) := by
   exact Erdos358.formal_conjectures_bench_refutation
 
 end Erdos358

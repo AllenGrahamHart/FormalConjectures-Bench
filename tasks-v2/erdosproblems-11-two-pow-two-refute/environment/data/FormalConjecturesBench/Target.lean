@@ -47,13 +47,12 @@ theorem erdos_11.variants.not_four_dvd (n : ℕ) (hn : ¬ 4 ∣ n) (hn' : 1 < n)
 Is every odd $n > 1$ the sum of a squarefree number and two powers of 2?
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ) (hn : Odd n) (hn' : 1 < n),
-    ∃ k l m : ℕ , Squarefree k ∧ n = k + 2^l + 2^m
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : Odd n) (hn' : 1 < n),
+        ∃ k l m : ℕ , Squarefree k ∧ n = k + 2^l + 2^m
+    ) := by
   sorry
 
 end Erdos11

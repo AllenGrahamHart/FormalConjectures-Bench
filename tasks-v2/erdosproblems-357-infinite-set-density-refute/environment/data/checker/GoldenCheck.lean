@@ -15,7 +15,11 @@ open Filter Asymptotics
 namespace Erdos357
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (A : ℕ → ℕ) (hA : StrictMono A)
+        (hA : HasDistinctSums A),
+        (Set.range A).HasDensity 0
+    ) := by
   exact Erdos357.formal_conjectures_bench_refutation
 
 end Erdos357

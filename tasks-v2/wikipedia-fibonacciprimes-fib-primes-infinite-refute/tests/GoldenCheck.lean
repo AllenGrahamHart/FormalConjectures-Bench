@@ -13,7 +13,9 @@ import FormalConjecturesBench.Target
 namespace FibonacciPrimes
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      {n : ℕ | (∃ m : ℕ, m.fib = n) ∧ n.Prime}.Infinite
+    ) := by
   exact FibonacciPrimes.formal_conjectures_bench_refutation
 
 end FibonacciPrimes

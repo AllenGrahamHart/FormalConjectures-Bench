@@ -13,7 +13,9 @@ import FormalConjecturesBench.Target
 namespace Erdos218
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      {n | primeGap (n + 1) ≤ primeGap n}.HasDensity <| 1 / 2
+    ) := by
   exact Erdos218.formal_conjectures_bench_refutation
 
 end Erdos218

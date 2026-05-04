@@ -15,7 +15,11 @@ open Nat
 namespace PrimeTuplesConjecture
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {k : ℕ} (hk : 2 ≤ k) (a : Fin k → ℕ+) (b : Fin k → ℕ)
+        (hab : ∀ p, p.Prime → ∃ n, ¬ p ∣ ∏ i, (a i * n + b i)),
+        Set.Infinite {n | ∀ i : Fin k, (a i * n + b i).Prime}
+    ) := by
   exact PrimeTuplesConjecture.formal_conjectures_bench_refutation
 
 end PrimeTuplesConjecture

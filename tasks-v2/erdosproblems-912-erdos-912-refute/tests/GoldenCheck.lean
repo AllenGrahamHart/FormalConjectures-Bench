@@ -16,7 +16,10 @@ open Filter
 namespace Erdos912
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ c > 0,
+          (fun n => (h n : ℝ)) ~[atTop] (fun n => c * (n / Real.log n) ^ (1 / 2 : ℝ))
+    ) := by
   exact Erdos912.formal_conjectures_bench_refutation
 
 end Erdos912

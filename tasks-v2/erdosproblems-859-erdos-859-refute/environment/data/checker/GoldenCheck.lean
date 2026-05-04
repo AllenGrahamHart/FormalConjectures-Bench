@@ -15,7 +15,10 @@ open Asymptotics Filter
 namespace Erdos859
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ c₁ > 0, ∃ c₂ > (0 : ℝ), ∃ d : ℕ → ℝ, (∀ t > 0, (DivisorSumSet t).HasDensity (d t)) ∧
+            (fun (t : ℕ) ↦ d t) ~[atTop] (fun t ↦ c₁ / Real.log t ^ c₂)
+    ) := by
   exact Erdos859.formal_conjectures_bench_refutation
 
 end Erdos859

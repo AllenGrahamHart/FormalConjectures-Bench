@@ -45,14 +45,13 @@ If $n, n+1, \dots, n+k-1$ are all composite numbers, then their product
 has at least $k$ distinct prime divisors.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n k : ℕ) (hn : 1 ≤ n) (hk : 1 ≤ k)
-    (h : ∀ i : Fin k, (n + i).Composite),
-    ∃ ps : Fin k ↪ ℕ,  ∀ i : Fin k, (ps i).Prime ∧ ∃ j : Fin k, ps i ∣ (n + j)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n k : ℕ) (hn : 1 ≤ n) (hk : 1 ≤ k)
+        (h : ∀ i : Fin k, (n + i).Composite),
+        ∃ ps : Fin k ↪ ℕ,  ∀ i : Fin k, (ps i).Prime ∧ ∃ j : Fin k, ps i ∣ (n + j)
+    ) := by
   sorry
 
 end Grimm

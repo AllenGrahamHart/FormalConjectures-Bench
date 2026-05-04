@@ -15,7 +15,9 @@ open Nat Filter
 namespace Erdos1101
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ¬ ∃ u, IsGood u ∧ ∃ k : ℕ, (fun n => (u n : ℝ)) =O[atTop] (fun n => (n : ℝ) ^ k)
+    ) := by
   exact Erdos1101.formal_conjectures_bench_refutation
 
 end Erdos1101

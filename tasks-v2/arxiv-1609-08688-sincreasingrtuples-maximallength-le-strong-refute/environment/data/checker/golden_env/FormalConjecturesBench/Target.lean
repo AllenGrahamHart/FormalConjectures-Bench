@@ -227,13 +227,12 @@ theorem maximalLength_pow {n : ℕ} {e : ℝ} (hn : 1 < n) (h : F n = (n : ℝ) 
 
 /-- $F(n) \leq n^{3/2}$. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ),
-    F n ≤ Real.sqrt n ^ 3
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ),
+        F n ≤ Real.sqrt n ^ 3
+    ) := by
   sorry
 
 end Arxiv.«1609.08688»

@@ -44,15 +44,14 @@ Here `l(v) = α(G[N(v)])` is the independence number of the subgraph induced by 
 open neighborhood of `v`.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {α : Type*} [Fintype α] [DecidableEq α] (G : SimpleGraph α) [DecidableRel G.Adj] (hG : G.Connected)
-    (hn : 5 ≤ Fintype.card α)
-    (h : ∀ v : α, indepNeighborsCard G v ≤ 1),
-    IsWellTotallyDominated G
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {α : Type*} [Fintype α] [DecidableEq α] (G : SimpleGraph α) [DecidableRel G.Adj] (hG : G.Connected)
+        (hn : 5 ≤ Fintype.card α)
+        (h : ∀ v : α, indepNeighborsCard G v ≤ 1),
+        IsWellTotallyDominated G
+    ) := by
   sorry
 
 end WrittenOnTheWallII.GraphConjecture322

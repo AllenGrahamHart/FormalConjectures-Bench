@@ -15,7 +15,11 @@ open Finset Nat
 namespace Erdos779
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : n ≥ 1),
+        let P := ∏ i ∈ range (n + 1), nth Nat.Prime i
+        ∃ p, p.Prime ∧ (P + p).Prime ∧ nth Nat.Prime n < p ∧ p < P
+    ) := by
   exact Erdos779.formal_conjectures_bench_refutation
 
 end Erdos779

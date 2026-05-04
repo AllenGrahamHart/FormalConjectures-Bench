@@ -28,8 +28,8 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "596bb8f9a6697f9d85d3904e04558b527dab0ce8c602b130b4458d654cd555b7"
-EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac formal_conjectures_bench_statement"
+EXPECTED_PREFIX_SHA256 = "6a84f9347520bd5cc7abffb80788aafb3714dd10b89380e8822b0d8bc1274c77"
+EXPECTED_HEADER = "theorem formal_conjectures_bench_refutation :\n    \u00ac (\n      \u2200 {x : \u211a} (hx : x \u2208 Set.Ioo 0 1) (hx_den : Odd x.den),\n        greedyUnitFractionRem { n | Odd n } x =\u1da0[atTop] 0\n    )"
 THEOREM_NAME = "Erdos282.formal_conjectures_bench_refutation"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
 ELAN_PATHS = ["/opt/elan/bin", os.path.expanduser("~/.elan/bin")]

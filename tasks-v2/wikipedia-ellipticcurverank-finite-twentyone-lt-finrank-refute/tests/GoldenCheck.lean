@@ -21,7 +21,9 @@ namespace EllipticCurveRank
 namespace RatEllipticCurve
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      {E : RatEllipticCurve | 21 < E.rank}.Finite
+    ) := by
   exact EllipticCurveRank.RatEllipticCurve.formal_conjectures_bench_refutation
 
 end RatEllipticCurve

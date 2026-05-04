@@ -36,14 +36,13 @@ For every $n>2$ there exist distinct integers $1 ≤ x < y < z$
 such that $\frac 4 n = \frac 1 x + \frac 1 y + \frac 1 z$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ) (hn : 2 < n),
-    ∃ x y z : ℕ, 1 ≤ x ∧ x < y ∧ y < z ∧
-          (4 / n : ℚ) = 1 / x + 1 / y + 1 / z
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : 2 < n),
+        ∃ x y z : ℕ, 1 ≤ x ∧ x < y ∧ y < z ∧
+              (4 / n : ℚ) = 1 / x + 1 / y + 1 / z
+    ) := by
   sorry
 
 end Erdos242

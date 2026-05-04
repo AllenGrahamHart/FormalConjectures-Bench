@@ -15,7 +15,9 @@ open Polynomial
 namespace EulerBrick
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      CuboidTwo
+    ) := by
   exact EulerBrick.formal_conjectures_bench_refutation
 
 end EulerBrick

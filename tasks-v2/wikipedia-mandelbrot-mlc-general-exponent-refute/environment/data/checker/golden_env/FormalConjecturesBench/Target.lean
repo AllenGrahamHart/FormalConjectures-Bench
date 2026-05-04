@@ -114,13 +114,12 @@ theorem MLC : LocallyConnectedSpace mandelbrotSet := by
 Note that we don't need to require `2 ≤ n` because the conjecture holds in the trivial cases `n = 0`
 and `n = 1` too. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ),
-    LocallyConnectedSpace (multibrotSet n)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ),
+        LocallyConnectedSpace (multibrotSet n)
+    ) := by
   sorry
 
 end Mandelbrot

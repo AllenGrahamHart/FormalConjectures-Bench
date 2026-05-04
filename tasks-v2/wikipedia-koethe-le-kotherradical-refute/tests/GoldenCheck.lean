@@ -17,7 +17,10 @@ local notation "Nil* " R => KotheRadical R
 namespace Koethe
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {R : Type*} [Ring R] {I : Ideal R} (hI : IsNil I),
+        (I : Set R) ⊆ KotheRadical R
+    ) := by
   exact Koethe.formal_conjectures_bench_refutation
 
 end Koethe

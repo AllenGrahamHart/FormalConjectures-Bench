@@ -70,13 +70,12 @@ theorem a_of_comesFromPrimeQuadruple {n : ℕ} (h : ComesFromPrimeQuadruple n) :
 
 /-- All members of the sequence A56777 come from prime quadruples. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {n : ℕ} (h : a n),
-    ComesFromPrimeQuadruple n
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {n : ℕ} (h : a n),
+        ComesFromPrimeQuadruple n
+    ) := by
   sorry
 
 end OeisA56777

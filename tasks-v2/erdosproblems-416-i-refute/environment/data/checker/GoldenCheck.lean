@@ -16,7 +16,9 @@ open scoped Topology Real
 namespace Erdos416
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      Filter.Tendsto (fun x => (V (2 * x) / V (x))) Filter.atTop (𝓝 2)
+    ) := by
   exact Erdos416.formal_conjectures_bench_refutation
 
 end Erdos416

@@ -68,14 +68,13 @@ theorem locallyCompact_of_admitsLieGroupStructure
 /-- **Hilbert–Smith conjecture**: every locally compact topological group acting continuously
 and faithfully on a connected finite-dimensional topological manifold is a Lie group. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {G : Type*} [Group G] [TopologicalSpace G] {n : ℕ} {X : Type*} [TopologicalSpace X] [T2Space X] [ConnectedSpace X] [IsTopologicalGroup G] [LocallyCompactSpace G]
-    [MulAction G X] [ContinuousSMul G X] [FaithfulSMul G X],
-    AdmitsLieGroupStructure G
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {G : Type*} [Group G] [TopologicalSpace G] {n : ℕ} {X : Type*} [TopologicalSpace X] [T2Space X] [ConnectedSpace X] [IsTopologicalGroup G] [LocallyCompactSpace G]
+        [MulAction G X] [ContinuousSMul G X] [FaithfulSMul G X],
+        AdmitsLieGroupStructure G
+    ) := by
   sorry
 
 end Hilbert5

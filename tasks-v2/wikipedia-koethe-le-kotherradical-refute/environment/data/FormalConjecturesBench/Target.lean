@@ -54,13 +54,12 @@ theorem KotheConjecture (I J : Ideal R) (hI : IsNil I) (hJ : IsNil J) : IsNil (I
 
 /-- The **Köthe conjecture**: every left nil radical is contained in the Köthe radical. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {R : Type*} [Ring R] {I : Ideal R} (hI : IsNil I),
-    (I : Set R) ⊆ KotheRadical R
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {R : Type*} [Ring R] {I : Ideal R} (hI : IsNil I),
+        (I : Set R) ⊆ KotheRadical R
+    ) := by
   sorry
 
 end Koethe

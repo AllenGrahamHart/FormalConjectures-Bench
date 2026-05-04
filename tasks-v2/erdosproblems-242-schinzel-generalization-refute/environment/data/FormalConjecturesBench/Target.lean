@@ -47,14 +47,13 @@ large in terms of $a$ then there exist distinct integers $1\leq x < y < z$ such 
 $\frac{a}{n} = \frac{1}{x}+\frac{1}{y}+\frac{1}{z}.$
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (a : ℕ) (ha : 0 < a),
-    ∀ᶠ (n : ℕ) in Filter.atTop, ∃ x y z : ℕ, 1 ≤ x ∧ x < y ∧ y < z ∧
-          (a / n : ℚ) = 1 / x + 1 / y + 1 / z
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (a : ℕ) (ha : 0 < a),
+        ∀ᶠ (n : ℕ) in Filter.atTop, ∃ x y z : ℕ, 1 ≤ x ∧ x < y ∧ y < z ∧
+              (a / n : ℚ) = 1 / x + 1 / y + 1 / z
+    ) := by
   sorry
 
 end Erdos242

@@ -16,7 +16,10 @@ open scoped Nat.Prime Classical
 namespace HardyLittlewood
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {k : ℕ} (m : Fin k.succ → ℕ),
+        FirstHardyLittlewoodConjectureFor m
+    ) := by
   exact HardyLittlewood.formal_conjectures_bench_refutation
 
 end HardyLittlewood

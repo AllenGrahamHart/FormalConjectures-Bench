@@ -104,14 +104,13 @@ theorem poincare_conjecture.variants.smooth_dimension_four : SmoothConjectureFor
 /-- It is conjectured that the only values of $n > 4$ for which the smooth version of the
 conjecture holds are $n = 5, 6, 12, 56, 61$. See Conjecture 1.17 in [Wang2017]. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (n : ℕ) (hn : n > 4)
-    (hn' : n ∉ SmoothTrueValues),
-    ¬ SmoothConjectureFor n
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : n > 4)
+        (hn' : n ∉ SmoothTrueValues),
+        ¬ SmoothConjectureFor n
+    ) := by
   sorry
 
 end PoincareConjecture

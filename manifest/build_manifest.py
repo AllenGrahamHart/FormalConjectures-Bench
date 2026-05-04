@@ -26,6 +26,10 @@ FORMAL_PROOF_RE = re.compile(
 DECL_RE = re.compile(
     r"^\s*(?:(?:noncomputable|private|protected)\s+)*(theorem|lemma)\s+([^\s:{(\[]+)"
 )
+ANY_DECL_RE = re.compile(
+    r"^\s*(?:(?:noncomputable|private|protected|unsafe|partial)\s+)*"
+    r"(theorem|lemma|def|abbrev|instance|class|structure|inductive|coinductive|axiom|constant|opaque|example)\b"
+)
 AMS_RE = re.compile(r"\bAMS\s+([0-9\s]+)")
 CATEGORY_RE = re.compile(r"\bcategory\s+([^,\]]+)")
 
@@ -97,6 +101,8 @@ def find_declaration(lines: list[str], start_index: int) -> tuple[int, str, str]
         match = DECL_RE.match(lines[idx])
         if match:
             return idx + 1, match.group(1), match.group(2)
+        if ANY_DECL_RE.match(lines[idx]):
+            return None
     return None
 
 
@@ -133,6 +139,10 @@ def namespace_stack_before(lines: list[str], one_based_line: int) -> list[str]:
 
 def starts_with_let_binding(line: str) -> bool:
     return re.match(r"\s*(?:let|letI)\b", line) is not None
+
+
+def has_inline_let_binding(prefix: str) -> bool:
+    return re.search(r"(?:^|[:=,])\s*(?:let|letI)\b", prefix) is not None
 
 
 def leading_spaces(line: str) -> int:
@@ -198,7 +208,7 @@ def declaration_body_location(lines: list[str], declaration_line: int) -> tuple[
                 continue
 
             if line.startswith(":=", i) and depth == 0:
-                if pending_let_assignment or starts_with_let_binding(line[:i]):
+                if pending_let_assignment or starts_with_let_binding(line[:i]) or has_inline_let_binding(line[:i]):
                     pending_let_assignment = False
                     if is_by_block_start(line, i):
                         skip_by_block_indent = leading_spaces(line)

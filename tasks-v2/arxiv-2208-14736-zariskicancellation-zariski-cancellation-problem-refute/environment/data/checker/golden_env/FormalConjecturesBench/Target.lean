@@ -44,14 +44,13 @@ The **Zariski Cancellation Problem**: every polynomial ring over a field `k` of 
 `0` is cancellative.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {k : Type*} [Field k]
-    [CharZero k] {ι : Type*} [Fintype ι],
-    IsCancellative k (MvPolynomial ι k)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {k : Type*} [Field k]
+        [CharZero k] {ι : Type*} [Fintype ι],
+        IsCancellative k (MvPolynomial ι k)
+    ) := by
   sorry
 
 end Arxiv.«2208.14736»

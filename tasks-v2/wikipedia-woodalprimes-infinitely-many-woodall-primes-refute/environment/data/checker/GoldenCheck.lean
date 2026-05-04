@@ -13,7 +13,9 @@ import FormalConjecturesBench.Target
 namespace WoodallPrimes
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      {k : ℕ | 1 < k ∧ (k * 2 ^ k - 1).Prime}.Infinite
+    ) := by
   exact WoodallPrimes.formal_conjectures_bench_refutation
 
 end WoodallPrimes

@@ -128,12 +128,11 @@ Selfridge conjectured that the number of prime factors of the `n`-th Fermat numb
 monotonically in $n$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ¬ Monotone fermatFactors
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ¬ Monotone fermatFactors
+    ) := by
   sorry
 
 end FermatNumbers

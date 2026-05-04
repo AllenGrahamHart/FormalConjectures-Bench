@@ -16,7 +16,9 @@ open scoped Real Pointwise
 namespace Erdos340
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      Set.HasPosDensity (Set.range greedySidon - Set.range greedySidon)
+    ) := by
   exact Erdos340.formal_conjectures_bench_refutation
 
 end Erdos340

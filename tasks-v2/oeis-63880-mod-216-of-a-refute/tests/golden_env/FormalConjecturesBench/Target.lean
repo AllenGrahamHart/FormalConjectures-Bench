@@ -83,13 +83,12 @@ theorem isPrimitiveTerm_108 : isPrimitiveTerm 108 := by
 
 /-- All members of the sequence satisfy $n \equiv 108 \pmod{216}$. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ {n : ℕ} (h : a n),
-    n % 216 = 108
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {n : ℕ} (h : a n),
+        n % 216 = 108
+    ) := by
   sorry
 
 end OeisA63880

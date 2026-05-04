@@ -15,7 +15,9 @@ open Finset Real Classical
 namespace Green19
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      C >= 3.13
+    ) := by
   exact Green19.formal_conjectures_bench_refutation
 
 end Green19

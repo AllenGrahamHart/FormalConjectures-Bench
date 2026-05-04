@@ -55,12 +55,11 @@ $(a^m, b^n, c^k)$ where $a, b, c$ are positive coprime integers and $m, n, k$ ar
 $\frac 1 m + \frac 1 n + \frac 1 k < 1$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  fermatCatalanConjecture
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      fermatCatalanConjecture
+    ) := by
   sorry
 
 end FermatCatalanConjecture

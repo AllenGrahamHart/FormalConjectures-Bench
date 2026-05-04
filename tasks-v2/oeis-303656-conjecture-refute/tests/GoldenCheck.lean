@@ -13,7 +13,10 @@ import FormalConjecturesBench.Target
 namespace OeisA303656
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : 1 < n),
+        IsSumOfTwoSquaresAndPowersOf3And5 n
+    ) := by
   exact OeisA303656.formal_conjectures_bench_refutation
 
 end OeisA303656

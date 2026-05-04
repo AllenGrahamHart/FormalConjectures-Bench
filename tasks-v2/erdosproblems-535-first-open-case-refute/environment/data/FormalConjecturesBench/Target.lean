@@ -82,14 +82,13 @@ The first open case of Erdős Problem 535 is $r = 3$: there should exist $c > 0$
 $f_3(N) \leq N^{c/\log\log N}$ for all sufficiently large $N$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∃ c > (0 : ℝ),
-      ∀ᶠ (N : ℕ) in atTop,
-        (f 3 N : ℝ) ≤ (N : ℝ) ^ (c / log (log (N : ℝ)))
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∃ c > (0 : ℝ),
+          ∀ᶠ (N : ℕ) in atTop,
+            (f 3 N : ℝ) ≤ (N : ℝ) ^ (c / log (log (N : ℝ)))
+    ) := by
   sorry
 
 end Erdos535

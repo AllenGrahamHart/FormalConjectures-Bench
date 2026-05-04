@@ -44,15 +44,14 @@ Let $A\subseteq \mathbb{N}$ be such that $\lvert A\cap [1,2x]\rvert -\lvert A\ca
 integer is the sum of distinct elements of $A$.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (A : Set ℕ),
-        (Tendsto (fun x : ℕ ↦ (A ∩ Icc 1 (2 * x)).ncard - (A ∩ Icc 1 x).ncard) atTop atTop) ∧
-        (∀ θ : ℝ, 0 < θ → θ < 1 → ¬ Summable (fun n : A ↦ distToNearestInt (θ * (n : ℝ)))) →
-          ∀ᶠ m in atTop, IsSumOfDistinct A m
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (A : Set ℕ),
+            (Tendsto (fun x : ℕ ↦ (A ∩ Icc 1 (2 * x)).ncard - (A ∩ Icc 1 x).ncard) atTop atTop) ∧
+            (∀ θ : ℝ, 0 < θ → θ < 1 → ¬ Summable (fun n : A ↦ distToNearestInt (θ * (n : ℝ)))) →
+              ∀ᶠ m in atTop, IsSumOfDistinct A m
+    ) := by
   sorry
 
 end Erdos254

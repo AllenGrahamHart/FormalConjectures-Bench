@@ -93,14 +93,13 @@ theorem card_heightLE_div_pow_five_div_six_tensto :
 heights, then 50% of the curves have rank 0 and 50% have rank 1.
 See p. 28 of https://people.maths.bris.ac.uk/~matyd/BSD2011/bsd2011-Bhargava.pdf. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (r : ℕ) (hr : r = 0 ∨ r = 1),
-    atTop.Tendsto
-          (fun H ↦ ({E ∈ heightLE H | E.rank = r}.ncard / (heightLE H).ncard : ℝ)) (𝓝 (1 / 2))
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (r : ℕ) (hr : r = 0 ∨ r = 1),
+        atTop.Tendsto
+              (fun H ↦ ({E ∈ heightLE H | E.rank = r}.ncard / (heightLE H).ncard : ℝ)) (𝓝 (1 / 2))
+    ) := by
   sorry
 
 end RatEllipticCurve

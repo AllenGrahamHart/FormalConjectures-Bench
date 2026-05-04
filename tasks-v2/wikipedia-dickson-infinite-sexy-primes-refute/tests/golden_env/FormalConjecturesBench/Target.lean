@@ -77,12 +77,11 @@ theorem infinite_cousin_primes :
 There are infinitely many primes $p$ such that $p + 6$ is prime.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  Infinite {p : ℕ | Prime p ∧ Prime (p + 6)}
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      Infinite {p : ℕ | Prime p ∧ Prime (p + 6)}
+    ) := by
   sorry
 
 end Dickson

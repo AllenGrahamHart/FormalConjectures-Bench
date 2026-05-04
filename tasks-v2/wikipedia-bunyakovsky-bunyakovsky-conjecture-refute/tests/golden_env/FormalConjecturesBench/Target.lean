@@ -33,14 +33,13 @@ If a polynomial $f$ over integers satisfies both Schinzel and Bunyakovsky condit
 there exist infinitely many natural numbers $m$ such that $f(m)$ is prime.
 -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ∀ (f : ℤ[X]),
-    BunyakovskyCondition f ∧ SchinzelCondition {f} →
-        Infinite {n : ℕ | (f.eval (n : ℤ)).natAbs.Prime}
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (f : ℤ[X]),
+        BunyakovskyCondition f ∧ SchinzelCondition {f} →
+            Infinite {n : ℕ | (f.eval (n : ℤ)).natAbs.Prime}
+    ) := by
   sorry
 
 end Bunyakovsky

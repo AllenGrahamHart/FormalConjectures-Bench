@@ -15,7 +15,11 @@ open scoped Manifold ContDiff EuclideanGeometry ContinuousMap
 namespace PoincareConjecture
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (n : ℕ) (hn : n > 4)
+        (hn' : n ∉ SmoothTrueValues),
+        ¬ SmoothConjectureFor n
+    ) := by
   exact PoincareConjecture.formal_conjectures_bench_refutation
 
 end PoincareConjecture

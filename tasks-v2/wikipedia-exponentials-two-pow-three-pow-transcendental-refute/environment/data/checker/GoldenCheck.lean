@@ -15,7 +15,10 @@ open Complex
 namespace Exponentials
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ (t : ℝ) (h : Irrational t),
+        Transcendental ℚ (2 ^ t : ℝ) ∨ Transcendental ℚ (3 ^ t : ℝ)
+    ) := by
   exact Exponentials.formal_conjectures_bench_refutation
 
 end Exponentials

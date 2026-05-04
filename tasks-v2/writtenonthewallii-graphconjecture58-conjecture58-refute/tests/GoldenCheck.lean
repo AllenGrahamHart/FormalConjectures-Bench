@@ -15,7 +15,10 @@ open SimpleGraph
 namespace WrittenOnTheWallII.GraphConjecture58
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ∀ {α : Type*} [Fintype α] [DecidableEq α] [Nontrivial α] (G : SimpleGraph α) (hG : G.Connected),
+        Nat.ceil (G.b / G.l_avg) ≤ G.largestInducedForestSize
+    ) := by
   exact WrittenOnTheWallII.GraphConjecture58.formal_conjectures_bench_refutation
 
 end WrittenOnTheWallII.GraphConjecture58

@@ -30,12 +30,11 @@ namespace Erdos364
 
 /-- There is no consecutive triple of powerful numbers. -/
 
-def formal_conjectures_bench_statement : Prop :=
-  ¬ ∃ (n : ℕ), Powerful n ∧ Powerful (n + 1) ∧ Powerful (n + 2)
-
 -- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN
 theorem formal_conjectures_bench_refutation :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      ¬ ∃ (n : ℕ), Powerful n ∧ Powerful (n + 1) ∧ Powerful (n + 2)
+    ) := by
   sorry
 
 end Erdos364

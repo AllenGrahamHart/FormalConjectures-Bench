@@ -15,7 +15,9 @@ open Filter Asymptotics
 namespace Erdos357
 
 theorem formal_conjectures_bench_expected_type :
-    ¬ formal_conjectures_bench_statement := by
+    ¬ (
+      (fun n ↦ (h n : ℝ)) =o[atTop] (fun n ↦ (n : ℝ))
+    ) := by
   exact Erdos357.formal_conjectures_bench_refutation
 
 end Erdos357
