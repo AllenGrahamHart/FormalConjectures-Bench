@@ -198,6 +198,97 @@ lemma activated_exact_product_pos (st : StageState) {a b p : ℕ}
     ((activated_m_prime st hbDormant hp a (activated_active_mem_old st ha)).pos)
     (activated_nonselected_product_pos st hbDormant hp)
 
+noncomputable def activatedCRTProductEquiv (st : StageState) {a b p : ℕ}
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p) :
+    ZMod (activatedModulus st b p a *
+        ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+          activatedModulus st b p (i : ℕ)) ≃+
+      ProductSpace (activatedModulus st b p a)
+        (fun i : NonselectedIndex (activatedActiveSet st b) a =>
+          activatedModulus st b p (i : ℕ)) :=
+  productCRTAddEquiv (activatedModulus st b p a)
+    (fun i : NonselectedIndex (activatedActiveSet st b) a =>
+      activatedModulus st b p (i : ℕ))
+    (activated_selected_coprime_nonselected_prod st ha hbDormant hp)
+    (activated_pairwise_coprime_nonselected st hbDormant hp)
+
+noncomputable def activatedCRTAllowedFinsetExact (st : StageState) {a b p : ℕ}
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p) :
+    Finset (ZMod (activatedModulus st b p a *
+      ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+        activatedModulus st b p (i : ℕ))) := by
+  classical
+  letI : NeZero (activatedModulus st b p a *
+      ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+        activatedModulus st b p (i : ℕ)) :=
+    NeZero.of_pos (activated_exact_product_pos st ha hbDormant hp)
+  exact crtProductAllowedFinset
+    (activatedModulus st b p a *
+      ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+        activatedModulus st b p (i : ℕ))
+    (activatedModulus st b p a)
+    (fun i : NonselectedIndex (activatedActiveSet st b) a =>
+      activatedModulus st b p (i : ℕ))
+    (activatedCRTProductEquiv st ha hbDormant hp)
+    (a : ZMod (activatedModulus st b p a))
+    (fun i : NonselectedIndex (activatedActiveSet st b) a =>
+      ((i : ℕ) : ZMod (activatedModulus st b p (i : ℕ))))
+
+noncomputable def activatedCRTAllowedFinsetAtM (st : StageState) {a b p : ℕ}
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p) :
+    Finset (ZMod (activatedM st b p)) :=
+  Eq.mp (congrArg (fun M => Finset (ZMod M))
+    (activatedM_eq_selected_mul_nonselected st ha).symm)
+    (activatedCRTAllowedFinsetExact st ha hbDormant hp)
+
+theorem activatedCRTAllowedFinsetExact_add_self_eq_univ (st : StageState) {a b p : ℕ}
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p) :
+    ((activatedCRTAllowedFinsetExact st ha hbDormant hp : Set
+        (ZMod (activatedModulus st b p a *
+          ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+            activatedModulus st b p (i : ℕ)))) +
+      (activatedCRTAllowedFinsetExact st ha hbDormant hp : Set
+        (ZMod (activatedModulus st b p a *
+          ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+            activatedModulus st b p (i : ℕ))))) = Set.univ := by
+  classical
+  letI : Fact (Nat.Prime (activatedModulus st b p a)) :=
+    ⟨activated_m_prime st hbDormant hp a (activated_active_mem_old st ha)⟩
+  letI : NeZero (activatedModulus st b p a *
+      ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+        activatedModulus st b p (i : ℕ)) :=
+    NeZero.of_pos (activated_exact_product_pos st ha hbDormant hp)
+  letI : (i : NonselectedIndex (activatedActiveSet st b) a) →
+      Fact (Nat.Prime (activatedModulus st b p (i : ℕ))) := fun i =>
+    ⟨activated_m_prime st hbDormant hp (i : ℕ) ((Finset.mem_erase.mp i.property).2)⟩
+  unfold activatedCRTAllowedFinsetExact
+  simpa using
+    (crtProduct_allowed_add_allowed_eq_univ
+      (activatedModulus st b p a *
+        ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+          activatedModulus st b p (i : ℕ))
+      (activatedModulus st b p a)
+      (fun i : NonselectedIndex (activatedActiveSet st b) a =>
+        activatedModulus st b p (i : ℕ))
+      (le_trans (by norm_num : 7 ≤ 23)
+        (activated_m_ge23 st hbDormant hp a (activated_active_mem_old st ha)))
+      (fun i => le_trans (by norm_num : 7 ≤ 23)
+        (activated_m_ge23 st hbDormant hp (i : ℕ)
+          ((Finset.mem_erase.mp i.property).2)))
+      (activatedCRTProductEquiv st ha hbDormant hp)
+      (a : ZMod (activatedModulus st b p a))
+      (fun i : NonselectedIndex (activatedActiveSet st b) a =>
+        ((i : ℕ) : ZMod (activatedModulus st b p (i : ℕ)))))
+
+theorem activatedCRTAllowedFinsetAtM_add_self_eq_univ (st : StageState) {a b p : ℕ}
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p) :
+    ((activatedCRTAllowedFinsetAtM st ha hbDormant hp : Set (ZMod (activatedM st b p))) +
+      (activatedCRTAllowedFinsetAtM st ha hbDormant hp : Set (ZMod (activatedM st b p)))) =
+        Set.univ :=
+  zmodFinsetCast_add_self_eq_univ (activatedM_eq_selected_mul_nonselected st ha)
+    (activatedCRTAllowedFinsetExact st ha hbDormant hp)
+    (activatedCRTAllowedFinsetExact_add_self_eq_univ st ha hbDormant hp)
+
 /--
 Concrete numeric and CRT choices for one service-and-tail stage after activating
 `b`.  The inequality fields are intentionally added only as later lemmas need
