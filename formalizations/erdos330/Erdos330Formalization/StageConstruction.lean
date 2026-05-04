@@ -294,4 +294,34 @@ theorem stageExtension_of_stageParams_next_state {st st' : StageState} {a b p : 
     rw [hS] at hn
     exact params.nextS_new_elements_above_old_X ha hN hK n hn hnotS
 
+theorem stageParams_nextS_coverage_of_piecewise {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p)
+    (lower_cover :
+      ∀ n : ℕ, st.R < n → n < 2 * params.N + params.Mplus →
+        n ∈ twoFoldFinset params.nextS)
+    (middle_cover :
+      ∀ n : ℕ, 2 * params.N + params.Mplus ≤ n → n ≤ params.serviceR →
+        n ∈ twoFoldFinset params.nextS)
+    (tail_cover :
+      ∀ n : ℕ, params.serviceR < n → n < 2 * params.K + params.Mplus →
+        n ∈ twoFoldFinset params.nextS)
+    (tail_middle_cover :
+      ∀ n : ℕ, 2 * params.K + params.Mplus ≤ n → n ≤ params.nextR →
+        n ∈ twoFoldFinset params.nextS) :
+    ∀ n : ℕ, st.coverStart ≤ n → n ≤ params.nextR → n ∈ twoFoldFinset params.nextS := by
+  intro n hn_start hn_end
+  by_cases hn_old : n ≤ st.R
+  · exact twoFoldFinset_mono params.old_subset_nextS (st.coverage n hn_start hn_old)
+  have hn_R_lt : st.R < n := by omega
+  by_cases hn_lower : n < 2 * params.N + params.Mplus
+  · exact lower_cover n hn_R_lt hn_lower
+  have hn_middle_start : 2 * params.N + params.Mplus ≤ n := by omega
+  by_cases hn_middle : n ≤ params.serviceR
+  · exact middle_cover n hn_middle_start hn_middle
+  have hn_service_lt : params.serviceR < n := by omega
+  by_cases hn_tail : n < 2 * params.K + params.Mplus
+  · exact tail_cover n hn_service_lt hn_tail
+  have hn_tail_middle_start : 2 * params.K + params.Mplus ≤ n := by omega
+  exact tail_middle_cover n hn_tail_middle_start hn_end
+
 end Erdos330Formalization
