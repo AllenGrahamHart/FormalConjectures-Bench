@@ -205,6 +205,21 @@ theorem residueBlockLenFinset_card_lower (M : ℕ) [NeZero M]
     _ ≤ (residueBlockLenFinset M Ω lo len).card :=
       Finset.card_le_card_of_injOn f hmaps hinj
 
+theorem residueBlockFinset_eq_len_of_le {M : ℕ} {Ω : Finset (ZMod M)} {lo hi : ℕ}
+    (hlohi : lo ≤ hi) :
+    residueBlockFinset M Ω lo hi = residueBlockLenFinset M Ω lo (hi - lo) := by
+  ext n
+  rw [mem_residueBlockFinset, mem_residueBlockLenFinset]
+  constructor <;> intro h
+  · exact ⟨h.1, by omega, h.2.2⟩
+  · exact ⟨h.1, by omega, h.2.2⟩
+
+theorem residueBlockFinset_card_lower_of_le (M : ℕ) [NeZero M]
+    (Ω : Finset (ZMod M)) {lo hi : ℕ} (hlohi : lo ≤ hi) :
+    Ω.card * ((hi - lo) / M) ≤ (residueBlockFinset M Ω lo hi).card := by
+  rw [residueBlockFinset_eq_len_of_le hlohi]
+  exact residueBlockLenFinset_card_lower M Ω lo (hi - lo)
+
 lemma exists_natCast_eq_zmod_in_Icc_len (M lo : ℕ) [NeZero M] (ρ : ZMod M) :
     ∃ x : ℕ, lo ≤ x ∧ x ≤ lo + M ∧ (x : ZMod M) = ρ := by
   let δ : ZMod M := ρ - (lo : ZMod M)
