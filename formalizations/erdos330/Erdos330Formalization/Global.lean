@@ -91,4 +91,13 @@ theorem finalSet_isAsymptoticBasisTwo {st : ℕ → StageState} (chain : StageCh
     exact hn_start
   exact twoFoldFinset_subset_finalSet k ((st k).coverage n hstage_start hkR)
 
+theorem mainTarget_of_finalSet_certificates {st : ℕ → StageState} (chain : StageChain st)
+    (hR_unbounded : ∀ n : ℕ, ∃ k : ℕ, n ≤ (st k).R)
+    (hA_density : HasPositiveUpperDensity (finalSet st))
+    (hprivate_density :
+      ∀ a ∈ finalSet st, HasPositiveUpperDensity (privateSet (finalSet st) a)) :
+    MainTarget := by
+  exact ⟨finalSet st, finalSet_isAsymptoticBasisTwo chain hR_unbounded, hA_density,
+    hprivate_density⟩
+
 end Erdos330Formalization
