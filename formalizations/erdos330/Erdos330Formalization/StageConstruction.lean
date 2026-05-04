@@ -289,6 +289,69 @@ theorem activatedCRTAllowedFinsetAtM_add_self_eq_univ (st : StageState) {a b p :
     (activatedCRTAllowedFinsetExact st ha hbDormant hp)
     (activatedCRTAllowedFinsetExact_add_self_eq_univ st ha hbDormant hp)
 
+theorem exists_activated_exact_product_CRTGadget_on_allowed (st : StageState)
+    {a b p : ℕ} (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p) :
+    Nonempty (CRTGadget (activatedActiveSet st b) (activatedModulus st b p)
+      (activatedModulus st b p a *
+        ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+          activatedModulus st b p (i : ℕ))
+      a (activatedCRTAllowedFinsetExact st ha hbDormant hp)) := by
+  classical
+  letI : Fact (Nat.Prime (activatedModulus st b p a)) :=
+    ⟨activated_m_prime st hbDormant hp a (activated_active_mem_old st ha)⟩
+  letI : NeZero (activatedModulus st b p a) :=
+    NeZero.of_pos
+      ((activated_m_prime st hbDormant hp a (activated_active_mem_old st ha)).pos)
+  letI : NeZero (activatedModulus st b p a *
+      ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+        activatedModulus st b p (i : ℕ)) :=
+    NeZero.of_pos (activated_exact_product_pos st ha hbDormant hp)
+  letI : (i : NonselectedIndex (activatedActiveSet st b) a) →
+      Fact (Nat.Prime (activatedModulus st b p (i : ℕ))) := fun i =>
+    ⟨activated_m_prime st hbDormant hp (i : ℕ) ((Finset.mem_erase.mp i.property).2)⟩
+  letI : (i : NonselectedIndex (activatedActiveSet st b) a) →
+      NeZero (activatedModulus st b p (i : ℕ)) := fun i =>
+    NeZero.of_pos
+      ((activated_m_prime st hbDormant hp (i : ℕ) ((Finset.mem_erase.mp i.property).2)).pos)
+  letI : (i : NonselectedIndex (activatedActiveSet st b) a) →
+      Fintype (ZMod (activatedModulus st b p (i : ℕ))) := fun _ =>
+    inferInstance
+  obtain ⟨_, _, _, G, _⟩ :=
+    exists_crtProduct_CRTGadget_for_exact_product (activatedActiveSet st b)
+      (activatedModulus st b p) a
+      (activated_m_ge23 st hbDormant hp a (activated_active_mem_old st ha))
+      (activated_m_mod4 st hbDormant hp a (activated_active_mem_old st ha))
+      (fun i => by
+        have h23 := activated_m_ge23 st hbDormant hp (i : ℕ)
+          ((Finset.mem_erase.mp i.property).2)
+        omega)
+      (activated_selected_coprime_nonselected_prod st ha hbDormant hp)
+      (activated_pairwise_coprime_nonselected st hbDormant hp)
+  exact ⟨G⟩
+
+theorem CRTGadget.cast_modulus {P : Finset ℕ} {m : ℕ → ℕ} {M M' a : ℕ}
+    {D : Finset (ZMod M')} (hM : M = M')
+    (hG : Nonempty (CRTGadget P m M' a D)) :
+    Nonempty (CRTGadget P m M a
+      (Eq.mp (congrArg (fun q => Finset (ZMod q)) hM.symm) D)) := by
+  cases hM
+  simpa using hG
+
+theorem exists_activated_CRTGadget_on_allowedAtM (st : StageState)
+    {a b p : ℕ} (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p) :
+    Nonempty (CRTGadget (activatedActiveSet st b) (activatedModulus st b p)
+      (activatedM st b p) a (activatedCRTAllowedFinsetAtM st ha hbDormant hp)) := by
+  have hM :
+      activatedM st b p =
+        activatedModulus st b p a *
+          ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+            activatedModulus st b p (i : ℕ) :=
+    activatedM_eq_selected_mul_nonselected (a := a) (b := b) (p := p) st ha
+  simpa [activatedCRTAllowedFinsetAtM] using
+    (CRTGadget.cast_modulus (P := activatedActiveSet st b) (m := activatedModulus st b p)
+      (a := a) hM
+      (exists_activated_exact_product_CRTGadget_on_allowed st ha hbDormant hp))
+
 /--
 Concrete numeric and CRT choices for one service-and-tail stage after activating
 `b`.  The inequality fields are intentionally added only as later lemmas need
