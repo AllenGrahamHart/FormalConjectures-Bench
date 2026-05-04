@@ -43,7 +43,7 @@ theorem exists_crtProduct_CRTGadget_of_card_formula {ι : Type*}
         G.Pstar = crtProductPstarFinset M p0 p φ (a : ZMod M) β e h ∧
         G.Tbase = crtProductTbaseFinset M p0 p φ β h u1 u2 := by
   subst p0
-  obtain ⟨h, u1, u2, hbase_sub, hT_sub, hP_sub, hpriv_ne, hTT, hDT⟩ :=
+  obtain ⟨h, u1, u2, hbase_sub, hT_sub, hP_sub, hpriv_ne, hDbase, hTT, hDT⟩ :=
     exists_crtProduct_gadget_core M (m a) p hp7 hp0_3 hp0_23 φ (a : ZMod M) α β e data
       ha1 he
   have hα : α = (a : ZMod (m a)) := by
@@ -57,6 +57,7 @@ theorem exists_crtProduct_CRTGadget_of_card_formula {ι : Type*}
     Tbase_subset_T := hbase_sub
     T_subset_D := hT_sub
     Pstar_subset_D := hP_sub
+    D_add_Tbase_full := hDbase
     selectedCoord := fun z => (φ z).1
     selectedCoord_natCast := hφnat
     privateResidue := h + h - α

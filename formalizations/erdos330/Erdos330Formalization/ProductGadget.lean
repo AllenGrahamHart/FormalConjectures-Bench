@@ -732,6 +732,23 @@ theorem crtProduct_allowed_add_T_eq_univ {ι : Type*}
       (productT p0 p β e data h u1 u2)
       (productAllowed_add_productT_eq_univ p p0 hp0_3 hp0_23 hp7 α h u1 u2 β e data))
 
+theorem crtProduct_allowed_add_Tbase_eq_univ {ι : Type*}
+    [Fintype ι]
+    (M p0 : ℕ) [NeZero M] [Fact p0.Prime] [NeZero p0]
+    (p : ι → ℕ) [∀ i, Fact (Nat.Prime (p i))]
+    (hp7 : ∀ i, 7 ≤ p i) (hp0_3 : p0 % 4 = 3) (hp0_23 : 23 ≤ p0)
+    (φ : ZMod M ≃+ ProductSpace p0 p)
+    (α h u1 u2 : ZMod p0)
+    (β : ∀ i : ι, ZMod (p i)) :
+    ((crtProductAllowedFinset M p0 p φ α β : Set (ZMod M)) +
+        (crtProductTbaseFinset M p0 p φ β h u1 u2 : Set (ZMod M))) = Set.univ := by
+  simpa [crtProductAllowedFinset, crtProductTbaseFinset] using
+    (addEquivPreimageFinset_add_eq_univ φ
+      (productAllowed p0 p α β)
+      (productBase p0 p h ({u1, u2} : Finset (ZMod p0)) β)
+      (productAllowed_add_productBase_eq_univ p p0 hp0_3 hp0_23 hp7 α h
+        ({u1, u2} : Finset (ZMod p0)) (by exact Finset.card_le_two) β))
+
 theorem crtProduct_allowed_add_allowed_eq_univ {ι : Type*} [Fintype ι]
     (M p0 : ℕ) [NeZero M] [Fact p0.Prime]
     (p : ι → ℕ) [∀ i, Fact (Nat.Prime (p i))]
@@ -904,6 +921,8 @@ theorem exists_crtProduct_gadget_core {ι : Type*}
       crtProductPstarFinset M p0 p φ a β e h ⊆
         crtProductAllowedFinset M p0 p φ α β ∧
       h + h - α ≠ α ∧
+      ((crtProductAllowedFinset M p0 p φ α β : Set (ZMod M)) +
+          (crtProductTbaseFinset M p0 p φ β h u1 u2 : Set (ZMod M))) = Set.univ ∧
       ((crtProductTFinset M p0 p φ β e data h u1 u2 : Set (ZMod M)) +
           (crtProductTFinset M p0 p φ β e data h u1 u2 : Set (ZMod M))) =
         Set.univ \ ((fun x : ZMod M => a + x) ''
@@ -913,7 +932,7 @@ theorem exists_crtProduct_gadget_core {ι : Type*}
   obtain ⟨h, u1, u2, hu1QR, hu2QR, hu12, hτ_ne, hu1_pos, hu2_pos, hu1_neg, hu2_neg,
     hbase_sum, _hselected_full, hQavoid⟩ :=
     exists_selected_coordinate_strong_pair_data p0 hp0_3 hp0_23 α
-  refine ⟨h, u1, u2, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  refine ⟨h, u1, u2, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
   · exact crtProductTbase_subset_T M p0 p φ β e data h u1 u2
   · exact crtProductT_subset_allowed M p0 p φ α h u1 u2 β e data hu1_pos hu2_pos
       hu1_neg hu2_neg hQavoid
@@ -921,6 +940,7 @@ theorem exists_crtProduct_gadget_core {ι : Type*}
   · intro hbad
     apply hτ_ne
     linear_combination hbad
+  · exact crtProduct_allowed_add_Tbase_eq_univ M p0 p hp7 hp0_3 hp0_23 φ α h u1 u2 β
   · exact crtProduct_T_add_T_compl_private M p0 p hp7 hp0_3 φ a β e data h u1 u2
       hu1QR hu2QR hu12 hbase_sum
   · exact crtProduct_allowed_add_T_eq_univ M p0 p hp7 hp0_3 hp0_23 φ α h u1 u2 β e data
