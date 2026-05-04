@@ -43,6 +43,12 @@ structure CRTGadget (P : Finset ℕ) (m : ℕ → ℕ) (M a : ℕ)
   Tbase_subset_T : Tbase ⊆ T
   T_subset_D : T ⊆ D
   Pstar_subset_D : Pstar ⊆ D
+  selectedCoord : ZMod M → ZMod (m a)
+  selectedCoord_natCast : ∀ n : ℕ, selectedCoord (n : ZMod M) = (n : ZMod (m a))
+  privateResidue : ZMod (m a)
+  privateResidue_ne_active : privateResidue ≠ (a : ZMod (m a))
+  T_selected_avoid : ∀ t ∈ T, selectedCoord t ≠ (a : ZMod (m a))
+  Pstar_selected : ∀ r ∈ Pstar, selectedCoord r = privateResidue
   T_add_T_compl_private :
     ((T : Set (ZMod M)) + (T : Set (ZMod M))) =
       Set.univ \ ((fun x : ZMod M => (a : ZMod M) + x) '' (Pstar : Set (ZMod M)))

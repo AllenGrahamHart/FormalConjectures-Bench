@@ -666,6 +666,29 @@ theorem crtProductPstar_subset_allowed {ι : Type*} [Fintype ι]
   exact productPrivateSlice_translate_subset_allowed p0 p α β e h (φ a) ha1 he hτ_ne
     (by simpa [φ.map_add] using hx)
 
+theorem crtProductAllowed_selected_ne {ι : Type*} [Fintype ι]
+    (M p0 : ℕ) [NeZero M] (p : ι → ℕ)
+    (φ : ZMod M ≃+ ProductSpace p0 p)
+    (α : ZMod p0) (β : ∀ i : ι, ZMod (p i))
+    {x : ZMod M} (hx : x ∈ crtProductAllowedFinset M p0 p φ α β) :
+    (φ x).1 ≠ α := by
+  change x ∈ (crtProductAllowedFinset M p0 p φ α β : Set (ZMod M)) at hx
+  rw [crtProductAllowedFinset, coe_addEquivPreimageFinset] at hx
+  exact hx.1
+
+theorem crtProductPstar_selected_eq {ι : Type*} [Fintype ι]
+    (M p0 : ℕ) [NeZero M] (p : ι → ℕ)
+    (φ : ZMod M ≃+ ProductSpace p0 p) (a : ZMod M)
+    (α : ZMod p0) (β e : ∀ i : ι, ZMod (p i)) (h : ZMod p0)
+    (ha1 : (φ a).1 = α)
+    {r : ZMod M} (hr : r ∈ crtProductPstarFinset M p0 p φ a β e h) :
+    (φ r).1 = h + h - α := by
+  change r ∈ (crtProductPstarFinset M p0 p φ a β e h : Set (ZMod M)) at hr
+  rw [crtProductPstarFinset, coe_addEquivTranslatePreimageFinset] at hr
+  have hsum : (φ a).1 + (φ r).1 = h + h := by
+    simpa [φ.map_add] using hr.1
+  linear_combination hsum - ha1
+
 theorem crtProduct_T_add_T_compl_private {ι : Type*}
     [Fintype ι] [DecidableEq ι]
     (M p0 : ℕ) [NeZero M] [Fact p0.Prime] [NeZero p0]
@@ -880,6 +903,7 @@ theorem exists_crtProduct_gadget_core {ι : Type*}
         crtProductAllowedFinset M p0 p φ α β ∧
       crtProductPstarFinset M p0 p φ a β e h ⊆
         crtProductAllowedFinset M p0 p φ α β ∧
+      h + h - α ≠ α ∧
       ((crtProductTFinset M p0 p φ β e data h u1 u2 : Set (ZMod M)) +
           (crtProductTFinset M p0 p φ β e data h u1 u2 : Set (ZMod M))) =
         Set.univ \ ((fun x : ZMod M => a + x) ''
@@ -889,11 +913,14 @@ theorem exists_crtProduct_gadget_core {ι : Type*}
   obtain ⟨h, u1, u2, hu1QR, hu2QR, hu12, hτ_ne, hu1_pos, hu2_pos, hu1_neg, hu2_neg,
     hbase_sum, _hselected_full, hQavoid⟩ :=
     exists_selected_coordinate_strong_pair_data p0 hp0_3 hp0_23 α
-  refine ⟨h, u1, u2, ?_, ?_, ?_, ?_, ?_⟩
+  refine ⟨h, u1, u2, ?_, ?_, ?_, ?_, ?_, ?_⟩
   · exact crtProductTbase_subset_T M p0 p φ β e data h u1 u2
   · exact crtProductT_subset_allowed M p0 p φ α h u1 u2 β e data hu1_pos hu2_pos
       hu1_neg hu2_neg hQavoid
   · exact crtProductPstar_subset_allowed M p0 p φ a α β e h ha1 he hτ_ne
+  · intro hbad
+    apply hτ_ne
+    linear_combination hbad
   · exact crtProduct_T_add_T_compl_private M p0 p hp7 hp0_3 φ a β e data h u1 u2
       hu1QR hu2QR hu12 hbase_sum
   · exact crtProduct_allowed_add_T_eq_univ M p0 p hp7 hp0_3 hp0_23 φ α h u1 u2 β e data
