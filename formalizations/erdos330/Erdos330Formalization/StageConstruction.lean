@@ -266,4 +266,32 @@ theorem nextS_new_elements_above_old_X {st : StageState} {a b p : ℕ}
 
 end StageParams
 
+theorem stageExtension_of_stageParams_next_state {st st' : StageState} {a b p : ℕ}
+    (params : StageParams st a b p)
+    (hS : st'.S = params.nextS)
+    (hP : st'.P = activatedActiveSet st b)
+    (hm_old : ∀ c ∈ st.P, st'.m c = st.m c)
+    (hcoverStart : st'.coverStart = st.coverStart)
+    (hX : st.X ≤ st'.X) (hR : st.R ≤ st'.R)
+    (ha : a ∈ st.P) (hN : st.X < params.N) (hK : st.X < params.K) :
+    StageExtension st st' := by
+  refine {
+    S_subset := ?_
+    P_subset := ?_
+    m_eq_on_old := hm_old
+    coverStart_eq := hcoverStart
+    X_mono := hX
+    R_mono := hR
+    new_elements_above_old_X := ?_
+  }
+  · intro n hn
+    rw [hS]
+    exact params.old_subset_nextS hn
+  · intro n hn
+    rw [hP]
+    exact Finset.mem_insert_of_mem hn
+  · intro n hn hnotS
+    rw [hS] at hn
+    exact params.nextS_new_elements_above_old_X ha hN hK n hn hnotS
+
 end Erdos330Formalization
