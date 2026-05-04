@@ -123,4 +123,18 @@ theorem private_upperDensity_pos_of_frequent_protectedBlocks {st : ℕ → Stage
   have hpartial := protectedBlock_partialDensity_lower chain hendpoint_X hendpoint_pos cert
   simpa [c, hnum, hden] using hpartial
 
+theorem private_upperDensity_pos_of_frequent_services {st : ℕ → StageState}
+    (chain : StageChain st) {a numerator denominator : ℕ}
+    (hnumerator : 0 < numerator) (hdenominator : 0 < denominator)
+    (hfreq : ∀ N : ℕ, ∃ k : ℕ, ∃ svc : ServiceExtension (st k) (st (k + 1)) a,
+      N ≤ svc.protectedEndpoint ∧
+        svc.protectedBlock.densityNumerator = numerator ∧
+        svc.protectedBlock.densityDenominator = denominator) :
+    HasPositiveUpperDensity (privateSet (finalSet st) a) := by
+  refine private_upperDensity_pos_of_frequent_protectedBlocks chain hnumerator hdenominator ?_
+  intro N
+  obtain ⟨k, svc, hN, hnum, hden⟩ := hfreq N
+  exact ⟨k + 1, svc.protectedEndpoint, svc.protectedBlock, hN,
+    svc.protectedEndpoint_le_X, hnum, hden⟩
+
 end Erdos330Formalization
