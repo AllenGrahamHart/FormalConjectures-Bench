@@ -197,6 +197,10 @@ lemma stage_exact_product_pos (st : StageState) {a : ℕ} (ha : a ∈ st.P) :
     0 < st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ) := by
   exact Nat.mul_pos (st.modulus_pos ha) (stage_nonselected_product_pos st)
 
+lemma stage_M_pos (st : StageState) {a : ℕ} (ha : a ∈ st.P) : 0 < st.M := by
+  rw [stage_M_eq_selected_mul_nonselected st ha]
+  exact stage_exact_product_pos st ha
+
 noncomputable def stageCRTProductEquiv (st : StageState) {a : ℕ} (ha : a ∈ st.P) :
     ZMod (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ)) ≃+
       ProductSpace (st.m a) (fun i : NonselectedIndex st.P a => st.m (i : ℕ)) :=
@@ -310,6 +314,19 @@ theorem stage_D_add_D_eq_univ_of_canonical (st : StageState)
     ((st.D : Set (ZMod st.M)) + (st.D : Set (ZMod st.M))) = Set.univ := by
   rw [hD a ha]
   exact stageCRTAllowedFinsetAtM_add_self_eq_univ st ha
+
+theorem canonicalD_middle_residueBlock_cover (st : StageState) (hD : st.HasCanonicalD)
+    {a N L n : ℕ} (ha : a ∈ st.P)
+    (hML : st.M ≤ L) (hnlo : 2 * N + st.M ≤ n)
+    (hnhi : n ≤ 2 * N + 2 * L - st.M) :
+    n ∈ twoFoldFinset (residueBlockFinset st.M st.D N (N + L)) := by
+  letI : NeZero st.M := NeZero.of_pos (stage_M_pos st ha)
+  have hres : (n : ZMod st.M) ∈
+      (st.D : Set (ZMod st.M)) + (st.D : Set (ZMod st.M)) := by
+    rw [stage_D_add_D_eq_univ_of_canonical st hD ha]
+    exact Set.mem_univ _
+  exact residueBlockFinset_middle_mem_twoFold_self (M := st.M) (N := N) (L := L)
+    (n := n) hML hnlo hnhi hres
 
 theorem exists_stage_CRTGadget (st : StageState) {a : ℕ} (ha : a ∈ st.P) :
     ∃ D : Finset (ZMod st.M), Nonempty (CRTGadget st.P st.m st.M a D) :=
