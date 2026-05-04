@@ -19,6 +19,10 @@ def productAllowed {ι : Type*} (p0 : ℕ) (p : ι → ℕ)
     (α : ZMod p0) (β : ∀ i : ι, ZMod (p i)) : Set (ProductSpace p0 p) :=
   {x | x.1 ≠ α ∧ x.2 ∈ shiftedNonzeroBox p β}
 
+def productPrivateSlice {ι : Type*} (p0 : ℕ) (p : ι → ℕ)
+    (β e : ∀ i : ι, ZMod (p i)) (h : ZMod p0) : Set (ProductSpace p0 p) :=
+  {z | z.1 = h + h ∧ affineDoubleNormalize p β z.2 ∉ coordinateTarget p e}
+
 def productBase {ι : Type*} (p0 : ℕ) [NeZero p0] (p : ι → ℕ)
     (h : ZMod p0) (U : Finset (ZMod p0)) (β : ∀ i : ι, ZMod (p i)) :
     Set (ProductSpace p0 p) :=
@@ -110,5 +114,169 @@ theorem productT_subset_allowed {ι : Type*} [Fintype ι]
   rcases hrest with hleft2 | hright2
   · exact productLeftCorrection_subset_allowed p0 p α h u2 β e data false hu2_pos hleft2
   · exact productRightCorrection_subset_allowed p0 p α h u2 β e data false hu2_neg hright2
+
+theorem productBase_subset_productT {ι : Type*} [Fintype ι]
+    (p0 : ℕ) [NeZero p0] (p : ι → ℕ)
+    (β e : ∀ i : ι, ZMod (p i))
+    (data : ∀ i, SafePairData (ZMod (p i)) (e i))
+    (h u1 u2 : ZMod p0) :
+    productBase p0 p h ({u1, u2} : Finset (ZMod p0)) β ⊆
+      productT p0 p β e data h u1 u2 := by
+  intro x hx
+  exact Or.inl hx
+
+theorem productLeftCorrection_subset_productT {ι : Type*} [Fintype ι]
+    (p0 : ℕ) [NeZero p0] (p : ι → ℕ)
+    (β e : ∀ i : ι, ZMod (p i))
+    (data : ∀ i, SafePairData (ZMod (p i)) (e i))
+    (h u1 u2 : ZMod p0) :
+    productLeftCorrection p0 p β e data h u1 true ⊆
+      productT p0 p β e data h u1 u2 := by
+  intro x hx
+  exact Or.inr (Or.inl hx)
+
+theorem productRightCorrection_subset_productT {ι : Type*} [Fintype ι]
+    (p0 : ℕ) [NeZero p0] (p : ι → ℕ)
+    (β e : ∀ i : ι, ZMod (p i))
+    (data : ∀ i, SafePairData (ZMod (p i)) (e i))
+    (h u1 u2 : ZMod p0) :
+    productRightCorrection p0 p β e data h u1 true ⊆
+      productT p0 p β e data h u1 u2 := by
+  intro x hx
+  exact Or.inr (Or.inr (Or.inl hx))
+
+theorem productLeftCorrectionTwo_subset_productT {ι : Type*} [Fintype ι]
+    (p0 : ℕ) [NeZero p0] (p : ι → ℕ)
+    (β e : ∀ i : ι, ZMod (p i))
+    (data : ∀ i, SafePairData (ZMod (p i)) (e i))
+    (h u1 u2 : ZMod p0) :
+    productLeftCorrection p0 p β e data h u2 false ⊆
+      productT p0 p β e data h u1 u2 := by
+  intro x hx
+  exact Or.inr (Or.inr (Or.inr (Or.inl hx)))
+
+theorem productRightCorrectionTwo_subset_productT {ι : Type*} [Fintype ι]
+    (p0 : ℕ) [NeZero p0] (p : ι → ℕ)
+    (β e : ∀ i : ι, ZMod (p i))
+    (data : ∀ i, SafePairData (ZMod (p i)) (e i))
+    (h u1 u2 : ZMod p0) :
+    productRightCorrection p0 p β e data h u2 false ⊆
+      productT p0 p β e data h u1 u2 := by
+  intro x hx
+  exact Or.inr (Or.inr (Or.inr (Or.inr hx)))
+
+theorem productAllowed_add_productBase_eq_univ {ι : Type*}
+    [Fintype ι] (p : ι → ℕ) [∀ i, Fact (Nat.Prime (p i))]
+    (p0 : ℕ) [Fact p0.Prime] [NeZero p0]
+    (hp0_3 : p0 % 4 = 3) (hp0_23 : 23 ≤ p0)
+    (hp7 : ∀ i, 7 ≤ p i)
+    (α h : ZMod p0) (U : Finset (ZMod p0)) (hUcard : U.card ≤ 2)
+    (β : ∀ i : ι, ZMod (p i)) :
+    ((productAllowed p0 p α β : Set (ProductSpace p0 p)) +
+      (productBase p0 p h U β : Set (ProductSpace p0 p))) = Set.univ := by
+  classical
+  apply Set.eq_univ_iff_forall.mpr
+  intro z
+  have hsel := allowed_add_shiftedQRDelete_eq_univ hp0_3 hp0_23 h α U hUcard
+  have hsel_mem : z.1 ∈ (Set.univ \ ({α} : Set (ZMod p0))) +
+      (shiftedQRDelete p0 h U : Set (ZMod p0)) := by
+    rw [hsel]
+    exact Set.mem_univ z.1
+  have hrest := shiftedNonzeroBox_add_self_eq_univ p hp7 β
+  have hrest_mem : z.2 ∈ (shiftedNonzeroBox p β : Set (∀ i, ZMod (p i))) +
+      (shiftedNonzeroBox p β : Set (∀ i, ZMod (p i))) := by
+    rw [hrest]
+    exact Set.mem_univ z.2
+  rcases hsel_mem with ⟨a0, ha0, t0, ht0, h0sum⟩
+  rcases hrest_mem with ⟨a', ha', t', ht', hrestsum⟩
+  refine ⟨(a0, a'), ?_, (t0, t'), ?_, ?_⟩
+  · exact ⟨ha0.2, ha'⟩
+  · exact ⟨ht0, ht'⟩
+  · ext <;> simp [h0sum, hrestsum]
+
+theorem productAllowed_add_productT_eq_univ {ι : Type*}
+    [Fintype ι] (p : ι → ℕ) [∀ i, Fact (Nat.Prime (p i))]
+    (p0 : ℕ) [Fact p0.Prime] [NeZero p0]
+    (hp0_3 : p0 % 4 = 3) (hp0_23 : 23 ≤ p0)
+    (hp7 : ∀ i, 7 ≤ p i)
+    (α h u1 u2 : ZMod p0)
+    (β e : ∀ i : ι, ZMod (p i))
+    (data : ∀ i, SafePairData (ZMod (p i)) (e i)) :
+    ((productAllowed p0 p α β : Set (ProductSpace p0 p)) +
+      (productT p0 p β e data h u1 u2 : Set (ProductSpace p0 p))) = Set.univ := by
+  classical
+  apply Set.eq_univ_iff_forall.mpr
+  intro z
+  have hbase_univ := productAllowed_add_productBase_eq_univ p p0 hp0_3 hp0_23 hp7 α h
+    ({u1, u2} : Finset (ZMod p0)) (by exact Finset.card_le_two) β
+  have hzbase : z ∈ (productAllowed p0 p α β : Set (ProductSpace p0 p)) +
+      (productBase p0 p h ({u1, u2} : Finset (ZMod p0)) β :
+        Set (ProductSpace p0 p)) := by
+    rw [hbase_univ]
+    exact Set.mem_univ z
+  rcases hzbase with ⟨a, ha, t, ht, hsum⟩
+  refine ⟨a, ha, t, ?_, hsum⟩
+  exact productBase_subset_productT p0 p β e data h u1 u2 ht
+
+theorem product_compl_private_subset_T_add_T {ι : Type*}
+    [Fintype ι] [DecidableEq ι]
+    (p : ι → ℕ) [∀ i, Fact (Nat.Prime (p i))]
+    (hp7 : ∀ i, 7 ≤ p i)
+    (p0 : ℕ) [NeZero p0]
+    (β e : ∀ i : ι, ZMod (p i))
+    (data : ∀ i, SafePairData (ZMod (p i)) (e i))
+    (h u1 u2 : ZMod p0)
+    (hbase_sum : ((shiftedQRDelete p0 h ({u1, u2} : Finset (ZMod p0)) :
+          Set (ZMod p0)) +
+        (shiftedQRDelete p0 h ({u1, u2} : Finset (ZMod p0)) : Set (ZMod p0))) =
+      Set.univ \ ({h + h} : Set (ZMod p0))) :
+    Set.univ \ productPrivateSlice p0 p β e h ⊆
+      (productT p0 p β e data h u1 u2 : Set (ProductSpace p0 p)) +
+        (productT p0 p β e data h u1 u2 : Set (ProductSpace p0 p)) := by
+  classical
+  intro z hz
+  by_cases hzsel : z.1 = h + h
+  · have hcoord : affineDoubleNormalize p β z.2 ∈ coordinateTarget p e := by
+      by_contra hnot
+      exact hz.2 ⟨hzsel, hnot⟩
+    have haff := affineSafePair_sum_union_eq_coordinateTarget_preimage p hp7 β e data
+    have hz2mem : z.2 ∈
+        ((affineLeftSafeSet p β e data true (safeLeftThreshold ι) +
+            affineRightSafeSet p β e data true (safeRightThreshold ι)) ∪
+          (affineLeftSafeSet p β e data false (safeLeftThreshold ι) +
+            affineRightSafeSet p β e data false (safeRightThreshold ι))) := by
+      rw [haff]
+      exact hcoord
+    rcases hz2mem with htrue | hfalse
+    · rcases htrue with ⟨x, hx, y, hy, hxy⟩
+      refine ⟨(h + u1, x), ?_, (h - u1, y), ?_, ?_⟩
+      · exact productLeftCorrection_subset_productT p0 p β e data h u1 u2 ⟨rfl, hx⟩
+      · exact productRightCorrection_subset_productT p0 p β e data h u1 u2 ⟨rfl, hy⟩
+      · ext i
+        · simp [hzsel]
+        · exact congrFun hxy i
+    · rcases hfalse with ⟨x, hx, y, hy, hxy⟩
+      refine ⟨(h + u2, x), ?_, (h - u2, y), ?_, ?_⟩
+      · exact productLeftCorrectionTwo_subset_productT p0 p β e data h u1 u2 ⟨rfl, hx⟩
+      · exact productRightCorrectionTwo_subset_productT p0 p β e data h u1 u2 ⟨rfl, hy⟩
+      · ext i
+        · simp [hzsel]
+        · exact congrFun hxy i
+  · have hsel_mem : z.1 ∈
+        (shiftedQRDelete p0 h ({u1, u2} : Finset (ZMod p0)) : Set (ZMod p0)) +
+          (shiftedQRDelete p0 h ({u1, u2} : Finset (ZMod p0)) : Set (ZMod p0)) := by
+      rw [hbase_sum]
+      exact ⟨Set.mem_univ z.1, by simpa using hzsel⟩
+    have hrest := shiftedNonzeroBox_add_self_eq_univ p hp7 β
+    have hrest_mem : z.2 ∈ (shiftedNonzeroBox p β : Set (∀ i, ZMod (p i))) +
+        (shiftedNonzeroBox p β : Set (∀ i, ZMod (p i))) := by
+      rw [hrest]
+      exact Set.mem_univ z.2
+    rcases hsel_mem with ⟨x0, hx0, y0, hy0, hxy0⟩
+    rcases hrest_mem with ⟨x', hx', y', hy', hxy'⟩
+    refine ⟨(x0, x'), ?_, (y0, y'), ?_, ?_⟩
+    · exact productBase_subset_productT p0 p β e data h u1 u2 ⟨hx0, hx'⟩
+    · exact productBase_subset_productT p0 p β e data h u1 u2 ⟨hy0, hy'⟩
+    · ext <;> simp [hxy0, hxy']
 
 end Erdos330Formalization

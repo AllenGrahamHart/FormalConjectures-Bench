@@ -139,4 +139,65 @@ theorem affineSafePair_sum_union_eq_coordinateTarget_preimage {ι : Type*}
         simp at hcoord ⊢
         linear_combination hcoord
 
+theorem affineLeftRight_sum_subset_coordinateTarget {ι : Type*} [Fintype ι]
+    (p : ι → ℕ) (β e : ∀ i : ι, ZMod (p i))
+    (data : ∀ i, SafePairData (ZMod (p i)) (e i)) (ν : Bool) :
+    (affineLeftSafeSet p β e data ν (safeLeftThreshold ι) +
+        affineRightSafeSet p β e data ν (safeRightThreshold ι)) ⊆
+      {z | affineDoubleNormalize p β z ∈ coordinateTarget p e} := by
+  intro z hz
+  rcases hz with ⟨x, hx, y, hy, hxy⟩
+  change affineDoubleNormalize p β z ∈ coordinateTarget p e
+  have hnorm : affineDoubleNormalize p β z =
+      affineNormalize p β x + affineNormalize p β y := by
+    rw [← hxy]
+    exact affineNormalize_add p β x y
+  rw [hnorm]
+  exact safePair_sum_subset_coordinateTarget_thresholds p e data ν ⟨_, hx, _, hy, rfl⟩
+
+theorem affineRightLeft_sum_subset_coordinateTarget {ι : Type*} [Fintype ι]
+    (p : ι → ℕ) (β e : ∀ i : ι, ZMod (p i))
+    (data : ∀ i, SafePairData (ZMod (p i)) (e i)) (ν : Bool) :
+    (affineRightSafeSet p β e data ν (safeRightThreshold ι) +
+        affineLeftSafeSet p β e data ν (safeLeftThreshold ι)) ⊆
+      {z | affineDoubleNormalize p β z ∈ coordinateTarget p e} := by
+  intro z hz
+  rcases hz with ⟨x, hx, y, hy, hxy⟩
+  change affineDoubleNormalize p β z ∈ coordinateTarget p e
+  have hnorm : affineDoubleNormalize p β z =
+      affineNormalize p β y + affineNormalize p β x := by
+    rw [← hxy]
+    funext i
+    simp [affineDoubleNormalize, affineNormalize]
+    ring
+  rw [hnorm]
+  exact safePair_sum_subset_coordinateTarget_thresholds p e data ν ⟨_, hy, _, hx, rfl⟩
+
+theorem shiftedNonzeroBox_add_self_eq_univ {ι : Type*}
+    (p : ι → ℕ) [∀ i, Fact (Nat.Prime (p i))]
+    (hp7 : ∀ i, 7 ≤ p i) (β : ∀ i : ι, ZMod (p i)) :
+    ((shiftedNonzeroBox p β : Set (∀ i, ZMod (p i))) +
+      (shiftedNonzeroBox p β : Set (∀ i, ZMod (p i)))) = Set.univ := by
+  classical
+  apply Set.eq_univ_iff_forall.mpr
+  intro z
+  let target : ∀ i : ι, ZMod (p i) := fun i => z i - (β i + β i)
+  let left : ∀ i : ι, ZMod (p i) := fun i =>
+    β i + (nonzeroAddPairZMod (p i) (hp7 i) (target i)).left
+  let right : ∀ i : ι, ZMod (p i) := fun i =>
+    β i + (nonzeroAddPairZMod (p i) (hp7 i) (target i)).right
+  refine ⟨left, ?_, right, ?_, ?_⟩
+  · intro i hleft
+    have hnonzero := (nonzeroAddPairZMod (p i) (hp7 i) (target i)).left_ne_zero
+    apply hnonzero
+    linear_combination hleft
+  · intro i hright
+    have hnonzero := (nonzeroAddPairZMod (p i) (hp7 i) (target i)).right_ne_zero
+    apply hnonzero
+    linear_combination hright
+  · funext i
+    have hsum := (nonzeroAddPairZMod (p i) (hp7 i) (target i)).sum_eq
+    dsimp [left, right, target] at hsum ⊢
+    linear_combination hsum
+
 end Erdos330Formalization

@@ -40,6 +40,14 @@ theorem qr_neg_disjoint (p : ℕ) [Fact p.Prime] [NeZero p] (hp3 : p % 4 = 3) :
     simpa [hquot] using hdiv
   exact (ZMod.exists_sq_eq_neg_one_iff.mp hsqnegone) hp3
 
+lemma QR_add_ne_zero {p : ℕ} [Fact p.Prime] [NeZero p]
+    (hp3 : p % 4 = 3) {u v : ZMod p} (hu : u ∈ QR p) (hv : v ∈ QR p) :
+    u + v ≠ 0 := by
+  intro huv
+  have hvneg : v = -u := eq_neg_of_add_eq_zero_right huv
+  have hneg : -u ∈ QR p := by simpa [hvneg] using hv
+  exact (qr_neg_disjoint p hp3 u hu) hneg
+
 lemma zmod_prime_odd_char_ne_two (p : ℕ) [Fact p.Prime] (hp23 : 23 ≤ p) :
     ringChar (ZMod p) ≠ 2 := by
   rw [ZMod.ringChar_zmod_n]
@@ -295,6 +303,27 @@ lemma mem_shiftedQRDelete {p : ℕ} [NeZero p] {h q : ZMod p}
     exact ⟨r, (Finset.mem_sdiff.mp hr).1, (Finset.mem_sdiff.mp hr).2, rfl⟩
   · rintro ⟨r, hrQR, hrU, rfl⟩
     exact Finset.mem_image.mpr ⟨r, Finset.mem_sdiff.mpr ⟨hrQR, hrU⟩, rfl⟩
+
+lemma notMem_shiftedQRDelete_add_deleted {p : ℕ} [NeZero p]
+    (h u : ZMod p) (U : Finset (ZMod p)) (huU : u ∈ U) :
+    h + u ∉ shiftedQRDelete p h U := by
+  intro hmem
+  rw [mem_shiftedQRDelete] at hmem
+  rcases hmem with ⟨r, _hrQR, hrU, hr⟩
+  have hru : r = u := by
+    linear_combination hr
+  exact hrU (by simpa [hru] using huU)
+
+lemma notMem_shiftedQRDelete_sub_QR {p : ℕ} [Fact p.Prime] [NeZero p]
+    (hp3 : p % 4 = 3) (h u : ZMod p) (U : Finset (ZMod p)) (huQR : u ∈ QR p) :
+    h - u ∉ shiftedQRDelete p h U := by
+  intro hmem
+  rw [mem_shiftedQRDelete] at hmem
+  rcases hmem with ⟨r, hrQR, _hrU, hr⟩
+  have hru : r = -u := by
+    linear_combination hr
+  have hneg : -u ∈ QR p := by simpa [hru] using hrQR
+  exact (qr_neg_disjoint p hp3 u huQR) hneg
 
 lemma mem_shiftedQRDelete_add_self_iff {p : ℕ} [Fact p.Prime] [NeZero p]
     (hp3 : p % 4 = 3) (hp23 : 23 ≤ p)
