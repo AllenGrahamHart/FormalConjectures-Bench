@@ -977,4 +977,51 @@ theorem exists_stageExtension_of_params {st : StageState} {a b p : ℕ}
   intro c hc
   exact activatedModulus_old_of_mem st hbDormant hc
 
+noncomputable def serviceExtensionOfParams {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p)
+    (ha : a ∈ st.P) (hbS : b ∈ st.S) (hbDormant : b ∉ st.P)
+    (hp : FreshPrimeData st p)
+    (hN : st.X < params.N) (hK : st.X < params.K)
+    (hX_next : st.X ≤ params.nextX) (hR_next : st.R ≤ params.nextR)
+    (hlower : params.N + params.L ≤ params.nextX)
+    (hprivate_height : params.serviceR ≤ params.nextX)
+    (hnew_avoid :
+      ∀ c ∈ activatedActiveSet st b, ∀ s ∈ params.nextS, s ∉ st.S →
+        (s : ZMod (activatedModulus st b p c)) ≠
+          (c : ZMod (activatedModulus st b p c)))
+    (hreservoir_long : params.K + 3 * params.Mplus ≤ params.nextX)
+    (hheadroom : params.K + params.nextX + 3 * params.Mplus ≤ params.nextR)
+    (hcoverage :
+      ∀ n : ℕ, st.coverStart ≤ n → n ≤ params.nextR → n ∈ twoFoldFinset params.nextS)
+    (hexists_dormant : ∃ c ∈ params.nextS, c ∉ activatedActiveSet st b)
+    (hendpoint_le_nextX : params.protectedEndpoint ≤ params.nextX)
+    {densityNumerator densityDenominator : ℕ}
+    (hdensityDenominator_pos : 0 < densityDenominator)
+    (hcore_private :
+      ∀ n ∈ params.protectedSumBlock, n ∈ privateSet {x : ℕ | x ∈ params.nextS} a)
+    (hcore_density :
+      densityNumerator * params.protectedEndpoint ≤
+        densityDenominator * params.protectedSumBlock.card) :
+    Σ st' : StageState, ServiceExtension st st' a := by
+  let st' := nextStageStateOfParams st params hbS hbDormant hp
+    (params.nextS_le_nextX hX_next hlower hprivate_height)
+    (stageParams_isolated_of_new_avoid params hbS hbDormant hp hnew_avoid)
+    hreservoir_long hheadroom hcoverage hexists_dormant
+  let ext : StageExtension st st' :=
+    stageExtension_of_stageParams_next_state params (st' := st') rfl rfl
+      (by
+        intro c hc
+        exact activatedModulus_old_of_mem st hbDormant hc)
+      rfl hX_next hR_next ha hN hK
+  let cert : ProtectedBlockCertificate st'.S a params.protectedEndpoint :=
+    params.protectedBlockCertificate_of_sumBlock hdensityDenominator_pos hcore_private
+      hcore_density
+  exact ⟨st', {
+    toStageExtension := ext
+    served_active := ha
+    protectedEndpoint := params.protectedEndpoint
+    protectedEndpoint_le_X := hendpoint_le_nextX
+    protectedBlock := cert
+  }⟩
+
 end Erdos330Formalization
