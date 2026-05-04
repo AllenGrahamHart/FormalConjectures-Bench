@@ -247,9 +247,29 @@ theorem exists_stage_exact_product_CRTGadget (st : StageState) {a : ℕ} (ha : a
         (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ)) a D) :=
   ⟨stageCRTAllowedFinset st ha, exists_stage_exact_product_CRTGadget_on_allowed st ha⟩
 
+noncomputable def stageCRTAllowedFinsetAtM (st : StageState) {a : ℕ} (ha : a ∈ st.P) :
+    Finset (ZMod st.M) :=
+  Eq.mp (congrArg (fun M => Finset (ZMod M))
+    (stage_M_eq_selected_mul_nonselected st ha).symm) (stageCRTAllowedFinset st ha)
+
+theorem exists_stage_CRTGadget_on_allowedAtM (st : StageState) {a : ℕ} (ha : a ∈ st.P) :
+    Nonempty (CRTGadget st.P st.m st.M a (stageCRTAllowedFinsetAtM st ha)) := by
+  convert exists_stage_exact_product_CRTGadget_on_allowed st ha
+  · exact stage_M_eq_selected_mul_nonselected st ha
+  · unfold stageCRTAllowedFinsetAtM
+    simp
+
+def StageState.HasCanonicalD (st : StageState) : Prop :=
+  ∀ a (ha : a ∈ st.P), st.D = stageCRTAllowedFinsetAtM st ha
+
+theorem exists_stage_CRTGadget_on_D_of_canonical (st : StageState)
+    (hD : st.HasCanonicalD) {a : ℕ} (ha : a ∈ st.P) :
+    Nonempty (CRTGadget st.P st.m st.M a st.D) := by
+  rw [hD a ha]
+  exact exists_stage_CRTGadget_on_allowedAtM st ha
+
 theorem exists_stage_CRTGadget (st : StageState) {a : ℕ} (ha : a ∈ st.P) :
-    ∃ D : Finset (ZMod st.M), Nonempty (CRTGadget st.P st.m st.M a D) := by
-  rw [stage_M_eq_selected_mul_nonselected st ha]
-  exact exists_stage_exact_product_CRTGadget st ha
+    ∃ D : Finset (ZMod st.M), Nonempty (CRTGadget st.P st.m st.M a D) :=
+  ⟨stageCRTAllowedFinsetAtM st ha, exists_stage_CRTGadget_on_allowedAtM st ha⟩
 
 end Erdos330Formalization
