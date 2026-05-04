@@ -754,6 +754,45 @@ theorem crtProductPstarFinset_card_eq_prod {ι : Type*}
       crtProductPstarFinset_card_eq_productPrivateSlice M p0 p φ a β e h
     _ = ∏ i, (p i - 1) := productPrivateSlice_card_eq_prod p0 p β e h
 
+theorem real_prod_density_formula {ι : Type*} [Fintype ι]
+    (p0 : ℕ) (p : ι → ℕ) (M : ℕ)
+    (hp0 : 0 < p0) (hp : ∀ i, 0 < p i)
+    (hM : M = p0 * ∏ i, p i) :
+    ((∏ i, (p i - 1) : ℕ) : ℝ) / (M : ℝ) =
+      (1 : ℝ) / (p0 : ℝ) * ∏ i, (1 - (1 : ℝ) / (p i : ℝ)) := by
+  classical
+  have hp0r : (p0 : ℝ) ≠ 0 := by exact_mod_cast hp0.ne'
+  have hpr : ∀ i, (p i : ℝ) ≠ 0 := by
+    intro i
+    exact_mod_cast (hp i).ne'
+  have hprod_cast : ((∏ i, (p i - 1) : ℕ) : ℝ) = ∏ i, ((p i : ℝ) - 1) := by
+    rw [Nat.cast_prod]
+    apply Finset.prod_congr rfl
+    intro i _hi
+    simpa using (Nat.cast_sub (R := ℝ) (show 1 ≤ p i from hp i))
+  have hden_cast : ((∏ i, p i : ℕ) : ℝ) = ∏ i, (p i : ℝ) := by
+    rw [Nat.cast_prod]
+  have hfactor : (∏ i, (1 - (1 : ℝ) / (p i : ℝ))) =
+      ∏ i, (((p i : ℝ) - 1) / (p i : ℝ)) := by
+    apply Finset.prod_congr rfl
+    intro i _hi
+    field_simp [hpr i]
+  rw [hM, Nat.cast_mul, hprod_cast, hden_cast, hfactor, Finset.prod_div_distrib]
+  field_simp [hp0r]
+
+theorem crtProductPstarFinset_card_real_formula {ι : Type*}
+    [Fintype ι] [DecidableEq ι]
+    (M p0 : ℕ) [NeZero M] [NeZero p0] [Fintype (ZMod p0)]
+    (p : ι → ℕ) [(i : ι) → Fintype (ZMod (p i))]
+    (φ : ZMod M ≃+ ProductSpace p0 p) (a : ZMod M)
+    (β e : ∀ i : ι, ZMod (p i)) (h : ZMod p0)
+    (hp0 : 0 < p0) (hp : ∀ i, 0 < p i)
+    (hM : M = p0 * ∏ i, p i) :
+    ((crtProductPstarFinset M p0 p φ a β e h).card : ℝ) / (M : ℝ) =
+      (1 : ℝ) / (p0 : ℝ) * ∏ i, (1 - (1 : ℝ) / (p i : ℝ)) := by
+  rw [crtProductPstarFinset_card_eq_prod]
+  exact real_prod_density_formula p0 p M hp0 hp hM
+
 theorem exists_crtProduct_gadget_core {ι : Type*}
     [Fintype ι] [DecidableEq ι]
     (M p0 : ℕ) [NeZero M] [Fact p0.Prime] [NeZero p0]
