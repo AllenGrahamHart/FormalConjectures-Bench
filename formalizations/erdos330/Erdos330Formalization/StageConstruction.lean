@@ -811,6 +811,27 @@ theorem protectedPartnerBlock_card_lower_of_residue_subblock {st : StageState}
     residueBlockFinset_card_lower_of_le params.Mplus params.G.Pstar hlohi
   exact hcount.trans (Finset.card_le_card hsub)
 
+theorem protectedSumBlock_density_of_residue_subblock {st : StageState}
+    {a b p lo hi densityNumerator densityDenominator : ℕ}
+    (params : StageParams st a b p) [NeZero (activatedM st b p)]
+    (hlohi : lo ≤ hi)
+    (hlo_private : 2 * params.N + params.Mplus - a ≤ lo)
+    (hhi_private : hi ≤ params.serviceR - a)
+    (hlo_sum : st.X + params.N + params.L < a + lo)
+    (hhi_sum : a + hi < params.protectedEndpoint)
+    (harith :
+      densityNumerator * params.protectedEndpoint ≤
+        densityDenominator * (params.G.Pstar.card * ((hi - lo) / params.Mplus))) :
+    densityNumerator * params.protectedEndpoint ≤
+      densityDenominator * params.protectedSumBlock.card := by
+  have hpartner_lower :=
+    protectedPartnerBlock_card_lower_of_residue_subblock (params := params) (lo := lo) (hi := hi)
+      hlohi hlo_private hhi_private hlo_sum hhi_sum
+  have hpartner_density : densityNumerator * params.protectedEndpoint ≤
+      densityDenominator * params.protectedPartnerBlock.card := by
+    exact harith.trans (Nat.mul_le_mul_left densityDenominator hpartner_lower)
+  exact protectedSumBlock_density_of_partner_density params hpartner_density
+
 theorem protectedSumBlock_private_of_pair_exclusions {st : StageState} {a b p : ℕ}
     (params : StageParams st a b p) [NeZero (activatedM st b p)]
     (haS : a ∈ st.S) (hN : st.X < params.N)
