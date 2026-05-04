@@ -144,6 +144,23 @@ theorem activatedM_pos (st : StageState) {b p : ℕ}
     exact Finset.prod_pos fun c hc => st.modulus_pos hc
   exact Nat.mul_pos hp.prime.pos hMpos
 
+theorem activatedModulus_dvd_M (st : StageState) {b p c : ℕ}
+    (hc : c ∈ activatedActiveSet st b) :
+    activatedModulus st b p c ∣ activatedM st b p := by
+  rw [activatedM]
+  exact Finset.dvd_prod_of_mem (activatedModulus st b p) hc
+
+theorem activatedFreshModulus_dvd_M (st : StageState) (b p : ℕ) :
+    p ∣ activatedM st b p := by
+  have hb : b ∈ activatedActiveSet st b := by
+    simp [activatedActiveSet]
+  simpa [activatedModulus_new] using
+    (activatedModulus_dvd_M st (b := b) (p := p) hb)
+
+def activatedFreshProjection (st : StageState) (b p : ℕ)
+    (γ : ZMod (activatedM st b p)) : ZMod p :=
+  ZMod.castHom (activatedFreshModulus_dvd_M st b p) (ZMod p) γ
+
 theorem activated_active_mem_old (st : StageState) {a b : ℕ} (ha : a ∈ st.P) :
     a ∈ activatedActiveSet st b := by
   exact Finset.mem_insert_of_mem ha
@@ -1169,6 +1186,47 @@ theorem stageParams_tail_helper_cover {st : StageState} {a b p : ℕ}
         (S := st.S) hhelper st.reservoir_long hCLZ hnlo hnhi)
   exact twoFoldFinset_mono params.old_union_tailBlock_subset_nextS hcover
 
+theorem activated_helper_of_old_residue_lift {st : StageState} {b p : ℕ}
+    (hp : FreshPrimeData st p)
+    (Ω : Finset (ZMod (activatedM st b p)))
+    (hchoose : ∀ γ : ZMod (activatedM st b p), ∃ ρ ∈ st.D, ∀ u : ℕ,
+      (u : ZMod st.M) = ρ →
+        (u : ZMod p) ≠ activatedFreshProjection st b p γ - (b : ZMod p) →
+          γ - (u : ZMod (activatedM st b p)) ∈ Ω) :
+    ∀ Jlo, st.H ≤ Jlo → Jlo + 3 * st.M ≤ st.X →
+      ∀ γ : ZMod (activatedM st b p),
+        ∃ u : ℕ, u ∈ st.S ∧ Jlo ≤ u ∧ u ≤ Jlo + 3 * st.M ∧
+          γ - (u : ZMod (activatedM st b p)) ∈ Ω := by
+  letI : NeZero p := NeZero.of_pos hp.prime.pos
+  intro Jlo hJlo hJhi γ
+  exact exists_reservoir_helper_for_target_from_old_residue_lift st Ω hJlo hJhi
+    hp.X_lt_p (fun γ => activatedFreshProjection st b p γ - (b : ZMod p))
+    hchoose γ
+
+theorem stageParams_T_helper_of_old_residue_lift {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p) (hp : FreshPrimeData st p)
+    (hchoose : ∀ γ : ZMod (activatedM st b p), ∃ ρ ∈ st.D, ∀ u : ℕ,
+      (u : ZMod st.M) = ρ →
+        (u : ZMod p) ≠ activatedFreshProjection st b p γ - (b : ZMod p) →
+          γ - (u : ZMod (activatedM st b p)) ∈ params.G.T) :
+    ∀ Jlo, st.H ≤ Jlo → Jlo + 3 * st.M ≤ st.X →
+      ∀ γ : ZMod (activatedM st b p),
+        ∃ u : ℕ, u ∈ st.S ∧ Jlo ≤ u ∧ u ≤ Jlo + 3 * st.M ∧
+          γ - (u : ZMod (activatedM st b p)) ∈ params.G.T :=
+  activated_helper_of_old_residue_lift hp params.G.T hchoose
+
+theorem stageParams_D_helper_of_old_residue_lift {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p) (hp : FreshPrimeData st p)
+    (hchoose : ∀ γ : ZMod (activatedM st b p), ∃ ρ ∈ st.D, ∀ u : ℕ,
+      (u : ZMod st.M) = ρ →
+        (u : ZMod p) ≠ activatedFreshProjection st b p γ - (b : ZMod p) →
+          γ - (u : ZMod (activatedM st b p)) ∈ params.Dplus) :
+    ∀ Jlo, st.H ≤ Jlo → Jlo + 3 * st.M ≤ st.X →
+      ∀ γ : ZMod (activatedM st b p),
+        ∃ u : ℕ, u ∈ st.S ∧ Jlo ≤ u ∧ u ≤ Jlo + 3 * st.M ∧
+          γ - (u : ZMod (activatedM st b p)) ∈ params.Dplus :=
+  activated_helper_of_old_residue_lift hp params.Dplus hchoose
+
 theorem stageParams_nextS_coverage_of_helpers {st : StageState} {a b p : ℕ}
     (params : StageParams st a b p) [NeZero (activatedM st b p)]
     (ha : a ∈ st.P) (hN : st.X < params.N)
@@ -1620,6 +1678,57 @@ noncomputable def serviceExtensionOfParamsFromCanonicalDplusAndHelpers
     (by
       rw [hDplus]
       exact activatedCRTAllowedFinsetAtM_add_self_eq_univ st ha hbDormant hp)
+    hCL hlower_start hlower_end hML hCLZ htail_start htail_end hMLZ
+    hdensityDenominator_pos hlohi hlo_private hhi_private hlo_sum hhi_sum harith
+
+noncomputable def serviceExtensionOfParamsFromCanonicalDplusAndResidueLifts
+    {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p) [NeZero (activatedM st b p)]
+    (ha : a ∈ st.P) (hbS : b ∈ st.S) (hbDormant : b ∉ st.P)
+    (hp : FreshPrimeData st p)
+    (hDplus : params.Dplus = activatedCRTAllowedFinsetAtM st ha hbDormant hp)
+    (hN : st.X < params.N) (hK : st.X < params.K)
+    (hX_next : st.X ≤ params.nextX) (hR_next : st.R ≤ params.nextR)
+    (hlower_height : params.N + params.L ≤ params.nextX)
+    (hprivate_height : params.serviceR ≤ params.nextX)
+    (hreservoir_long : params.K + 3 * params.Mplus ≤ params.nextX)
+    (hheadroom : params.K + params.nextX + 3 * params.Mplus ≤ params.nextR)
+    (hexists_dormant : ∃ c ∈ params.nextS, c ∉ activatedActiveSet st b)
+    (hendpoint_le_nextX : params.protectedEndpoint ≤ params.nextX)
+    (T_lift : ∀ γ : ZMod (activatedM st b p), ∃ ρ ∈ st.D, ∀ u : ℕ,
+      (u : ZMod st.M) = ρ →
+        (u : ZMod p) ≠ activatedFreshProjection st b p γ - (b : ZMod p) →
+          γ - (u : ZMod (activatedM st b p)) ∈ params.G.T)
+    (D_lift : ∀ γ : ZMod (activatedM st b p), ∃ ρ ∈ st.D, ∀ u : ℕ,
+      (u : ZMod st.M) = ρ →
+        (u : ZMod p) ≠ activatedFreshProjection st b p γ - (b : ZMod p) →
+          γ - (u : ZMod (activatedM st b p)) ∈ params.Dplus)
+    (hCL : 3 * st.M ≤ params.L)
+    (hlower_start : st.H + params.N + 3 * st.M ≤ st.R + 1)
+    (hlower_end :
+      2 * params.N + params.Mplus + 3 * st.M ≤ st.X + params.N + params.L + 1)
+    (hML : params.Mplus ≤ params.L)
+    (hCLZ : 3 * st.M ≤ params.LZ)
+    (htail_start : st.H + params.K + 3 * st.M ≤ params.serviceR + 1)
+    (htail_end :
+      2 * params.K + params.Mplus + 3 * st.M ≤ st.X + params.K + params.LZ + 1)
+    (hMLZ : params.Mplus ≤ params.LZ)
+    {densityNumerator densityDenominator lo hi : ℕ}
+    (hdensityDenominator_pos : 0 < densityDenominator)
+    (hlohi : lo ≤ hi)
+    (hlo_private : 2 * params.N + params.Mplus - a ≤ lo)
+    (hhi_private : hi ≤ params.serviceR - a)
+    (hlo_sum : st.X + params.N + params.L < a + lo)
+    (hhi_sum : a + hi < params.protectedEndpoint)
+    (harith :
+      densityNumerator * params.protectedEndpoint ≤
+        densityDenominator * (params.G.Pstar.card * ((hi - lo) / params.Mplus))) :
+    Σ st' : StageState, ServiceExtension st st' a :=
+  serviceExtensionOfParamsFromCanonicalDplusAndHelpers params ha hbS hbDormant hp
+    hDplus hN hK hX_next hR_next hlower_height hprivate_height hreservoir_long
+    hheadroom hexists_dormant hendpoint_le_nextX
+    (stageParams_T_helper_of_old_residue_lift params hp T_lift)
+    (stageParams_D_helper_of_old_residue_lift params hp D_lift)
     hCL hlower_start hlower_end hML hCLZ htail_start htail_end hMLZ
     hdensityDenominator_pos hlohi hlo_private hhi_private hlo_sum hhi_sum harith
 

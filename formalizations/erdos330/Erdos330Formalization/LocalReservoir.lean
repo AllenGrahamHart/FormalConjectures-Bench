@@ -41,6 +41,35 @@ lemma exists_reservoir_helper_avoiding_zmod (st : StageState)
     exact nat_eq_of_zmod_eq_of_le_lt huX hvX hpX (hu_forbid.trans hv_forbid.symm)
   · exact ⟨u, huBlock, huS, hu_forbid⟩
 
+lemma exists_reservoir_helper_satisfying_of_residue_avoid (st : StageState)
+    {Jlo p : ℕ} [NeZero p]
+    (hJlo : st.H ≤ Jlo) (hJhi : Jlo + 3 * st.M ≤ st.X)
+    (hpX : st.X < p) (forbidden : ZMod p) {Q : ℕ → Prop}
+    (hQ : ∃ ρ ∈ st.D, ∀ u : ℕ,
+      (u : ZMod st.M) = ρ → (u : ZMod p) ≠ forbidden → Q u) :
+    ∃ u : ℕ, u ∈ st.S ∧ Jlo ≤ u ∧ u ≤ Jlo + 3 * st.M ∧ Q u := by
+  rcases hQ with ⟨ρ, hρ, hQρ⟩
+  obtain ⟨u, huBlock, huS, huAvoid⟩ :=
+    exists_reservoir_helper_avoiding_zmod st hρ hJlo hJhi hpX forbidden
+  rw [mem_residueBlockFinset] at huBlock
+  refine ⟨u, huS, huBlock.1, huBlock.2.1, ?_⟩
+  exact hQρ u (by simpa using huBlock.2.2) huAvoid
+
+lemma exists_reservoir_helper_for_target_from_old_residue_lift (st : StageState)
+    {Jlo p Mplus : ℕ} [NeZero p]
+    (Ω : Finset (ZMod Mplus))
+    (hJlo : st.H ≤ Jlo) (hJhi : Jlo + 3 * st.M ≤ st.X)
+    (hpX : st.X < p) (forbidden : ZMod Mplus → ZMod p)
+    (hchoose : ∀ γ : ZMod Mplus, ∃ ρ ∈ st.D, ∀ u : ℕ,
+      (u : ZMod st.M) = ρ → (u : ZMod p) ≠ forbidden γ →
+        γ - (u : ZMod Mplus) ∈ Ω) :
+    ∀ γ : ZMod Mplus,
+      ∃ u : ℕ, u ∈ st.S ∧ Jlo ≤ u ∧ u ≤ Jlo + 3 * st.M ∧
+        γ - (u : ZMod Mplus) ∈ Ω := by
+  intro γ
+  exact exists_reservoir_helper_satisfying_of_residue_avoid st hJlo hJhi hpX
+    (forbidden γ) (hchoose γ)
+
 lemma exists_helper_window (H X N L C n : ℕ)
     (hHCX : H + C ≤ X) (hCL : C ≤ L)
     (hnlo : H + N + C ≤ n) (hnhi : n + C ≤ X + N + L) :
