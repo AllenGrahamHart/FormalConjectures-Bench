@@ -376,4 +376,32 @@ theorem stageParams_middle_cover {st : StageState} {a b p : ℕ}
       params.G.T_middle_residueBlock_cover hML hnlo hnhi hprivate
     exact twoFoldFinset_mono params.lowerBlock_subset_nextS hBB
 
+theorem residueBlock_middle_cover_of_add_univ {M N L n : ℕ} [NeZero M]
+    (Ω : Finset (ZMod M))
+    (hΩ : ((Ω : Set (ZMod M)) + (Ω : Set (ZMod M))) = Set.univ)
+    (hML : M ≤ L) (hnlo : 2 * N + M ≤ n)
+    (hnhi : n ≤ 2 * N + 2 * L - M) :
+    n ∈ twoFoldFinset (residueBlockFinset M Ω N (N + L)) := by
+  have hres : (n : ZMod M) ∈ (Ω : Set (ZMod M)) + (Ω : Set (ZMod M)) := by
+    rw [hΩ]
+    exact Set.mem_univ _
+  exact residueBlockFinset_middle_mem_twoFold_self (M := M) (N := N) (L := L)
+    (n := n) hML hnlo hnhi hres
+
+theorem stageParams_tail_middle_cover {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p) [NeZero (activatedM st b p)]
+    (hDplus_add :
+      ((params.Dplus : Set (ZMod (activatedM st b p))) +
+        (params.Dplus : Set (ZMod (activatedM st b p)))) = Set.univ)
+    (hMLZ : params.Mplus ≤ params.LZ) :
+    ∀ n : ℕ, 2 * params.K + params.Mplus ≤ n → n ≤ params.nextR →
+      n ∈ twoFoldFinset params.nextS := by
+  intro n hnlo hnhi
+  have hZZ : n ∈ twoFoldFinset
+      (residueBlockFinset (activatedM st b p) params.Dplus params.K (params.K + params.LZ)) :=
+    residueBlock_middle_cover_of_add_univ params.Dplus hDplus_add hMLZ hnlo hnhi
+  have htail : n ∈ twoFoldFinset params.tailBlock := by
+    simpa [StageParams.tailBlock, StageParams.nextX, StageParams.Mplus] using hZZ
+  exact twoFoldFinset_mono params.tailBlock_subset_nextS htail
+
 end Erdos330Formalization
