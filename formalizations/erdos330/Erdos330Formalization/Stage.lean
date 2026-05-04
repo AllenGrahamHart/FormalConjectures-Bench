@@ -19,6 +19,7 @@ structure ProtectedBlockCertificate (S : Finset ℕ) (a endpoint : ℕ) where
   block_subset_private :
     ∀ n ∈ block, n ∈ privateSet {x : ℕ | x ∈ S} a
   block_le_endpoint : ∀ n ∈ block, n ≤ endpoint
+  block_lt_endpoint : ∀ n ∈ block, n < endpoint
   densityNumerator : ℕ
   densityDenominator : ℕ
   densityDenominator_pos : 0 < densityDenominator

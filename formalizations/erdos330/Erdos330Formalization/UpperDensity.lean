@@ -57,4 +57,46 @@ theorem upperDensity_pos_of_frequently_partialDensity_ge {S : Set ℕ} {c : ℝ}
     exact hcb.trans (hN b hbN)
   exact hc.trans_le hle
 
+theorem protectedBlock_partialDensity_lower {st : ℕ → StageState} (chain : StageChain st)
+    {k a endpoint : ℕ} (hendpoint : endpoint ≤ (st k).X) (hendpoint_pos : 0 < endpoint)
+    (cert : ProtectedBlockCertificate (st k).S a endpoint) :
+    ((cert.densityNumerator : ℝ) / (cert.densityDenominator : ℝ)) ≤
+      (privateSet (finalSet st) a).partialDensity Set.univ endpoint := by
+  refine le_partialDensity_univ_nat_of_finset (S := privateSet (finalSet st) a)
+    (B := cert.block) hendpoint_pos ?_ ?_
+  · intro n hn
+    exact ⟨privateSet_final_of_private_stage chain hendpoint cert hn,
+      cert.block_lt_endpoint n hn⟩
+  · have hdenposR : (0 : ℝ) < cert.densityDenominator := by
+      exact_mod_cast cert.densityDenominator_pos
+    have hineqR :
+        (cert.densityNumerator : ℝ) * (endpoint : ℝ) ≤
+          (cert.densityDenominator : ℝ) * (cert.block.card : ℝ) := by
+      exact_mod_cast cert.block_density_lower
+    field_simp [ne_of_gt hdenposR]
+    nlinarith
+
+theorem private_upperDensity_pos_of_frequent_protectedBlocks {st : ℕ → StageState}
+    (chain : StageChain st) {a numerator denominator : ℕ}
+    (hnumerator : 0 < numerator) (hdenominator : 0 < denominator)
+    (hfreq : ∀ N : ℕ,
+      ∃ k endpoint : ℕ, ∃ cert : ProtectedBlockCertificate (st k).S a endpoint,
+        N ≤ endpoint ∧ endpoint ≤ (st k).X ∧
+          cert.densityNumerator = numerator ∧ cert.densityDenominator = denominator) :
+    HasPositiveUpperDensity (privateSet (finalSet st) a) := by
+  unfold HasPositiveUpperDensity
+  let c : ℝ := (numerator : ℝ) / (denominator : ℝ)
+  have hc : 0 < c := by
+    have hnR : (0 : ℝ) < numerator := by exact_mod_cast hnumerator
+    have hdR : (0 : ℝ) < denominator := by exact_mod_cast hdenominator
+    exact div_pos hnR hdR
+  refine upperDensity_pos_of_frequently_partialDensity_ge (S := privateSet (finalSet st) a)
+    (c := c) hc ?_
+  intro N
+  obtain ⟨k, endpoint, cert, hN_endpoint, hendpoint_X, hnum, hden⟩ := hfreq (max N 1)
+  have hendpoint_pos : 0 < endpoint := by omega
+  refine ⟨endpoint, by omega, ?_⟩
+  have hpartial := protectedBlock_partialDensity_lower chain hendpoint_X hendpoint_pos cert
+  simpa [c, hnum, hden] using hpartial
+
 end Erdos330Formalization
