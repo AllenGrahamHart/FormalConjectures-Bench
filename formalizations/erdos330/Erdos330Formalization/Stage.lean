@@ -1,4 +1,5 @@
 import Erdos330Formalization.Basic
+import Erdos330Formalization.Elementary
 import Erdos330Formalization.ResidueBlock
 
 /-!
@@ -11,6 +12,7 @@ instantiate these interfaces without changing the global construction layer.
 
 namespace Erdos330Formalization
 
+open scoped BigOperators
 open scoped Pointwise
 
 /-- A finite protected block produced when servicing an active element. -/
@@ -50,6 +52,27 @@ structure CRTGadget (P : Finset ℕ) (m : ℕ → ℕ) (M a : ℕ)
     (Pstar.card : ℝ) / (M : ℝ) =
       (1 : ℝ) / (m a : ℝ) *
         (P.erase a).prod (fun b => 1 - (1 : ℝ) / (m b : ℝ))
+
+theorem CRTGadget.Pstar_density_lower_half {P : Finset ℕ} {m : ℕ → ℕ} {M a : ℕ}
+    {D : Finset (ZMod M)} (G : CRTGadget P m M a D)
+    (hma_pos : 0 < m a) (hm_pos : ∀ b ∈ P.erase a, 0 < m b)
+    (hbudget : (P.erase a).sum (fun b => (1 : ℝ) / (m b : ℝ)) ≤ (1 / 2 : ℝ)) :
+    (1 : ℝ) / (m a : ℝ) * (1 / 2 : ℝ) ≤ (G.Pstar.card : ℝ) / (M : ℝ) := by
+  have hprod_lower : (1 / 2 : ℝ) ≤
+      (P.erase a).prod (fun b => 1 - (1 : ℝ) / (m b : ℝ)) := by
+    have hbasic := one_sub_sum_le_prod_one_sub (P.erase a)
+      (fun b => (1 : ℝ) / (m b : ℝ)) ?_ ?_
+    · linarith
+    · intro b hb
+      positivity
+    · intro b hb
+      have hbpos : (0 : ℝ) < (m b : ℝ) := by exact_mod_cast hm_pos b hb
+      rw [div_le_one hbpos]
+      exact_mod_cast (Nat.succ_le_of_lt (hm_pos b hb))
+  rw [G.Pstar_card_formula]
+  have hmaR : (0 : ℝ) ≤ (1 : ℝ) / (m a : ℝ) := by
+    positivity
+  exact mul_le_mul_of_nonneg_left hprod_lower hmaR
 
 /--
 Finite state at one stage of the priority construction.
