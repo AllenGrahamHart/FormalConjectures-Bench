@@ -1159,4 +1159,50 @@ noncomputable def serviceExtensionOfParams {st : StageState} {a b p : ℕ}
     protectedBlock := cert
   }⟩
 
+noncomputable def serviceExtensionOfParamsFromPairExclusions {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p) [NeZero (activatedM st b p)]
+    (ha : a ∈ st.P) (hbS : b ∈ st.S) (hbDormant : b ∉ st.P)
+    (hp : FreshPrimeData st p)
+    (hN : st.X < params.N) (hK : st.X < params.K)
+    (hX_next : st.X ≤ params.nextX) (hR_next : st.R ≤ params.nextR)
+    (hlower : params.N + params.L ≤ params.nextX)
+    (hprivate_height : params.serviceR ≤ params.nextX)
+    (hnew_avoid :
+      ∀ c ∈ activatedActiveSet st b, ∀ s ∈ params.nextS, s ∉ st.S →
+        (s : ZMod (activatedModulus st b p c)) ≠
+          (c : ZMod (activatedModulus st b p c)))
+    (hreservoir_long : params.K + 3 * params.Mplus ≤ params.nextX)
+    (hheadroom : params.K + params.nextX + 3 * params.Mplus ≤ params.nextR)
+    (hcoverage :
+      ∀ n : ℕ, st.coverStart ≤ n → n ≤ params.nextR → n ∈ twoFoldFinset params.nextS)
+    (hexists_dormant : ∃ c ∈ params.nextS, c ∉ activatedActiveSet st b)
+    (hendpoint_le_nextX : params.protectedEndpoint ≤ params.nextX)
+    {densityNumerator densityDenominator : ℕ}
+    (hdensityDenominator_pos : 0 < densityDenominator)
+    (hold_private :
+      ∀ n ∈ params.protectedSumBlock, ∀ s ∈ st.S, s ≠ a →
+        ∀ q ∈ params.privateBlock, s + q ≠ n)
+    (hprivate_old :
+      ∀ n ∈ params.protectedSumBlock, ∀ q ∈ params.privateBlock,
+        ∀ s ∈ st.S, s ≠ a → q + s ≠ n)
+    (hlower_private :
+      ∀ n ∈ params.protectedSumBlock, ∀ x ∈ params.lowerBlock,
+        ∀ q ∈ params.privateBlock, x + q ≠ n)
+    (hprivate_lower :
+      ∀ n ∈ params.protectedSumBlock, ∀ q ∈ params.privateBlock,
+        ∀ x ∈ params.lowerBlock, q + x ≠ n)
+    (hprivate_private :
+      ∀ n ∈ params.protectedSumBlock, ∀ q₁ ∈ params.privateBlock,
+        ∀ q₂ ∈ params.privateBlock, q₁ + q₂ ≠ n)
+    (hcore_density :
+      densityNumerator * params.protectedEndpoint ≤
+        densityDenominator * params.protectedSumBlock.card) :
+    Σ st' : StageState, ServiceExtension st st' a :=
+  serviceExtensionOfParams params ha hbS hbDormant hp hN hK hX_next hR_next hlower
+    hprivate_height hnew_avoid hreservoir_long hheadroom hcoverage hexists_dormant
+    hendpoint_le_nextX hdensityDenominator_pos
+    (params.protectedSumBlock_private_of_pair_exclusions (st.active_mem_state ha) hN
+      hold_private hprivate_old hlower_private hprivate_lower hprivate_private)
+    hcore_density
+
 end Erdos330Formalization
