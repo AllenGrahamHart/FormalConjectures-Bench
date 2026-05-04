@@ -791,6 +791,27 @@ theorem stageParams_nextS_coverage_of_helpers {st : StageState} {a b p : ℕ}
     (stageParams_tail_helper_cover params D_helper hCLZ htail_start htail_end)
     (stageParams_tail_middle_cover params hDplus_add hMLZ)
 
+theorem stageParams_isolated_of_new_avoid {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p)
+    (hbS : b ∈ st.S) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p)
+    (hnew_avoid :
+      ∀ c ∈ activatedActiveSet st b, ∀ s ∈ params.nextS, s ∉ st.S →
+        (s : ZMod (activatedModulus st b p c)) ≠
+          (c : ZMod (activatedModulus st b p c))) :
+    ∀ c ∈ activatedActiveSet st b, ∀ s ∈ params.nextS,
+      (s : ZMod (activatedModulus st b p c)) =
+        (c : ZMod (activatedModulus st b p c)) → s = c := by
+  intro c hc s hs hcong
+  by_cases hs_old : s ∈ st.S
+  · rw [activatedActiveSet] at hc
+    have hbX : b ≤ st.X := st.S_le_X b hbS
+    rcases Finset.mem_insert.mp hc with rfl | hcP
+    · rw [activatedModulus_new] at hcong
+      exact hp.eq_of_zmod_eq_of_old (st.S_le_X s hs_old) hbX hcong
+    · rw [activatedModulus_old_of_mem st hbDormant hcP] at hcong
+      exact st.isolated c hcP s hs_old hcong
+  · exact (hnew_avoid c hc s hs hs_old hcong).elim
+
 noncomputable def nextStageStateOfParams (st : StageState) {a b p : ℕ}
     (params : StageParams st a b p)
     (hbS : b ∈ st.S) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p)
