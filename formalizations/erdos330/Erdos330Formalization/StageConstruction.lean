@@ -1851,4 +1851,58 @@ noncomputable def serviceExtensionOfParamsFromCanonicalDplusAndResidueLifts
     hCL hlower_start hlower_end hML hCLZ htail_start htail_end hMLZ
     hdensityDenominator_pos hlohi hlo_private hhi_private hlo_sum hhi_sum harith
 
+noncomputable def serviceExtensionOfParamsFromOldProjectionLifts
+    {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p) [NeZero (activatedM st b p)]
+    (oldG : CRTGadget st.P st.m st.M a st.D)
+    (ha : a ∈ st.P) (hbS : b ∈ st.S) (hbDormant : b ∉ st.P)
+    (hp : FreshPrimeData st p)
+    (hDplus : params.Dplus = activatedCRTAllowedFinsetAtM st ha hbDormant hp)
+    (hDold_add :
+      ((st.D : Set (ZMod st.M)) + (st.D : Set (ZMod st.M))) = Set.univ)
+    (D_projection_lift : ∀ y : ZMod (activatedM st b p),
+      activatedOldProjection st hbDormant y ∈ st.D →
+        activatedFreshProjection st b p y ≠ (b : ZMod p) → y ∈ params.Dplus)
+    (T_projection_lift : ∀ y : ZMod (activatedM st b p),
+      activatedOldProjection st hbDormant y ∈ oldG.Tbase →
+        activatedFreshProjection st b p y ≠ (b : ZMod p) → y ∈ params.G.T)
+    (hN : st.X < params.N) (hK : st.X < params.K)
+    (hX_next : st.X ≤ params.nextX) (hR_next : st.R ≤ params.nextR)
+    (hlower_height : params.N + params.L ≤ params.nextX)
+    (hprivate_height : params.serviceR ≤ params.nextX)
+    (hreservoir_long : params.K + 3 * params.Mplus ≤ params.nextX)
+    (hheadroom : params.K + params.nextX + 3 * params.Mplus ≤ params.nextR)
+    (hexists_dormant : ∃ c ∈ params.nextS, c ∉ activatedActiveSet st b)
+    (hendpoint_le_nextX : params.protectedEndpoint ≤ params.nextX)
+    (hCL : 3 * st.M ≤ params.L)
+    (hlower_start : st.H + params.N + 3 * st.M ≤ st.R + 1)
+    (hlower_end :
+      2 * params.N + params.Mplus + 3 * st.M ≤ st.X + params.N + params.L + 1)
+    (hML : params.Mplus ≤ params.L)
+    (hCLZ : 3 * st.M ≤ params.LZ)
+    (htail_start : st.H + params.K + 3 * st.M ≤ params.serviceR + 1)
+    (htail_end :
+      2 * params.K + params.Mplus + 3 * st.M ≤ st.X + params.K + params.LZ + 1)
+    (hMLZ : params.Mplus ≤ params.LZ)
+    {densityNumerator densityDenominator lo hi : ℕ}
+    (hdensityDenominator_pos : 0 < densityDenominator)
+    (hlohi : lo ≤ hi)
+    (hlo_private : 2 * params.N + params.Mplus - a ≤ lo)
+    (hhi_private : hi ≤ params.serviceR - a)
+    (hlo_sum : st.X + params.N + params.L < a + lo)
+    (hhi_sum : a + hi < params.protectedEndpoint)
+    (harith :
+      densityNumerator * params.protectedEndpoint ≤
+        densityDenominator * (params.G.Pstar.card * ((hi - lo) / params.Mplus))) :
+    Σ st' : StageState, ServiceExtension st st' a :=
+  serviceExtensionOfParamsFromCanonicalDplusAndResidueLifts params ha hbS hbDormant hp
+    hDplus hN hK hX_next hR_next hlower_height hprivate_height hreservoir_long
+    hheadroom hexists_dormant hendpoint_le_nextX
+    (stageParams_T_lift_of_oldD_add_oldSet_and_projection_lift params hbDormant
+      oldG.Tbase oldG.D_add_Tbase_full T_projection_lift)
+    (stageParams_D_lift_of_oldD_add_and_projection_lift params hbDormant hDold_add
+      D_projection_lift)
+    hCL hlower_start hlower_end hML hCLZ htail_start htail_end hMLZ
+    hdensityDenominator_pos hlohi hlo_private hhi_private hlo_sum hhi_sum harith
+
 end Erdos330Formalization
