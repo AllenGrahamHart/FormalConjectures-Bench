@@ -268,6 +268,49 @@ theorem exists_stage_CRTGadget_on_D_of_canonical (st : StageState)
   rw [hD a ha]
   exact exists_stage_CRTGadget_on_allowedAtM st ha
 
+theorem zmodFinsetCast_add_self_eq_univ {M M' : ℕ} (hM : M = M')
+    (D : Finset (ZMod M'))
+    (hD : ((D : Set (ZMod M')) + (D : Set (ZMod M'))) = Set.univ) :
+    let Dm : Finset (ZMod M) := Eq.mp (congrArg (fun q => Finset (ZMod q)) hM.symm) D
+    ((Dm : Set (ZMod M)) + (Dm : Set (ZMod M))) = Set.univ := by
+  cases hM
+  simpa using hD
+
+theorem stageCRTAllowedFinset_add_self_eq_univ (st : StageState) {a : ℕ} (ha : a ∈ st.P) :
+    ((stageCRTAllowedFinset st ha : Set
+        (ZMod (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ)))) +
+      (stageCRTAllowedFinset st ha : Set
+        (ZMod (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ))))) = Set.univ := by
+  classical
+  letI : Fact (Nat.Prime (st.m a)) := ⟨st.m_prime a ha⟩
+  letI : NeZero (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ)) :=
+    NeZero.of_pos (stage_exact_product_pos st ha)
+  letI : (i : NonselectedIndex st.P a) → Fact (Nat.Prime (st.m (i : ℕ))) := fun i =>
+    ⟨st.m_prime (i : ℕ) ((Finset.mem_erase.mp i.property).2)⟩
+  unfold stageCRTAllowedFinset
+  simpa using
+    (crtProduct_allowed_add_allowed_eq_univ
+      (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ)) (st.m a)
+      (fun i : NonselectedIndex st.P a => st.m (i : ℕ))
+      (le_trans (by norm_num : 7 ≤ 23) (st.m_ge23 a ha))
+      (fun i => le_trans (by norm_num : 7 ≤ 23)
+          (st.m_ge23 (i : ℕ) ((Finset.mem_erase.mp i.property).2)))
+      (stageCRTProductEquiv st ha) (a : ZMod (st.m a))
+      (fun i : NonselectedIndex st.P a => ((i : ℕ) : ZMod (st.m (i : ℕ)))))
+
+theorem stageCRTAllowedFinsetAtM_add_self_eq_univ (st : StageState) {a : ℕ}
+    (ha : a ∈ st.P) :
+    ((stageCRTAllowedFinsetAtM st ha : Set (ZMod st.M)) +
+      (stageCRTAllowedFinsetAtM st ha : Set (ZMod st.M))) = Set.univ :=
+  zmodFinsetCast_add_self_eq_univ (stage_M_eq_selected_mul_nonselected st ha)
+    (stageCRTAllowedFinset st ha) (stageCRTAllowedFinset_add_self_eq_univ st ha)
+
+theorem stage_D_add_D_eq_univ_of_canonical (st : StageState)
+    (hD : st.HasCanonicalD) {a : ℕ} (ha : a ∈ st.P) :
+    ((st.D : Set (ZMod st.M)) + (st.D : Set (ZMod st.M))) = Set.univ := by
+  rw [hD a ha]
+  exact stageCRTAllowedFinsetAtM_add_self_eq_univ st ha
+
 theorem exists_stage_CRTGadget (st : StageState) {a : ℕ} (ha : a ∈ st.P) :
     ∃ D : Finset (ZMod st.M), Nonempty (CRTGadget st.P st.m st.M a D) :=
   ⟨stageCRTAllowedFinsetAtM st ha, exists_stage_CRTGadget_on_allowedAtM st ha⟩
