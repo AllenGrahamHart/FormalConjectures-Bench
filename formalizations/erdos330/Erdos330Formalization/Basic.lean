@@ -68,6 +68,18 @@ theorem twoFoldFinset_eq_twoFold_coe (S : Finset ℕ) :
     twoFoldFinset S = twoFold {n : ℕ | n ∈ S} := by
   rfl
 
+theorem twoFold_mono {A B : Set ℕ} (hAB : A ⊆ B) :
+    twoFold A ⊆ twoFold B := by
+  intro n hn
+  rcases hn with ⟨x, hx, y, hy, hxy⟩
+  exact ⟨x, hAB hx, y, hAB hy, hxy⟩
+
+theorem twoFoldFinset_mono {S T : Finset ℕ} (hST : S ⊆ T) :
+    twoFoldFinset S ⊆ twoFoldFinset T := by
+  intro n hn
+  rcases hn with ⟨x, hx, y, hy, hxy⟩
+  exact ⟨x, hST hx, y, hST hy, hxy⟩
+
 theorem twoFold_eq_add (A : Set ℕ) :
     twoFold A = A + A := by
   rfl

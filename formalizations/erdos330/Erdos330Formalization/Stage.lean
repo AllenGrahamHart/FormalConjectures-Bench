@@ -102,4 +102,30 @@ theorem modulus_pos (st : StageState) {a : ℕ} (ha : a ∈ st.P) : 0 < st.m a :
 
 end StageState
 
+/-- Abstract certificate that one finite stage extends another. -/
+structure StageExtension (st st' : StageState) where
+  S_subset : st.S ⊆ st'.S
+  P_subset : st.P ⊆ st'.P
+  m_eq_on_old : ∀ a ∈ st.P, st'.m a = st.m a
+  coverStart_eq : st'.coverStart = st.coverStart
+  X_mono : st.X ≤ st'.X
+  R_mono : st.R ≤ st'.R
+  new_elements_above_old_X :
+    ∀ n ∈ st'.S, n ∉ st.S → st.X < n
+
+namespace StageExtension
+
+theorem old_coverage {st st' : StageState} (h : StageExtension st st')
+    {n : ℕ} (hn_start : st.coverStart ≤ n) (hn_R : n ≤ st.R) :
+    n ∈ twoFoldFinset st'.S :=
+  twoFoldFinset_mono h.S_subset (st.coverage n hn_start hn_R)
+
+end StageExtension
+
+/-- A stage extension that services one active element and records a protected block. -/
+structure ServiceExtension (st st' : StageState) (a : ℕ) where
+  toStageExtension : StageExtension st st'
+  served_active : a ∈ st.P
+  protectedBlock : ProtectedBlockCertificate st'.S a st'.R
+
 end Erdos330Formalization
