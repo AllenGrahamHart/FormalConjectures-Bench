@@ -821,6 +821,23 @@ theorem protectedSumBlock_private_of_pair_exclusions {st : StageState} {a b p : 
     · exact (protectedSumBlock_ne_any_add_tail (params := params) hn hyTail) hxy
   · exact (protectedSumBlock_ne_tail_add_any (params := params) hn hxTail) hxy
 
+theorem protectedSumBlock_private {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p) [NeZero (activatedM st b p)]
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hN : st.X < params.N) :
+    ∀ n ∈ params.protectedSumBlock, n ∈ privateSet {x : ℕ | x ∈ params.nextS} a := by
+  refine params.protectedSumBlock_private_of_pair_exclusions (st.active_mem_state ha) hN
+    ?_ ?_ ?_ ?_ ?_
+  · intro n hn s hs hs_ne q hq
+    exact protectedSumBlock_ne_old_add_private (params := params) ha hbDormant hn hs hs_ne hq
+  · intro n hn q hq s hs hs_ne
+    exact protectedSumBlock_ne_private_add_old (params := params) ha hbDormant hn hq hs hs_ne
+  · intro n hn x hx q hq
+    exact protectedSumBlock_ne_lower_add_private (params := params) hn hx hq
+  · intro n hn q hq x hx
+    exact protectedSumBlock_ne_private_add_lower (params := params) hn hq hx
+  · intro n hn q₁ hq₁ q₂ hq₂
+    exact protectedSumBlock_ne_private_add_private (params := params) hn hq₁ hq₂
+
 def protectedBlockCertificate_of_sumBlock {st : StageState} {a b p : ℕ}
     (params : StageParams st a b p) {densityNumerator densityDenominator : ℕ}
     (hdensityDenominator_pos : 0 < densityDenominator)
