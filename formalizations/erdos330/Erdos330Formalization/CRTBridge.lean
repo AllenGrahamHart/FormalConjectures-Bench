@@ -169,6 +169,28 @@ theorem addEquivTranslatePreimageFinset_card_eq_preimage {α β : Type*}
       rwa [hEq]
     · simp
 
+theorem setFiniteFinset_prod_singleton_card {α β : Type*}
+    [Fintype α] [Fintype β] (a : α) (S : Set β) :
+    (setFiniteFinset ({x : α × β | x.1 = a ∧ x.2 ∈ S})).card =
+      (setFiniteFinset S).card := by
+  classical
+  refine Finset.card_bij (fun x _ => x.2) ?_ ?_ ?_
+  · intro x hx
+    rw [mem_setFiniteFinset]
+    rw [mem_setFiniteFinset] at hx
+    exact hx.2
+  · intro x hx y hy hxy
+    rw [mem_setFiniteFinset] at hx hy
+    ext
+    · rw [hx.1, hy.1]
+    · exact hxy
+  · intro y hy
+    refine ⟨(a, y), ?_, ?_⟩
+    · rw [mem_setFiniteFinset]
+      rw [mem_setFiniteFinset] at hy
+      exact ⟨rfl, hy⟩
+    · rfl
+
 noncomputable def zmodProdEquivPi {ι : Type*} [Fintype ι]
     (m : ι → ℕ) (hcoprime : Pairwise fun i j => Nat.Coprime (m i) (m j)) :
     ZMod (∏ i, m i) ≃+* ∀ i, ZMod (m i) :=

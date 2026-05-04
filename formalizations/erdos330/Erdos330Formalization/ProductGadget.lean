@@ -651,6 +651,28 @@ theorem crtProduct_allowed_add_T_eq_univ {ι : Type*}
       (productT p0 p β e data h u1 u2)
       (productAllowed_add_productT_eq_univ p p0 hp0_3 hp0_23 hp7 α h u1 u2 β e data))
 
+theorem productPrivateSlice_card_eq_nonselected {ι : Type*}
+    (p0 : ℕ) [Fintype (ZMod p0)]
+    (p : ι → ℕ) [Fintype (∀ i : ι, ZMod (p i))]
+    (β e : ∀ i : ι, ZMod (p i)) (h : ZMod p0) :
+    (setFiniteFinset (productPrivateSlice p0 p β e h)).card =
+      (setFiniteFinset ({y : ∀ i : ι, ZMod (p i) |
+        affineDoubleNormalize p β y ∉ coordinateTarget p e})).card := by
+  simpa [productPrivateSlice] using
+    (setFiniteFinset_prod_singleton_card (α := ZMod p0)
+      (β := ∀ i : ι, ZMod (p i)) (h + h)
+      ({y : ∀ i : ι, ZMod (p i) | affineDoubleNormalize p β y ∉ coordinateTarget p e}))
+
+theorem crtProductPstarFinset_card_eq_productPrivateSlice {ι : Type*} [Fintype ι]
+    (M p0 : ℕ) [NeZero M] [NeZero p0]
+    (p : ι → ℕ) [Fintype (ProductSpace p0 p)]
+    (φ : ZMod M ≃+ ProductSpace p0 p) (a : ZMod M)
+    (β e : ∀ i : ι, ZMod (p i)) (h : ZMod p0) :
+    (crtProductPstarFinset M p0 p φ a β e h).card =
+      (setFiniteFinset (productPrivateSlice p0 p β e h)).card := by
+  rw [crtProductPstarFinset, addEquivTranslatePreimageFinset_card_eq_preimage,
+    addEquivPreimageFinset_card_eq]
+
 theorem exists_crtProduct_gadget_core {ι : Type*}
     [Fintype ι] [DecidableEq ι]
     (M p0 : ℕ) [NeZero M] [Fact p0.Prime] [NeZero p0]
