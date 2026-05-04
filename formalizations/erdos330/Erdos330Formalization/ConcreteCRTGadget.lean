@@ -197,10 +197,29 @@ lemma stage_exact_product_pos (st : StageState) {a : ℕ} (ha : a ∈ st.P) :
     0 < st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ) := by
   exact Nat.mul_pos (st.modulus_pos ha) (stage_nonselected_product_pos st)
 
-theorem exists_stage_exact_product_CRTGadget (st : StageState) {a : ℕ} (ha : a ∈ st.P) :
-    ∃ D : Finset (ZMod (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ))),
-      Nonempty (CRTGadget st.P st.m
-        (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ)) a D) := by
+noncomputable def stageCRTProductEquiv (st : StageState) {a : ℕ} (ha : a ∈ st.P) :
+    ZMod (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ)) ≃+
+      ProductSpace (st.m a) (fun i : NonselectedIndex st.P a => st.m (i : ℕ)) :=
+  productCRTAddEquiv (st.m a) (fun i : NonselectedIndex st.P a => st.m (i : ℕ))
+    (stage_selected_coprime_nonselected_prod st ha)
+    (stage_pairwise_coprime_nonselected st (a := a))
+
+noncomputable def stageCRTAllowedFinset (st : StageState) {a : ℕ} (ha : a ∈ st.P) :
+    Finset (ZMod (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ))) := by
+  classical
+  letI : NeZero (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ)) :=
+    NeZero.of_pos (stage_exact_product_pos st ha)
+  exact crtProductAllowedFinset
+    (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ)) (st.m a)
+    (fun i : NonselectedIndex st.P a => st.m (i : ℕ)) (stageCRTProductEquiv st ha)
+    (a : ZMod (st.m a))
+    (fun i : NonselectedIndex st.P a => ((i : ℕ) : ZMod (st.m (i : ℕ))))
+
+theorem exists_stage_exact_product_CRTGadget_on_allowed (st : StageState) {a : ℕ}
+    (ha : a ∈ st.P) :
+    Nonempty (CRTGadget st.P st.m
+      (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ)) a
+      (stageCRTAllowedFinset st ha)) := by
   classical
   letI : Fact (Nat.Prime (st.m a)) := ⟨st.m_prime a ha⟩
   letI : NeZero (st.m a) := NeZero.of_pos (st.modulus_pos ha)
@@ -220,7 +239,13 @@ theorem exists_stage_exact_product_CRTGadget (st : StageState) {a : ℕ} (ha : a
         omega)
       (stage_selected_coprime_nonselected_prod st ha)
       (stage_pairwise_coprime_nonselected st (a := a))
-  exact ⟨_, ⟨G⟩⟩
+  exact ⟨G⟩
+
+theorem exists_stage_exact_product_CRTGadget (st : StageState) {a : ℕ} (ha : a ∈ st.P) :
+    ∃ D : Finset (ZMod (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ))),
+      Nonempty (CRTGadget st.P st.m
+        (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ)) a D) :=
+  ⟨stageCRTAllowedFinset st ha, exists_stage_exact_product_CRTGadget_on_allowed st ha⟩
 
 theorem exists_stage_CRTGadget (st : StageState) {a : ℕ} (ha : a ∈ st.P) :
     ∃ D : Finset (ZMod st.M), Nonempty (CRTGadget st.P st.m st.M a D) := by
