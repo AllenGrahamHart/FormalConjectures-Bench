@@ -459,6 +459,104 @@ theorem activatedCRTAllowedFinsetAtM_add_self_eq_univ (st : StageState) {a b p :
     (activatedCRTAllowedFinsetExact st ha hbDormant hp)
     (activatedCRTAllowedFinsetExact_add_self_eq_univ st ha hbDormant hp)
 
+theorem exists_activated_exact_product_CRTGadget_on_allowed_with_eqs (st : StageState)
+    {a b p : ℕ} (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p)
+    [Fact (Nat.Prime (activatedModulus st b p a))]
+    [NeZero (activatedModulus st b p a)]
+    [NeZero (activatedModulus st b p a *
+      ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+        activatedModulus st b p (i : ℕ))]
+    [(i : NonselectedIndex (activatedActiveSet st b) a) →
+      Fact (Nat.Prime (activatedModulus st b p (i : ℕ)))]
+    [(i : NonselectedIndex (activatedActiveSet st b) a) →
+      Fintype (ZMod (activatedModulus st b p (i : ℕ)))] :
+    ∃ h u1 u2 : ZMod (activatedModulus st b p a),
+      ∃ G : CRTGadget (activatedActiveSet st b) (activatedModulus st b p)
+          (activatedModulus st b p a *
+            ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+              activatedModulus st b p (i : ℕ))
+          a (activatedCRTAllowedFinsetExact st ha hbDormant hp),
+        G.T = crtProductTFinset
+          (activatedModulus st b p a *
+            ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+              activatedModulus st b p (i : ℕ))
+          (activatedModulus st b p a)
+          (fun i : NonselectedIndex (activatedActiveSet st b) a =>
+            activatedModulus st b p (i : ℕ))
+          (activatedCRTProductEquiv st ha hbDormant hp)
+          (fun i : NonselectedIndex (activatedActiveSet st b) a =>
+            ((i : ℕ) : ZMod (activatedModulus st b p (i : ℕ))))
+          (fun i : NonselectedIndex (activatedActiveSet st b) a =>
+            (a : ZMod (activatedModulus st b p (i : ℕ))) -
+              ((i : ℕ) : ZMod (activatedModulus st b p (i : ℕ))))
+          (fun i : NonselectedIndex (activatedActiveSet st b) a =>
+            safePairDataZMod (activatedModulus st b p (i : ℕ))
+              (by
+                have h23 := activated_m_ge23 st hbDormant hp (i : ℕ)
+                  ((Finset.mem_erase.mp i.property).2)
+                omega)
+              ((a : ZMod (activatedModulus st b p (i : ℕ))) -
+                ((i : ℕ) : ZMod (activatedModulus st b p (i : ℕ)))))
+          h u1 u2 ∧
+        G.Pstar = crtProductPstarFinset
+          (activatedModulus st b p a *
+            ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+              activatedModulus st b p (i : ℕ))
+          (activatedModulus st b p a)
+          (fun i : NonselectedIndex (activatedActiveSet st b) a =>
+            activatedModulus st b p (i : ℕ))
+          (activatedCRTProductEquiv st ha hbDormant hp)
+          (a : ZMod (activatedModulus st b p a *
+            ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+              activatedModulus st b p (i : ℕ)))
+          (fun i : NonselectedIndex (activatedActiveSet st b) a =>
+            ((i : ℕ) : ZMod (activatedModulus st b p (i : ℕ))))
+          (fun i : NonselectedIndex (activatedActiveSet st b) a =>
+            (a : ZMod (activatedModulus st b p (i : ℕ))) -
+              ((i : ℕ) : ZMod (activatedModulus st b p (i : ℕ)))) h ∧
+        G.Tbase = crtProductTbaseFinset
+          (activatedModulus st b p a *
+            ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+              activatedModulus st b p (i : ℕ))
+          (activatedModulus st b p a)
+          (fun i : NonselectedIndex (activatedActiveSet st b) a =>
+            activatedModulus st b p (i : ℕ))
+          (activatedCRTProductEquiv st ha hbDormant hp)
+          (fun i : NonselectedIndex (activatedActiveSet st b) a =>
+            ((i : ℕ) : ZMod (activatedModulus st b p (i : ℕ))))
+          h u1 u2 := by
+  classical
+  letI : Fact (Nat.Prime (activatedModulus st b p a)) :=
+    ⟨activated_m_prime st hbDormant hp a (activated_active_mem_old st ha)⟩
+  letI : NeZero (activatedModulus st b p a) :=
+    NeZero.of_pos
+      ((activated_m_prime st hbDormant hp a (activated_active_mem_old st ha)).pos)
+  letI : NeZero (activatedModulus st b p a *
+      ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+        activatedModulus st b p (i : ℕ)) :=
+    NeZero.of_pos (activated_exact_product_pos st ha hbDormant hp)
+  letI : (i : NonselectedIndex (activatedActiveSet st b) a) →
+      Fact (Nat.Prime (activatedModulus st b p (i : ℕ))) := fun i =>
+    ⟨activated_m_prime st hbDormant hp (i : ℕ) ((Finset.mem_erase.mp i.property).2)⟩
+  letI : (i : NonselectedIndex (activatedActiveSet st b) a) →
+      NeZero (activatedModulus st b p (i : ℕ)) := fun i =>
+    NeZero.of_pos
+      ((activated_m_prime st hbDormant hp (i : ℕ) ((Finset.mem_erase.mp i.property).2)).pos)
+  letI : (i : NonselectedIndex (activatedActiveSet st b) a) →
+      Fintype (ZMod (activatedModulus st b p (i : ℕ))) := fun _ =>
+    inferInstance
+  exact
+    exists_crtProduct_CRTGadget_for_exact_product (activatedActiveSet st b)
+      (activatedModulus st b p) a
+      (activated_m_ge23 st hbDormant hp a (activated_active_mem_old st ha))
+      (activated_m_mod4 st hbDormant hp a (activated_active_mem_old st ha))
+      (fun i => by
+        have h23 := activated_m_ge23 st hbDormant hp (i : ℕ)
+          ((Finset.mem_erase.mp i.property).2)
+        omega)
+      (activated_selected_coprime_nonselected_prod st ha hbDormant hp)
+      (activated_pairwise_coprime_nonselected st hbDormant hp)
+
 theorem exists_activated_exact_product_CRTGadget_on_allowed (st : StageState)
     {a b p : ℕ} (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p) :
     Nonempty (CRTGadget (activatedActiveSet st b) (activatedModulus st b p)
@@ -480,23 +578,10 @@ theorem exists_activated_exact_product_CRTGadget_on_allowed (st : StageState)
       Fact (Nat.Prime (activatedModulus st b p (i : ℕ))) := fun i =>
     ⟨activated_m_prime st hbDormant hp (i : ℕ) ((Finset.mem_erase.mp i.property).2)⟩
   letI : (i : NonselectedIndex (activatedActiveSet st b) a) →
-      NeZero (activatedModulus st b p (i : ℕ)) := fun i =>
-    NeZero.of_pos
-      ((activated_m_prime st hbDormant hp (i : ℕ) ((Finset.mem_erase.mp i.property).2)).pos)
-  letI : (i : NonselectedIndex (activatedActiveSet st b) a) →
       Fintype (ZMod (activatedModulus st b p (i : ℕ))) := fun _ =>
     inferInstance
   obtain ⟨_, _, _, G, _⟩ :=
-    exists_crtProduct_CRTGadget_for_exact_product (activatedActiveSet st b)
-      (activatedModulus st b p) a
-      (activated_m_ge23 st hbDormant hp a (activated_active_mem_old st ha))
-      (activated_m_mod4 st hbDormant hp a (activated_active_mem_old st ha))
-      (fun i => by
-        have h23 := activated_m_ge23 st hbDormant hp (i : ℕ)
-          ((Finset.mem_erase.mp i.property).2)
-        omega)
-      (activated_selected_coprime_nonselected_prod st ha hbDormant hp)
-      (activated_pairwise_coprime_nonselected st hbDormant hp)
+    exists_activated_exact_product_CRTGadget_on_allowed_with_eqs st ha hbDormant hp
   exact ⟨G⟩
 
 theorem CRTGadget.cast_modulus {P : Finset ℕ} {m : ℕ → ℕ} {M M' a : ℕ}
