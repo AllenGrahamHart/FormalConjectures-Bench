@@ -144,6 +144,60 @@ theorem activatedM_pos (st : StageState) {b p : ℕ}
     exact Finset.prod_pos fun c hc => st.modulus_pos hc
   exact Nat.mul_pos hp.prime.pos hMpos
 
+theorem activated_active_mem_old (st : StageState) {a b : ℕ} (ha : a ∈ st.P) :
+    a ∈ activatedActiveSet st b := by
+  exact Finset.mem_insert_of_mem ha
+
+theorem activatedM_eq_selected_mul_nonselected (st : StageState) {a b p : ℕ}
+    (ha : a ∈ st.P) :
+    activatedM st b p =
+      activatedModulus st b p a *
+        ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+          activatedModulus st b p (i : ℕ) := by
+  rw [activatedM]
+  exact prod_eq_selected_mul_nonselected (activatedActiveSet st b)
+    (activatedModulus st b p) (activated_active_mem_old st ha)
+
+lemma activated_selected_coprime_nonselected_prod (st : StageState) {a b p : ℕ}
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p) :
+    Nat.Coprime (activatedModulus st b p a)
+      (∏ i : NonselectedIndex (activatedActiveSet st b) a,
+        activatedModulus st b p (i : ℕ)) := by
+  classical
+  rw [Nat.coprime_fintype_prod_right_iff]
+  intro i
+  rcases Finset.mem_erase.mp i.property with ⟨hia, hiP⟩
+  exact activated_m_pairwise_coprime st hbDormant hp (activated_active_mem_old st ha)
+    hiP hia.symm
+
+lemma activated_pairwise_coprime_nonselected (st : StageState) {a b p : ℕ}
+    (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p) :
+    Pairwise fun i j : NonselectedIndex (activatedActiveSet st b) a =>
+      Nat.Coprime (activatedModulus st b p (i : ℕ))
+        (activatedModulus st b p (j : ℕ)) := by
+  intro i j hij
+  rcases Finset.mem_erase.mp i.property with ⟨_hia, hiP⟩
+  rcases Finset.mem_erase.mp j.property with ⟨_hja, hjP⟩
+  exact activated_m_pairwise_coprime st hbDormant hp hiP hjP
+    (fun hijNat => hij (Subtype.ext hijNat))
+
+lemma activated_nonselected_product_pos (st : StageState) {a b p : ℕ}
+    (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p) :
+    0 < ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+      activatedModulus st b p (i : ℕ) := by
+  classical
+  exact Finset.prod_pos fun i _hi =>
+    (activated_m_prime st hbDormant hp (i : ℕ) ((Finset.mem_erase.mp i.property).2)).pos
+
+lemma activated_exact_product_pos (st : StageState) {a b p : ℕ}
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p) :
+    0 < activatedModulus st b p a *
+      ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+        activatedModulus st b p (i : ℕ) := by
+  exact Nat.mul_pos
+    ((activated_m_prime st hbDormant hp a (activated_active_mem_old st ha)).pos)
+    (activated_nonselected_product_pos st hbDormant hp)
+
 /--
 Concrete numeric and CRT choices for one service-and-tail stage after activating
 `b`.  The inequality fields are intentionally added only as later lemmas need
