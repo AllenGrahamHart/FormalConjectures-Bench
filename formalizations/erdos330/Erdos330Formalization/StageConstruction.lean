@@ -865,4 +865,37 @@ noncomputable def nextStageStateOfParams (st : StageState) {a b p : ℕ}
     exists_dormant := hexists_dormant
   }
 
+theorem exists_stageExtension_of_params {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p)
+    (ha : a ∈ st.P) (hbS : b ∈ st.S) (hbDormant : b ∉ st.P)
+    (hp : FreshPrimeData st p)
+    (hN : st.X < params.N) (hK : st.X < params.K)
+    (hX_next : st.X ≤ params.nextX) (hR_next : st.R ≤ params.nextR)
+    (hlower : params.N + params.L ≤ params.nextX)
+    (hprivate : params.serviceR ≤ params.nextX)
+    (hnew_avoid :
+      ∀ c ∈ activatedActiveSet st b, ∀ s ∈ params.nextS, s ∉ st.S →
+        (s : ZMod (activatedModulus st b p c)) ≠
+          (c : ZMod (activatedModulus st b p c)))
+    (hreservoir_long : params.K + 3 * params.Mplus ≤ params.nextX)
+    (hheadroom : params.K + params.nextX + 3 * params.Mplus ≤ params.nextR)
+    (hcoverage :
+      ∀ n : ℕ, st.coverStart ≤ n → n ≤ params.nextR → n ∈ twoFoldFinset params.nextS)
+    (hexists_dormant : ∃ c ∈ params.nextS, c ∉ activatedActiveSet st b) :
+    ∃ st' : StageState,
+      StageExtension st st' ∧
+        st'.S = params.nextS ∧ st'.P = activatedActiveSet st b ∧
+          st'.m = activatedModulus st b p ∧ st'.M = activatedM st b p ∧
+            st'.H = params.K ∧ st'.X = params.nextX ∧
+              st'.R = params.nextR ∧ st'.coverStart = st.coverStart := by
+  let st' := nextStageStateOfParams st params hbS hbDormant hp
+    (params.nextS_le_nextX hX_next hlower hprivate)
+    (stageParams_isolated_of_new_avoid params hbS hbDormant hp hnew_avoid)
+    hreservoir_long hheadroom hcoverage hexists_dormant
+  refine ⟨st', ?_, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩
+  refine stageExtension_of_stageParams_next_state params (st' := st') rfl rfl ?_ rfl
+    hX_next hR_next ha hN hK
+  intro c hc
+  exact activatedModulus_old_of_mem st hbDormant hc
+
 end Erdos330Formalization
