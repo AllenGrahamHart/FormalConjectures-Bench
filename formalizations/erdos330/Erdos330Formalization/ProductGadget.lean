@@ -339,4 +339,170 @@ theorem product_compl_private_subset_T_add_T {ι : Type*}
     · exact productBase_subset_productT p0 p β e data h u1 u2 ⟨hy0, hy'⟩
     · ext <;> simp [hxy0, hxy']
 
+theorem product_T_add_T_subset_compl_private {ι : Type*}
+    [Fintype ι]
+    (p : ι → ℕ)
+    (p0 : ℕ) [Fact p0.Prime] [NeZero p0]
+    (hp0_3 : p0 % 4 = 3)
+    (β e : ∀ i : ι, ZMod (p i))
+    (data : ∀ i, SafePairData (ZMod (p i)) (e i))
+    (h u1 u2 : ZMod p0)
+    (hu1QR : u1 ∈ QR p0) (hu2QR : u2 ∈ QR p0) (hu12 : u1 ≠ u2)
+    (hbase_sum : ((shiftedQRDelete p0 h ({u1, u2} : Finset (ZMod p0)) :
+          Set (ZMod p0)) +
+        (shiftedQRDelete p0 h ({u1, u2} : Finset (ZMod p0)) : Set (ZMod p0))) =
+      Set.univ \ ({h + h} : Set (ZMod p0))) :
+    (productT p0 p β e data h u1 u2 : Set (ProductSpace p0 p)) +
+        (productT p0 p β e data h u1 u2 : Set (ProductSpace p0 p)) ⊆
+      Set.univ \ productPrivateSlice p0 p β e h := by
+  classical
+  rintro z ⟨x, hx, y, hy, hxy⟩
+  refine ⟨Set.mem_univ z, ?_⟩
+  rintro ⟨hzsel, hznotcoord⟩
+  have hselxy : x.1 + y.1 = h + h := by
+    have := congrArg Prod.fst hxy
+    simpa [hzsel] using this
+  have hrestxy : x.2 + y.2 = z.2 := by
+    have := congrArg Prod.snd hxy
+    simpa using this
+  have hu1U : u1 ∈ ({u1, u2} : Finset (ZMod p0)) := by simp
+  have hu2U : u2 ∈ ({u1, u2} : Finset (ZMod p0)) := by simp
+  have hu21 : u2 ≠ u1 := fun h21 => hu12 h21.symm
+  have hBB
+      (hxB : x ∈ productBase p0 p h ({u1, u2} : Finset (ZMod p0)) β)
+      (hyB : y ∈ productBase p0 p h ({u1, u2} : Finset (ZMod p0)) β) : False := by
+    have hmem : x.1 + y.1 ∈
+        (shiftedQRDelete p0 h ({u1, u2} : Finset (ZMod p0)) : Set (ZMod p0)) +
+          (shiftedQRDelete p0 h ({u1, u2} : Finset (ZMod p0)) : Set (ZMod p0)) :=
+      ⟨x.1, hxB.1, y.1, hyB.1, rfl⟩
+    rw [hbase_sum] at hmem
+    exact hmem.2 (by simp [hselxy])
+  have hLRtrue
+      (hxL : x ∈ productLeftCorrection p0 p β e data h u1 true)
+      (hyR : y ∈ productRightCorrection p0 p β e data h u1 true) : False := by
+    have hcoord : affineDoubleNormalize p β z.2 ∈ coordinateTarget p e :=
+      affineLeftRight_sum_subset_coordinateTarget p β e data true
+        ⟨x.2, hxL.2, y.2, hyR.2, hrestxy⟩
+    exact hznotcoord hcoord
+  have hRLtrue
+      (hxR : x ∈ productRightCorrection p0 p β e data h u1 true)
+      (hyL : y ∈ productLeftCorrection p0 p β e data h u1 true) : False := by
+    have hcoord : affineDoubleNormalize p β z.2 ∈ coordinateTarget p e :=
+      affineRightLeft_sum_subset_coordinateTarget p β e data true
+        ⟨x.2, hxR.2, y.2, hyL.2, hrestxy⟩
+    exact hznotcoord hcoord
+  have hLRfalse
+      (hxL : x ∈ productLeftCorrection p0 p β e data h u2 false)
+      (hyR : y ∈ productRightCorrection p0 p β e data h u2 false) : False := by
+    have hcoord : affineDoubleNormalize p β z.2 ∈ coordinateTarget p e :=
+      affineLeftRight_sum_subset_coordinateTarget p β e data false
+        ⟨x.2, hxL.2, y.2, hyR.2, hrestxy⟩
+    exact hznotcoord hcoord
+  have hRLfalse
+      (hxR : x ∈ productRightCorrection p0 p β e data h u2 false)
+      (hyL : y ∈ productLeftCorrection p0 p β e data h u2 false) : False := by
+    have hcoord : affineDoubleNormalize p β z.2 ∈ coordinateTarget p e :=
+      affineRightLeft_sum_subset_coordinateTarget p β e data false
+        ⟨x.2, hxR.2, y.2, hyL.2, hrestxy⟩
+    exact hznotcoord hcoord
+  rcases hx with hxB | hx
+  · rcases hy with hyB | hy
+    · exact hBB hxB hyB
+    rcases hy with hyL1 | hy
+    · exact shiftedQRDelete_add_leftCorrection_ne_tau hp0_3 h u1 x.1
+        ({u1, u2} : Finset (ZMod p0)) hu1QR hxB.1
+        (by simpa [hyL1.1] using hselxy)
+    rcases hy with hyR1 | hy
+    · exact shiftedQRDelete_add_rightCorrection_ne_tau h u1 x.1
+        ({u1, u2} : Finset (ZMod p0)) hu1U hxB.1
+        (by simpa [hyR1.1] using hselxy)
+    rcases hy with hyL2 | hyR2
+    · exact shiftedQRDelete_add_leftCorrection_ne_tau hp0_3 h u2 x.1
+        ({u1, u2} : Finset (ZMod p0)) hu2QR hxB.1
+        (by simpa [hyL2.1] using hselxy)
+    · exact shiftedQRDelete_add_rightCorrection_ne_tau h u2 x.1
+        ({u1, u2} : Finset (ZMod p0)) hu2U hxB.1
+        (by simpa [hyR2.1] using hselxy)
+  rcases hx with hxL1 | hx
+  · rcases hy with hyB | hy
+    · exact leftCorrection_add_shiftedQRDelete_ne_tau hp0_3 h u1 y.1
+        ({u1, u2} : Finset (ZMod p0)) hu1QR hyB.1
+        (by simpa [hxL1.1] using hselxy)
+    rcases hy with hyL1 | hy
+    · exact leftCorrection_add_leftCorrection_ne_tau hp0_3 h u1 u1 hu1QR hu1QR
+        (by simpa [hxL1.1, hyL1.1] using hselxy)
+    rcases hy with hyR1 | hy
+    · exact hLRtrue hxL1 hyR1
+    rcases hy with hyL2 | hyR2
+    · exact leftCorrection_add_leftCorrection_ne_tau hp0_3 h u1 u2 hu1QR hu2QR
+        (by simpa [hxL1.1, hyL2.1] using hselxy)
+    · exact leftCorrection_add_rightCorrection_ne_tau_of_ne h u1 u2 hu12
+        (by simpa [hxL1.1, hyR2.1] using hselxy)
+  rcases hx with hxR1 | hx
+  · rcases hy with hyB | hy
+    · exact rightCorrection_add_shiftedQRDelete_ne_tau h u1 y.1
+        ({u1, u2} : Finset (ZMod p0)) hu1U hyB.1
+        (by simpa [hxR1.1] using hselxy)
+    rcases hy with hyL1 | hy
+    · exact hRLtrue hxR1 hyL1
+    rcases hy with hyR1 | hy
+    · exact rightCorrection_add_rightCorrection_ne_tau hp0_3 h u1 u1 hu1QR hu1QR
+        (by simpa [hxR1.1, hyR1.1] using hselxy)
+    rcases hy with hyL2 | hyR2
+    · exact rightCorrection_add_leftCorrection_ne_tau_of_ne h u1 u2 hu12
+        (by simpa [hxR1.1, hyL2.1] using hselxy)
+    · exact rightCorrection_add_rightCorrection_ne_tau hp0_3 h u1 u2 hu1QR hu2QR
+        (by simpa [hxR1.1, hyR2.1] using hselxy)
+  rcases hx with hxL2 | hxR2
+  · rcases hy with hyB | hy
+    · exact leftCorrection_add_shiftedQRDelete_ne_tau hp0_3 h u2 y.1
+        ({u1, u2} : Finset (ZMod p0)) hu2QR hyB.1
+        (by simpa [hxL2.1] using hselxy)
+    rcases hy with hyL1 | hy
+    · exact leftCorrection_add_leftCorrection_ne_tau hp0_3 h u2 u1 hu2QR hu1QR
+        (by simpa [hxL2.1, hyL1.1] using hselxy)
+    rcases hy with hyR1 | hy
+    · exact leftCorrection_add_rightCorrection_ne_tau_of_ne h u2 u1 hu21
+        (by simpa [hxL2.1, hyR1.1] using hselxy)
+    rcases hy with hyL2 | hyR2
+    · exact leftCorrection_add_leftCorrection_ne_tau hp0_3 h u2 u2 hu2QR hu2QR
+        (by simpa [hxL2.1, hyL2.1] using hselxy)
+    · exact hLRfalse hxL2 hyR2
+  · rcases hy with hyB | hy
+    · exact rightCorrection_add_shiftedQRDelete_ne_tau h u2 y.1
+        ({u1, u2} : Finset (ZMod p0)) hu2U hyB.1
+        (by simpa [hxR2.1] using hselxy)
+    rcases hy with hyL1 | hy
+    · exact rightCorrection_add_leftCorrection_ne_tau_of_ne h u2 u1 hu21
+        (by simpa [hxR2.1, hyL1.1] using hselxy)
+    rcases hy with hyR1 | hy
+    · exact rightCorrection_add_rightCorrection_ne_tau hp0_3 h u2 u1 hu2QR hu1QR
+        (by simpa [hxR2.1, hyR1.1] using hselxy)
+    rcases hy with hyL2 | hyR2
+    · exact hRLfalse hxR2 hyL2
+    · exact rightCorrection_add_rightCorrection_ne_tau hp0_3 h u2 u2 hu2QR hu2QR
+        (by simpa [hxR2.1, hyR2.1] using hselxy)
+
+theorem product_T_add_T_eq_compl_private {ι : Type*}
+    [Fintype ι] [DecidableEq ι]
+    (p : ι → ℕ) [∀ i, Fact (Nat.Prime (p i))]
+    (hp7 : ∀ i, 7 ≤ p i)
+    (p0 : ℕ) [Fact p0.Prime] [NeZero p0]
+    (hp0_3 : p0 % 4 = 3)
+    (β e : ∀ i : ι, ZMod (p i))
+    (data : ∀ i, SafePairData (ZMod (p i)) (e i))
+    (h u1 u2 : ZMod p0)
+    (hu1QR : u1 ∈ QR p0) (hu2QR : u2 ∈ QR p0) (hu12 : u1 ≠ u2)
+    (hbase_sum : ((shiftedQRDelete p0 h ({u1, u2} : Finset (ZMod p0)) :
+          Set (ZMod p0)) +
+        (shiftedQRDelete p0 h ({u1, u2} : Finset (ZMod p0)) : Set (ZMod p0))) =
+      Set.univ \ ({h + h} : Set (ZMod p0))) :
+    ((productT p0 p β e data h u1 u2 : Set (ProductSpace p0 p)) +
+        (productT p0 p β e data h u1 u2 : Set (ProductSpace p0 p))) =
+      Set.univ \ productPrivateSlice p0 p β e h := by
+  apply Set.Subset.antisymm
+  · exact product_T_add_T_subset_compl_private p p0 hp0_3 β e data h u1 u2 hu1QR
+      hu2QR hu12 hbase_sum
+  · exact product_compl_private_subset_T_add_T p hp7 p0 β e data h u1 u2 hbase_sum
+
 end Erdos330Formalization
