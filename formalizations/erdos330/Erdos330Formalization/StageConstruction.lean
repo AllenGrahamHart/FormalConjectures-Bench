@@ -365,6 +365,26 @@ structure StageParams (st : StageState) (a b p : ℕ) where
   L : ℕ
   LZ : ℕ
 
+noncomputable def canonicalStageParams (st : StageState) {a b p : ℕ}
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p)
+    (N L LZ : ℕ) : StageParams st a b p :=
+  {
+    Dplus := activatedCRTAllowedFinsetAtM st ha hbDormant hp
+    G := Classical.choice (exists_activated_CRTGadget_on_allowedAtM st ha hbDormant hp)
+    N := N
+    L := L
+    LZ := LZ
+  }
+
+theorem canonicalStageParams_Dplus_add_self_eq_univ (st : StageState) {a b p : ℕ}
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p)
+    (N L LZ : ℕ) :
+    let params := canonicalStageParams st ha hbDormant hp N L LZ
+    ((params.Dplus : Set (ZMod (activatedM st b p))) +
+      (params.Dplus : Set (ZMod (activatedM st b p)))) = Set.univ := by
+  dsimp [canonicalStageParams]
+  exact activatedCRTAllowedFinsetAtM_add_self_eq_univ st ha hbDormant hp
+
 namespace StageParams
 
 def Mplus {st : StageState} {a b p : ℕ} (_params : StageParams st a b p) : ℕ :=
