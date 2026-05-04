@@ -125,6 +125,20 @@ theorem gadget_residueBlock_cover (st : StageState) {a N L n : ℕ}
   intro Jlo hJlo hJhi γ
   exact exists_reservoir_helper_for_gadget_in_window st G hJlo hJhi γ
 
+theorem gadget_T_middle_residueBlock_cover (st : StageState) {a N L n : ℕ}
+    [NeZero st.M] (G : CRTGadget st.P st.m st.M a st.D)
+    (hML : st.M ≤ L) (hnlo : 2 * N + st.M ≤ n)
+    (hnhi : n ≤ 2 * N + 2 * L - st.M)
+    (hnot_private : (n : ZMod st.M) ∉
+      ((fun x : ZMod st.M => (a : ZMod st.M) + x) '' (G.Pstar : Set (ZMod st.M)))) :
+    n ∈ twoFoldFinset (residueBlockFinset st.M G.T N (N + L)) := by
+  have hres : (n : ZMod st.M) ∈
+      (G.T : Set (ZMod st.M)) + (G.T : Set (ZMod st.M)) := by
+    rw [G.T_add_T_compl_private]
+    exact ⟨Set.mem_univ _, hnot_private⟩
+  exact residueBlockFinset_middle_mem_twoFold_self (M := st.M) (N := N) (L := L)
+    (n := n) hML hnlo hnhi hres
+
 theorem exists_reservoir_helper_for_gadget_avoiding (st : StageState) {a p : ℕ}
     [NeZero p] (G : CRTGadget st.P st.m st.M a st.D)
     (hpX : st.X < p) (forbidden : ZMod p) (γ : ZMod st.M) :
