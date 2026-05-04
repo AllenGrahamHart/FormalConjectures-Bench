@@ -43,6 +43,10 @@ noncomputable def addEquivTranslatePreimageFinset {α β : Type*} [Fintype α]
   classical
   exact Finset.univ.filter fun x => φ (a + x) ∈ S
 
+noncomputable def setFiniteFinset {α : Type*} [Fintype α] (S : Set α) : Finset α := by
+  classical
+  exact Finset.univ.filter fun x => x ∈ S
+
 theorem coe_addEquivPreimageFinset {α β : Type*} [Fintype α] [Add α] [Add β]
     (φ : α ≃+ β) (S : Set β) :
     (addEquivPreimageFinset φ S : Set α) = {x | φ x ∈ S} := by
@@ -56,6 +60,11 @@ theorem coe_addEquivTranslatePreimageFinset {α β : Type*} [Fintype α]
   classical
   ext x
   simp [addEquivTranslatePreimageFinset]
+
+theorem mem_setFiniteFinset {α : Type*} [Fintype α] (S : Set α) (x : α) :
+    x ∈ setFiniteFinset S ↔ x ∈ S := by
+  classical
+  simp [setFiniteFinset]
 
 theorem addEquiv_preimage_add_eq_compl {α β : Type*} [Add α] [Add β]
     (φ : α ≃+ β) (A B P : Set β) (hAB : A + B = Set.univ \ P) :
@@ -118,6 +127,47 @@ theorem addEquivPreimageFinset_subset {α β : Type*} [Fintype α] [Add α] [Add
   intro x hx
   simp [addEquivPreimageFinset] at hx ⊢
   exact hAB hx
+
+theorem addEquivPreimageFinset_card_eq {α β : Type*}
+    [Fintype α] [Fintype β] [Add α] [Add β]
+    (φ : α ≃+ β) (S : Set β) :
+    (addEquivPreimageFinset φ S).card = (setFiniteFinset S).card := by
+  classical
+  refine Finset.card_bij (fun x _ => φ x) ?_ ?_ ?_
+  · intro x hx
+    rw [mem_setFiniteFinset]
+    simp [addEquivPreimageFinset] at hx
+    exact hx
+  · intro x _ y _ hxy
+    exact φ.injective hxy
+  · intro y hy
+    refine ⟨φ.symm y, ?_, ?_⟩
+    · simp [addEquivPreimageFinset]
+      rwa [mem_setFiniteFinset] at hy
+    · simp
+
+theorem addEquivTranslatePreimageFinset_card_eq_preimage {α β : Type*}
+    [Fintype α] [AddGroup α] [Add β]
+    (a : α) (φ : α ≃+ β) (S : Set β) :
+    (addEquivTranslatePreimageFinset a φ S).card = (addEquivPreimageFinset φ S).card := by
+  classical
+  refine Finset.card_bij (fun x _ => a + x) ?_ ?_ ?_
+  · intro x hx
+    simp [addEquivTranslatePreimageFinset, addEquivPreimageFinset] at hx ⊢
+    exact hx
+  · intro x _ y _ hxy
+    exact add_left_cancel hxy
+  · intro y hy
+    refine ⟨-a + y, ?_, ?_⟩
+    · simp [addEquivTranslatePreimageFinset, addEquivPreimageFinset] at hy ⊢
+      have hsum : a + (-a + y) = y := by simp
+      have hEq : φ a + (φ (-a) + φ y) = φ y := by
+        calc
+          φ a + (φ (-a) + φ y) = φ (a + (-a + y)) := by
+            rw [← φ.map_add (-a) y, ← φ.map_add a (-a + y)]
+          _ = φ y := by rw [hsum]
+      rwa [hEq]
+    · simp
 
 noncomputable def zmodProdEquivPi {ι : Type*} [Fintype ι]
     (m : ι → ℕ) (hcoprime : Pairwise fun i j => Nat.Coprime (m i) (m j)) :
