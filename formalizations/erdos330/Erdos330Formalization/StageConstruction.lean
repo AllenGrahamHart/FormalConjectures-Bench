@@ -770,6 +770,15 @@ theorem protectedSumBlock_card_eq_partner {st : StageState} {a b p : ℕ}
   rw [protectedSumBlock]
   exact Finset.card_image_of_injective _ (fun x y hxy => Nat.add_left_cancel hxy)
 
+theorem protectedSumBlock_density_of_partner_density {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p) {densityNumerator densityDenominator : ℕ}
+    (hpartner :
+      densityNumerator * params.protectedEndpoint ≤
+        densityDenominator * params.protectedPartnerBlock.card) :
+    densityNumerator * params.protectedEndpoint ≤
+      densityDenominator * params.protectedSumBlock.card := by
+  rwa [protectedSumBlock_card_eq_partner params]
+
 theorem protectedSumBlock_private_of_pair_exclusions {st : StageState} {a b p : ℕ}
     (params : StageParams st a b p) [NeZero (activatedM st b p)]
     (haS : a ∈ st.S) (hN : st.X < params.N)
