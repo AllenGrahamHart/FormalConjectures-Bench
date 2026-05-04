@@ -497,6 +497,7 @@ theorem exists_selected_coordinate_strong_pair_data (p : ℕ) [Fact p.Prime] [Ne
     (hp3 : p % 4 = 3) (hp23 : 23 ≤ p) (α : ZMod p) :
     ∃ h u1 u2 : ZMod p,
       u1 ∈ QR p ∧ u2 ∈ QR p ∧ u1 ≠ u2 ∧
+      h + h ≠ α + α ∧
       u1 ≠ α - h ∧ u2 ≠ α - h ∧
       u1 ≠ -(α - h) ∧ u2 ≠ -(α - h) ∧
       ((shiftedQRDelete p h ({u1, u2} : Finset (ZMod p)) : Set (ZMod p)) +
@@ -526,7 +527,25 @@ theorem exists_selected_coordinate_strong_pair_data (p : ℕ) [Fact p.Prime] [Ne
     · exact hu1QR
     · exact hu2QR
   have hUcard : ({u1, u2} : Finset (ZMod p)).card = 2 := Finset.card_pair hu12
-  refine ⟨h, u1, u2, hu1QR, hu2QR, hu12, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  have hv0 : v ≠ 0 := by
+    intro hv0
+    apply hvnsq
+    rw [hv0]
+    exact IsSquare.zero
+  have hτ_ne : h + h ≠ α + α := by
+    intro hτ
+    have hv2 : (2 : ZMod p) * v = 0 := by
+      dsimp [h] at hτ
+      linear_combination -hτ
+    rcases mul_eq_zero.mp hv2 with htwo | hv
+    · have htwo' : (2 : ZMod p) ≠ 0 := by
+        intro hzero
+        have hdiv : p ∣ 2 := (ZMod.natCast_eq_zero_iff 2 p).mp hzero
+        have hp2 : p ≤ 2 := Nat.le_of_dvd (by omega) hdiv
+        omega
+      exact htwo' htwo
+    · exact hv0 hv
+  refine ⟨h, u1, u2, hu1QR, hu2QR, hu12, hτ_ne, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
   · simpa [h] using hu1v
   · simpa [h] using hu2v
   · simpa [h] using hu1negv
