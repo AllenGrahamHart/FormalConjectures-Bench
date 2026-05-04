@@ -218,6 +218,66 @@ theorem productAllowed_add_productT_eq_univ {ι : Type*}
   refine ⟨a, ha, t, ?_, hsum⟩
   exact productBase_subset_productT p0 p β e data h u1 u2 ht
 
+lemma shiftedQRDelete_add_leftCorrection_ne_tau {p0 : ℕ} [Fact p0.Prime] [NeZero p0]
+    (hp3 : p0 % 4 = 3) (h u x : ZMod p0) (U : Finset (ZMod p0))
+    (huQR : u ∈ QR p0) (hx : x ∈ shiftedQRDelete p0 h U) :
+    x + (h + u) ≠ h + h := by
+  intro hsum
+  have hx_eq : x = h - u := by linear_combination hsum
+  exact notMem_shiftedQRDelete_sub_QR hp3 h u U huQR (by simpa [hx_eq] using hx)
+
+lemma shiftedQRDelete_add_rightCorrection_ne_tau {p0 : ℕ} [NeZero p0]
+    (h u x : ZMod p0) (U : Finset (ZMod p0))
+    (huU : u ∈ U) (hx : x ∈ shiftedQRDelete p0 h U) :
+    x + (h - u) ≠ h + h := by
+  intro hsum
+  have hx_eq : x = h + u := by linear_combination hsum
+  exact notMem_shiftedQRDelete_add_deleted h u U huU (by simpa [hx_eq] using hx)
+
+lemma leftCorrection_add_shiftedQRDelete_ne_tau {p0 : ℕ} [Fact p0.Prime] [NeZero p0]
+    (hp3 : p0 % 4 = 3) (h u x : ZMod p0) (U : Finset (ZMod p0))
+    (huQR : u ∈ QR p0) (hx : x ∈ shiftedQRDelete p0 h U) :
+    (h + u) + x ≠ h + h := by
+  intro hsum
+  exact shiftedQRDelete_add_leftCorrection_ne_tau hp3 h u x U huQR hx
+    (by simpa [add_comm] using hsum)
+
+lemma rightCorrection_add_shiftedQRDelete_ne_tau {p0 : ℕ} [NeZero p0]
+    (h u x : ZMod p0) (U : Finset (ZMod p0))
+    (huU : u ∈ U) (hx : x ∈ shiftedQRDelete p0 h U) :
+    (h - u) + x ≠ h + h := by
+  intro hsum
+  exact shiftedQRDelete_add_rightCorrection_ne_tau h u x U huU hx
+    (by simpa [add_comm] using hsum)
+
+lemma leftCorrection_add_leftCorrection_ne_tau {p0 : ℕ} [Fact p0.Prime] [NeZero p0]
+    (hp3 : p0 % 4 = 3) (h u v : ZMod p0) (huQR : u ∈ QR p0) (hvQR : v ∈ QR p0) :
+    (h + u) + (h + v) ≠ h + h := by
+  intro hsum
+  have huv : u + v = 0 := by linear_combination hsum
+  exact QR_add_ne_zero hp3 huQR hvQR huv
+
+lemma rightCorrection_add_rightCorrection_ne_tau {p0 : ℕ} [Fact p0.Prime] [NeZero p0]
+    (hp3 : p0 % 4 = 3) (h u v : ZMod p0) (huQR : u ∈ QR p0) (hvQR : v ∈ QR p0) :
+    (h - u) + (h - v) ≠ h + h := by
+  intro hsum
+  have huv : u + v = 0 := by linear_combination -hsum
+  exact QR_add_ne_zero hp3 huQR hvQR huv
+
+lemma leftCorrection_add_rightCorrection_ne_tau_of_ne {p0 : ℕ}
+    (h u v : ZMod p0) (huv : u ≠ v) :
+    (h + u) + (h - v) ≠ h + h := by
+  intro hsum
+  apply huv
+  linear_combination hsum
+
+lemma rightCorrection_add_leftCorrection_ne_tau_of_ne {p0 : ℕ}
+    (h u v : ZMod p0) (huv : u ≠ v) :
+    (h - u) + (h + v) ≠ h + h := by
+  intro hsum
+  apply huv
+  linear_combination -hsum
+
 theorem product_compl_private_subset_T_add_T {ι : Type*}
     [Fintype ι] [DecidableEq ι]
     (p : ι → ℕ) [∀ i, Fact (Nat.Prime (p i))]
