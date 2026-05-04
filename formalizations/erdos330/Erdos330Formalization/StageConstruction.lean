@@ -766,13 +766,32 @@ theorem exists_activated_exact_product_CRTGadget_on_allowed (st : StageState)
     exists_activated_exact_product_CRTGadget_on_allowed_with_eqs st ha hbDormant hp
   exact ⟨G⟩
 
+noncomputable def CRTGadget.castModulus {P : Finset ℕ} {m : ℕ → ℕ} {M M' a : ℕ}
+    {D : Finset (ZMod M')} (hM : M = M') (G : CRTGadget P m M' a D) :
+    CRTGadget P m M a (Eq.mp (congrArg (fun q => Finset (ZMod q)) hM.symm) D) := by
+  cases hM
+  simpa using G
+
+theorem CRTGadget.castModulus_Tbase {P : Finset ℕ} {m : ℕ → ℕ} {M M' a : ℕ}
+    {D : Finset (ZMod M')} (hM : M = M') (G : CRTGadget P m M' a D) :
+    (CRTGadget.castModulus hM G).Tbase =
+      Eq.mp (congrArg (fun q => Finset (ZMod q)) hM.symm) G.Tbase := by
+  cases hM
+  rfl
+
+theorem eqMp_zmodFinset_eq_of_eq {M M' : ℕ} (h1 h2 : M = M')
+    (D : Finset (ZMod M')) :
+    Eq.mp (congrArg (fun q => Finset (ZMod q)) h1.symm) D =
+      Eq.mp (congrArg (fun q => Finset (ZMod q)) h2.symm) D := by
+  cases h1
+  rfl
+
 theorem CRTGadget.cast_modulus {P : Finset ℕ} {m : ℕ → ℕ} {M M' a : ℕ}
     {D : Finset (ZMod M')} (hM : M = M')
     (hG : Nonempty (CRTGadget P m M' a D)) :
     Nonempty (CRTGadget P m M a
       (Eq.mp (congrArg (fun q => Finset (ZMod q)) hM.symm) D)) := by
-  cases hM
-  simpa using hG
+  exact hG.elim fun G => ⟨CRTGadget.castModulus hM G⟩
 
 theorem exists_activated_CRTGadget_on_allowedAtM (st : StageState)
     {a b p : ℕ} (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p) :
@@ -812,6 +831,88 @@ noncomputable def canonicalStageParams (st : StageState) {a b p : ℕ}
     L := L
     LZ := LZ
   }
+
+noncomputable def stageParamsOfActivatedExactGadget (st : StageState) {a b p : ℕ}
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p)
+    (G : CRTGadget (activatedActiveSet st b) (activatedModulus st b p)
+      (activatedModulus st b p a *
+        ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+          activatedModulus st b p (i : ℕ))
+      a (activatedCRTAllowedFinsetExact st ha hbDormant hp))
+    (N L LZ : ℕ) : StageParams st a b p :=
+  let hM : activatedM st b p =
+      activatedModulus st b p a *
+        ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+          activatedModulus st b p (i : ℕ) :=
+    activatedM_eq_selected_mul_nonselected (a := a) (b := b) (p := p) st ha
+  {
+    Dplus := activatedCRTAllowedFinsetAtM st ha hbDormant hp
+    G := CRTGadget.castModulus hM G
+    N := N
+    L := L
+    LZ := LZ
+  }
+
+theorem stageParamsOfActivatedExactGadget_Dplus_eq (st : StageState) {a b p : ℕ}
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p)
+    (G : CRTGadget (activatedActiveSet st b) (activatedModulus st b p)
+      (activatedModulus st b p a *
+        ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+          activatedModulus st b p (i : ℕ))
+      a (activatedCRTAllowedFinsetExact st ha hbDormant hp))
+    (N L LZ : ℕ) :
+    (stageParamsOfActivatedExactGadget st ha hbDormant hp G N L LZ).Dplus =
+      activatedCRTAllowedFinsetAtM st ha hbDormant hp := by
+  rfl
+
+theorem stageParamsOfActivatedExactGadget_Tbase_eq (st : StageState) {a b p : ℕ}
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p)
+    (G : CRTGadget (activatedActiveSet st b) (activatedModulus st b p)
+      (activatedModulus st b p a *
+        ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+          activatedModulus st b p (i : ℕ))
+      a (activatedCRTAllowedFinsetExact st ha hbDormant hp))
+    (N L LZ : ℕ) (h u1 u2 : ZMod (activatedModulus st b p a))
+    (hG : G.Tbase = activatedCRTTbaseFinsetExact st ha hbDormant hp h u1 u2) :
+    (stageParamsOfActivatedExactGadget st ha hbDormant hp G N L LZ).G.Tbase =
+      activatedCRTTbaseFinsetAtM st ha hbDormant hp h u1 u2 := by
+  dsimp [stageParamsOfActivatedExactGadget, activatedCRTTbaseFinsetAtM]
+  rw [CRTGadget.castModulus_Tbase, hG]
+  exact eqMp_zmodFinset_eq_of_eq
+    (activatedM_eq_selected_mul_nonselected (a := a) (b := b) (p := p) st ha)
+    (activatedM_eq_selected_mul_nonselected (a := a) (b := b) (p := p) st ha)
+    (activatedCRTTbaseFinsetExact st ha hbDormant hp h u1 u2)
+
+theorem exists_stageParams_with_activated_Tbase_eq (st : StageState) {a b p : ℕ}
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p)
+    (N L LZ : ℕ) :
+    ∃ h u1 u2 : ZMod (activatedModulus st b p a),
+      ∃ params : StageParams st a b p,
+        params.Dplus = activatedCRTAllowedFinsetAtM st ha hbDormant hp ∧
+        params.G.Tbase = activatedCRTTbaseFinsetAtM st ha hbDormant hp h u1 u2 := by
+  classical
+  letI : Fact (Nat.Prime (activatedModulus st b p a)) :=
+    ⟨activated_m_prime st hbDormant hp a (activated_active_mem_old st ha)⟩
+  letI : NeZero (activatedModulus st b p a) :=
+    NeZero.of_pos
+      ((activated_m_prime st hbDormant hp a (activated_active_mem_old st ha)).pos)
+  letI : NeZero (activatedModulus st b p a *
+      ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+        activatedModulus st b p (i : ℕ)) :=
+    NeZero.of_pos (activated_exact_product_pos st ha hbDormant hp)
+  letI : (i : NonselectedIndex (activatedActiveSet st b) a) →
+      Fact (Nat.Prime (activatedModulus st b p (i : ℕ))) := fun i =>
+    ⟨activated_m_prime st hbDormant hp (i : ℕ) ((Finset.mem_erase.mp i.property).2)⟩
+  letI : (i : NonselectedIndex (activatedActiveSet st b) a) →
+      Fintype (ZMod (activatedModulus st b p (i : ℕ))) := fun _ =>
+    inferInstance
+  obtain ⟨h, u1, u2, G, _hT, _hPstar, hTbase⟩ :=
+    exists_activated_exact_product_CRTGadget_on_allowed_with_eqs st ha hbDormant hp
+  let params := stageParamsOfActivatedExactGadget st ha hbDormant hp G N L LZ
+  refine ⟨h, u1, u2, params, ?_, ?_⟩
+  · exact stageParamsOfActivatedExactGadget_Dplus_eq st ha hbDormant hp G N L LZ
+  · exact stageParamsOfActivatedExactGadget_Tbase_eq st ha hbDormant hp G N L LZ
+      h u1 u2 hTbase
 
 theorem canonicalStageParams_Dplus_add_self_eq_univ (st : StageState) {a b p : ℕ}
     (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p)
