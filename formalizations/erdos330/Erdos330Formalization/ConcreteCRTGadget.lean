@@ -98,4 +98,63 @@ theorem exists_crtProduct_CRTGadget_of_subtype_product_index
       intro b
       rfl
 
+theorem exists_crtProduct_CRTGadget_for_exact_product
+    (P : Finset ℕ) (m : ℕ → ℕ) (a : ℕ)
+    [Fact (Nat.Prime (m a))] [NeZero (m a)]
+    [NeZero (m a * ∏ i : NonselectedIndex P a, m (i : ℕ))]
+    [(i : NonselectedIndex P a) → Fact (Nat.Prime (m (i : ℕ)))]
+    [(i : NonselectedIndex P a) → Fintype (ZMod (m (i : ℕ)))]
+    (hma23 : 23 ≤ m a) (hma3 : m a % 4 = 3)
+    (hm_ge7 : ∀ i : NonselectedIndex P a, 7 ≤ m (i : ℕ))
+    (hcop0 : Nat.Coprime (m a) (∏ i : NonselectedIndex P a, m (i : ℕ)))
+    (hcop : Pairwise fun i j : NonselectedIndex P a => Nat.Coprime (m (i : ℕ)) (m (j : ℕ))) :
+    ∃ h u1 u2 : ZMod (m a),
+      ∃ G : CRTGadget P m (m a * ∏ i : NonselectedIndex P a, m (i : ℕ)) a
+          (crtProductAllowedFinset (m a * ∏ i : NonselectedIndex P a, m (i : ℕ)) (m a)
+            (fun i : NonselectedIndex P a => m (i : ℕ))
+            (productCRTAddEquiv (m a) (fun i : NonselectedIndex P a => m (i : ℕ)) hcop0 hcop)
+            (a : ZMod (m a))
+            (fun i : NonselectedIndex P a => ((i : ℕ) : ZMod (m (i : ℕ))))),
+        G.T = crtProductTFinset (m a * ∏ i : NonselectedIndex P a, m (i : ℕ)) (m a)
+          (fun i : NonselectedIndex P a => m (i : ℕ))
+          (productCRTAddEquiv (m a) (fun i : NonselectedIndex P a => m (i : ℕ)) hcop0 hcop)
+          (fun i : NonselectedIndex P a => ((i : ℕ) : ZMod (m (i : ℕ))))
+          (fun i : NonselectedIndex P a => (a : ZMod (m (i : ℕ))) -
+            ((i : ℕ) : ZMod (m (i : ℕ))))
+          (fun i : NonselectedIndex P a =>
+            safePairDataZMod (m (i : ℕ)) (hm_ge7 i)
+              ((a : ZMod (m (i : ℕ))) - ((i : ℕ) : ZMod (m (i : ℕ)))))
+          h u1 u2 ∧
+        G.Pstar = crtProductPstarFinset (m a * ∏ i : NonselectedIndex P a, m (i : ℕ))
+          (m a) (fun i : NonselectedIndex P a => m (i : ℕ))
+          (productCRTAddEquiv (m a) (fun i : NonselectedIndex P a => m (i : ℕ)) hcop0 hcop)
+          (a : ZMod (m a * ∏ i : NonselectedIndex P a, m (i : ℕ)))
+          (fun i : NonselectedIndex P a => ((i : ℕ) : ZMod (m (i : ℕ))))
+          (fun i : NonselectedIndex P a => (a : ZMod (m (i : ℕ))) -
+            ((i : ℕ) : ZMod (m (i : ℕ)))) h ∧
+        G.Tbase = crtProductTbaseFinset (m a * ∏ i : NonselectedIndex P a, m (i : ℕ))
+          (m a) (fun i : NonselectedIndex P a => m (i : ℕ))
+          (productCRTAddEquiv (m a) (fun i : NonselectedIndex P a => m (i : ℕ)) hcop0 hcop)
+          (fun i : NonselectedIndex P a => ((i : ℕ) : ZMod (m (i : ℕ)))) h u1 u2 := by
+  refine exists_crtProduct_CRTGadget_of_subtype_product_index P m
+    (m a * ∏ i : NonselectedIndex P a, m (i : ℕ)) a hma23 hma3 hm_ge7 ?_ rfl
+    (productCRTAddEquiv (m a) (fun i : NonselectedIndex P a => m (i : ℕ)) hcop0 hcop)
+    (a : ZMod (m a))
+    (fun i : NonselectedIndex P a => ((i : ℕ) : ZMod (m (i : ℕ))))
+    (fun i : NonselectedIndex P a => (a : ZMod (m (i : ℕ))) -
+      ((i : ℕ) : ZMod (m (i : ℕ))))
+    (fun i : NonselectedIndex P a =>
+      safePairDataZMod (m (i : ℕ)) (hm_ge7 i)
+        ((a : ZMod (m (i : ℕ))) - ((i : ℕ) : ZMod (m (i : ℕ))))) ?_ ?_
+  · intro i
+    have h7 := hm_ge7 i
+    omega
+  · exact productCRTAddEquiv_fst_natCast (m a)
+      (fun i : NonselectedIndex P a => m (i : ℕ)) hcop0 hcop a
+  · funext i
+    dsimp [affineNormalize]
+    have hsnd := productCRTAddEquiv_snd_natCast (m a)
+      (fun i : NonselectedIndex P a => m (i : ℕ)) hcop0 hcop a i
+    simpa using hsnd.symm
+
 end Erdos330Formalization
