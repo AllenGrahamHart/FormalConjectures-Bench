@@ -465,4 +465,35 @@ theorem stageParams_tail_helper_cover {st : StageState} {a b p : ℕ}
         (S := st.S) hhelper st.reservoir_long hCLZ hnlo hnhi)
   exact twoFoldFinset_mono params.old_union_tailBlock_subset_nextS hcover
 
+theorem stageParams_nextS_coverage_of_helpers {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p) [NeZero (activatedM st b p)]
+    (ha : a ∈ st.P) (hN : st.X < params.N)
+    (T_helper : ∀ Jlo, st.H ≤ Jlo → Jlo + 3 * st.M ≤ st.X →
+      ∀ γ : ZMod (activatedM st b p),
+        ∃ u : ℕ, u ∈ st.S ∧ Jlo ≤ u ∧ u ≤ Jlo + 3 * st.M ∧
+          γ - (u : ZMod (activatedM st b p)) ∈ params.G.T)
+    (D_helper : ∀ Jlo, st.H ≤ Jlo → Jlo + 3 * st.M ≤ st.X →
+      ∀ γ : ZMod (activatedM st b p),
+        ∃ u : ℕ, u ∈ st.S ∧ Jlo ≤ u ∧ u ≤ Jlo + 3 * st.M ∧
+          γ - (u : ZMod (activatedM st b p)) ∈ params.Dplus)
+    (hDplus_add :
+      ((params.Dplus : Set (ZMod (activatedM st b p))) +
+        (params.Dplus : Set (ZMod (activatedM st b p)))) = Set.univ)
+    (hCL : 3 * st.M ≤ params.L)
+    (hlower_start : st.H + params.N + 3 * st.M ≤ st.R + 1)
+    (hlower_end :
+      2 * params.N + params.Mplus + 3 * st.M ≤ st.X + params.N + params.L + 1)
+    (hML : params.Mplus ≤ params.L)
+    (hCLZ : 3 * st.M ≤ params.LZ)
+    (htail_start : st.H + params.K + 3 * st.M ≤ params.serviceR + 1)
+    (htail_end :
+      2 * params.K + params.Mplus + 3 * st.M ≤ st.X + params.K + params.LZ + 1)
+    (hMLZ : params.Mplus ≤ params.LZ) :
+    ∀ n : ℕ, st.coverStart ≤ n → n ≤ params.nextR → n ∈ twoFoldFinset params.nextS := by
+  exact stageParams_nextS_coverage_of_piecewise params
+    (stageParams_lower_helper_cover params T_helper hCL hlower_start hlower_end)
+    (stageParams_middle_cover params ha hN hML)
+    (stageParams_tail_helper_cover params D_helper hCLZ htail_start htail_end)
+    (stageParams_tail_middle_cover params hDplus_add hMLZ)
+
 end Erdos330Formalization
