@@ -126,6 +126,8 @@ end StageExtension
 structure ServiceExtension (st st' : StageState) (a : ℕ) where
   toStageExtension : StageExtension st st'
   served_active : a ∈ st.P
-  protectedBlock : ProtectedBlockCertificate st'.S a st'.R
+  protectedEndpoint : ℕ
+  protectedEndpoint_le_X : protectedEndpoint ≤ st'.X
+  protectedBlock : ProtectedBlockCertificate st'.S a protectedEndpoint
 
 end Erdos330Formalization

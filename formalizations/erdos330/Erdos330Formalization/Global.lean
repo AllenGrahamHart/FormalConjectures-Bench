@@ -58,6 +58,49 @@ theorem coverStart_eq_zero {st : ℕ → StageState} (chain : StageChain st) (j 
     (st j).coverStart = (st 0).coverStart :=
   chain.coverStart_eq_of_le (Nat.zero_le j)
 
+theorem X_mono_of_le {st : ℕ → StageState} (chain : StageChain st)
+    {i j : ℕ} (hij : i ≤ j) :
+    (st i).X ≤ (st j).X := by
+  induction j with
+  | zero =>
+      have hi : i = 0 := Nat.eq_zero_of_le_zero hij
+      subst hi
+      rfl
+  | succ j ih =>
+      by_cases hle : i ≤ j
+      · exact (ih hle).trans (chain.step j).X_mono
+      · have hi : i = j + 1 := by omega
+        subst hi
+        rfl
+
+theorem mem_of_mem_stage_of_le_X {st : ℕ → StageState} (chain : StageChain st)
+    {i j n : ℕ} (hij : i ≤ j) (hnj : n ∈ (st j).S) (hnX : n ≤ (st i).X) :
+    n ∈ (st i).S := by
+  induction j with
+  | zero =>
+      have hi : i = 0 := Nat.eq_zero_of_le_zero hij
+      subst hi
+      exact hnj
+  | succ j ih =>
+      by_cases hle : i ≤ j
+      · have hnj_old : n ∈ (st j).S := by
+          by_contra hnot
+          have hnew := (chain.step j).new_elements_above_old_X n hnj hnot
+          have hXiXj := chain.X_mono_of_le hle
+          omega
+        exact ih hle hnj_old
+      · have hi : i = j + 1 := by omega
+        subst hi
+        exact hnj
+
+theorem mem_stage_of_finalSet_of_le_X {st : ℕ → StageState} (chain : StageChain st)
+    {k n : ℕ} (hn : n ∈ finalSet st) (hnX : n ≤ (st k).X) :
+    n ∈ (st k).S := by
+  rcases hn with ⟨j, hnj⟩
+  cases le_total j k with
+  | inl hjk => exact chain.S_subset_of_le hjk hnj
+  | inr hkj => exact chain.mem_of_mem_stage_of_le_X hkj hnj hnX
+
 end StageChain
 
 theorem mem_finalSet_of_mem_stage {st : ℕ → StageState} {k n : ℕ}
@@ -90,6 +133,33 @@ theorem finalSet_isAsymptoticBasisTwo {st : ℕ → StageState} (chain : StageCh
     rw [chain.coverStart_eq_zero k]
     exact hn_start
   exact twoFoldFinset_subset_finalSet k ((st k).coverage n hstage_start hkR)
+
+theorem privateSet_final_of_private_stage {st : ℕ → StageState} (chain : StageChain st)
+    {k a endpoint n : ℕ} (hendpoint : endpoint ≤ (st k).X)
+    (cert : ProtectedBlockCertificate (st k).S a endpoint)
+    (hn : n ∈ cert.block) :
+    n ∈ privateSet (finalSet st) a := by
+  have hstage := cert.block_subset_private n hn
+  rcases hstage with ⟨hstage_two, hstage_not⟩
+  refine ⟨?_, ?_⟩
+  · rcases hstage_two with ⟨x, hx, y, hy, hxy⟩
+    exact ⟨x, mem_finalSet_of_mem_stage hx, y, mem_finalSet_of_mem_stage hy, hxy⟩
+  · intro hfinal
+    rcases hfinal with ⟨x, hx, y, hy, hxy⟩
+    have hn_endpoint : n ≤ endpoint := cert.block_le_endpoint n hn
+    have hx_stage : x ∈ (st k).S :=
+      chain.mem_stage_of_finalSet_of_le_X hx.1 (by omega)
+    have hy_stage : y ∈ (st k).S :=
+      chain.mem_stage_of_finalSet_of_le_X hy.1 (by omega)
+    apply hstage_not
+    exact ⟨x, ⟨hx_stage, hx.2⟩, y, ⟨hy_stage, hy.2⟩, hxy⟩
+
+theorem protectedBlock_subset_final_private {st : ℕ → StageState} (chain : StageChain st)
+    {k a endpoint : ℕ} (hendpoint : endpoint ≤ (st k).X)
+    (cert : ProtectedBlockCertificate (st k).S a endpoint) :
+    ∀ n ∈ cert.block, n ∈ privateSet (finalSet st) a := by
+  intro n hn
+  exact privateSet_final_of_private_stage chain hendpoint cert hn
 
 theorem mainTarget_of_finalSet_certificates {st : ℕ → StageState} (chain : StageChain st)
     (hR_unbounded : ∀ n : ℕ, ∃ k : ℕ, n ≤ (st k).R)
