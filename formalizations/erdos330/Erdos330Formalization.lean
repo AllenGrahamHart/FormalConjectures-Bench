@@ -11,3 +11,4 @@ import Erdos330Formalization.SafePairs
 import Erdos330Formalization.CRTBridge
 import Erdos330Formalization.AffineSafePairs
 import Erdos330Formalization.ProductGadget
+import Erdos330Formalization.ConcreteCRTGadget
