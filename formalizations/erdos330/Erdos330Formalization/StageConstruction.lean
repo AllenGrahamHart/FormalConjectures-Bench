@@ -411,6 +411,106 @@ theorem activatedCRTAllowedFinsetAtM_projection_lift (st : StageState) {a b p : 
     · rw [activatedModulus_old_of_mem st hbDormant hiP]
       exact st.D_nat_avoid (i : ℕ) hiP n hnOld
 
+noncomputable def activatedShiftedQRDelete (st : StageState) {a b p : ℕ}
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p)
+    (h u1 u2 : ZMod (activatedModulus st b p a)) :
+    Finset (ZMod (activatedModulus st b p a)) := by
+  letI : NeZero (activatedModulus st b p a) :=
+    NeZero.of_pos
+      ((activated_m_prime st hbDormant hp a (activated_active_mem_old st ha)).pos)
+  exact shiftedQRDelete (activatedModulus st b p a) h
+    ({u1, u2} : Finset (ZMod (activatedModulus st b p a)))
+
+noncomputable def activatedCRTTbaseFinsetExact (st : StageState) {a b p : ℕ}
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p)
+    (h u1 u2 : ZMod (activatedModulus st b p a)) :
+    Finset (ZMod (activatedModulus st b p a *
+      ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+        activatedModulus st b p (i : ℕ))) := by
+  classical
+  letI : NeZero (activatedModulus st b p a) :=
+    NeZero.of_pos
+      ((activated_m_prime st hbDormant hp a (activated_active_mem_old st ha)).pos)
+  letI : NeZero (activatedModulus st b p a *
+      ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+        activatedModulus st b p (i : ℕ)) :=
+    NeZero.of_pos (activated_exact_product_pos st ha hbDormant hp)
+  exact crtProductTbaseFinset
+    (activatedModulus st b p a *
+      ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+        activatedModulus st b p (i : ℕ))
+    (activatedModulus st b p a)
+    (fun i : NonselectedIndex (activatedActiveSet st b) a =>
+      activatedModulus st b p (i : ℕ))
+    (activatedCRTProductEquiv st ha hbDormant hp)
+    (fun i : NonselectedIndex (activatedActiveSet st b) a =>
+      ((i : ℕ) : ZMod (activatedModulus st b p (i : ℕ))))
+    h u1 u2
+
+noncomputable def activatedCRTTbaseFinsetAtM (st : StageState) {a b p : ℕ}
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p)
+    (h u1 u2 : ZMod (activatedModulus st b p a)) :
+    Finset (ZMod (activatedM st b p)) :=
+  Eq.mp (congrArg (fun M => Finset (ZMod M))
+    (activatedM_eq_selected_mul_nonselected st ha).symm)
+    (activatedCRTTbaseFinsetExact st ha hbDormant hp h u1 u2)
+
+theorem natCast_mem_activatedCRTTbaseFinsetExact_iff (st : StageState) {a b p n : ℕ}
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p)
+    (h u1 u2 : ZMod (activatedModulus st b p a)) :
+    (n : ZMod (activatedModulus st b p a *
+      ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+        activatedModulus st b p (i : ℕ))) ∈
+        activatedCRTTbaseFinsetExact st ha hbDormant hp h u1 u2 ↔
+      (n : ZMod (activatedModulus st b p a)) ∈
+          activatedShiftedQRDelete st ha hbDormant hp h u1 u2 ∧
+        ∀ i : NonselectedIndex (activatedActiveSet st b) a,
+          (n : ZMod (activatedModulus st b p (i : ℕ))) ≠
+            ((i : ℕ) : ZMod (activatedModulus st b p (i : ℕ))) := by
+  classical
+  letI : NeZero (activatedModulus st b p a) :=
+    NeZero.of_pos
+      ((activated_m_prime st hbDormant hp a (activated_active_mem_old st ha)).pos)
+  letI : NeZero (activatedModulus st b p a *
+      ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+        activatedModulus st b p (i : ℕ)) :=
+    NeZero.of_pos (activated_exact_product_pos st ha hbDormant hp)
+  unfold activatedCRTTbaseFinsetExact activatedShiftedQRDelete crtProductTbaseFinset
+    productBase shiftedNonzeroBox
+  simp only [addEquivPreimageFinset, Finset.mem_filter, Finset.mem_univ, true_and,
+    Set.mem_setOf_eq]
+  constructor
+  · intro ht
+    constructor
+    · have hsel := ht.1
+      rw [activatedCRTProductEquiv_fst_natCast st ha hbDormant hp] at hsel
+      exact hsel
+    · intro i hbad
+      exact ht.2 i
+        (by rw [activatedCRTProductEquiv_snd_natCast st ha hbDormant hp i, hbad])
+  · intro ht
+    constructor
+    · rw [activatedCRTProductEquiv_fst_natCast st ha hbDormant hp]
+      exact ht.1
+    · intro i hbad
+      exact ht.2 i
+        (by rw [← activatedCRTProductEquiv_snd_natCast st ha hbDormant hp i, hbad])
+
+theorem natCast_mem_activatedCRTTbaseFinsetAtM_iff (st : StageState) {a b p n : ℕ}
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p)
+    (h u1 u2 : ZMod (activatedModulus st b p a)) :
+    (n : ZMod (activatedM st b p)) ∈
+        activatedCRTTbaseFinsetAtM st ha hbDormant hp h u1 u2 ↔
+      (n : ZMod (activatedModulus st b p a)) ∈
+          activatedShiftedQRDelete st ha hbDormant hp h u1 u2 ∧
+        ∀ i : NonselectedIndex (activatedActiveSet st b) a,
+          (n : ZMod (activatedModulus st b p (i : ℕ))) ≠
+            ((i : ℕ) : ZMod (activatedModulus st b p (i : ℕ))) := by
+  rw [activatedCRTTbaseFinsetAtM]
+  rw [natCast_mem_eqMp_zmodFinset_iff
+    (activatedM_eq_selected_mul_nonselected (a := a) (b := b) (p := p) st ha)]
+  exact natCast_mem_activatedCRTTbaseFinsetExact_iff st ha hbDormant hp h u1 u2
+
 theorem activatedCRTAllowedFinsetExact_add_self_eq_univ (st : StageState) {a b p : ℕ}
     (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p) :
     ((activatedCRTAllowedFinsetExact st ha hbDormant hp : Set
