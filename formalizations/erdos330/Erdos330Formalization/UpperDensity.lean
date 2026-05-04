@@ -137,4 +137,20 @@ theorem private_upperDensity_pos_of_frequent_services {st : ℕ → StageState}
   exact ⟨k + 1, svc.protectedEndpoint, svc.protectedBlock, hN,
     svc.protectedEndpoint_le_X, hnum, hden⟩
 
+theorem mainTarget_of_frequent_services {st : ℕ → StageState} (chain : StageChain st)
+    (hR_unbounded : ∀ n : ℕ, ∃ k : ℕ, n ≤ (st k).R)
+    (hA_density : HasPositiveUpperDensity (finalSet st))
+    (hservices :
+      ∀ a ∈ finalSet st, ∃ numerator denominator : ℕ,
+        0 < numerator ∧ 0 < denominator ∧
+          ∀ N : ℕ, ∃ k : ℕ, ∃ svc : ServiceExtension (st k) (st (k + 1)) a,
+            N ≤ svc.protectedEndpoint ∧
+              svc.protectedBlock.densityNumerator = numerator ∧
+              svc.protectedBlock.densityDenominator = denominator) :
+    MainTarget := by
+  refine mainTarget_of_finalSet_certificates chain hR_unbounded hA_density ?_
+  intro a ha
+  obtain ⟨numerator, denominator, hnumerator, hdenominator, hfreq⟩ := hservices a ha
+  exact private_upperDensity_pos_of_frequent_services chain hnumerator hdenominator hfreq
+
 end Erdos330Formalization
