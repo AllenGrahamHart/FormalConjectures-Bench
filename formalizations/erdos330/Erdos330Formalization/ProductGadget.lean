@@ -505,4 +505,116 @@ theorem product_T_add_T_eq_compl_private {ι : Type*}
       hu2QR hu12 hbase_sum
   · exact product_compl_private_subset_T_add_T p hp7 p0 β e data h u1 u2 hbase_sum
 
+noncomputable def crtProductAllowedFinset {ι : Type*} [Fintype ι]
+    (M p0 : ℕ) [NeZero M] (p : ι → ℕ)
+    (φ : ZMod M ≃+ ProductSpace p0 p)
+    (α : ZMod p0) (β : ∀ i : ι, ZMod (p i)) : Finset (ZMod M) :=
+  addEquivPreimageFinset φ (productAllowed p0 p α β)
+
+noncomputable def crtProductTFinset {ι : Type*} [Fintype ι]
+    (M p0 : ℕ) [NeZero M] [NeZero p0] (p : ι → ℕ)
+    (φ : ZMod M ≃+ ProductSpace p0 p)
+    (β e : ∀ i : ι, ZMod (p i))
+    (data : ∀ i, SafePairData (ZMod (p i)) (e i))
+    (h u1 u2 : ZMod p0) : Finset (ZMod M) :=
+  addEquivPreimageFinset φ (productT p0 p β e data h u1 u2)
+
+noncomputable def crtProductTbaseFinset {ι : Type*} [Fintype ι]
+    (M p0 : ℕ) [NeZero M] [NeZero p0] (p : ι → ℕ)
+    (φ : ZMod M ≃+ ProductSpace p0 p)
+    (β : ∀ i : ι, ZMod (p i)) (h u1 u2 : ZMod p0) : Finset (ZMod M) :=
+  addEquivPreimageFinset φ (productBase p0 p h ({u1, u2} : Finset (ZMod p0)) β)
+
+noncomputable def crtProductPstarFinset {ι : Type*} [Fintype ι]
+    (M p0 : ℕ) [NeZero M] (p : ι → ℕ)
+    (φ : ZMod M ≃+ ProductSpace p0 p) (a : ZMod M)
+    (β e : ∀ i : ι, ZMod (p i)) (h : ZMod p0) : Finset (ZMod M) :=
+  addEquivTranslatePreimageFinset a φ (productPrivateSlice p0 p β e h)
+
+theorem crtProductTbase_subset_T {ι : Type*} [Fintype ι]
+    (M p0 : ℕ) [NeZero M] [NeZero p0] (p : ι → ℕ)
+    (φ : ZMod M ≃+ ProductSpace p0 p)
+    (β e : ∀ i : ι, ZMod (p i))
+    (data : ∀ i, SafePairData (ZMod (p i)) (e i))
+    (h u1 u2 : ZMod p0) :
+    crtProductTbaseFinset M p0 p φ β h u1 u2 ⊆
+      crtProductTFinset M p0 p φ β e data h u1 u2 := by
+  simpa [crtProductTbaseFinset, crtProductTFinset] using
+    (addEquivPreimageFinset_subset (φ := φ)
+      (productBase_subset_productT p0 p β e data h u1 u2))
+
+theorem crtProductT_subset_allowed {ι : Type*} [Fintype ι]
+    (M p0 : ℕ) [NeZero M] [NeZero p0] (p : ι → ℕ)
+    (φ : ZMod M ≃+ ProductSpace p0 p)
+    (α h u1 u2 : ZMod p0)
+    (β e : ∀ i : ι, ZMod (p i))
+    (data : ∀ i, SafePairData (ZMod (p i)) (e i))
+    (hu1_pos : u1 ≠ α - h) (hu2_pos : u2 ≠ α - h)
+    (hu1_neg : u1 ≠ -(α - h)) (hu2_neg : u2 ≠ -(α - h))
+    (hQavoid : ∀ q ∈ shiftedQRDelete p0 h ({u1, u2} : Finset (ZMod p0)), q ≠ α) :
+    crtProductTFinset M p0 p φ β e data h u1 u2 ⊆
+      crtProductAllowedFinset M p0 p φ α β := by
+  simpa [crtProductTFinset, crtProductAllowedFinset] using
+    (addEquivPreimageFinset_subset (φ := φ)
+      (productT_subset_allowed p0 p α h u1 u2 β e data hu1_pos hu2_pos
+        hu1_neg hu2_neg hQavoid))
+
+theorem crtProductPstar_subset_allowed_of_subset {ι : Type*} [Fintype ι]
+    (M p0 : ℕ) [NeZero M] (p : ι → ℕ)
+    (φ : ZMod M ≃+ ProductSpace p0 p) (a : ZMod M)
+    (α : ZMod p0) (β e : ∀ i : ι, ZMod (p i)) (h : ZMod p0)
+    (hsubset : {x : ZMod M | φ (a + x) ∈ productPrivateSlice p0 p β e h} ⊆
+      {x : ZMod M | φ x ∈ productAllowed p0 p α β}) :
+    crtProductPstarFinset M p0 p φ a β e h ⊆
+      crtProductAllowedFinset M p0 p φ α β := by
+  intro x hx
+  change x ∈ (crtProductPstarFinset M p0 p φ a β e h : Set (ZMod M)) at hx
+  rw [crtProductPstarFinset, coe_addEquivTranslatePreimageFinset] at hx
+  change x ∈ (crtProductAllowedFinset M p0 p φ α β : Set (ZMod M))
+  rw [crtProductAllowedFinset, coe_addEquivPreimageFinset]
+  exact hsubset hx
+
+theorem crtProduct_T_add_T_compl_private {ι : Type*}
+    [Fintype ι] [DecidableEq ι]
+    (M p0 : ℕ) [NeZero M] [Fact p0.Prime] [NeZero p0]
+    (p : ι → ℕ) [∀ i, Fact (Nat.Prime (p i))]
+    (hp7 : ∀ i, 7 ≤ p i) (hp0_3 : p0 % 4 = 3)
+    (φ : ZMod M ≃+ ProductSpace p0 p) (a : ZMod M)
+    (β e : ∀ i : ι, ZMod (p i))
+    (data : ∀ i, SafePairData (ZMod (p i)) (e i))
+    (h u1 u2 : ZMod p0)
+    (hu1QR : u1 ∈ QR p0) (hu2QR : u2 ∈ QR p0) (hu12 : u1 ≠ u2)
+    (hbase_sum : ((shiftedQRDelete p0 h ({u1, u2} : Finset (ZMod p0)) :
+          Set (ZMod p0)) +
+        (shiftedQRDelete p0 h ({u1, u2} : Finset (ZMod p0)) : Set (ZMod p0))) =
+      Set.univ \ ({h + h} : Set (ZMod p0))) :
+    ((crtProductTFinset M p0 p φ β e data h u1 u2 : Set (ZMod M)) +
+        (crtProductTFinset M p0 p φ β e data h u1 u2 : Set (ZMod M))) =
+      Set.univ \ ((fun x : ZMod M => a + x) ''
+        (crtProductPstarFinset M p0 p φ a β e h : Set (ZMod M))) := by
+  simpa [crtProductTFinset, crtProductPstarFinset] using
+    (addEquivPreimageFinset_add_eq_compl_translate_image φ a
+      (productT p0 p β e data h u1 u2)
+      (productT p0 p β e data h u1 u2)
+      (productPrivateSlice p0 p β e h)
+      (product_T_add_T_eq_compl_private p hp7 p0 hp0_3 β e data h u1 u2 hu1QR
+        hu2QR hu12 hbase_sum))
+
+theorem crtProduct_allowed_add_T_eq_univ {ι : Type*}
+    [Fintype ι]
+    (M p0 : ℕ) [NeZero M] [Fact p0.Prime] [NeZero p0]
+    (p : ι → ℕ) [∀ i, Fact (Nat.Prime (p i))]
+    (hp7 : ∀ i, 7 ≤ p i) (hp0_3 : p0 % 4 = 3) (hp0_23 : 23 ≤ p0)
+    (φ : ZMod M ≃+ ProductSpace p0 p)
+    (α h u1 u2 : ZMod p0)
+    (β e : ∀ i : ι, ZMod (p i))
+    (data : ∀ i, SafePairData (ZMod (p i)) (e i)) :
+    ((crtProductAllowedFinset M p0 p φ α β : Set (ZMod M)) +
+        (crtProductTFinset M p0 p φ β e data h u1 u2 : Set (ZMod M))) = Set.univ := by
+  simpa [crtProductAllowedFinset, crtProductTFinset] using
+    (addEquivPreimageFinset_add_eq_univ φ
+      (productAllowed p0 p α β)
+      (productT p0 p β e data h u1 u2)
+      (productAllowed_add_productT_eq_univ p p0 hp0_3 hp0_23 hp7 α h u1 u2 β e data))
+
 end Erdos330Formalization
