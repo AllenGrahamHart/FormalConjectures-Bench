@@ -157,9 +157,51 @@ theorem activatedFreshModulus_dvd_M (st : StageState) (b p : ℕ) :
   simpa [activatedModulus_new] using
     (activatedModulus_dvd_M st (b := b) (p := p) hb)
 
+theorem activatedOldM_dvd_M (st : StageState) {b p : ℕ} (hbDormant : b ∉ st.P) :
+    st.M ∣ activatedM st b p := by
+  rw [activatedM_eq st hbDormant]
+  exact ⟨p, by rw [Nat.mul_comm]⟩
+
 def activatedFreshProjection (st : StageState) (b p : ℕ)
     (γ : ZMod (activatedM st b p)) : ZMod p :=
   ZMod.castHom (activatedFreshModulus_dvd_M st b p) (ZMod p) γ
+
+def activatedOldProjection (st : StageState) {b p : ℕ} (hbDormant : b ∉ st.P)
+    (γ : ZMod (activatedM st b p)) : ZMod st.M :=
+  ZMod.castHom (activatedOldM_dvd_M st hbDormant) (ZMod st.M) γ
+
+theorem activatedFreshProjection_natCast (st : StageState) (b p n : ℕ) :
+    activatedFreshProjection st b p (n : ZMod (activatedM st b p)) =
+      (n : ZMod p) := by
+  simp [activatedFreshProjection]
+
+theorem activatedOldProjection_natCast (st : StageState) {b p : ℕ}
+    (hbDormant : b ∉ st.P) (n : ℕ) :
+    activatedOldProjection st hbDormant (n : ZMod (activatedM st b p)) =
+      (n : ZMod st.M) := by
+  simp [activatedOldProjection]
+
+theorem activatedFreshProjection_sub_natCast (st : StageState) (b p u : ℕ)
+    (γ : ZMod (activatedM st b p)) :
+    activatedFreshProjection st b p (γ - (u : ZMod (activatedM st b p))) =
+      activatedFreshProjection st b p γ - (u : ZMod p) := by
+  rw [activatedFreshProjection]
+  change (ZMod.cast (γ - (u : ZMod (activatedM st b p))) : ZMod p) =
+    (ZMod.cast γ : ZMod p) - (u : ZMod p)
+  rw [ZMod.cast_sub (activatedFreshModulus_dvd_M st b p) γ
+    (u : ZMod (activatedM st b p))]
+  rw [ZMod.cast_natCast (activatedFreshModulus_dvd_M st b p) u]
+
+theorem activatedOldProjection_sub_natCast (st : StageState) {b p : ℕ}
+    (hbDormant : b ∉ st.P) (u : ℕ) (γ : ZMod (activatedM st b p)) :
+    activatedOldProjection st hbDormant (γ - (u : ZMod (activatedM st b p))) =
+      activatedOldProjection st hbDormant γ - (u : ZMod st.M) := by
+  rw [activatedOldProjection]
+  change (ZMod.cast (γ - (u : ZMod (activatedM st b p))) : ZMod st.M) =
+    (ZMod.cast γ : ZMod st.M) - (u : ZMod st.M)
+  rw [ZMod.cast_sub (activatedOldM_dvd_M st hbDormant) γ
+    (u : ZMod (activatedM st b p))]
+  rw [ZMod.cast_natCast (activatedOldM_dvd_M st hbDormant) u]
 
 theorem activated_active_mem_old (st : StageState) {a b : ℕ} (ha : a ∈ st.P) :
     a ∈ activatedActiveSet st b := by
