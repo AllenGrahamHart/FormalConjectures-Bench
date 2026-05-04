@@ -10,6 +10,8 @@ the fresh-prime package used when activating a dormant element.
 
 namespace Erdos330Formalization
 
+open scoped Pointwise
+
 structure FreshPrimeData (st : StageState) (p : ℕ) where
   X_lt_p : st.X < p
   M_lt_p : st.M < p
@@ -323,5 +325,55 @@ theorem stageParams_nextS_coverage_of_piecewise {st : StageState} {a b p : ℕ}
   · exact tail_cover n hn_service_lt hn_tail
   have hn_tail_middle_start : 2 * params.K + params.Mplus ≤ n := by omega
   exact tail_middle_cover n hn_tail_middle_start hn_end
+
+theorem CRTGadget.T_middle_residueBlock_cover {P : Finset ℕ} {m : ℕ → ℕ}
+    {M a : ℕ} {D : Finset (ZMod M)} [NeZero M]
+    (G : CRTGadget P m M a D) {N L n : ℕ}
+    (hML : M ≤ L) (hnlo : 2 * N + M ≤ n)
+    (hnhi : n ≤ 2 * N + 2 * L - M)
+    (hnot_private : (n : ZMod M) ∉
+      ((fun x : ZMod M => (a : ZMod M) + x) '' (G.Pstar : Set (ZMod M)))) :
+    n ∈ twoFoldFinset (residueBlockFinset M G.T N (N + L)) := by
+  have hres : (n : ZMod M) ∈
+      (G.T : Set (ZMod M)) + (G.T : Set (ZMod M)) := by
+    rw [G.T_add_T_compl_private]
+    exact ⟨Set.mem_univ _, hnot_private⟩
+  exact residueBlockFinset_middle_mem_twoFold_self (M := M) (N := N) (L := L)
+    (n := n) hML hnlo hnhi hres
+
+theorem stageParams_middle_cover {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p) [NeZero (activatedM st b p)]
+    (ha : a ∈ st.P) (hN : st.X < params.N) (hML : params.Mplus ≤ params.L) :
+    ∀ n : ℕ, 2 * params.N + params.Mplus ≤ n → n ≤ params.serviceR →
+      n ∈ twoFoldFinset params.nextS := by
+  intro n hnlo hnhi
+  by_cases hprivate : (n : ZMod (activatedM st b p)) ∈
+      ((fun x : ZMod (activatedM st b p) => (a : ZMod (activatedM st b p)) + x) ''
+        (params.G.Pstar : Set (ZMod (activatedM st b p))))
+  · rcases hprivate with ⟨ρ, hρ, hsum⟩
+    have ha_le_n : a ≤ n := by
+      have haX : a ≤ st.X := st.active_le_X ha
+      omega
+    have hρ_sub : ((n - a : ℕ) : ZMod (activatedM st b p)) = ρ := by
+      calc
+        ((n - a : ℕ) : ZMod (activatedM st b p)) =
+            (n : ZMod (activatedM st b p)) - (a : ZMod (activatedM st b p)) := by
+          exact Nat.cast_sub ha_le_n
+        _ = ((a : ZMod (activatedM st b p)) + ρ) -
+            (a : ZMod (activatedM st b p)) := by
+          rw [← hsum]
+        _ = ρ := by abel
+    have hpartner : n - a ∈ params.privateBlock := by
+      rw [StageParams.mem_privateBlock]
+      refine ⟨?_, ?_, ?_⟩
+      · omega
+      · omega
+      · simpa [StageParams.Mplus, hρ_sub] using hρ
+    refine ⟨a, params.old_subset_nextS (st.active_mem_state ha), n - a,
+      params.privateBlock_subset_nextS hpartner, ?_⟩
+    omega
+  · have hBB : n ∈ twoFoldFinset params.lowerBlock :=
+      params.G.T_middle_residueBlock_cover hML hnlo hnhi hprivate
+    exact twoFoldFinset_mono params.lowerBlock_subset_nextS hBB
 
 end Erdos330Formalization
