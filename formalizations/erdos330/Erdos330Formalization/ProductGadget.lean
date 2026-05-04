@@ -221,6 +221,37 @@ theorem productAllowed_add_productBase_eq_univ {ι : Type*}
   · exact ⟨ht0, ht'⟩
   · ext <;> simp [h0sum, hrestsum]
 
+theorem productAllowed_add_self_eq_univ {ι : Type*} [Fintype ι]
+    (p0 : ℕ) [Fact p0.Prime] (hp0_7 : 7 ≤ p0)
+    (p : ι → ℕ) [∀ i, Fact (Nat.Prime (p i))]
+    (hp7 : ∀ i, 7 ≤ p i)
+    (α : ZMod p0) (β : ∀ i : ι, ZMod (p i)) :
+    ((productAllowed p0 p α β : Set (ProductSpace p0 p)) +
+      (productAllowed p0 p α β : Set (ProductSpace p0 p))) = Set.univ := by
+  classical
+  apply Set.eq_univ_iff_forall.mpr
+  intro z
+  let target0 : ZMod p0 := z.1 - (α + α)
+  let pair0 := nonzeroAddPairZMod p0 hp0_7 target0
+  have hrest : z.2 ∈
+      (shiftedNonzeroBox p β : Set (∀ i, ZMod (p i))) +
+        (shiftedNonzeroBox p β : Set (∀ i, ZMod (p i))) := by
+    rw [shiftedNonzeroBox_add_self_eq_univ p hp7 β]
+    exact Set.mem_univ z.2
+  rcases hrest with ⟨x, hx, y, hy, hxy⟩
+  refine ⟨(α + pair0.left, x), ?_, (α + pair0.right, y), ?_, ?_⟩
+  · refine ⟨?_, hx⟩
+    intro hbad
+    exact pair0.left_ne_zero (by linear_combination hbad)
+  · refine ⟨?_, hy⟩
+    intro hbad
+    exact pair0.right_ne_zero (by linear_combination hbad)
+  · ext i <;> dsimp
+    · have hsum := pair0.sum_eq
+      dsimp [target0] at hsum
+      linear_combination hsum
+    · exact congrFun hxy i
+
 theorem productAllowed_add_productT_eq_univ {ι : Type*}
     [Fintype ι] (p : ι → ℕ) [∀ i, Fact (Nat.Prime (p i))]
     (p0 : ℕ) [Fact p0.Prime] [NeZero p0]
@@ -677,6 +708,19 @@ theorem crtProduct_allowed_add_T_eq_univ {ι : Type*}
       (productAllowed p0 p α β)
       (productT p0 p β e data h u1 u2)
       (productAllowed_add_productT_eq_univ p p0 hp0_3 hp0_23 hp7 α h u1 u2 β e data))
+
+theorem crtProduct_allowed_add_allowed_eq_univ {ι : Type*} [Fintype ι]
+    (M p0 : ℕ) [NeZero M] [Fact p0.Prime]
+    (p : ι → ℕ) [∀ i, Fact (Nat.Prime (p i))]
+    (hp0_7 : 7 ≤ p0) (hp7 : ∀ i, 7 ≤ p i)
+    (φ : ZMod M ≃+ ProductSpace p0 p)
+    (α : ZMod p0) (β : ∀ i : ι, ZMod (p i)) :
+    ((crtProductAllowedFinset M p0 p φ α β : Set (ZMod M)) +
+      (crtProductAllowedFinset M p0 p φ α β : Set (ZMod M))) = Set.univ := by
+  simpa [crtProductAllowedFinset] using
+    (addEquivPreimageFinset_add_eq_univ (φ := φ)
+      (A := productAllowed p0 p α β) (B := productAllowed p0 p α β)
+      (productAllowed_add_self_eq_univ p0 hp0_7 p hp7 α β))
 
 theorem productPrivateSlice_card_eq_nonselected {ι : Type*}
     (p0 : ℕ) [Fintype (ZMod p0)]
