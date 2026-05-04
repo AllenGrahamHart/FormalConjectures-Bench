@@ -9,7 +9,9 @@ The v2 scope is deliberately narrower than all Formal Conjectures declarations:
 * add `category research solved` declarations without bundled oracles;
 * add paired prove/refute tasks for `category research open` declarations whose
   statements do not use `answer(sorry)`;
-* exclude `answer(sorry)` statements.
+* add paired prove/refute tasks for simple yes/no `answer(sorry) ↔ P` and
+  `P ↔ answer(sorry)` declarations;
+* exclude remaining non-boolean `answer(sorry)` statements.
 """
 
 from __future__ import annotations
@@ -49,6 +51,137 @@ bm = load_build_manifest_module()
 
 def normalized_header_has_answer_sorry(header: str) -> bool:
     return "answer(sorry" in re.sub(r"\s+", "", header)
+
+
+def strip_outer_parens(text: str) -> str:
+    stripped = text.strip()
+    while stripped.startswith("(") and stripped.endswith(")"):
+        try:
+            end = matching_delimiter(stripped, 0)
+        except ValueError:
+            return stripped
+        if end != len(stripped) - 1:
+            return stripped
+        stripped = stripped[1:-1].strip()
+    return stripped
+
+
+def is_answer_sorry_expr(text: str) -> bool:
+    return re.sub(r"\s+", "", strip_outer_parens(text)) == "answer(sorry)"
+
+
+def matching_delimiter(text: str, start: int) -> int:
+    open_ch = text[start]
+    close_ch = {"(": ")", "[": "]", "{": "}"}[open_ch]
+    depth = 0
+    in_string = False
+    escaped = False
+    for idx in range(start, len(text)):
+        ch = text[idx]
+        if in_string:
+            if escaped:
+                escaped = False
+            elif ch == "\\":
+                escaped = True
+            elif ch == '"':
+                in_string = False
+            continue
+        if ch == '"':
+            in_string = True
+            escaped = False
+            continue
+        if ch == open_ch:
+            depth += 1
+        elif ch == close_ch:
+            depth -= 1
+            if depth == 0:
+                return idx
+    raise ValueError(f"Unbalanced delimiter in: {text[start:start+80]!r}")
+
+
+def split_top_level_iff(text: str) -> tuple[str, str] | None:
+    depth = 0
+    in_string = False
+    escaped = False
+    pairs = {"(": ")", "[": "]", "{": "}"}
+    closers = set(pairs.values())
+    for idx, ch in enumerate(text):
+        if in_string:
+            if escaped:
+                escaped = False
+            elif ch == "\\":
+                escaped = True
+            elif ch == '"':
+                in_string = False
+            continue
+        if ch == '"':
+            in_string = True
+            escaped = False
+            continue
+        if ch in pairs:
+            depth += 1
+            continue
+        if ch in closers and depth > 0:
+            depth -= 1
+            continue
+        if ch == "↔" and depth == 0:
+            return text[:idx].strip(), text[idx + 1 :].strip()
+    return None
+
+
+def theorem_result(header: str) -> str:
+    match = re.match(
+        r"^(\s*(?:(?:noncomputable|private|protected)\s+)*(?:theorem|lemma)\s+)([^\s:{(\[]+)(.*)\Z",
+        header,
+        flags=re.S,
+    )
+    if not match:
+        raise ValueError(f"Expected theorem/lemma header, got: {header[:80]!r}")
+    rest = match.group(3)
+    colon = top_level_type_colon(rest)
+    return rest[colon + 1 :].strip()
+
+
+def top_level_type_colon(text: str) -> int:
+    depth = 0
+    in_string = False
+    escaped = False
+    pairs = {"(": ")", "{": "}", "[": "]"}
+    closers = set(pairs.values())
+    for idx, ch in enumerate(text):
+        if in_string:
+            if escaped:
+                escaped = False
+            elif ch == "\\":
+                escaped = True
+            elif ch == '"':
+                in_string = False
+            continue
+        if ch == '"':
+            in_string = True
+            escaped = False
+            continue
+        if ch in pairs:
+            depth += 1
+            continue
+        if ch in closers and depth > 0:
+            depth -= 1
+            continue
+        if ch == ":" and depth == 0:
+            return idx
+    raise ValueError(f"Could not find theorem result colon in: {text[:80]!r}")
+
+
+def answer_boolean_proposition(header: str) -> tuple[str, str] | None:
+    split = split_top_level_iff(theorem_result(header))
+    if split is None:
+        return None
+    lhs, rhs = split
+    if is_answer_sorry_expr(lhs):
+        return rhs, "lhs"
+    if is_answer_sorry_expr(rhs):
+        return lhs, "rhs"
+    return None
 
 
 def has_research_solved(category: list[str]) -> bool:
@@ -264,6 +397,53 @@ def open_problem_pair(record: dict, used_ids: set[str]) -> tuple[list[dict], dic
     return [prove, refute], pair
 
 
+def answer_boolean_pair(record: dict, answer_side: str, used_ids: set[str]) -> tuple[list[dict], dict]:
+    source_instance_id = record["instance_id"]
+    pair_id = f"answer-boolean/{source_instance_id}"
+    namespace = record.get("namespace", [])
+    source_theorem_name = record["theorem_name"]
+
+    prove = v2_instance(record, BUCKET_OPEN)
+    prove["instance_id"] = open_problem_task_id(source_instance_id, OPEN_PROVE, used_ids)
+    prove["open_problem_pair_id"] = pair_id
+    prove["open_problem_pair_kind"] = "answer_boolean"
+    prove["open_problem_polarity"] = OPEN_PROVE
+    prove["answer_boolean_side"] = answer_side
+    prove["source_instance_id"] = source_instance_id
+    prove["source_theorem_name"] = source_theorem_name
+
+    refute = v2_instance(record, BUCKET_OPEN)
+    refute["instance_id"] = open_problem_task_id(source_instance_id, OPEN_REFUTE, used_ids)
+    refute["open_problem_pair_id"] = pair_id
+    refute["open_problem_pair_kind"] = "answer_boolean"
+    refute["open_problem_polarity"] = OPEN_REFUTE
+    refute["answer_boolean_side"] = answer_side
+    refute["source_instance_id"] = source_instance_id
+    refute["source_theorem_name"] = source_theorem_name
+    refute["source_local_declaration_name"] = record["local_declaration_name"]
+    refute["local_declaration_name"] = "formal_conjectures_bench_refutation"
+    refute["declaration_kind"] = "theorem"
+    refute["theorem_name"] = theorem_name_in_namespace(
+        namespace,
+        refute["local_declaration_name"],
+    )
+
+    pair = {
+        "pair_id": pair_id,
+        "source_instance_id": source_instance_id,
+        "source_theorem_name": source_theorem_name,
+        "source_file": record["source_file"],
+        "declaration_line": record["declaration_line"],
+        "prove_task_id": prove["instance_id"],
+        "refute_task_id": refute["instance_id"],
+        "benchmark_bucket": BUCKET_OPEN,
+        "pair_kind": "answer_boolean",
+        "answer_boolean_side": answer_side,
+        "allow_internet": True,
+    }
+    return [prove, refute], pair
+
+
 def exclusion_row(instance: dict, reason: str, detail: str = "") -> dict[str, str]:
     return {
         "instance_id": instance.get("instance_id", ""),
@@ -349,7 +529,18 @@ def build_v2_instances(
             continue
         category = record.get("category", [])
         if record.get("uses_answer_sorry"):
-            exclusions.append(exclusion_row(record, "answer_sorry"))
+            answer_boolean = answer_boolean_proposition(record["theorem_header"])
+            if has_research_open(category) and answer_boolean is not None:
+                _, answer_side = answer_boolean
+                tasks, pair = answer_boolean_pair(record, answer_side, used_ids)
+                for task in tasks:
+                    selected_by_id[task["instance_id"]] = task
+                open_pairs.append(pair)
+            else:
+                detail = "non_boolean_or_non_open"
+                if answer_boolean is not None:
+                    detail = "boolean_answer_non_open"
+                exclusions.append(exclusion_row(record, "answer_sorry", detail))
         elif has_research_open(category):
             tasks, pair = open_problem_pair(record, used_ids)
             for task in tasks:
@@ -376,6 +567,9 @@ def build_v2_instances(
     source_metadata["v2_instance_count"] = len(instances)
     source_metadata["v2_exclusion_count"] = len(exclusions)
     source_metadata["v2_open_problem_pair_count"] = len(open_pairs)
+    source_metadata["v2_answer_boolean_pair_count"] = sum(
+        1 for pair in open_pairs if pair.get("pair_kind") == "answer_boolean"
+    )
     return instances, exclusions, source_metadata, open_pairs
 
 
@@ -463,7 +657,11 @@ def main() -> None:
             "source": source_metadata,
             "v2_scope": {
                 "included_buckets": [BUCKET_GOLD, BUCKET_DEFERRED, BUCKET_INFORMAL, BUCKET_OPEN],
-                "excluded_statement_shapes": ["answer(sorry)"],
+                "included_statement_shapes": [
+                    "ordinary theorem",
+                    "simple answer(sorry) iff proposition",
+                ],
+                "excluded_statement_shapes": ["non-boolean answer(sorry)"],
                 "excluded_categories": ["API", "test", "textbook"],
             },
             "bucket_counts": counts,

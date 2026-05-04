@@ -266,6 +266,14 @@ def theorem_binders_and_result(header: str) -> tuple[str, str]:
     return rest[:colon].strip(), normalize_result_layout(rest[colon + 1 :].strip())
 
 
+def replace_theorem_result(header: str, result: str) -> str:
+    match = declaration_header_match(header)
+    rest = match.group(3)
+    colon = top_level_type_colon(rest)
+    prefix = f"{match.group(1)}{match.group(2)}{rest[:colon + 1]}".rstrip()
+    return f"{prefix} {normalize_result_layout(result.strip())}"
+
+
 def normalize_result_layout(result: str) -> str:
     lines = result.splitlines()
     if len(lines) <= 1 or not starts_with_let_binding(lines[0]):
@@ -417,6 +425,66 @@ def refutation_theorem_header(statement_prop: str) -> str:
     )
 
 
+def split_top_level_iff(text: str) -> tuple[str, str] | None:
+    depth = 0
+    in_string = False
+    escaped = False
+    pairs = {"(": ")", "{": "}", "[": "]"}
+    closers = set(pairs.values())
+    for idx, ch in enumerate(text):
+        if in_string:
+            if escaped:
+                escaped = False
+            elif ch == "\\":
+                escaped = True
+            elif ch == '"':
+                in_string = False
+            continue
+        if ch == '"':
+            in_string = True
+            escaped = False
+            continue
+        if ch in pairs:
+            depth += 1
+            continue
+        if ch in closers and depth > 0:
+            depth -= 1
+            continue
+        if ch == "↔" and depth == 0:
+            return text[:idx].strip(), text[idx + 1 :].strip()
+    return None
+
+
+def strip_outer_parens(text: str) -> str:
+    stripped = text.strip()
+    while stripped.startswith("(") and stripped.endswith(")"):
+        try:
+            end = matching_paren(stripped, 0)
+        except ValueError:
+            return stripped
+        if end != len(stripped) - 1:
+            return stripped
+        stripped = stripped[1:-1].strip()
+    return stripped
+
+
+def is_answer_sorry_expr(text: str) -> bool:
+    return re.sub(r"\s+", "", strip_outer_parens(text)) == "answer(sorry)"
+
+
+def answer_boolean_proposition(header: str) -> str:
+    _, result = theorem_binders_and_result(header)
+    split = split_top_level_iff(result)
+    if split is None:
+        raise ValueError(f"Expected simple answer(sorry) iff proposition in: {header[:120]!r}")
+    lhs, rhs = split
+    if is_answer_sorry_expr(lhs):
+        return rhs
+    if is_answer_sorry_expr(rhs):
+        return lhs
+    raise ValueError(f"Expected answer(sorry) to be one full side of iff in: {header[:120]!r}")
+
+
 def top_level_type_colon(text: str) -> int:
     depth = 0
     in_string = False
@@ -538,7 +606,30 @@ def target_source(source_root: Path, instance: dict) -> tuple[str, str, str, str
     header_lines[-1] = header_lines[-1][:body_col].rstrip()
     header = "\n".join(line.rstrip() for line in header_lines).strip()
 
-    if instance.get("open_problem_polarity") == "refute":
+    if instance.get("open_problem_pair_kind") == "answer_boolean":
+        proposition = answer_boolean_proposition(header)
+        prove_header = replace_theorem_result(header, proposition)
+        if instance.get("open_problem_polarity") == "refute":
+            statement_prop = theorem_statement_prop(
+                prove_header,
+                active_variable_binders(lines[:attr_start_index], prove_header),
+            )
+            target_header = refutation_theorem_header(statement_prop)
+        else:
+            target_header = prove_header
+        generated_lines = [
+            f"-- {CANARY}",
+            *prefix_lines,
+            "",
+            TARGET_MARKER,
+            target_header + " := by",
+            "  sorry",
+            "",
+            *required_closers([*prefix_lines, target_header + " := by", "  sorry"]),
+            "",
+        ]
+        header = target_header
+    elif instance.get("open_problem_polarity") == "refute":
         statement_prop = theorem_statement_prop(header, active_variable_binders(lines[:attr_start_index], header))
         target_header = refutation_theorem_header(statement_prop)
         generated_lines = [
@@ -632,6 +723,11 @@ def solution_explanation(bucket: str, oracle_status: str) -> str:
 
 
 def task_description(instance: dict, bucket: str) -> str:
+    if instance.get("open_problem_pair_kind") == "answer_boolean":
+        source_name = instance.get("source_theorem_name", instance["theorem_name"])
+        if instance.get("open_problem_polarity") == "refute":
+            return f"Prove the formal negation of the proposition underlying the yes/no answer in {source_name}."
+        return f"Prove the proposition underlying the yes/no answer in {source_name}."
     if bucket == "open_problem" and instance.get("open_problem_polarity") == "refute":
         return f"Prove the formal negation of {instance.get('source_theorem_name', instance['theorem_name'])} from Formal Conjectures."
     return f"Prove {instance['theorem_name']} from Formal Conjectures."

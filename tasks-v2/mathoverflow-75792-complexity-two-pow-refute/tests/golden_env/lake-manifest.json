@@ -1,0 +1,98 @@
+{
+ "version": "1.1.0",
+ "packagesDir": ".lake/packages",
+ "packages": [
+  {
+   "type": "path",
+   "scope": "",
+   "name": "formal_conjectures",
+   "manifestFile": "lake-manifest.json",
+   "inherited": false,
+   "dir": "/opt/formal-conjectures",
+   "configFile": "lakefile.toml"
+  },
+  {
+   "type": "path",
+   "scope": "leanprover-community",
+   "name": "mathlib",
+   "manifestFile": "lake-manifest.json",
+   "inherited": true,
+   "dir": "/opt/formal-conjectures/.lake/packages/mathlib",
+   "configFile": "lakefile.lean"
+  },
+  {
+   "type": "path",
+   "scope": "leanprover-community",
+   "name": "plausible",
+   "manifestFile": "lake-manifest.json",
+   "inherited": true,
+   "dir": "/opt/formal-conjectures/.lake/packages/plausible",
+   "configFile": "lakefile.toml"
+  },
+  {
+   "type": "path",
+   "scope": "leanprover-community",
+   "name": "LeanSearchClient",
+   "manifestFile": "lake-manifest.json",
+   "inherited": true,
+   "dir": "/opt/formal-conjectures/.lake/packages/LeanSearchClient",
+   "configFile": "lakefile.toml"
+  },
+  {
+   "type": "path",
+   "scope": "leanprover-community",
+   "name": "importGraph",
+   "manifestFile": "lake-manifest.json",
+   "inherited": true,
+   "dir": "/opt/formal-conjectures/.lake/packages/importGraph",
+   "configFile": "lakefile.toml"
+  },
+  {
+   "type": "path",
+   "scope": "leanprover-community",
+   "name": "proofwidgets",
+   "manifestFile": "lake-manifest.json",
+   "inherited": true,
+   "dir": "/opt/formal-conjectures/.lake/packages/proofwidgets",
+   "configFile": "lakefile.lean"
+  },
+  {
+   "type": "path",
+   "scope": "leanprover-community",
+   "name": "aesop",
+   "manifestFile": "lake-manifest.json",
+   "inherited": true,
+   "dir": "/opt/formal-conjectures/.lake/packages/aesop",
+   "configFile": "lakefile.toml"
+  },
+  {
+   "type": "path",
+   "scope": "leanprover-community",
+   "name": "Qq",
+   "manifestFile": "lake-manifest.json",
+   "inherited": true,
+   "dir": "/opt/formal-conjectures/.lake/packages/Qq",
+   "configFile": "lakefile.toml"
+  },
+  {
+   "type": "path",
+   "scope": "leanprover-community",
+   "name": "batteries",
+   "manifestFile": "lake-manifest.json",
+   "inherited": true,
+   "dir": "/opt/formal-conjectures/.lake/packages/batteries",
+   "configFile": "lakefile.toml"
+  },
+  {
+   "type": "path",
+   "scope": "leanprover",
+   "name": "Cli",
+   "manifestFile": "lake-manifest.json",
+   "inherited": true,
+   "dir": "/opt/formal-conjectures/.lake/packages/Cli",
+   "configFile": "lakefile.toml"
+  }
+ ],
+ "name": "formal_conjectures_bench_task",
+ "lakeDir": ".lake"
+}

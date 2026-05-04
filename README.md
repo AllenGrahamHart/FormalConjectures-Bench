@@ -7,24 +7,24 @@ The current `main` branch has two checked-in task roots:
 
 - `tasks/`: 72 gold-solution tasks with bundled local Lean oracles. These run
   with internet access disabled.
-- `tasks-v2/`: 1,444 non-gold tasks without bundled oracles. These run with
+- `tasks-v2/`: 2,558 non-gold tasks without bundled oracles. These run with
   internet access enabled so agents can use external literature while trying to
   produce new Lean proofs.
 
-The combined v2 manifest records 1,516 task instances: the 72 gold instances are
-emitted under `tasks/`, and the remaining 1,444 instances are emitted under
+The combined v2 manifest records 2,630 task instances: the 72 gold instances are
+emitted under `tasks/`, and the remaining 2,558 instances are emitted under
 `tasks-v2/`.
 
 ## Benchmark Card
 
 | Field | Value |
 | --- | --- |
-| Current task instances | 1,516 |
+| Current task instances | 2,630 |
 | Gold task root | `tasks/` |
 | Gold tasks | 72 |
 | Non-gold v2 task root | `tasks-v2/` |
-| Non-gold v2 tasks | 1,444 |
-| V2 batch manifests | `manifest/v2_batches/batch-001.json` through `batch-015.json` |
+| Non-gold v2 tasks | 2,558 |
+| V2 batch manifests | `manifest/v2_batches/batch-001.json` through `batch-027.json` |
 | Language | Lean 4 |
 | Lean toolchain | `leanprover/lean4:v4.27.0` |
 | Mathlib | `v4.27.0`, commit `a3a10db0e9d66acbebf76c5e6a135066525ac900` |
@@ -38,24 +38,29 @@ emitted under `tasks/`, and the remaining 1,444 instances are emitted under
 | `gold_solution` | 72 | `tasks/` | Off | Bundled local oracle |
 | `informal_proof` | 722 | `tasks-v2/` | On | None |
 | `deferred_formal_candidate` | 26 | `tasks-v2/` | On | None |
-| `open_problem` | 696 | `tasks-v2/` | On | None |
+| `open_problem` | 1,810 | `tasks-v2/` | On | None |
 
-The `open_problem` bucket consists of 348 prove/refute pairs. Each pair has one
-task asking for the original Formal Conjectures statement and one task asking
-for the formal negation of the frozen statement. Pair metadata lives in
-`manifest/v2_open_pairs.json`; benchmark-level scoring should count a pair as
-passed if at least one side passes and should flag any pair where both sides
-pass.
+The `open_problem` bucket consists of 905 prove/refute pairs. Of these, 348 are
+ordinary theorem/negation pairs and 557 are simple yes/no `answer(sorry)` iff
+pairs reformulated as theorem/negation pairs. Each pair has one task asking for
+the proposition and one task asking for the formal negation of the frozen
+proposition. Pair metadata lives in `manifest/v2_open_pairs.json`;
+benchmark-level scoring should count a pair as passed if at least one side
+passes and should flag any pair where both sides pass.
 
 The `deferred_formal_candidate` bucket contains the old deferred candidates from
 the gold-task repair pass. For v2 benchmark purposes they are treated as
 non-gold, internet-enabled tasks with no bundled oracle.
 
+Remaining `answer(sorry)` declarations are excluded when they require a
+non-boolean value/classification answer, or when they are solved yes/no answer
+forms that are not part of the open prove/refute scoring model.
+
 ## Repository Layout
 
 - `manifest/manifest.json` is the source of truth for the 72 gold tasks emitted
   under `tasks/`.
-- `manifest/v2_candidates.json` records all 1,516 v2 instances and their
+- `manifest/v2_candidates.json` records all 2,630 v2 instances and their
   benchmark buckets.
 - `manifest/v2_batches/` records deterministic batches used to generate
   `tasks-v2/`.
@@ -93,19 +98,19 @@ This validates that:
 To check one v2 batch:
 
 ```bash
-make check-v2-batch V2_BATCH=batch-015
+make check-v2-batch V2_BATCH=batch-027
 ```
 
 To smoke-test a small Lean sample from one v2 batch:
 
 ```bash
-make smoke-v2-batch V2_BATCH=batch-015 V2_LEAN_SMOKE=10
+make smoke-v2-batch V2_BATCH=batch-027 V2_LEAN_SMOKE=10
 ```
 
 To Lean-smoke every generated v2 target with its placeholder `sorry`:
 
 ```bash
-python3 scripts/smoke_v2_targets.py --batch manifest/v2_batches/batch-001.json --batch manifest/v2_batches/batch-002.json --batch manifest/v2_batches/batch-003.json --batch manifest/v2_batches/batch-004.json --batch manifest/v2_batches/batch-005.json --batch manifest/v2_batches/batch-006.json --batch manifest/v2_batches/batch-007.json --batch manifest/v2_batches/batch-008.json --batch manifest/v2_batches/batch-009.json --batch manifest/v2_batches/batch-010.json --batch manifest/v2_batches/batch-011.json --batch manifest/v2_batches/batch-012.json --batch manifest/v2_batches/batch-013.json --batch manifest/v2_batches/batch-014.json --batch manifest/v2_batches/batch-015.json --progress-every 10
+python3 scripts/smoke_v2_targets.py --batch manifest/v2_batches/batch-001.json --batch manifest/v2_batches/batch-002.json --batch manifest/v2_batches/batch-003.json --batch manifest/v2_batches/batch-004.json --batch manifest/v2_batches/batch-005.json --batch manifest/v2_batches/batch-006.json --batch manifest/v2_batches/batch-007.json --batch manifest/v2_batches/batch-008.json --batch manifest/v2_batches/batch-009.json --batch manifest/v2_batches/batch-010.json --batch manifest/v2_batches/batch-011.json --batch manifest/v2_batches/batch-012.json --batch manifest/v2_batches/batch-013.json --batch manifest/v2_batches/batch-014.json --batch manifest/v2_batches/batch-015.json --batch manifest/v2_batches/batch-016.json --batch manifest/v2_batches/batch-017.json --batch manifest/v2_batches/batch-018.json --batch manifest/v2_batches/batch-019.json --batch manifest/v2_batches/batch-020.json --batch manifest/v2_batches/batch-021.json --batch manifest/v2_batches/batch-022.json --batch manifest/v2_batches/batch-023.json --batch manifest/v2_batches/batch-024.json --batch manifest/v2_batches/batch-025.json --batch manifest/v2_batches/batch-026.json --batch manifest/v2_batches/batch-027.json --progress-every 10
 ```
 
 To check every v2 batch:
@@ -141,7 +146,7 @@ make v2-candidates V2_BATCH_SIZE=100
 Regenerate a v2 batch:
 
 ```bash
-make generate-v2-batch V2_BATCH=batch-015
+make generate-v2-batch V2_BATCH=batch-027
 ```
 
 For exploratory work on a gold candidate, pass `--include-candidates --only
