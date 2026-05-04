@@ -673,6 +673,87 @@ theorem crtProductPstarFinset_card_eq_productPrivateSlice {ι : Type*} [Fintype 
   rw [crtProductPstarFinset, addEquivTranslatePreimageFinset_card_eq_preimage,
     addEquivPreimageFinset_card_eq]
 
+theorem affineDoubleNormalize_not_coordinateTarget_card_eq {ι : Type*}
+    [Fintype ι] [DecidableEq ι]
+    (p : ι → ℕ) [(i : ι) → Fintype (ZMod (p i))]
+    (β e : ∀ i : ι, ZMod (p i)) :
+    (setFiniteFinset ({y : ∀ i : ι, ZMod (p i) |
+        affineDoubleNormalize p β y ∉ coordinateTarget p e})).card =
+      (setFiniteFinset (Set.univ \ coordinateTarget p e)).card := by
+  classical
+  refine Finset.card_bij (fun y _ => affineDoubleNormalize p β y) ?_ ?_ ?_
+  · intro y hy
+    rw [mem_setFiniteFinset]
+    rw [mem_setFiniteFinset] at hy
+    exact ⟨Set.mem_univ _, hy⟩
+  · intro x _ y _ hxy
+    funext i
+    have hi := congrFun hxy i
+    dsimp [affineDoubleNormalize] at hi
+    linear_combination hi
+  · intro z hz
+    refine ⟨fun i => z i + (β i + β i), ?_, ?_⟩
+    · rw [mem_setFiniteFinset]
+      rw [mem_setFiniteFinset] at hz
+      intro hcoord
+      apply hz.2
+      rcases hcoord with ⟨i, hi⟩
+      refine ⟨i, ?_⟩
+      simpa [affineDoubleNormalize] using hi
+    · funext i
+      simp [affineDoubleNormalize]
+
+theorem noncoordinate_card_eq_prod {ι : Type*}
+    [Fintype ι] [DecidableEq ι]
+    (p : ι → ℕ) [(i : ι) → Fintype (ZMod (p i))]
+    (e : ∀ i : ι, ZMod (p i)) :
+    (setFiniteFinset (Set.univ \ coordinateTarget p e)).card = ∏ i, (p i - 1) := by
+  classical
+  have hset : Set.univ \ coordinateTarget p e =
+      {z : ∀ i : ι, ZMod (p i) | ∀ i, z i ≠ e i} := by
+    ext z
+    simp [coordinateTarget]
+  rw [hset]
+  have hfin : setFiniteFinset ({z : ∀ i : ι, ZMod (p i) | ∀ i, z i ≠ e i}) =
+      Fintype.piFinset (fun i => (Finset.univ.erase (e i) : Finset (ZMod (p i)))) := by
+    ext z
+    rw [mem_setFiniteFinset, Fintype.mem_piFinset]
+    simp
+  rw [hfin, Fintype.card_piFinset]
+  apply Finset.prod_congr rfl
+  intro i _hi
+  rw [Finset.card_erase_of_mem]
+  · rw [Finset.card_univ, ZMod.card]
+  · exact Finset.mem_univ (e i)
+
+theorem productPrivateSlice_card_eq_prod {ι : Type*}
+    [Fintype ι] [DecidableEq ι]
+    (p0 : ℕ) [Fintype (ZMod p0)]
+    (p : ι → ℕ) [(i : ι) → Fintype (ZMod (p i))]
+    (β e : ∀ i : ι, ZMod (p i)) (h : ZMod p0) :
+    (setFiniteFinset (productPrivateSlice p0 p β e h)).card = ∏ i, (p i - 1) := by
+  calc
+    (setFiniteFinset (productPrivateSlice p0 p β e h)).card =
+        (setFiniteFinset ({y : ∀ i : ι, ZMod (p i) |
+          affineDoubleNormalize p β y ∉ coordinateTarget p e})).card :=
+      productPrivateSlice_card_eq_nonselected p0 p β e h
+    _ = (setFiniteFinset (Set.univ \ coordinateTarget p e)).card :=
+      affineDoubleNormalize_not_coordinateTarget_card_eq p β e
+    _ = ∏ i, (p i - 1) := noncoordinate_card_eq_prod p e
+
+theorem crtProductPstarFinset_card_eq_prod {ι : Type*}
+    [Fintype ι] [DecidableEq ι]
+    (M p0 : ℕ) [NeZero M] [NeZero p0] [Fintype (ZMod p0)]
+    (p : ι → ℕ) [(i : ι) → Fintype (ZMod (p i))]
+    (φ : ZMod M ≃+ ProductSpace p0 p) (a : ZMod M)
+    (β e : ∀ i : ι, ZMod (p i)) (h : ZMod p0) :
+    (crtProductPstarFinset M p0 p φ a β e h).card = ∏ i, (p i - 1) := by
+  calc
+    (crtProductPstarFinset M p0 p φ a β e h).card =
+        (setFiniteFinset (productPrivateSlice p0 p β e h)).card :=
+      crtProductPstarFinset_card_eq_productPrivateSlice M p0 p φ a β e h
+    _ = ∏ i, (p i - 1) := productPrivateSlice_card_eq_prod p0 p β e h
+
 theorem exists_crtProduct_gadget_core {ι : Type*}
     [Fintype ι] [DecidableEq ι]
     (M p0 : ℕ) [NeZero M] [Fact p0.Prime] [NeZero p0]
