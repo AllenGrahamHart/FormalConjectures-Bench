@@ -51,6 +51,33 @@ def productT {ι : Type*} [Fintype ι] (p0 : ℕ) [NeZero p0]
         (productLeftCorrection p0 p β e data h u2 false ∪
           productRightCorrection p0 p β e data h u2 false)))
 
+noncomputable def productCRTAddEquiv {ι : Type*} [Fintype ι]
+    (p0 : ℕ) (p : ι → ℕ)
+    (hcop0 : Nat.Coprime p0 (∏ i, p i))
+    (hcop : Pairwise fun i j => Nat.Coprime (p i) (p j)) :
+    ZMod (p0 * ∏ i, p i) ≃+ ProductSpace p0 p :=
+  (ZMod.chineseRemainder hcop0).toAddEquiv.trans
+    (AddEquiv.prodCongr (AddEquiv.refl (ZMod p0))
+      (zmodProdEquivPi p hcop).toAddEquiv)
+
+theorem productCRTAddEquiv_fst_natCast {ι : Type*} [Fintype ι]
+    (p0 : ℕ) (p : ι → ℕ)
+    (hcop0 : Nat.Coprime p0 (∏ i, p i))
+    (hcop : Pairwise fun i j => Nat.Coprime (p i) (p j))
+    (a : ℕ) :
+    ((productCRTAddEquiv p0 p hcop0 hcop) (a : ZMod (p0 * ∏ i, p i))).1 =
+      (a : ZMod p0) := by
+  simp [productCRTAddEquiv, AddEquiv.prodCongr]
+
+theorem productCRTAddEquiv_snd_natCast {ι : Type*} [Fintype ι]
+    (p0 : ℕ) (p : ι → ℕ)
+    (hcop0 : Nat.Coprime p0 (∏ i, p i))
+    (hcop : Pairwise fun i j => Nat.Coprime (p i) (p j))
+    (a : ℕ) (i : ι) :
+    ((productCRTAddEquiv p0 p hcop0 hcop) (a : ZMod (p0 * ∏ i, p i))).2 i =
+      (a : ZMod (p i)) := by
+  simp [productCRTAddEquiv, AddEquiv.prodCongr, zmodProdEquivPi]
+
 theorem productBase_subset_allowed {ι : Type*} (p0 : ℕ) [NeZero p0]
     (p : ι → ℕ) (α h : ZMod p0) (U : Finset (ZMod p0))
     (β : ∀ i : ι, ZMod (p i))
