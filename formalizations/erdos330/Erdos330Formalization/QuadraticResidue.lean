@@ -350,6 +350,40 @@ theorem shiftedQRDelete_add_self_eq_compl_singleton {p : ℕ} [Fact p.Prime] [Ne
   rw [mem_shiftedQRDelete_add_self_iff hp3 hp23 h U hUQ hUcard]
   simp
 
+theorem allowed_add_shiftedQRDelete_eq_univ {p : ℕ} [Fact p.Prime] [NeZero p]
+    (hp3 : p % 4 = 3) (hp23 : 23 ≤ p)
+    (h α : ZMod p) (U : Finset (ZMod p)) (hUcard : U.card ≤ 2) :
+    ((Set.univ \ ({α} : Set (ZMod p))) + (shiftedQRDelete p h U : Set (ZMod p))) =
+      Set.univ := by
+  classical
+  apply Set.eq_univ_iff_forall.mpr
+  intro z
+  let w : ZMod p := z - α - h
+  let bad : Finset (ZMod p) := insert w U
+  have hbad_card : bad.card ≤ 3 := by
+    calc
+      bad.card ≤ U.card + 1 := Finset.card_insert_le w U
+      _ ≤ 3 := by omega
+  have hQR_card : 5 ≤ (QR p).card := QR_card_ge_five p hp3 hp23
+  have hbad_lt_QR : bad.card < (QR p).card := by omega
+  obtain ⟨r, hrQR, hrbad⟩ := Finset.exists_mem_notMem_of_card_lt_card hbad_lt_QR
+  have hrU : r ∉ U := by
+    intro hrU
+    exact hrbad (by simp [bad, hrU])
+  have hrw : r ≠ w := by
+    intro hrw
+    exact hrbad (by simp [bad, hrw])
+  refine ⟨z - (h + r), ?_, h + r, ?_, ?_⟩
+  · refine ⟨Set.mem_univ _, ?_⟩
+    intro hαmem
+    have hαeq : z - (h + r) = α := by simpa using hαmem
+    apply hrw
+    dsimp [w]
+    linear_combination -hαeq
+  · exact (mem_shiftedQRDelete.mpr ⟨r, hrQR, hrU, rfl⟩ :
+      h + r ∈ (shiftedQRDelete p h U : Set (ZMod p)))
+  · ring
+
 theorem exists_selected_coordinate_data (p : ℕ) [Fact p.Prime] [NeZero p]
     (hp3 : p % 4 = 3) (hp23 : 23 ≤ p) (α : ZMod p) :
     ∃ h : ZMod p, ∃ U : Finset (ZMod p),
@@ -380,6 +414,96 @@ theorem exists_selected_coordinate_data (p : ℕ) [Fact p.Prime] [NeZero p]
     simpa using huv
   · exact shiftedQRDelete_add_self_eq_compl_singleton hp3 hp23 (α - v) {u1, u2} hUQ
       hUcard.le
+  · intro q hq hqα
+    rw [mem_shiftedQRDelete] at hq
+    rcases hq with ⟨r, hrQR, _hrU, hrq⟩
+    have hrv : r = v := by
+      calc
+        r = (α - v + r) - (α - v) := by ring
+        _ = q - (α - v) := by rw [hrq]
+        _ = α - (α - v) := by rw [hqα]
+        _ = v := by ring
+    have hvQR : v ∈ QR p := by simpa [hrv] using hrQR
+    exact hvnsq ((mem_QR.mp hvQR).2)
+
+theorem exists_selected_coordinate_full_data (p : ℕ) [Fact p.Prime] [NeZero p]
+    (hp3 : p % 4 = 3) (hp23 : 23 ≤ p) (α : ZMod p) :
+    ∃ h : ZMod p, ∃ U : Finset (ZMod p),
+      U ⊆ QR p ∧ U.card = 2 ∧ (∀ u ∈ U, u ≠ -(α - h)) ∧
+      ((shiftedQRDelete p h U : Set (ZMod p)) +
+          (shiftedQRDelete p h U : Set (ZMod p))) =
+        Set.univ \ ({h + h} : Set (ZMod p)) ∧
+      ((Set.univ \ ({α} : Set (ZMod p))) +
+          (shiftedQRDelete p h U : Set (ZMod p))) = Set.univ ∧
+      ∀ q ∈ shiftedQRDelete p h U, q ≠ α := by
+  obtain ⟨h, U, hUQ, hUcard, havoid, hself, hQavoid⟩ :=
+    exists_selected_coordinate_data p hp3 hp23 α
+  refine ⟨h, U, hUQ, hUcard, havoid, hself, ?_, hQavoid⟩
+  exact allowed_add_shiftedQRDelete_eq_univ hp3 hp23 h α U hUcard.le
+
+theorem exists_selected_coordinate_pair_data (p : ℕ) [Fact p.Prime] [NeZero p]
+    (hp3 : p % 4 = 3) (hp23 : 23 ≤ p) (α : ZMod p) :
+    ∃ h u1 u2 : ZMod p,
+      u1 ∈ QR p ∧ u2 ∈ QR p ∧ u1 ≠ u2 ∧
+      u1 ≠ -(α - h) ∧ u2 ≠ -(α - h) ∧
+      ((shiftedQRDelete p h ({u1, u2} : Finset (ZMod p)) : Set (ZMod p)) +
+          (shiftedQRDelete p h ({u1, u2} : Finset (ZMod p)) : Set (ZMod p))) =
+        Set.univ \ ({h + h} : Set (ZMod p)) ∧
+      ((Set.univ \ ({α} : Set (ZMod p))) +
+          (shiftedQRDelete p h ({u1, u2} : Finset (ZMod p)) : Set (ZMod p))) = Set.univ ∧
+      ∀ q ∈ shiftedQRDelete p h ({u1, u2} : Finset (ZMod p)), q ≠ α := by
+  obtain ⟨h, U, hUQ, hUcard, havoid, hself, hfull, hQavoid⟩ :=
+    exists_selected_coordinate_full_data p hp3 hp23 α
+  obtain ⟨u1, u2, hu12, hUeq⟩ := Finset.card_eq_two.mp hUcard
+  have hu1U : u1 ∈ U := by simp [hUeq]
+  have hu2U : u2 ∈ U := by simp [hUeq]
+  refine ⟨h, u1, u2, hUQ hu1U, hUQ hu2U, hu12, havoid u1 hu1U, havoid u2 hu2U,
+    ?_, ?_, ?_⟩
+  · simpa [hUeq] using hself
+  · simpa [hUeq] using hfull
+  · intro q hq
+    exact hQavoid q (by simpa [hUeq] using hq)
+
+theorem exists_selected_coordinate_strong_pair_data (p : ℕ) [Fact p.Prime] [NeZero p]
+    (hp3 : p % 4 = 3) (hp23 : 23 ≤ p) (α : ZMod p) :
+    ∃ h u1 u2 : ZMod p,
+      u1 ∈ QR p ∧ u2 ∈ QR p ∧ u1 ≠ u2 ∧
+      u1 ≠ α - h ∧ u2 ≠ α - h ∧
+      u1 ≠ -(α - h) ∧ u2 ≠ -(α - h) ∧
+      ((shiftedQRDelete p h ({u1, u2} : Finset (ZMod p)) : Set (ZMod p)) +
+          (shiftedQRDelete p h ({u1, u2} : Finset (ZMod p)) : Set (ZMod p))) =
+        Set.univ \ ({h + h} : Set (ZMod p)) ∧
+      ((Set.univ \ ({α} : Set (ZMod p))) +
+          (shiftedQRDelete p h ({u1, u2} : Finset (ZMod p)) : Set (ZMod p))) = Set.univ ∧
+      ∀ q ∈ shiftedQRDelete p h ({u1, u2} : Finset (ZMod p)), q ≠ α := by
+  obtain ⟨v, hvnsq⟩ :=
+    FiniteField.exists_nonsquare (zmod_prime_odd_char_ne_two p hp23 :
+      ringChar (ZMod p) ≠ 2)
+  obtain ⟨u1, u2, hu1QR, hu2QR, hu12, hu1negv, hu2negv⟩ :=
+    exists_two_QR_avoiding p hp3 hp23 (-v)
+  let h : ZMod p := α - v
+  have hu1v : u1 ≠ v := by
+    intro hu
+    have hvQR : v ∈ QR p := by simpa [hu] using hu1QR
+    exact hvnsq ((mem_QR.mp hvQR).2)
+  have hu2v : u2 ≠ v := by
+    intro hu
+    have hvQR : v ∈ QR p := by simpa [hu] using hu2QR
+    exact hvnsq ((mem_QR.mp hvQR).2)
+  have hUQ : ({u1, u2} : Finset (ZMod p)) ⊆ QR p := by
+    intro u hu
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hu
+    rcases hu with rfl | rfl
+    · exact hu1QR
+    · exact hu2QR
+  have hUcard : ({u1, u2} : Finset (ZMod p)).card = 2 := Finset.card_pair hu12
+  refine ⟨h, u1, u2, hu1QR, hu2QR, hu12, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  · simpa [h] using hu1v
+  · simpa [h] using hu2v
+  · simpa [h] using hu1negv
+  · simpa [h] using hu2negv
+  · exact shiftedQRDelete_add_self_eq_compl_singleton hp3 hp23 h {u1, u2} hUQ hUcard.le
+  · exact allowed_add_shiftedQRDelete_eq_univ hp3 hp23 h α {u1, u2} hUcard.le
   · intro q hq hqα
     rw [mem_shiftedQRDelete] at hq
     rcases hq with ⟨r, hrQR, _hrU, hrq⟩
