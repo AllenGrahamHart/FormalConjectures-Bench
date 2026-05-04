@@ -127,6 +127,84 @@ theorem residueBlockLenFinset_card_le_interval (M : ℕ) (Ω : Finset (ZMod M))
     (residueBlockLenFinset M Ω lo len).card ≤ (Finset.Icc lo (lo + len)).card :=
   residueBlockFinset_card_le_interval M Ω lo (lo + len)
 
+theorem residueBlockLenFinset_card_lower (M : ℕ) [NeZero M]
+    (Ω : Finset (ZMod M)) (lo len : ℕ) :
+    Ω.card * (len / M) ≤ (residueBlockLenFinset M Ω lo len).card := by
+  classical
+  let source : Finset (ZMod M × ℕ) := Ω.product (Finset.range (len / M))
+  let rep : ZMod M → ℕ := fun ρ => (ρ - (lo : ZMod M)).val
+  let f : ZMod M × ℕ → ℕ := fun zq => lo + zq.2 * M + rep zq.1
+  have hmaps : Set.MapsTo f (source : Set (ZMod M × ℕ))
+      (residueBlockLenFinset M Ω lo len : Set ℕ) := by
+    intro zq hzq
+    rcases zq with ⟨ρ, q⟩
+    have hzq_mem : ρ ∈ Ω ∧ q ∈ Finset.range (len / M) := by
+      simpa [source] using hzq
+    change f (ρ, q) ∈ residueBlockLenFinset M Ω lo len
+    rw [mem_residueBlockLenFinset]
+    have hrep_lt : rep ρ < M := ZMod.val_lt (ρ - (lo : ZMod M))
+    have hq_lt : q < len / M := by simpa using hzq_mem.2
+    have hq_succ_mul : q * M + M ≤ len := by
+      have hq_succ : q + 1 ≤ len / M := Nat.succ_le_iff.mpr hq_lt
+      have hmul := (Nat.mul_le_mul_right M hq_succ).trans (Nat.div_mul_le_self len M)
+      rwa [Nat.succ_mul] at hmul
+    have hres : ((lo + q * M + rep ρ : ℕ) : ZMod M) = ρ := by
+      dsimp [rep]
+      calc
+        ((lo + q * M + (ρ - (lo : ZMod M)).val : ℕ) : ZMod M)
+            = (lo : ZMod M) + (q * M : ℕ) +
+                ((ρ - (lo : ZMod M)).val : ZMod M) := by
+              simp [Nat.cast_add]
+        _ = (lo : ZMod M) + 0 + (ρ - (lo : ZMod M)) := by
+              rw [ZMod.natCast_zmod_val]
+              simp
+        _ = ρ := by abel
+    refine ⟨by dsimp [f]; omega, ?_, ?_⟩
+    · dsimp [f]
+      omega
+    · simpa [f, hres] using hzq_mem.1
+  have hinj : Set.InjOn f (source : Set (ZMod M × ℕ)) := by
+    intro zq _hzq zq' _hzq' hff
+    rcases zq with ⟨ρ, q⟩
+    rcases zq' with ⟨ρ', q'⟩
+    have hresρ : ((lo + q * M + rep ρ : ℕ) : ZMod M) = ρ := by
+      dsimp [rep]
+      calc
+        ((lo + q * M + (ρ - (lo : ZMod M)).val : ℕ) : ZMod M)
+            = (lo : ZMod M) + (q * M : ℕ) +
+                ((ρ - (lo : ZMod M)).val : ZMod M) := by
+              simp [Nat.cast_add]
+        _ = (lo : ZMod M) + 0 + (ρ - (lo : ZMod M)) := by
+              rw [ZMod.natCast_zmod_val]
+              simp
+        _ = ρ := by abel
+    have hresρ' : ((lo + q' * M + rep ρ' : ℕ) : ZMod M) = ρ' := by
+      dsimp [rep]
+      calc
+        ((lo + q' * M + (ρ' - (lo : ZMod M)).val : ℕ) : ZMod M)
+            = (lo : ZMod M) + (q' * M : ℕ) +
+                ((ρ' - (lo : ZMod M)).val : ZMod M) := by
+              simp [Nat.cast_add]
+        _ = (lo : ZMod M) + 0 + (ρ' - (lo : ZMod M)) := by
+              rw [ZMod.natCast_zmod_val]
+              simp
+        _ = ρ' := by abel
+    have hρeq : ρ = ρ' := by
+      rw [← hresρ, ← hresρ']
+      exact congrArg (fun n : ℕ => (n : ZMod M)) hff
+    subst ρ'
+    have hnat : q * M + rep ρ = q' * M + rep ρ := by
+      dsimp [f] at hff
+      omega
+    have hmul : q * M = q' * M := by omega
+    have hq : q = q' := Nat.mul_right_cancel (NeZero.pos M) hmul
+    subst q'
+    rfl
+  calc
+    Ω.card * (len / M) = source.card := by simp [source]
+    _ ≤ (residueBlockLenFinset M Ω lo len).card :=
+      Finset.card_le_card_of_injOn f hmaps hinj
+
 lemma exists_natCast_eq_zmod_in_Icc_len (M lo : ℕ) [NeZero M] (ρ : ZMod M) :
     ∃ x : ℕ, lo ≤ x ∧ x ≤ lo + M ∧ (x : ZMod M) = ρ := by
   let δ : ZMod M := ρ - (lo : ZMod M)
