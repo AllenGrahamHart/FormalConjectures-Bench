@@ -1,4 +1,4 @@
-import FormalConjectures.Util.ProblemImports
+import Erdos330Formalization.Basic
 
 /-!
 # Residue blocks for Erdős Problem 330
@@ -8,6 +8,8 @@ set of residue classes modulo a modulus `M`.
 -/
 
 namespace Erdos330Formalization
+
+open scoped Pointwise
 
 /--
 The natural numbers in `[lo, hi]` whose residue modulo `M` belongs to `Ω`.
@@ -124,5 +126,83 @@ theorem residueBlockLenFinset_card_le_interval (M : ℕ) (Ω : Finset (ZMod M))
     (lo len : ℕ) :
     (residueBlockLenFinset M Ω lo len).card ≤ (Finset.Icc lo (lo + len)).card :=
   residueBlockFinset_card_le_interval M Ω lo (lo + len)
+
+lemma exists_natCast_eq_zmod_in_Icc_len (M lo : ℕ) [NeZero M] (ρ : ZMod M) :
+    ∃ x : ℕ, lo ≤ x ∧ x ≤ lo + M ∧ (x : ZMod M) = ρ := by
+  let δ : ZMod M := ρ - (lo : ZMod M)
+  refine ⟨lo + δ.val, by omega, ?_, ?_⟩
+  · have hδ : δ.val < M := ZMod.val_lt δ
+    omega
+  · calc
+      ((lo + δ.val : ℕ) : ZMod M) = (lo : ZMod M) + (δ.val : ZMod M) := by
+        exact Nat.cast_add lo δ.val
+      _ = (lo : ZMod M) + δ := by rw [ZMod.natCast_zmod_val]
+      _ = ρ := by simp [δ]
+
+theorem exists_residueBlock_pair_of_middle {M N L n : ℕ} [NeZero M]
+    {Ω Θ : Finset (ZMod M)}
+    (hML : M ≤ L) (hnlo : 2 * N + M ≤ n) (hnhi : n ≤ 2 * N + 2 * L - M)
+    (hres : (n : ZMod M) ∈ (Ω : Set (ZMod M)) + (Θ : Set (ZMod M))) :
+    ∃ x ∈ residueBlockFinset M Ω N (N + L),
+      ∃ y ∈ residueBlockFinset M Θ N (N + L), x + y = n := by
+  rcases hres with ⟨ω, hω, θ, hθ, hsum⟩
+  let Jlo := max N (n - (N + L))
+  have hJloN : N ≤ Jlo := le_max_left _ _
+  have hJloLow : n - (N + L) ≤ Jlo := le_max_right _ _
+  have hJhi_interval : Jlo + M ≤ N + L := by
+    dsimp [Jlo]
+    omega
+  have hJhi_sub : Jlo + M ≤ n - N := by
+    dsimp [Jlo]
+    omega
+  obtain ⟨x, hxlo, hxhi, hxω⟩ := exists_natCast_eq_zmod_in_Icc_len M Jlo ω
+  have hxN : N ≤ x := hJloN.trans hxlo
+  have hxNL : x ≤ N + L := hxhi.trans hJhi_interval
+  have hxle_n_sub : x ≤ n - N := hxhi.trans hJhi_sub
+  have hxle_n : x ≤ n := by omega
+  let y := n - x
+  have hyN : N ≤ y := by
+    dsimp [y]
+    omega
+  have hyNL : y ≤ N + L := by
+    dsimp [y]
+    have hlow : n - (N + L) ≤ x := hJloLow.trans hxlo
+    omega
+  have hyθ : (y : ZMod M) = θ := by
+    dsimp [y]
+    calc
+      ((n - x : ℕ) : ZMod M) = (n : ZMod M) - (x : ZMod M) := by
+        exact Nat.cast_sub hxle_n
+      _ = (ω + θ) - ω := by rw [← hsum, hxω]
+      _ = θ := by abel
+  have hxBlock : x ∈ residueBlockFinset M Ω N (N + L) := by
+    rw [mem_residueBlockFinset]
+    exact ⟨hxN, hxNL, by simpa [hxω] using hω⟩
+  have hyBlock : y ∈ residueBlockFinset M Θ N (N + L) := by
+    rw [mem_residueBlockFinset]
+    exact ⟨hyN, hyNL, by simpa [hyθ] using hθ⟩
+  refine ⟨x, hxBlock, y, hyBlock, ?_⟩
+  dsimp [y]
+  omega
+
+theorem residueBlockFinset_middle_mem_twoFold_union {M N L n : ℕ} [NeZero M]
+    {Ω Θ : Finset (ZMod M)}
+    (hML : M ≤ L) (hnlo : 2 * N + M ≤ n) (hnhi : n ≤ 2 * N + 2 * L - M)
+    (hres : (n : ZMod M) ∈ (Ω : Set (ZMod M)) + (Θ : Set (ZMod M))) :
+    n ∈ twoFoldFinset
+      (residueBlockFinset M Ω N (N + L) ∪ residueBlockFinset M Θ N (N + L)) := by
+  obtain ⟨x, hx, y, hy, hxy⟩ :=
+    exists_residueBlock_pair_of_middle (M := M) (N := N) (L := L) (n := n)
+      hML hnlo hnhi hres
+  exact ⟨x, Finset.mem_union.mpr (Or.inl hx), y, Finset.mem_union.mpr (Or.inr hy), hxy⟩
+
+theorem residueBlockFinset_middle_mem_twoFold_self {M N L n : ℕ} [NeZero M]
+    {Ω : Finset (ZMod M)}
+    (hML : M ≤ L) (hnlo : 2 * N + M ≤ n) (hnhi : n ≤ 2 * N + 2 * L - M)
+    (hres : (n : ZMod M) ∈ (Ω : Set (ZMod M)) + (Ω : Set (ZMod M))) :
+    n ∈ twoFoldFinset (residueBlockFinset M Ω N (N + L)) := by
+  simpa using
+    (residueBlockFinset_middle_mem_twoFold_union (M := M) (N := N) (L := L)
+      (n := n) (Ω := Ω) (Θ := Ω) hML hnlo hnhi hres)
 
 end Erdos330Formalization
