@@ -132,6 +132,34 @@ theorem active_le_X (st : StageState) {a : ℕ} (ha : a ∈ st.P) : a ≤ st.X :
 theorem modulus_pos (st : StageState) {a : ℕ} (ha : a ∈ st.P) : 0 < st.m a :=
   (st.m_prime a ha).pos
 
+theorem D_nat_avoid (st : StageState) :
+    ∀ c ∈ st.P, ∀ n : ℕ, (n : ZMod st.M) ∈ st.D →
+      (n : ZMod (st.m c)) ≠ (c : ZMod (st.m c)) := by
+  intro c hc n hnD hncong
+  have hdiv : st.m c ∣ st.M := by
+    rw [st.M_def]
+    exact Finset.dvd_prod_of_mem st.m hc
+  obtain ⟨u, huBlock, v, hvBlock, huv, huS, hvS⟩ :=
+    st.reservoir_multiplicity st.H le_rfl st.reservoir_long (n : ZMod st.M) hnD
+  rw [mem_residueBlockFinset] at huBlock hvBlock
+  have huM : (u : ZMod st.M) = (n : ZMod st.M) := by
+    simpa using huBlock.2.2
+  have hvM : (v : ZMod st.M) = (n : ZMod st.M) := by
+    simpa using hvBlock.2.2
+  have huC : (u : ZMod (st.m c)) = (c : ZMod (st.m c)) := by
+    have hmap : (u : ZMod (st.m c)) = (n : ZMod (st.m c)) := by
+      simpa [ZMod.castHom_apply, ZMod.cast_natCast] using
+        congrArg (ZMod.castHom hdiv (ZMod (st.m c))) huM
+    exact hmap.trans hncong
+  have hvC : (v : ZMod (st.m c)) = (c : ZMod (st.m c)) := by
+    have hmap : (v : ZMod (st.m c)) = (n : ZMod (st.m c)) := by
+      simpa [ZMod.castHom_apply, ZMod.cast_natCast] using
+        congrArg (ZMod.castHom hdiv (ZMod (st.m c))) hvM
+    exact hmap.trans hncong
+  have hu_eq : u = c := st.isolated c hc u huS huC
+  have hv_eq : v = c := st.isolated c hc v hvS hvC
+  exact huv (hu_eq.trans hv_eq.symm)
+
 end StageState
 
 /-- Abstract certificate that one finite stage extends another. -/
