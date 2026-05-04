@@ -512,6 +512,25 @@ theorem nextS_new_elements_above_old_X {st : StageState} {a b p : ℕ}
   · rw [mem_tailBlock] at hnTail
     exact lt_of_lt_of_le hK hnTail.1
 
+theorem nextS_new_elements_avoid_active {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p) :
+    ∀ c ∈ activatedActiveSet st b, ∀ s ∈ params.nextS, s ∉ st.S →
+      (s : ZMod (activatedModulus st b p c)) ≠
+        (c : ZMod (activatedModulus st b p c)) := by
+  classical
+  intro c hc s hs hnotS
+  simp [nextS] at hs
+  rcases hs with hsOld | hsLower | hsPrivate | hsTail
+  · exact (hnotS hsOld).elim
+  · rw [mem_lowerBlock] at hsLower
+    exact params.G.D_nat_avoid c hc s
+      (params.G.T_subset_D (by simpa [StageParams.Mplus] using hsLower.2.2))
+  · rw [mem_privateBlock] at hsPrivate
+    exact params.G.D_nat_avoid c hc s
+      (params.G.Pstar_subset_D (by simpa [StageParams.Mplus] using hsPrivate.2.2))
+  · rw [mem_tailBlock] at hsTail
+    exact params.G.D_nat_avoid c hc s (by simpa [StageParams.Mplus] using hsTail.2.2)
+
 theorem nextS_le_nextX {st : StageState} {a b p : ℕ}
     (params : StageParams st a b p)
     (hX : st.X ≤ params.nextX)
@@ -1500,5 +1519,56 @@ noncomputable def serviceExtensionOfParamsFromHelpers {st : StageState} {a b p :
       hlower_start hlower_end hML hCLZ htail_start htail_end hMLZ)
     hexists_dormant hendpoint_le_nextX hdensityDenominator_pos hlohi hlo_private
     hhi_private hlo_sum hhi_sum harith
+
+noncomputable def serviceExtensionOfParamsFromHelpersAndAllowedAvoidance
+    {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p) [NeZero (activatedM st b p)]
+    (ha : a ∈ st.P) (hbS : b ∈ st.S) (hbDormant : b ∉ st.P)
+    (hp : FreshPrimeData st p)
+    (hN : st.X < params.N) (hK : st.X < params.K)
+    (hX_next : st.X ≤ params.nextX) (hR_next : st.R ≤ params.nextR)
+    (hlower_height : params.N + params.L ≤ params.nextX)
+    (hprivate_height : params.serviceR ≤ params.nextX)
+    (hreservoir_long : params.K + 3 * params.Mplus ≤ params.nextX)
+    (hheadroom : params.K + params.nextX + 3 * params.Mplus ≤ params.nextR)
+    (hexists_dormant : ∃ c ∈ params.nextS, c ∉ activatedActiveSet st b)
+    (hendpoint_le_nextX : params.protectedEndpoint ≤ params.nextX)
+    (T_helper : ∀ Jlo, st.H ≤ Jlo → Jlo + 3 * st.M ≤ st.X →
+      ∀ γ : ZMod (activatedM st b p),
+        ∃ u : ℕ, u ∈ st.S ∧ Jlo ≤ u ∧ u ≤ Jlo + 3 * st.M ∧
+          γ - (u : ZMod (activatedM st b p)) ∈ params.G.T)
+    (D_helper : ∀ Jlo, st.H ≤ Jlo → Jlo + 3 * st.M ≤ st.X →
+      ∀ γ : ZMod (activatedM st b p),
+        ∃ u : ℕ, u ∈ st.S ∧ Jlo ≤ u ∧ u ≤ Jlo + 3 * st.M ∧
+          γ - (u : ZMod (activatedM st b p)) ∈ params.Dplus)
+    (hDplus_add :
+      ((params.Dplus : Set (ZMod (activatedM st b p))) +
+        (params.Dplus : Set (ZMod (activatedM st b p)))) = Set.univ)
+    (hCL : 3 * st.M ≤ params.L)
+    (hlower_start : st.H + params.N + 3 * st.M ≤ st.R + 1)
+    (hlower_end :
+      2 * params.N + params.Mplus + 3 * st.M ≤ st.X + params.N + params.L + 1)
+    (hML : params.Mplus ≤ params.L)
+    (hCLZ : 3 * st.M ≤ params.LZ)
+    (htail_start : st.H + params.K + 3 * st.M ≤ params.serviceR + 1)
+    (htail_end :
+      2 * params.K + params.Mplus + 3 * st.M ≤ st.X + params.K + params.LZ + 1)
+    (hMLZ : params.Mplus ≤ params.LZ)
+    {densityNumerator densityDenominator lo hi : ℕ}
+    (hdensityDenominator_pos : 0 < densityDenominator)
+    (hlohi : lo ≤ hi)
+    (hlo_private : 2 * params.N + params.Mplus - a ≤ lo)
+    (hhi_private : hi ≤ params.serviceR - a)
+    (hlo_sum : st.X + params.N + params.L < a + lo)
+    (hhi_sum : a + hi < params.protectedEndpoint)
+    (harith :
+      densityNumerator * params.protectedEndpoint ≤
+        densityDenominator * (params.G.Pstar.card * ((hi - lo) / params.Mplus))) :
+    Σ st' : StageState, ServiceExtension st st' a :=
+  serviceExtensionOfParamsFromHelpers params ha hbS hbDormant hp hN hK hX_next
+    hR_next hlower_height hprivate_height params.nextS_new_elements_avoid_active
+    hreservoir_long hheadroom hexists_dormant hendpoint_le_nextX T_helper D_helper
+    hDplus_add hCL hlower_start hlower_end hML hCLZ htail_start htail_end hMLZ
+    hdensityDenominator_pos hlohi hlo_private hhi_private hlo_sum hhi_sum harith
 
 end Erdos330Formalization
