@@ -666,6 +666,103 @@ theorem protectedSumBlock_ne_lower_add_lower {st : StageState} {a b p n x y : �
   rw [params.G.T_add_T_compl_private] at hsum_mem
   exact hsum_mem.2 hprivateSlice
 
+theorem privateBlock_selectedCoord {st : StageState} {a b p q : ℕ}
+    {params : StageParams st a b p} (hq : q ∈ params.privateBlock) :
+    (q : ZMod (activatedModulus st b p a)) = params.G.privateResidue := by
+  rw [mem_privateBlock] at hq
+  rw [← params.G.selectedCoord_natCast q]
+  exact params.G.Pstar_selected (q : ZMod (activatedM st b p))
+    (by simpa [StageParams.Mplus] using hq.2.2)
+
+theorem lowerBlock_selectedCoord_ne_active {st : StageState} {a b p x : ℕ}
+    {params : StageParams st a b p} (hx : x ∈ params.lowerBlock) :
+    (x : ZMod (activatedModulus st b p a)) ≠ (a : ZMod (activatedModulus st b p a)) := by
+  rw [mem_lowerBlock] at hx
+  rw [← params.G.selectedCoord_natCast x]
+  exact params.G.T_selected_avoid (x : ZMod (activatedM st b p))
+    (by simpa [StageParams.Mplus] using hx.2.2)
+
+theorem protectedSumBlock_ne_old_add_private {st : StageState} {a b p n s q : ℕ}
+    {params : StageParams st a b p}
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P)
+    (hn : n ∈ params.protectedSumBlock) (hs : s ∈ st.S) (hs_ne : s ≠ a)
+    (hq : q ∈ params.privateBlock) :
+    s + q ≠ n := by
+  rw [mem_protectedSumBlock] at hn
+  rcases hn with ⟨q₀, hq₀, _hlo, _hhi, rfl⟩
+  intro hsum
+  have hqsel := privateBlock_selectedCoord (params := params) hq
+  have hq₀sel := privateBlock_selectedCoord (params := params) hq₀
+  have hselected :
+      (s : ZMod (activatedModulus st b p a)) =
+        (a : ZMod (activatedModulus st b p a)) := by
+    have hcast : ((s + q : ℕ) : ZMod (activatedModulus st b p a)) =
+        ((a + q₀ : ℕ) : ZMod (activatedModulus st b p a)) := by
+      rw [hsum]
+    rw [Nat.cast_add, Nat.cast_add, hqsel, hq₀sel] at hcast
+    linear_combination hcast
+  have hselected_old : (s : ZMod (st.m a)) = (a : ZMod (st.m a)) := by
+    rwa [activatedModulus_old_of_mem st hbDormant ha] at hselected
+  exact hs_ne (st.isolated a ha s hs hselected_old)
+
+theorem protectedSumBlock_ne_private_add_old {st : StageState} {a b p n q s : ℕ}
+    {params : StageParams st a b p}
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P)
+    (hn : n ∈ params.protectedSumBlock) (hq : q ∈ params.privateBlock)
+    (hs : s ∈ st.S) (hs_ne : s ≠ a) :
+    q + s ≠ n := by
+  intro hsum
+  exact protectedSumBlock_ne_old_add_private (params := params) ha hbDormant hn hs hs_ne hq
+    (by omega)
+
+theorem protectedSumBlock_ne_lower_add_private {st : StageState} {a b p n x q : ℕ}
+    {params : StageParams st a b p}
+    (hn : n ∈ params.protectedSumBlock) (hx : x ∈ params.lowerBlock)
+    (hq : q ∈ params.privateBlock) :
+    x + q ≠ n := by
+  rw [mem_protectedSumBlock] at hn
+  rcases hn with ⟨q₀, hq₀, _hlo, _hhi, rfl⟩
+  intro hsum
+  have hqsel := privateBlock_selectedCoord (params := params) hq
+  have hq₀sel := privateBlock_selectedCoord (params := params) hq₀
+  have hselected :
+      (x : ZMod (activatedModulus st b p a)) =
+        (a : ZMod (activatedModulus st b p a)) := by
+    have hcast : ((x + q : ℕ) : ZMod (activatedModulus st b p a)) =
+        ((a + q₀ : ℕ) : ZMod (activatedModulus st b p a)) := by
+      rw [hsum]
+    rw [Nat.cast_add, Nat.cast_add, hqsel, hq₀sel] at hcast
+    linear_combination hcast
+  exact (lowerBlock_selectedCoord_ne_active (params := params) hx) hselected
+
+theorem protectedSumBlock_ne_private_add_lower {st : StageState} {a b p n q x : ℕ}
+    {params : StageParams st a b p}
+    (hn : n ∈ params.protectedSumBlock) (hq : q ∈ params.privateBlock)
+    (hx : x ∈ params.lowerBlock) :
+    q + x ≠ n := by
+  intro hsum
+  exact protectedSumBlock_ne_lower_add_private (params := params) hn hx hq (by omega)
+
+theorem protectedSumBlock_ne_private_add_private {st : StageState} {a b p n q₁ q₂ : ℕ}
+    {params : StageParams st a b p}
+    (hn : n ∈ params.protectedSumBlock) (hq₁ : q₁ ∈ params.privateBlock)
+    (hq₂ : q₂ ∈ params.privateBlock) :
+    q₁ + q₂ ≠ n := by
+  rw [mem_protectedSumBlock] at hn
+  rcases hn with ⟨q₀, hq₀, _hlo, _hhi, rfl⟩
+  intro hsum
+  have hq₁sel := privateBlock_selectedCoord (params := params) hq₁
+  have hq₂sel := privateBlock_selectedCoord (params := params) hq₂
+  have hq₀sel := privateBlock_selectedCoord (params := params) hq₀
+  have hbad :
+      params.G.privateResidue = (a : ZMod (activatedModulus st b p a)) := by
+    have hcast : ((q₁ + q₂ : ℕ) : ZMod (activatedModulus st b p a)) =
+        ((a + q₀ : ℕ) : ZMod (activatedModulus st b p a)) := by
+      rw [hsum]
+    rw [Nat.cast_add, Nat.cast_add, hq₁sel, hq₂sel, hq₀sel] at hcast
+    linear_combination hcast
+  exact params.G.privateResidue_ne_active hbad
+
 theorem protectedSumBlock_card_eq_partner {st : StageState} {a b p : ℕ}
     (params : StageParams st a b p) :
     params.protectedSumBlock.card = params.protectedPartnerBlock.card := by
