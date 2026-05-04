@@ -29,6 +29,10 @@ theorem exists_crtProduct_CRTGadget_of_card_formula {ι : Type*}
     (hφnat : ∀ n : ℕ, (φ (n : ZMod M)).1 = (n : ZMod p0))
     (ha1 : (φ (a : ZMod M)).1 = α)
     (he : e = affineNormalize p β (φ (a : ZMod M)).2)
+    (hDnat :
+      ∀ c ∈ P, ∀ n : ℕ,
+        (n : ZMod M) ∈ crtProductAllowedFinset M p0 p φ α β →
+          (n : ZMod (m c)) ≠ (c : ZMod (m c)))
     (hcard : ∀ h : ZMod p0,
       ((crtProductPstarFinset M p0 p φ (a : ZMod M) β e h).card : ℝ) / (M : ℝ) =
         (1 : ℝ) / (m a : ℝ) *
@@ -63,6 +67,8 @@ theorem exists_crtProduct_CRTGadget_of_card_formula {ι : Type*}
     Pstar_selected := by
       intro r hr
       exact crtProductPstar_selected_eq M (m a) p φ (a : ZMod M) α β e h ha1 hr
+    D_nat_avoid := by
+      simpa using hDnat
     T_add_T_compl_private := hTT
     D_add_T_full := hDT
     Pstar_card_formula := hcard h
@@ -82,7 +88,10 @@ theorem exists_crtProduct_CRTGadget_of_subtype_product_index
     (α : ZMod (m a))
     (β e : ∀ i : NonselectedIndex P a, ZMod (m (i : ℕ)))
     (data : ∀ i : NonselectedIndex P a, SafePairData (ZMod (m (i : ℕ))) (e i))
+    (hβ : ∀ i : NonselectedIndex P a, β i = ((i : ℕ) : ZMod (m (i : ℕ))))
     (hφnat : ∀ n : ℕ, (φ (n : ZMod M)).1 = (n : ZMod (m a)))
+    (hφsnd : ∀ n : ℕ, ∀ i : NonselectedIndex P a,
+      (φ (n : ZMod M)).2 i = (n : ZMod (m (i : ℕ))))
     (ha1 : (φ (a : ZMod M)).1 = α)
     (he : e = affineNormalize (fun i : NonselectedIndex P a => m (i : ℕ)) β
       (φ (a : ZMod M)).2) :
@@ -98,7 +107,25 @@ theorem exists_crtProduct_CRTGadget_of_subtype_product_index
           (fun i : NonselectedIndex P a => m (i : ℕ)) φ β h u1 u2 := by
   refine exists_crtProduct_CRTGadget_of_card_formula P m M a (m a)
     rfl (fun i : NonselectedIndex P a => m (i : ℕ)) hm_ge7 hma3 hma23 φ α β e data
-    hφnat ha1 he ?_
+    hφnat ha1 he ?_ ?_
+  · intro c hc n hn
+    by_cases hca : c = a
+    · subst c
+      have hα : α = (a : ZMod (m a)) := by
+        rw [← ha1]
+        exact hφnat a
+      have hne := crtProductAllowed_selected_ne M (m a)
+        (fun i : NonselectedIndex P a => m (i : ℕ)) φ α β hn
+      simpa [hφnat n, hα] using hne
+    · let i : NonselectedIndex P a := ⟨c, Finset.mem_erase.mpr ⟨hca, hc⟩⟩
+      have hmem := hn
+      change (n : ZMod M) ∈
+        (crtProductAllowedFinset M (m a) (fun i : NonselectedIndex P a => m (i : ℕ))
+          φ α β : Finset (ZMod M)) at hmem
+      simp [crtProductAllowedFinset, addEquivPreimageFinset, productAllowed] at hmem
+      have hne : (φ (n : ZMod M)).2 i ≠ β i := hmem.2 i
+      have hsnd := hφsnd n i
+      simpa [i, hsnd, hβ i] using hne
   intro h
   calc
     ((crtProductPstarFinset M (m a) (fun i : NonselectedIndex P a => m (i : ℕ))
@@ -164,8 +191,11 @@ theorem exists_crtProduct_CRTGadget_for_exact_product
     (fun i : NonselectedIndex P a =>
       safePairDataZMod (m (i : ℕ)) (hm_ge7 i)
         ((a : ZMod (m (i : ℕ))) - ((i : ℕ) : ZMod (m (i : ℕ)))))
+    (fun i => rfl)
     (fun n => productCRTAddEquiv_fst_natCast (m a)
-      (fun i : NonselectedIndex P a => m (i : ℕ)) hcop0 hcop n) ?_ ?_
+      (fun i : NonselectedIndex P a => m (i : ℕ)) hcop0 hcop n)
+    (fun n i => productCRTAddEquiv_snd_natCast (m a)
+      (fun i : NonselectedIndex P a => m (i : ℕ)) hcop0 hcop n i) ?_ ?_
   · intro i
     have h7 := hm_ge7 i
     omega
