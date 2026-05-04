@@ -259,6 +259,27 @@ noncomputable def stageCRTProductEquiv (st : StageState) {a : ℕ} (ha : a ∈ s
     (stage_selected_coprime_nonselected_prod st ha)
     (stage_pairwise_coprime_nonselected st (a := a))
 
+theorem stageCRTProductEquiv_fst_natCast (st : StageState) {a n : ℕ} (ha : a ∈ st.P) :
+    ((stageCRTProductEquiv st ha)
+      (n : ZMod (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ)))).1 =
+      (n : ZMod (st.m a)) := by
+  unfold stageCRTProductEquiv
+  exact productCRTAddEquiv_fst_natCast (st.m a)
+    (fun i : NonselectedIndex st.P a => st.m (i : ℕ))
+    (stage_selected_coprime_nonselected_prod st ha)
+    (stage_pairwise_coprime_nonselected st (a := a)) n
+
+theorem stageCRTProductEquiv_snd_natCast (st : StageState) {a n : ℕ} (ha : a ∈ st.P)
+    (i : NonselectedIndex st.P a) :
+    ((stageCRTProductEquiv st ha)
+      (n : ZMod (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ)))).2 i =
+      (n : ZMod (st.m (i : ℕ))) := by
+  unfold stageCRTProductEquiv
+  exact productCRTAddEquiv_snd_natCast (st.m a)
+    (fun i : NonselectedIndex st.P a => st.m (i : ℕ))
+    (stage_selected_coprime_nonselected_prod st ha)
+    (stage_pairwise_coprime_nonselected st (a := a)) n i
+
 noncomputable def stageCRTAllowedFinset (st : StageState) {a : ℕ} (ha : a ∈ st.P) :
     Finset (ZMod (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ))) := by
   classical
@@ -269,6 +290,54 @@ noncomputable def stageCRTAllowedFinset (st : StageState) {a : ℕ} (ha : a ∈ 
     (fun i : NonselectedIndex st.P a => st.m (i : ℕ)) (stageCRTProductEquiv st ha)
     (a : ZMod (st.m a))
     (fun i : NonselectedIndex st.P a => ((i : ℕ) : ZMod (st.m (i : ℕ))))
+
+noncomputable def stageShiftedQRDelete (st : StageState) {a : ℕ} (ha : a ∈ st.P)
+    (h u1 u2 : ZMod (st.m a)) : Finset (ZMod (st.m a)) := by
+  letI : NeZero (st.m a) := NeZero.of_pos (st.modulus_pos ha)
+  exact shiftedQRDelete (st.m a) h ({u1, u2} : Finset (ZMod (st.m a)))
+
+noncomputable def stageCRTTbaseFinset (st : StageState) {a : ℕ} (ha : a ∈ st.P)
+    (h u1 u2 : ZMod (st.m a)) :
+    Finset (ZMod (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ))) := by
+  classical
+  letI : NeZero (st.m a) := NeZero.of_pos (st.modulus_pos ha)
+  letI : NeZero (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ)) :=
+    NeZero.of_pos (stage_exact_product_pos st ha)
+  exact crtProductTbaseFinset
+    (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ)) (st.m a)
+    (fun i : NonselectedIndex st.P a => st.m (i : ℕ)) (stageCRTProductEquiv st ha)
+    (fun i : NonselectedIndex st.P a => ((i : ℕ) : ZMod (st.m (i : ℕ))))
+    h u1 u2
+
+theorem natCast_mem_stageCRTTbaseFinset_iff (st : StageState) {a n : ℕ}
+    (ha : a ∈ st.P) (h u1 u2 : ZMod (st.m a)) :
+    (n : ZMod (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ))) ∈
+        stageCRTTbaseFinset st ha h u1 u2 ↔
+      (n : ZMod (st.m a)) ∈ stageShiftedQRDelete st ha h u1 u2 ∧
+        ∀ i : NonselectedIndex st.P a,
+          (n : ZMod (st.m (i : ℕ))) ≠ ((i : ℕ) : ZMod (st.m (i : ℕ))) := by
+  classical
+  letI : NeZero (st.m a) := NeZero.of_pos (st.modulus_pos ha)
+  letI : NeZero (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ)) :=
+    NeZero.of_pos (stage_exact_product_pos st ha)
+  unfold stageCRTTbaseFinset stageShiftedQRDelete crtProductTbaseFinset productBase
+    shiftedNonzeroBox
+  simp only [addEquivPreimageFinset, Finset.mem_filter, Finset.mem_univ, true_and,
+    Set.mem_setOf_eq]
+  constructor
+  · intro ht
+    constructor
+    · have hsel := ht.1
+      rw [stageCRTProductEquiv_fst_natCast st ha] at hsel
+      exact hsel
+    · intro i hbad
+      exact ht.2 i (by rw [stageCRTProductEquiv_snd_natCast st ha i, hbad])
+  · intro ht
+    constructor
+    · rw [stageCRTProductEquiv_fst_natCast st ha]
+      exact ht.1
+    · intro i hbad
+      exact ht.2 i (by rw [← stageCRTProductEquiv_snd_natCast st ha i, hbad])
 
 theorem exists_stage_exact_product_CRTGadget_on_allowed (st : StageState) {a : ℕ}
     (ha : a ∈ st.P) :
@@ -307,6 +376,29 @@ noncomputable def stageCRTAllowedFinsetAtM (st : StageState) {a : ℕ} (ha : a �
   Eq.mp (congrArg (fun M => Finset (ZMod M))
     (stage_M_eq_selected_mul_nonselected st ha).symm) (stageCRTAllowedFinset st ha)
 
+noncomputable def stageCRTTbaseFinsetAtM (st : StageState) {a : ℕ} (ha : a ∈ st.P)
+    (h u1 u2 : ZMod (st.m a)) : Finset (ZMod st.M) :=
+  Eq.mp (congrArg (fun M => Finset (ZMod M))
+    (stage_M_eq_selected_mul_nonselected st ha).symm)
+    (stageCRTTbaseFinset st ha h u1 u2)
+
+theorem natCast_mem_stageZmodFinsetCast_iff {M M' : ℕ} (hM : M = M')
+    (D : Finset (ZMod M')) (n : ℕ) :
+    (n : ZMod M) ∈ Eq.mp (congrArg (fun q => Finset (ZMod q)) hM.symm) D ↔
+      (n : ZMod M') ∈ D := by
+  cases hM
+  simp
+
+theorem natCast_mem_stageCRTTbaseFinsetAtM_iff (st : StageState) {a n : ℕ}
+    (ha : a ∈ st.P) (h u1 u2 : ZMod (st.m a)) :
+    (n : ZMod st.M) ∈ stageCRTTbaseFinsetAtM st ha h u1 u2 ↔
+      (n : ZMod (st.m a)) ∈ stageShiftedQRDelete st ha h u1 u2 ∧
+        ∀ i : NonselectedIndex st.P a,
+          (n : ZMod (st.m (i : ℕ))) ≠ ((i : ℕ) : ZMod (st.m (i : ℕ))) := by
+  rw [stageCRTTbaseFinsetAtM]
+  rw [natCast_mem_stageZmodFinsetCast_iff (stage_M_eq_selected_mul_nonselected st ha)]
+  exact natCast_mem_stageCRTTbaseFinset_iff st ha h u1 u2
+
 theorem exists_stage_CRTGadget_on_allowedAtM (st : StageState) {a : ℕ} (ha : a ∈ st.P) :
     Nonempty (CRTGadget st.P st.m st.M a (stageCRTAllowedFinsetAtM st ha)) := by
   convert exists_stage_exact_product_CRTGadget_on_allowed st ha
@@ -331,6 +423,15 @@ theorem zmodFinsetCast_add_self_eq_univ {M M' : ℕ} (hM : M = M')
   cases hM
   simpa using hD
 
+theorem zmodFinsetCast_add_eq_univ {M M' : ℕ} (hM : M = M')
+    (D T : Finset (ZMod M'))
+    (hDT : ((D : Set (ZMod M')) + (T : Set (ZMod M'))) = Set.univ) :
+    let Dm : Finset (ZMod M) := Eq.mp (congrArg (fun q => Finset (ZMod q)) hM.symm) D
+    let Tm : Finset (ZMod M) := Eq.mp (congrArg (fun q => Finset (ZMod q)) hM.symm) T
+    ((Dm : Set (ZMod M)) + (Tm : Set (ZMod M))) = Set.univ := by
+  cases hM
+  simpa using hDT
+
 theorem stageCRTAllowedFinset_add_self_eq_univ (st : StageState) {a : ℕ} (ha : a ∈ st.P) :
     ((stageCRTAllowedFinset st ha : Set
         (ZMod (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ)))) +
@@ -353,12 +454,44 @@ theorem stageCRTAllowedFinset_add_self_eq_univ (st : StageState) {a : ℕ} (ha :
       (stageCRTProductEquiv st ha) (a : ZMod (st.m a))
       (fun i : NonselectedIndex st.P a => ((i : ℕ) : ZMod (st.m (i : ℕ)))))
 
+theorem stageCRTAllowedFinset_add_Tbase_eq_univ (st : StageState) {a : ℕ}
+    (ha : a ∈ st.P) (h u1 u2 : ZMod (st.m a)) :
+    ((stageCRTAllowedFinset st ha : Set
+        (ZMod (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ)))) +
+      (stageCRTTbaseFinset st ha h u1 u2 : Set
+        (ZMod (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ))))) = Set.univ := by
+  classical
+  letI : Fact (Nat.Prime (st.m a)) := ⟨st.m_prime a ha⟩
+  letI : NeZero (st.m a) := NeZero.of_pos (st.modulus_pos ha)
+  letI : NeZero (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ)) :=
+    NeZero.of_pos (stage_exact_product_pos st ha)
+  letI : (i : NonselectedIndex st.P a) → Fact (Nat.Prime (st.m (i : ℕ))) := fun i =>
+    ⟨st.m_prime (i : ℕ) ((Finset.mem_erase.mp i.property).2)⟩
+  unfold stageCRTAllowedFinset stageCRTTbaseFinset
+  simpa using
+    (crtProduct_allowed_add_Tbase_eq_univ
+      (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ)) (st.m a)
+      (fun i : NonselectedIndex st.P a => st.m (i : ℕ))
+      (fun i => le_trans (by norm_num : 7 ≤ 23)
+          (st.m_ge23 (i : ℕ) ((Finset.mem_erase.mp i.property).2)))
+      (st.m_mod4 a ha) (st.m_ge23 a ha)
+      (stageCRTProductEquiv st ha) (a : ZMod (st.m a)) h u1 u2
+      (fun i : NonselectedIndex st.P a => ((i : ℕ) : ZMod (st.m (i : ℕ)))))
+
 theorem stageCRTAllowedFinsetAtM_add_self_eq_univ (st : StageState) {a : ℕ}
     (ha : a ∈ st.P) :
     ((stageCRTAllowedFinsetAtM st ha : Set (ZMod st.M)) +
       (stageCRTAllowedFinsetAtM st ha : Set (ZMod st.M))) = Set.univ :=
   zmodFinsetCast_add_self_eq_univ (stage_M_eq_selected_mul_nonselected st ha)
     (stageCRTAllowedFinset st ha) (stageCRTAllowedFinset_add_self_eq_univ st ha)
+
+theorem stageCRTAllowedFinsetAtM_add_Tbase_eq_univ (st : StageState) {a : ℕ}
+    (ha : a ∈ st.P) (h u1 u2 : ZMod (st.m a)) :
+    ((stageCRTAllowedFinsetAtM st ha : Set (ZMod st.M)) +
+      (stageCRTTbaseFinsetAtM st ha h u1 u2 : Set (ZMod st.M))) = Set.univ :=
+  zmodFinsetCast_add_eq_univ (stage_M_eq_selected_mul_nonselected st ha)
+    (stageCRTAllowedFinset st ha) (stageCRTTbaseFinset st ha h u1 u2)
+    (stageCRTAllowedFinset_add_Tbase_eq_univ st ha h u1 u2)
 
 theorem stage_D_add_D_eq_univ_of_canonical (st : StageState)
     (hD : st.HasCanonicalD) {a : ℕ} (ha : a ∈ st.P) :
