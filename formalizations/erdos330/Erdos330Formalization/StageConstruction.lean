@@ -271,6 +271,35 @@ noncomputable def activatedCRTProductEquiv (st : StageState) {a b p : ℕ}
     (activated_selected_coprime_nonselected_prod st ha hbDormant hp)
     (activated_pairwise_coprime_nonselected st hbDormant hp)
 
+theorem activatedCRTProductEquiv_fst_natCast (st : StageState) {a b p n : ℕ}
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p) :
+    ((activatedCRTProductEquiv st ha hbDormant hp)
+      (n : ZMod (activatedModulus st b p a *
+        ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+          activatedModulus st b p (i : ℕ)))).1 =
+      (n : ZMod (activatedModulus st b p a)) := by
+  unfold activatedCRTProductEquiv
+  exact productCRTAddEquiv_fst_natCast (activatedModulus st b p a)
+    (fun i : NonselectedIndex (activatedActiveSet st b) a =>
+      activatedModulus st b p (i : ℕ))
+    (activated_selected_coprime_nonselected_prod st ha hbDormant hp)
+    (activated_pairwise_coprime_nonselected st hbDormant hp) n
+
+theorem activatedCRTProductEquiv_snd_natCast (st : StageState) {a b p n : ℕ}
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p)
+    (i : NonselectedIndex (activatedActiveSet st b) a) :
+    ((activatedCRTProductEquiv st ha hbDormant hp)
+      (n : ZMod (activatedModulus st b p a *
+        ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+          activatedModulus st b p (i : ℕ)))).2 i =
+      (n : ZMod (activatedModulus st b p (i : ℕ))) := by
+  unfold activatedCRTProductEquiv
+  exact productCRTAddEquiv_snd_natCast (activatedModulus st b p a)
+    (fun i : NonselectedIndex (activatedActiveSet st b) a =>
+      activatedModulus st b p (i : ℕ))
+    (activated_selected_coprime_nonselected_prod st ha hbDormant hp)
+    (activated_pairwise_coprime_nonselected st hbDormant hp) n i
+
 noncomputable def activatedCRTAllowedFinsetExact (st : StageState) {a b p : ℕ}
     (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p) :
     Finset (ZMod (activatedModulus st b p a *
@@ -299,6 +328,88 @@ noncomputable def activatedCRTAllowedFinsetAtM (st : StageState) {a b p : ℕ}
   Eq.mp (congrArg (fun M => Finset (ZMod M))
     (activatedM_eq_selected_mul_nonselected st ha).symm)
     (activatedCRTAllowedFinsetExact st ha hbDormant hp)
+
+theorem natCast_mem_eqMp_zmodFinset_iff {M M' : ℕ} (hM : M = M')
+    (D : Finset (ZMod M')) (n : ℕ) :
+    (n : ZMod M) ∈ Eq.mp (congrArg (fun q => Finset (ZMod q)) hM.symm) D ↔
+      (n : ZMod M') ∈ D := by
+  cases hM
+  simp
+
+theorem natCast_mem_activatedCRTAllowedFinsetExact_iff (st : StageState) {a b p n : ℕ}
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p) :
+    (n : ZMod (activatedModulus st b p a *
+      ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+        activatedModulus st b p (i : ℕ))) ∈
+        activatedCRTAllowedFinsetExact st ha hbDormant hp ↔
+      (n : ZMod (activatedModulus st b p a)) ≠
+          (a : ZMod (activatedModulus st b p a)) ∧
+        ∀ i : NonselectedIndex (activatedActiveSet st b) a,
+          (n : ZMod (activatedModulus st b p (i : ℕ))) ≠
+            ((i : ℕ) : ZMod (activatedModulus st b p (i : ℕ))) := by
+  classical
+  letI : NeZero (activatedModulus st b p a *
+      ∏ i : NonselectedIndex (activatedActiveSet st b) a,
+        activatedModulus st b p (i : ℕ)) :=
+    NeZero.of_pos (activated_exact_product_pos st ha hbDormant hp)
+  unfold activatedCRTAllowedFinsetExact crtProductAllowedFinset productAllowed shiftedNonzeroBox
+  simp only [addEquivPreimageFinset, Finset.mem_filter, Finset.mem_univ, true_and,
+    Set.mem_setOf_eq]
+  constructor
+  · intro h
+    constructor
+    · intro hbad
+      exact h.1 (by rw [activatedCRTProductEquiv_fst_natCast st ha hbDormant hp, hbad])
+    · intro i hbad
+      exact h.2 i
+        (by rw [activatedCRTProductEquiv_snd_natCast st ha hbDormant hp i, hbad])
+  · intro h
+    constructor
+    · intro hbad
+      exact h.1
+        (by rw [← activatedCRTProductEquiv_fst_natCast st ha hbDormant hp, hbad])
+    · intro i hbad
+      exact h.2 i
+        (by rw [← activatedCRTProductEquiv_snd_natCast st ha hbDormant hp i, hbad])
+
+theorem natCast_mem_activatedCRTAllowedFinsetAtM_iff (st : StageState) {a b p n : ℕ}
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p) :
+    (n : ZMod (activatedM st b p)) ∈ activatedCRTAllowedFinsetAtM st ha hbDormant hp ↔
+      (n : ZMod (activatedModulus st b p a)) ≠
+          (a : ZMod (activatedModulus st b p a)) ∧
+        ∀ i : NonselectedIndex (activatedActiveSet st b) a,
+          (n : ZMod (activatedModulus st b p (i : ℕ))) ≠
+            ((i : ℕ) : ZMod (activatedModulus st b p (i : ℕ))) := by
+  rw [activatedCRTAllowedFinsetAtM]
+  rw [natCast_mem_eqMp_zmodFinset_iff
+    (activatedM_eq_selected_mul_nonselected (a := a) (b := b) (p := p) st ha)]
+  exact natCast_mem_activatedCRTAllowedFinsetExact_iff st ha hbDormant hp
+
+theorem activatedCRTAllowedFinsetAtM_projection_lift (st : StageState) {a b p : ℕ}
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p) :
+    ∀ y : ZMod (activatedM st b p),
+      activatedOldProjection st hbDormant y ∈ st.D →
+        activatedFreshProjection st b p y ≠ (b : ZMod p) →
+          y ∈ activatedCRTAllowedFinsetAtM st ha hbDormant hp := by
+  letI : NeZero (activatedM st b p) := NeZero.of_pos (activatedM_pos st hbDormant hp)
+  intro y hyOld hyFresh
+  obtain ⟨n, rfl⟩ := ZMod.natCast_zmod_surjective y
+  have hnOld : (n : ZMod st.M) ∈ st.D := by
+    simpa [activatedOldProjection_natCast] using hyOld
+  have hnFresh : (n : ZMod p) ≠ (b : ZMod p) := by
+    simpa [activatedFreshProjection_natCast] using hyFresh
+  rw [natCast_mem_activatedCRTAllowedFinsetAtM_iff st ha hbDormant hp]
+  constructor
+  · rw [activatedModulus_old_of_mem st hbDormant ha]
+    exact st.D_nat_avoid a ha n hnOld
+  · intro i
+    rcases Finset.mem_erase.mp i.property with ⟨_hia, hiActive⟩
+    simp [activatedActiveSet] at hiActive
+    rcases hiActive with hib | hiP
+    · rw [hib, activatedModulus_new]
+      exact hnFresh
+    · rw [activatedModulus_old_of_mem st hbDormant hiP]
+      exact st.D_nat_avoid (i : ℕ) hiP n hnOld
 
 theorem activatedCRTAllowedFinsetExact_add_self_eq_univ (st : StageState) {a b p : ℕ}
     (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p) :
@@ -1307,6 +1418,20 @@ theorem stageParams_D_lift_of_oldD_add_and_projection_lift {st : StageState}
       _ = activatedFreshProjection st b p γ - (b : ZMod p) := by rw [hy]
   exact hmem y hyOld hyFresh
 
+theorem stageParams_D_lift_of_oldD_add_canonicalDplus {st : StageState}
+    {a b p : ℕ} (params : StageParams st a b p)
+    (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p)
+    (hDplus : params.Dplus = activatedCRTAllowedFinsetAtM st ha hbDormant hp)
+    (hD_add : ((st.D : Set (ZMod st.M)) + (st.D : Set (ZMod st.M))) = Set.univ) :
+    ∀ γ : ZMod (activatedM st b p), ∃ ρ ∈ st.D, ∀ u : ℕ,
+      (u : ZMod st.M) = ρ →
+        (u : ZMod p) ≠ activatedFreshProjection st b p γ - (b : ZMod p) →
+          γ - (u : ZMod (activatedM st b p)) ∈ params.Dplus := by
+  refine stageParams_D_lift_of_oldD_add_and_projection_lift params hbDormant hD_add ?_
+  intro y hyOld hyFresh
+  rw [hDplus]
+  exact activatedCRTAllowedFinsetAtM_projection_lift st ha hbDormant hp y hyOld hyFresh
+
 theorem stageParams_T_lift_of_oldD_add_oldSet_and_projection_lift {st : StageState}
     {a b p : ℕ} (params : StageParams st a b p) (hbDormant : b ∉ st.P)
     (Ωold : Finset (ZMod st.M))
@@ -1860,9 +1985,6 @@ noncomputable def serviceExtensionOfParamsFromOldProjectionLifts
     (hDplus : params.Dplus = activatedCRTAllowedFinsetAtM st ha hbDormant hp)
     (hDold_add :
       ((st.D : Set (ZMod st.M)) + (st.D : Set (ZMod st.M))) = Set.univ)
-    (D_projection_lift : ∀ y : ZMod (activatedM st b p),
-      activatedOldProjection st hbDormant y ∈ st.D →
-        activatedFreshProjection st b p y ≠ (b : ZMod p) → y ∈ params.Dplus)
     (T_projection_lift : ∀ y : ZMod (activatedM st b p),
       activatedOldProjection st hbDormant y ∈ oldG.Tbase →
         activatedFreshProjection st b p y ≠ (b : ZMod p) → y ∈ params.G.T)
@@ -1900,8 +2022,7 @@ noncomputable def serviceExtensionOfParamsFromOldProjectionLifts
     hheadroom hexists_dormant hendpoint_le_nextX
     (stageParams_T_lift_of_oldD_add_oldSet_and_projection_lift params hbDormant
       oldG.Tbase oldG.D_add_Tbase_full T_projection_lift)
-    (stageParams_D_lift_of_oldD_add_and_projection_lift params hbDormant hDold_add
-      D_projection_lift)
+    (stageParams_D_lift_of_oldD_add_canonicalDplus params ha hbDormant hp hDplus hDold_add)
     hCL hlower_start hlower_end hML hCLZ htail_start htail_end hMLZ
     hdensityDenominator_pos hlohi hlo_private hhi_private hlo_sum hhi_sum harith
 
