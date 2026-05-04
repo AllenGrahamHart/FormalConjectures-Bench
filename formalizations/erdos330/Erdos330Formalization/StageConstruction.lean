@@ -225,6 +225,24 @@ theorem tailBlock_subset_nextS {st : StageState} {a b p : ℕ}
   intro n hn
   simp [nextS, hn]
 
+theorem old_union_lowerBlock_subset_nextS {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p) :
+    st.S ∪ params.lowerBlock ⊆ params.nextS := by
+  intro n hn
+  rw [Finset.mem_union] at hn
+  rcases hn with hnS | hnLower
+  · exact params.old_subset_nextS hnS
+  · exact params.lowerBlock_subset_nextS hnLower
+
+theorem old_union_tailBlock_subset_nextS {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p) :
+    st.S ∪ params.tailBlock ⊆ params.nextS := by
+  intro n hn
+  rw [Finset.mem_union] at hn
+  rcases hn with hnS | hnTail
+  · exact params.old_subset_nextS hnS
+  · exact params.tailBlock_subset_nextS hnTail
+
 theorem mem_lowerBlock {st : StageState} {a b p n : ℕ}
     {params : StageParams st a b p} :
     n ∈ params.lowerBlock ↔
@@ -403,5 +421,48 @@ theorem stageParams_tail_middle_cover {st : StageState} {a b p : ℕ}
   have htail : n ∈ twoFoldFinset params.tailBlock := by
     simpa [StageParams.tailBlock, StageParams.nextX, StageParams.Mplus] using hZZ
   exact twoFoldFinset_mono params.tailBlock_subset_nextS htail
+
+theorem stageParams_lower_helper_cover {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p)
+    (hhelper : ∀ Jlo, st.H ≤ Jlo → Jlo + 3 * st.M ≤ st.X →
+      ∀ γ : ZMod (activatedM st b p),
+        ∃ u : ℕ, u ∈ st.S ∧ Jlo ≤ u ∧ u ≤ Jlo + 3 * st.M ∧
+          γ - (u : ZMod (activatedM st b p)) ∈ params.G.T)
+    (hCL : 3 * st.M ≤ params.L)
+    (hstart : st.H + params.N + 3 * st.M ≤ st.R + 1)
+    (hend : 2 * params.N + params.Mplus + 3 * st.M ≤ st.X + params.N + params.L + 1) :
+    ∀ n : ℕ, st.R < n → n < 2 * params.N + params.Mplus →
+      n ∈ twoFoldFinset params.nextS := by
+  intro n hnR hnmid
+  have hcover : n ∈ twoFoldFinset (st.S ∪ params.lowerBlock) := by
+    have hnlo : st.H + params.N + 3 * st.M ≤ n := by omega
+    have hnhi : n + 3 * st.M ≤ st.X + params.N + params.L := by omega
+    simpa [StageParams.lowerBlock, StageParams.Mplus] using
+      (residueBlock_helper_cover (M := activatedM st b p) (H := st.H) (X := st.X)
+        (N := params.N) (L := params.L) (C := 3 * st.M) (Ω := params.G.T)
+        (S := st.S) hhelper st.reservoir_long hCL hnlo hnhi)
+  exact twoFoldFinset_mono params.old_union_lowerBlock_subset_nextS hcover
+
+theorem stageParams_tail_helper_cover {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p)
+    (hhelper : ∀ Jlo, st.H ≤ Jlo → Jlo + 3 * st.M ≤ st.X →
+      ∀ γ : ZMod (activatedM st b p),
+        ∃ u : ℕ, u ∈ st.S ∧ Jlo ≤ u ∧ u ≤ Jlo + 3 * st.M ∧
+          γ - (u : ZMod (activatedM st b p)) ∈ params.Dplus)
+    (hCLZ : 3 * st.M ≤ params.LZ)
+    (hstart : st.H + params.K + 3 * st.M ≤ params.serviceR + 1)
+    (hend : 2 * params.K + params.Mplus + 3 * st.M ≤ st.X + params.K + params.LZ + 1) :
+    ∀ n : ℕ, params.serviceR < n → n < 2 * params.K + params.Mplus →
+      n ∈ twoFoldFinset params.nextS := by
+  intro n hnR hnmid
+  have hcover : n ∈ twoFoldFinset (st.S ∪ params.tailBlock) := by
+    have hnlo : st.H + params.K + 3 * st.M ≤ n := by
+      omega
+    have hnhi : n + 3 * st.M ≤ st.X + params.K + params.LZ := by omega
+    simpa [StageParams.tailBlock, StageParams.nextX, StageParams.Mplus] using
+      (residueBlock_helper_cover (M := activatedM st b p) (H := st.H) (X := st.X)
+        (N := params.K) (L := params.LZ) (C := 3 * st.M) (Ω := params.Dplus)
+        (S := st.S) hhelper st.reservoir_long hCLZ hnlo hnhi)
+  exact twoFoldFinset_mono params.old_union_tailBlock_subset_nextS hcover
 
 end Erdos330Formalization
