@@ -673,6 +673,57 @@ theorem protectedSumBlock_card_eq_partner {st : StageState} {a b p : ℕ}
   rw [protectedSumBlock]
   exact Finset.card_image_of_injective _ (fun x y hxy => Nat.add_left_cancel hxy)
 
+theorem protectedSumBlock_private_of_pair_exclusions {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p) [NeZero (activatedM st b p)]
+    (haS : a ∈ st.S) (hN : st.X < params.N)
+    (hold_private :
+      ∀ n ∈ params.protectedSumBlock, ∀ s ∈ st.S, s ≠ a →
+        ∀ q ∈ params.privateBlock, s + q ≠ n)
+    (hprivate_old :
+      ∀ n ∈ params.protectedSumBlock, ∀ q ∈ params.privateBlock,
+        ∀ s ∈ st.S, s ≠ a → q + s ≠ n)
+    (hlower_private :
+      ∀ n ∈ params.protectedSumBlock, ∀ x ∈ params.lowerBlock,
+        ∀ q ∈ params.privateBlock, x + q ≠ n)
+    (hprivate_lower :
+      ∀ n ∈ params.protectedSumBlock, ∀ q ∈ params.privateBlock,
+        ∀ x ∈ params.lowerBlock, q + x ≠ n)
+    (hprivate_private :
+      ∀ n ∈ params.protectedSumBlock, ∀ q₁ ∈ params.privateBlock,
+        ∀ q₂ ∈ params.privateBlock, q₁ + q₂ ≠ n) :
+    ∀ n ∈ params.protectedSumBlock, n ∈ privateSet {x : ℕ | x ∈ params.nextS} a := by
+  classical
+  intro n hn
+  refine ⟨protectedSumBlock_mem_twoFold_nextS haS hn, ?_⟩
+  intro hwithout
+  rcases hwithout with ⟨x, hx, y, hy, hxy⟩
+  have hx_ne : x ≠ a := by
+    intro hxa
+    exact hx.2 (by simp [hxa])
+  have hy_ne : y ≠ a := by
+    intro hya
+    exact hy.2 (by simp [hya])
+  have hxNext := hx.1
+  have hyNext := hy.1
+  simp [StageParams.nextS] at hxNext hyNext
+  rcases hxNext with hxOld | hxLower | hxPrivate | hxTail
+  · rcases hyNext with hyOld | hyLower | hyPrivate | hyTail
+    · exact (protectedSumBlock_ne_old_add_old (params := params) hN hn hxOld hyOld) hxy
+    · exact (protectedSumBlock_ne_old_add_lower (params := params) hn hxOld hyLower) hxy
+    · exact (hold_private n hn x hxOld hx_ne y hyPrivate) hxy
+    · exact (protectedSumBlock_ne_any_add_tail (params := params) hn hyTail) hxy
+  · rcases hyNext with hyOld | hyLower | hyPrivate | hyTail
+    · exact (protectedSumBlock_ne_lower_add_old (params := params) hn hxLower hyOld) hxy
+    · exact (protectedSumBlock_ne_lower_add_lower (params := params) hn hxLower hyLower) hxy
+    · exact (hlower_private n hn x hxLower y hyPrivate) hxy
+    · exact (protectedSumBlock_ne_any_add_tail (params := params) hn hyTail) hxy
+  · rcases hyNext with hyOld | hyLower | hyPrivate | hyTail
+    · exact (hprivate_old n hn x hxPrivate y hyOld hy_ne) hxy
+    · exact (hprivate_lower n hn x hxPrivate y hyLower) hxy
+    · exact (hprivate_private n hn x hxPrivate y hyPrivate) hxy
+    · exact (protectedSumBlock_ne_any_add_tail (params := params) hn hyTail) hxy
+  · exact (protectedSumBlock_ne_tail_add_any (params := params) hn hxTail) hxy
+
 def protectedBlockCertificate_of_sumBlock {st : StageState} {a b p : ℕ}
     (params : StageParams st a b p) {densityNumerator densityDenominator : ℕ}
     (hdensityDenominator_pos : 0 < densityDenominator)
