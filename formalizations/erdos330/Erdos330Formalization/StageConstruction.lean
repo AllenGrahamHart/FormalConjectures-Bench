@@ -1269,6 +1269,83 @@ theorem stageParams_D_helper_of_old_residue_lift {st : StageState} {a b p : ℕ}
           γ - (u : ZMod (activatedM st b p)) ∈ params.Dplus :=
   activated_helper_of_old_residue_lift hp params.Dplus hchoose
 
+theorem stageParams_D_lift_of_oldD_add_and_projection_lift {st : StageState}
+    {a b p : ℕ} (params : StageParams st a b p) (hbDormant : b ∉ st.P)
+    (hD_add : ((st.D : Set (ZMod st.M)) + (st.D : Set (ZMod st.M))) = Set.univ)
+    (hmem : ∀ y : ZMod (activatedM st b p),
+      activatedOldProjection st hbDormant y ∈ st.D →
+        activatedFreshProjection st b p y ≠ (b : ZMod p) → y ∈ params.Dplus) :
+    ∀ γ : ZMod (activatedM st b p), ∃ ρ ∈ st.D, ∀ u : ℕ,
+      (u : ZMod st.M) = ρ →
+        (u : ZMod p) ≠ activatedFreshProjection st b p γ - (b : ZMod p) →
+          γ - (u : ZMod (activatedM st b p)) ∈ params.Dplus := by
+  intro γ
+  have hγ : activatedOldProjection st hbDormant γ ∈
+      (st.D : Set (ZMod st.M)) + (st.D : Set (ZMod st.M)) := by
+    rw [hD_add]
+    exact Set.mem_univ _
+  rcases hγ with ⟨ρ, hρ, d, hd, hsum⟩
+  refine ⟨ρ, hρ, ?_⟩
+  intro u huρ huFresh
+  let y : ZMod (activatedM st b p) := γ - (u : ZMod (activatedM st b p))
+  have hyOld : activatedOldProjection st hbDormant y ∈ st.D := by
+    have hyOldEq : activatedOldProjection st hbDormant y = d := by
+      dsimp [y]
+      rw [activatedOldProjection_sub_natCast, huρ]
+      rw [← hsum]
+      simp [sub_eq_add_neg, add_assoc]
+    simpa [hyOldEq] using hd
+  have hyFresh : activatedFreshProjection st b p y ≠ (b : ZMod p) := by
+    dsimp [y]
+    rw [activatedFreshProjection_sub_natCast]
+    intro hy
+    apply huFresh
+    calc
+      (u : ZMod p) =
+          activatedFreshProjection st b p γ -
+            (activatedFreshProjection st b p γ - (u : ZMod p)) := by abel
+      _ = activatedFreshProjection st b p γ - (b : ZMod p) := by rw [hy]
+  exact hmem y hyOld hyFresh
+
+theorem stageParams_T_lift_of_oldD_add_oldSet_and_projection_lift {st : StageState}
+    {a b p : ℕ} (params : StageParams st a b p) (hbDormant : b ∉ st.P)
+    (Ωold : Finset (ZMod st.M))
+    (hcover : ((st.D : Set (ZMod st.M)) + (Ωold : Set (ZMod st.M))) = Set.univ)
+    (hmem : ∀ y : ZMod (activatedM st b p),
+      activatedOldProjection st hbDormant y ∈ Ωold →
+        activatedFreshProjection st b p y ≠ (b : ZMod p) → y ∈ params.G.T) :
+    ∀ γ : ZMod (activatedM st b p), ∃ ρ ∈ st.D, ∀ u : ℕ,
+      (u : ZMod st.M) = ρ →
+        (u : ZMod p) ≠ activatedFreshProjection st b p γ - (b : ZMod p) →
+          γ - (u : ZMod (activatedM st b p)) ∈ params.G.T := by
+  intro γ
+  have hγ : activatedOldProjection st hbDormant γ ∈
+      (st.D : Set (ZMod st.M)) + (Ωold : Set (ZMod st.M)) := by
+    rw [hcover]
+    exact Set.mem_univ _
+  rcases hγ with ⟨ρ, hρ, θ, hθ, hsum⟩
+  refine ⟨ρ, hρ, ?_⟩
+  intro u huρ huFresh
+  let y : ZMod (activatedM st b p) := γ - (u : ZMod (activatedM st b p))
+  have hyOld : activatedOldProjection st hbDormant y ∈ Ωold := by
+    have hyOldEq : activatedOldProjection st hbDormant y = θ := by
+      dsimp [y]
+      rw [activatedOldProjection_sub_natCast, huρ]
+      rw [← hsum]
+      simp [sub_eq_add_neg, add_assoc]
+    simpa [hyOldEq] using hθ
+  have hyFresh : activatedFreshProjection st b p y ≠ (b : ZMod p) := by
+    dsimp [y]
+    rw [activatedFreshProjection_sub_natCast]
+    intro hy
+    apply huFresh
+    calc
+      (u : ZMod p) =
+          activatedFreshProjection st b p γ -
+            (activatedFreshProjection st b p γ - (u : ZMod p)) := by abel
+      _ = activatedFreshProjection st b p γ - (b : ZMod p) := by rw [hy]
+  exact hmem y hyOld hyFresh
+
 theorem stageParams_nextS_coverage_of_helpers {st : StageState} {a b p : ℕ}
     (params : StageParams st a b p) [NeZero (activatedM st b p)]
     (ha : a ∈ st.P) (hN : st.X < params.N)
