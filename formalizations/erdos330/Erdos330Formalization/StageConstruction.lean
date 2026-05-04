@@ -50,4 +50,96 @@ theorem FreshPrimeData.eq_of_zmod_eq_of_old {st : StageState} {p u v : ℕ}
     u = v :=
   nat_eq_of_zmod_eq_of_le_lt hu hv hp.X_lt_p huv
 
+/-- The active set after activating a dormant element. -/
+def activatedActiveSet (st : StageState) (b : ℕ) : Finset ℕ :=
+  insert b st.P
+
+/-- The modulus assignment after activating `b` with fresh modulus `p`. -/
+def activatedModulus (st : StageState) (b p : ℕ) : ℕ → ℕ :=
+  fun c => if c = b then p else st.m c
+
+/-- The active modulus product after activating `b`. -/
+def activatedM (st : StageState) (b p : ℕ) : ℕ :=
+  (activatedActiveSet st b).prod (activatedModulus st b p)
+
+theorem activatedModulus_new (st : StageState) (b p : ℕ) :
+    activatedModulus st b p b = p := by
+  simp [activatedModulus]
+
+theorem activatedModulus_old_of_ne (st : StageState) {b p c : ℕ} (hcb : c ≠ b) :
+    activatedModulus st b p c = st.m c := by
+  simp [activatedModulus, hcb]
+
+theorem activatedModulus_old_of_mem (st : StageState) {b p c : ℕ}
+    (hbDormant : b ∉ st.P) (hc : c ∈ st.P) :
+    activatedModulus st b p c = st.m c := by
+  exact activatedModulus_old_of_ne st (fun hcb => hbDormant (hcb ▸ hc))
+
+theorem activated_m_prime (st : StageState) {b p : ℕ}
+    (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p) :
+    ∀ c ∈ activatedActiveSet st b, Nat.Prime (activatedModulus st b p c) := by
+  intro c hc
+  rw [activatedActiveSet] at hc
+  rcases Finset.mem_insert.mp hc with rfl | hcP
+  · simpa [activatedModulus_new] using hp.prime
+  · rw [activatedModulus_old_of_mem st hbDormant hcP]
+    exact st.m_prime c hcP
+
+theorem activated_m_ge23 (st : StageState) {b p : ℕ}
+    (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p) :
+    ∀ c ∈ activatedActiveSet st b, 23 ≤ activatedModulus st b p c := by
+  intro c hc
+  rw [activatedActiveSet] at hc
+  rcases Finset.mem_insert.mp hc with rfl | hcP
+  · simpa [activatedModulus_new] using hp.ge23
+  · rw [activatedModulus_old_of_mem st hbDormant hcP]
+    exact st.m_ge23 c hcP
+
+theorem activated_m_mod4 (st : StageState) {b p : ℕ}
+    (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p) :
+    ∀ c ∈ activatedActiveSet st b, activatedModulus st b p c % 4 = 3 := by
+  intro c hc
+  rw [activatedActiveSet] at hc
+  rcases Finset.mem_insert.mp hc with rfl | hcP
+  · simpa [activatedModulus_new] using hp.mod4
+  · rw [activatedModulus_old_of_mem st hbDormant hcP]
+    exact st.m_mod4 c hcP
+
+theorem activated_m_pairwise_coprime (st : StageState) {b p : ℕ}
+    (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p) :
+    ∀ ⦃c⦄, c ∈ activatedActiveSet st b →
+      ∀ ⦃d⦄, d ∈ activatedActiveSet st b → c ≠ d →
+        Nat.Coprime (activatedModulus st b p c) (activatedModulus st b p d) := by
+  intro c hc d hd hcd
+  rw [activatedActiveSet] at hc hd
+  rcases Finset.mem_insert.mp hc with rfl | hcP
+  · rcases Finset.mem_insert.mp hd with hdb | hdP
+    · exact (hcd hdb.symm).elim
+    · simpa [activatedModulus_new, activatedModulus_old_of_mem st hbDormant hdP]
+        using hp.coprime_old d hdP
+  · rcases Finset.mem_insert.mp hd with rfl | hdP
+    · simpa [activatedModulus_new, activatedModulus_old_of_mem st hbDormant hcP]
+        using (hp.coprime_old c hcP).symm
+    · rw [activatedModulus_old_of_mem st hbDormant hcP,
+        activatedModulus_old_of_mem st hbDormant hdP]
+      exact st.m_pairwise_coprime hcP hdP hcd
+
+theorem activatedM_eq (st : StageState) {b p : ℕ} (hbDormant : b ∉ st.P) :
+    activatedM st b p = p * st.M := by
+  classical
+  unfold activatedM activatedActiveSet
+  rw [Finset.prod_insert hbDormant, activatedModulus_new, st.M_def]
+  congr 1
+  exact Finset.prod_congr rfl fun c hc =>
+    activatedModulus_old_of_mem st hbDormant hc
+
+theorem activatedM_pos (st : StageState) {b p : ℕ}
+    (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p) :
+    0 < activatedM st b p := by
+  rw [activatedM_eq st hbDormant]
+  have hMpos : 0 < st.M := by
+    rw [st.M_def]
+    exact Finset.prod_pos fun c hc => st.modulus_pos hc
+  exact Nat.mul_pos hp.prime.pos hMpos
+
 end Erdos330Formalization
