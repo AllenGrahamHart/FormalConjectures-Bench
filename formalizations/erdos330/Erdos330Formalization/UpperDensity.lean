@@ -57,6 +57,37 @@ theorem upperDensity_pos_of_frequently_partialDensity_ge {S : Set ℕ} {c : ℝ}
     exact hcb.trans (hN b hbN)
   exact hc.trans_le hle
 
+lemma ratio_mul_le_of_nat_mul_le {numerator denominator endpoint card : ℕ}
+    (hdenominator : 0 < denominator)
+    (hineq : numerator * endpoint ≤ denominator * card) :
+    ((numerator : ℝ) / (denominator : ℝ)) * (endpoint : ℝ) ≤ (card : ℝ) := by
+  have hdenposR : (0 : ℝ) < denominator := by exact_mod_cast hdenominator
+  have hineqR : (numerator : ℝ) * (endpoint : ℝ) ≤
+      (denominator : ℝ) * (card : ℝ) := by
+    exact_mod_cast hineq
+  field_simp [ne_of_gt hdenposR]
+  nlinarith
+
+theorem upperDensity_pos_of_frequent_finset_blocks {S : Set ℕ} {numerator denominator : ℕ}
+    (hnumerator : 0 < numerator) (hdenominator : 0 < denominator)
+    (hfreq : ∀ N : ℕ, ∃ endpoint : ℕ, ∃ B : Finset ℕ,
+      N ≤ endpoint ∧ (∀ n ∈ B, n ∈ S ∧ n < endpoint) ∧
+        numerator * endpoint ≤ denominator * B.card) :
+    HasPositiveUpperDensity S := by
+  unfold HasPositiveUpperDensity
+  let c : ℝ := (numerator : ℝ) / (denominator : ℝ)
+  have hc : 0 < c := by
+    have hnR : (0 : ℝ) < numerator := by exact_mod_cast hnumerator
+    have hdR : (0 : ℝ) < denominator := by exact_mod_cast hdenominator
+    exact div_pos hnR hdR
+  refine upperDensity_pos_of_frequently_partialDensity_ge (S := S) (c := c) hc ?_
+  intro N
+  obtain ⟨endpoint, B, hN_endpoint, hB, hcount⟩ := hfreq (max N 1)
+  have hendpoint_pos : 0 < endpoint := by omega
+  refine ⟨endpoint, by omega, ?_⟩
+  refine le_partialDensity_univ_nat_of_finset (S := S) (B := B) hendpoint_pos hB ?_
+  exact ratio_mul_le_of_nat_mul_le hdenominator hcount
+
 theorem protectedBlock_partialDensity_lower {st : ℕ → StageState} (chain : StageChain st)
     {k a endpoint : ℕ} (hendpoint : endpoint ≤ (st k).X) (hendpoint_pos : 0 < endpoint)
     (cert : ProtectedBlockCertificate (st k).S a endpoint) :
@@ -67,14 +98,7 @@ theorem protectedBlock_partialDensity_lower {st : ℕ → StageState} (chain : S
   · intro n hn
     exact ⟨privateSet_final_of_private_stage chain hendpoint cert hn,
       cert.block_lt_endpoint n hn⟩
-  · have hdenposR : (0 : ℝ) < cert.densityDenominator := by
-      exact_mod_cast cert.densityDenominator_pos
-    have hineqR :
-        (cert.densityNumerator : ℝ) * (endpoint : ℝ) ≤
-          (cert.densityDenominator : ℝ) * (cert.block.card : ℝ) := by
-      exact_mod_cast cert.block_density_lower
-    field_simp [ne_of_gt hdenposR]
-    nlinarith
+  · exact ratio_mul_le_of_nat_mul_le cert.densityDenominator_pos cert.block_density_lower
 
 theorem private_upperDensity_pos_of_frequent_protectedBlocks {st : ℕ → StageState}
     (chain : StageChain st) {a numerator denominator : ℕ}
