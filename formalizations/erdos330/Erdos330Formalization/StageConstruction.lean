@@ -589,6 +589,83 @@ theorem protectedSumBlock_mem_twoFold_nextS {st : StageState} {a b p n : ℕ}
   rcases hn with ⟨q, hqPrivate, _hlo, _hhi, rfl⟩
   exact ⟨a, params.old_subset_nextS haS, q, params.privateBlock_subset_nextS hqPrivate, rfl⟩
 
+theorem protectedSumBlock_ne_old_add_old {st : StageState} {a b p n x y : ℕ}
+    {params : StageParams st a b p} (hN : st.X < params.N)
+    (hn : n ∈ params.protectedSumBlock) (hx : x ∈ st.S) (hy : y ∈ st.S) :
+    x + y ≠ n := by
+  rw [mem_protectedSumBlock] at hn
+  rcases hn with ⟨q, _hq, hlo, _hhi, rfl⟩
+  have hxX := st.S_le_X x hx
+  have hyX := st.S_le_X y hy
+  omega
+
+theorem protectedSumBlock_ne_old_add_lower {st : StageState} {a b p n x y : ℕ}
+    {params : StageParams st a b p}
+    (hn : n ∈ params.protectedSumBlock) (hx : x ∈ st.S) (hy : y ∈ params.lowerBlock) :
+    x + y ≠ n := by
+  rw [mem_protectedSumBlock] at hn
+  rcases hn with ⟨q, _hq, hlo, _hhi, rfl⟩
+  rw [mem_lowerBlock] at hy
+  have hxX := st.S_le_X x hx
+  omega
+
+theorem protectedSumBlock_ne_lower_add_old {st : StageState} {a b p n x y : ℕ}
+    {params : StageParams st a b p}
+    (hn : n ∈ params.protectedSumBlock) (hx : x ∈ params.lowerBlock) (hy : y ∈ st.S) :
+    x + y ≠ n := by
+  intro hxy
+  exact protectedSumBlock_ne_old_add_lower (params := params) hn hy hx (by omega)
+
+theorem protectedSumBlock_lt_tail {st : StageState} {a b p n z : ℕ}
+    {params : StageParams st a b p}
+    (hn : n ∈ params.protectedSumBlock) (hz : z ∈ params.tailBlock) :
+    n < z := by
+  have hnlt := protectedSumBlock_lt_endpoint (params := params) hn
+  rw [mem_tailBlock] at hz
+  dsimp [K] at hz
+  omega
+
+theorem protectedSumBlock_ne_tail_add_any {st : StageState} {a b p n x y : ℕ}
+    {params : StageParams st a b p}
+    (hn : n ∈ params.protectedSumBlock) (hx : x ∈ params.tailBlock) :
+    x + y ≠ n := by
+  have hlt : n < x := protectedSumBlock_lt_tail (params := params) hn hx
+  omega
+
+theorem protectedSumBlock_ne_any_add_tail {st : StageState} {a b p n x y : ℕ}
+    {params : StageParams st a b p}
+    (hn : n ∈ params.protectedSumBlock) (hy : y ∈ params.tailBlock) :
+    x + y ≠ n := by
+  have hlt : n < y := protectedSumBlock_lt_tail (params := params) hn hy
+  omega
+
+theorem protectedSumBlock_ne_lower_add_lower {st : StageState} {a b p n x y : ℕ}
+    {params : StageParams st a b p} [NeZero (activatedM st b p)]
+    (hn : n ∈ params.protectedSumBlock) (hx : x ∈ params.lowerBlock)
+    (hy : y ∈ params.lowerBlock) :
+    x + y ≠ n := by
+  rw [mem_protectedSumBlock] at hn
+  rcases hn with ⟨q, hqPrivate, _hlo, _hhi, rfl⟩
+  rw [mem_privateBlock] at hqPrivate
+  have hprivateSlice : ((a + q : ℕ) : ZMod (activatedM st b p)) ∈
+      ((fun z : ZMod (activatedM st b p) => (a : ZMod (activatedM st b p)) + z) ''
+        (params.G.Pstar : Set (ZMod (activatedM st b p)))) := by
+    refine ⟨(q : ZMod (activatedM st b p)), ?_, ?_⟩
+    · simpa [StageParams.Mplus] using hqPrivate.2.2
+    · simp [Nat.cast_add]
+  rw [mem_lowerBlock] at hx hy
+  intro hxy
+  have hsum_mem : ((a + q : ℕ) : ZMod (activatedM st b p)) ∈
+      (params.G.T : Set (ZMod (activatedM st b p))) +
+        (params.G.T : Set (ZMod (activatedM st b p))) := by
+    refine ⟨(x : ZMod (activatedM st b p)), ?_, (y : ZMod (activatedM st b p)), ?_, ?_⟩
+    · simpa [StageParams.Mplus] using hx.2.2
+    · simpa [StageParams.Mplus] using hy.2.2
+    · rw [← hxy]
+      simp [Nat.cast_add]
+  rw [params.G.T_add_T_compl_private] at hsum_mem
+  exact hsum_mem.2 hprivateSlice
+
 def protectedBlockCertificate_of_sumBlock {st : StageState} {a b p : ℕ}
     (params : StageParams st a b p) {densityNumerator densityDenominator : ℕ}
     (hdensityDenominator_pos : 0 < densityDenominator)
