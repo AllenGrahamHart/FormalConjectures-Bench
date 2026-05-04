@@ -512,6 +512,24 @@ theorem nextS_new_elements_above_old_X {st : StageState} {a b p : ℕ}
   · rw [mem_tailBlock] at hnTail
     exact lt_of_lt_of_le hK hnTail.1
 
+theorem nextS_le_nextX {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p)
+    (hX : st.X ≤ params.nextX)
+    (hlower : params.N + params.L ≤ params.nextX)
+    (hprivate : params.serviceR ≤ params.nextX) :
+    ∀ n ∈ params.nextS, n ≤ params.nextX := by
+  classical
+  intro n hn
+  simp [nextS] at hn
+  rcases hn with hnS | hnLower | hnPrivate | hnTail
+  · exact (st.S_le_X n hnS).trans hX
+  · rw [mem_lowerBlock] at hnLower
+    exact hnLower.2.1.trans hlower
+  · rw [mem_privateBlock] at hnPrivate
+    omega
+  · rw [mem_tailBlock] at hnTail
+    exact hnTail.2.1
+
 end StageParams
 
 theorem stageExtension_of_stageParams_next_state {st st' : StageState} {a b p : ℕ}
