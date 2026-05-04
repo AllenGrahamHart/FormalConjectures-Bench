@@ -634,6 +634,27 @@ theorem residueBlock_middle_cover_of_add_univ {M N L n : ℕ} [NeZero M]
   exact residueBlockFinset_middle_mem_twoFold_self (M := M) (N := N) (L := L)
     (n := n) hML hnlo hnhi hres
 
+theorem exists_two_in_residueBlock_triple_window (M Jlo : ℕ) [NeZero M]
+    (ρ : ZMod M) :
+    ∃ u ∈ residueBlockFinset M ({ρ} : Finset (ZMod M)) Jlo (Jlo + 3 * M),
+      ∃ v ∈ residueBlockFinset M ({ρ} : Finset (ZMod M)) Jlo (Jlo + 3 * M),
+        u ≠ v := by
+  obtain ⟨u, hu_lo, hu_hi, huρ⟩ := exists_natCast_eq_zmod_in_Icc_len M Jlo ρ
+  refine ⟨u, ?_, u + M, ?_, ?_⟩
+  · rw [mem_residueBlockFinset]
+    exact ⟨hu_lo, by omega, by simpa using huρ⟩
+  · rw [mem_residueBlockFinset]
+    refine ⟨by omega, ?_, ?_⟩
+    · omega
+    · have hyρ : ((u + M : ℕ) : ZMod M) = ρ := by
+        calc
+        ((u + M : ℕ) : ZMod M) = (u : ZMod M) + (M : ZMod M) := by
+          exact Nat.cast_add u M
+        _ = ρ := by simp [huρ]
+      simpa using hyρ
+  · have hMpos : 0 < M := NeZero.pos M
+    omega
+
 theorem stageParams_tail_middle_cover {st : StageState} {a b p : ℕ}
     (params : StageParams st a b p) [NeZero (activatedM st b p)]
     (hDplus_add :
@@ -649,6 +670,34 @@ theorem stageParams_tail_middle_cover {st : StageState} {a b p : ℕ}
   have htail : n ∈ twoFoldFinset params.tailBlock := by
     simpa [StageParams.tailBlock, StageParams.nextX, StageParams.Mplus] using hZZ
   exact twoFoldFinset_mono params.tailBlock_subset_nextS htail
+
+theorem stageParams_tail_reservoir_multiplicity {st : StageState} {a b p Jlo : ℕ}
+    (params : StageParams st a b p) [NeZero (activatedM st b p)]
+    (hJlo : params.K ≤ Jlo) (hJhi : Jlo + 3 * params.Mplus ≤ params.nextX)
+    (ρ : ZMod (activatedM st b p)) (hρ : ρ ∈ params.Dplus) :
+    ∃ u ∈ residueBlockFinset params.Mplus ({ρ} : Finset (ZMod params.Mplus))
+        Jlo (Jlo + 3 * params.Mplus),
+      ∃ v ∈ residueBlockFinset params.Mplus ({ρ} : Finset (ZMod params.Mplus))
+          Jlo (Jlo + 3 * params.Mplus),
+        u ≠ v ∧ u ∈ params.nextS ∧ v ∈ params.nextS := by
+  obtain ⟨u, hu, v, hv, huv⟩ :=
+    exists_two_in_residueBlock_triple_window (activatedM st b p) Jlo ρ
+  have hu_tail : u ∈ params.tailBlock := by
+    rw [StageParams.mem_tailBlock]
+    rw [mem_residueBlockFinset] at hu
+    have huρ : (u : ZMod (activatedM st b p)) = ρ := by simpa using hu.2.2
+    refine ⟨hJlo.trans hu.1, hu.2.1.trans hJhi, ?_⟩
+    change (u : ZMod (activatedM st b p)) ∈ params.Dplus
+    simpa [huρ] using hρ
+  have hv_tail : v ∈ params.tailBlock := by
+    rw [StageParams.mem_tailBlock]
+    rw [mem_residueBlockFinset] at hv
+    have hvρ : (v : ZMod (activatedM st b p)) = ρ := by simpa using hv.2.2
+    refine ⟨hJlo.trans hv.1, hv.2.1.trans hJhi, ?_⟩
+    change (v : ZMod (activatedM st b p)) ∈ params.Dplus
+    simpa [hvρ] using hρ
+  refine ⟨u, by simpa [StageParams.Mplus] using hu, v, by simpa [StageParams.Mplus] using hv,
+    huv, params.tailBlock_subset_nextS hu_tail, params.tailBlock_subset_nextS hv_tail⟩
 
 theorem stageParams_lower_helper_cover {st : StageState} {a b p : ℕ}
     (params : StageParams st a b p)
