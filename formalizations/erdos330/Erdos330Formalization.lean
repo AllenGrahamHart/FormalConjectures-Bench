@@ -5,3 +5,5 @@ import Erdos330Formalization.Stage
 import Erdos330Formalization.Global
 import Erdos330Formalization.UpperDensity
 import Erdos330Formalization.PrimeSupply
+import Erdos330Formalization.QuadraticResidue
+import Erdos330Formalization.FiniteChoice
