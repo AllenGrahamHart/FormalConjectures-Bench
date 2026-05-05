@@ -72,6 +72,104 @@ lemma selected_row_algebra
   rw [tsum_eq_sum_range_add_of_tail_zero htail, hrow, mul_one, hb]
   ring
 
+lemma summable_angleFun_of_norm_le_geometric {phis : ℕ → AngleFun}
+    (hphis : ∀ i : ℕ, ‖phis i‖ ≤ ((1 / 2 : ℝ) ^ i)) :
+    Summable phis :=
+  Summable.of_norm_bounded summable_geometric_two hphis
+
+/-- Recursive coefficients cancelling the previously chosen spikes at the selected rows. -/
+def diagonalCoeff
+    (theta0 : ℝ) (a : ℕ → ℝ) (c : ℝ)
+    (nSeq : ℕ → ℕ) (psiSeq : ℕ → AngleFun) : ℕ → ℝ
+  | m =>
+      a m - c -
+        (Finset.range m).attach.sum
+          (fun i => diagonalCoeff theta0 a c nSeq psiSeq i *
+            F theta0 (nSeq m) (psiSeq i))
+termination_by m => m
+decreasing_by
+  exact Finset.mem_range.mp i.2
+
+lemma diagonalCoeff_eq
+    (theta0 : ℝ) (a : ℕ → ℝ) (c : ℝ)
+    (nSeq : ℕ → ℕ) (psiSeq : ℕ → AngleFun) (m : ℕ) :
+    diagonalCoeff theta0 a c nSeq psiSeq m =
+      a m - c -
+        (Finset.range m).sum
+          (fun i => diagonalCoeff theta0 a c nSeq psiSeq i *
+            F theta0 (nSeq m) (psiSeq i)) := by
+  rw [diagonalCoeff]
+  have hsum :=
+    Finset.sum_attach (s := Finset.range m)
+      (f := fun i : ℕ =>
+        diagonalCoeff theta0 a c nSeq psiSeq i * F theta0 (nSeq m) (psiSeq i))
+  rw [hsum]
+
+lemma selected_row_diagonalCoeff_algebra
+    (theta0 : ℝ) (a : ℕ → ℝ) (c : ℝ)
+    (nSeq : ℕ → ℕ) (psiSeq : ℕ → AngleFun) (m : ℕ)
+    (hrow : F theta0 (nSeq m) (psiSeq m) = 1)
+    (htail : ∀ i : ℕ, m < i →
+      diagonalCoeff theta0 a c nSeq psiSeq i * F theta0 (nSeq m) (psiSeq i) = 0) :
+    c + ∑' i : ℕ,
+      diagonalCoeff theta0 a c nSeq psiSeq i * F theta0 (nSeq m) (psiSeq i) =
+        a m := by
+  exact selected_row_algebra
+    (hb := diagonalCoeff_eq theta0 a c nSeq psiSeq m)
+    (hrow := hrow)
+    (htail := htail)
+
+/-- The exact spike-row data needed for the selected-row algebra. -/
+structure DiagonalSpikeData (theta0 : ℝ) where
+  RSeq : ℕ → ℕ
+  nSeq : ℕ → ℕ
+  psiSeq : ℕ → AngleFun
+  R_ge_one : ∀ m, 1 ≤ RSeq m
+  n_pos : ∀ m, 0 < nSeq m
+  n_strict : StrictMono nSeq
+  vanishes : ∀ m, VanishesNear theta0 (angleFunToRaw (psiSeq m))
+  hit : ∀ m, F theta0 (nSeq m) (psiSeq m) = 1
+  early_zero :
+    ∀ m j : ℕ, 1 ≤ j → j ≤ RSeq m * nSeq m → j ≠ nSeq m →
+      F theta0 j (psiSeq m) = 0
+
+lemma DiagonalSpikeData.future_selected_zero
+    {theta0 : ℝ} (D : DiagonalSpikeData theta0) {m i : ℕ} (hmi : m < i) :
+    F theta0 (D.nSeq m) (D.psiSeq i) = 0 := by
+  have hnlt : D.nSeq m < D.nSeq i := D.n_strict hmi
+  have hjpos : 1 ≤ D.nSeq m := D.n_pos m
+  have hRpos : 0 < D.RSeq i := Nat.lt_of_lt_of_le Nat.zero_lt_one (D.R_ge_one i)
+  have hle_mul : D.nSeq i ≤ D.RSeq i * D.nSeq i :=
+    Nat.le_mul_of_pos_left (D.nSeq i) hRpos
+  have hle : D.nSeq m ≤ D.RSeq i * D.nSeq i := (le_of_lt hnlt).trans hle_mul
+  have hne : D.nSeq m ≠ D.nSeq i := ne_of_lt hnlt
+  exact D.early_zero i (D.nSeq m) hjpos hle hne
+
+lemma DiagonalSpikeData.future_selected_tail_zero
+    {theta0 : ℝ} (D : DiagonalSpikeData theta0)
+    (a : ℕ → ℝ) (c : ℝ) {m : ℕ} :
+    ∀ i : ℕ, m < i →
+      diagonalCoeff theta0 a c D.nSeq D.psiSeq i *
+        F theta0 (D.nSeq m) (D.psiSeq i) = 0 := by
+  intro i hmi
+  rw [D.future_selected_zero hmi, mul_zero]
+
+lemma DiagonalSpikeData.selected_raw_tsum
+    {theta0 : ℝ} (D : DiagonalSpikeData theta0)
+    (a : ℕ → ℝ) (c : ℝ) (m : ℕ) :
+    c + ∑' i : ℕ,
+      diagonalCoeff theta0 a c D.nSeq D.psiSeq i *
+        F theta0 (D.nSeq m) (D.psiSeq i) =
+      a m := by
+  exact selected_row_diagonalCoeff_algebra theta0 a c D.nSeq D.psiSeq m
+    (D.hit m) (D.future_selected_tail_zero a c)
+
+/-- The diagonal angle function attached to selected spike-row data. -/
+def DiagonalSpikeData.diagonalPhi
+    {theta0 : ℝ} (D : DiagonalSpikeData theta0) (a : ℕ → ℝ) (c : ℝ) : AngleFun :=
+  ContinuousMap.const AngleI c +
+    ∑' i : ℕ, diagonalCoeff theta0 a c D.nSeq D.psiSeq i • D.psiSeq i
+
 /-- Abstract block-spike data sufficient for the diagonal cluster-set theorem. -/
 structure AbstractBlockSpikeHypothesis
     (theta0 : ℝ) (_htheta0 : theta0 ∈ AngleI) where
@@ -93,6 +191,74 @@ structure AbstractBlockSpikeHypothesis
         (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n → F theta0 j psi = 0) ∧
         (∀ j : ℕ, R * n < j → |F theta0 j psi| ≤ eta R + delta) ∧
         ‖psi‖ ≤ C_R / Real.log (n : ℝ)
+
+lemma AbstractBlockSpikeHypothesis.F_diagonalPhi_selected
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    (D : DiagonalSpikeData theta0) (a : ℕ → ℝ) (c : ℝ)
+    (hsum : Summable fun i : ℕ =>
+      diagonalCoeff theta0 a c D.nSeq D.psiSeq i • D.psiSeq i)
+    (m : ℕ) :
+    F theta0 (D.nSeq m) (D.diagonalPhi a c) = a m := by
+  rw [DiagonalSpikeData.diagonalPhi]
+  rw [F_const_add_tsum_smul (H.const_eval c (D.nSeq m) (D.n_pos m)) hsum]
+  exact D.selected_raw_tsum a c m
+
+lemma AbstractBlockSpikeHypothesis.tendsto_finset_spike_rows_zero
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    (coeff : ℕ → ℝ) (psiSeq : ℕ → AngleFun)
+    (hvanish : ∀ i : ℕ, VanishesNear theta0 (angleFunToRaw (psiSeq i)))
+    (s : Finset ℕ) :
+    Tendsto (fun n : ℕ => s.sum fun i => coeff i * F theta0 n (psiSeq i))
+      Filter.atTop (nhds 0) := by
+  have hsum := tendsto_finset_sum s
+    (f := fun i n => coeff i * F theta0 n (psiSeq i))
+    (a := fun _ : ℕ => 0)
+    (x := Filter.atTop)
+    (fun i _hi => by
+      have hi := H.off_point_decay (psiSeq i) (hvanish i)
+      simpa using hi.const_mul (coeff i))
+  simpa using hsum
+
+lemma AbstractBlockSpikeHypothesis.tendsto_finset_diagonal_rows_zero
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    (D : DiagonalSpikeData theta0) (coeff : ℕ → ℝ) (s : Finset ℕ) :
+    Tendsto (fun n : ℕ => s.sum fun i => coeff i * F theta0 n (D.psiSeq i))
+      Filter.atTop (nhds 0) :=
+  H.tendsto_finset_spike_rows_zero coeff D.psiSeq D.vanishes s
+
+lemma AbstractBlockSpikeHypothesis.clusterSet_diagonalPhi_of_complement_tendsto
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    (D : DiagonalSpikeData theta0) (a : ℕ → ℝ) (c : ℝ)
+    {A : Set ℝ}
+    (hsum : Summable fun i : ℕ =>
+      diagonalCoeff theta0 a c D.nSeq D.psiSeq i • D.psiSeq i)
+    (ha_cluster : clusterSet a = A)
+    (hcA : c ∈ A)
+    (hcomp : Tendsto (fun n : ℕ => F theta0 n (D.diagonalPhi a c))
+      (Filter.atTop ⊓ Filter.principal (Set.range D.nSeq)ᶜ) (nhds c)) :
+    clusterSet (fun n : ℕ => F theta0 n (D.diagonalPhi a c)) = A := by
+  apply clusterSet_of_selected_rows_and_complement_tendsto D.n_strict ?_ ha_cluster hcA hcomp
+  intro m
+  exact H.F_diagonalPhi_selected D a c hsum m
+
+lemma AbstractBlockSpikeHypothesis.clusterSet_diagonalPhi_succ_of_complement_tendsto
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    (D : DiagonalSpikeData theta0) (a : ℕ → ℝ) (c : ℝ)
+    {A : Set ℝ}
+    (hsum : Summable fun i : ℕ =>
+      diagonalCoeff theta0 a c D.nSeq D.psiSeq i • D.psiSeq i)
+    (ha_cluster : clusterSet a = A)
+    (hcA : c ∈ A)
+    (hcomp : Tendsto (fun n : ℕ => F theta0 n (D.diagonalPhi a c))
+      (Filter.atTop ⊓ Filter.principal (Set.range D.nSeq)ᶜ) (nhds c)) :
+    clusterSet (fun m : ℕ => F theta0 (m.succ) (D.diagonalPhi a c)) = A := by
+  rw [clusterSet_succ_eq (fun n : ℕ => F theta0 n (D.diagonalPhi a c))]
+  exact H.clusterSet_diagonalPhi_of_complement_tendsto D a c hsum ha_cluster hcA hcomp
 
 lemma AbstractBlockSpikeHypothesis.exists_spike_with_eta_lt
     {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}

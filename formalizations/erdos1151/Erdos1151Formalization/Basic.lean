@@ -121,6 +121,17 @@ lemma FCLM_apply (theta0 : ℝ) (n : ℕ) (phi : AngleFun) :
     · simp [angleEvalCLM_apply]
     · simp [angleEvalCLM_apply]
 
+lemma F_add (theta0 : ℝ) (n : ℕ) (phi psi : AngleFun) :
+    F theta0 n (phi + psi) = F theta0 n phi + F theta0 n psi := by
+  rw [← FCLM_apply theta0 n (phi + psi), map_add]
+  rw [FCLM_apply theta0 n phi, FCLM_apply theta0 n psi]
+
+lemma F_smul (theta0 : ℝ) (n : ℕ) (c : ℝ) (phi : AngleFun) :
+    F theta0 n (c • phi) = c * F theta0 n phi := by
+  rw [← FCLM_apply theta0 n (c • phi), map_smul]
+  rw [FCLM_apply theta0 n phi]
+  rfl
+
 lemma F_tsum {theta0 : ℝ} {n : ℕ} {phis : ℕ → AngleFun}
     (hphis : Summable phis) :
     F theta0 n (∑' m : ℕ, phis m) =
@@ -129,6 +140,22 @@ lemma F_tsum {theta0 : ℝ} {n : ℕ} {phis : ℕ → AngleFun}
   rw [(FCLM theta0 n).map_tsum hphis]
   congr with m
   exact FCLM_apply theta0 n (phis m)
+
+lemma F_tsum_smul {theta0 : ℝ} {n : ℕ} {coeff : ℕ → ℝ} {phis : ℕ → AngleFun}
+    (hphis : Summable fun m : ℕ => coeff m • phis m) :
+    F theta0 n (∑' m : ℕ, coeff m • phis m) =
+      ∑' m : ℕ, coeff m * F theta0 n (phis m) := by
+  rw [F_tsum hphis]
+  congr with m
+  exact F_smul theta0 n (coeff m) (phis m)
+
+lemma F_const_add_tsum_smul
+    {theta0 : ℝ} {n : ℕ} {c : ℝ} {coeff : ℕ → ℝ} {phis : ℕ → AngleFun}
+    (hconst : F theta0 n (ContinuousMap.const AngleI c) = c)
+    (hphis : Summable fun m : ℕ => coeff m • phis m) :
+    F theta0 n (ContinuousMap.const AngleI c + ∑' m : ℕ, coeff m • phis m) =
+      c + ∑' m : ℕ, coeff m * F theta0 n (phis m) := by
+  rw [F_add, hconst, F_tsum_smul hphis]
 
 /-- A raw function vanishes on an angle-neighbourhood of `theta0`. -/
 def VanishesNear (theta0 : ℝ) (g : ℝ → ℝ) : Prop :=
