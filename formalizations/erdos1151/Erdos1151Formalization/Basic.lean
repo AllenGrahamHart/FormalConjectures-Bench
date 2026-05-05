@@ -1,6 +1,7 @@
 import FormalConjectures.Util.ProblemImports
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Topology.ClusterPt
+import Mathlib.Topology.ContinuousMap.Algebra
 import Mathlib.Topology.ContinuousMap.Basic
 
 /-!
@@ -79,6 +80,45 @@ def rowEval (theta0 : ℝ) (n : ℕ) (g : ℝ → ℝ) : ℝ :=
 /-- Row functional on continuous angle maps. -/
 def F (theta0 : ℝ) (n : ℕ) (phi : AngleFun) : ℝ :=
   rowEval theta0 n (angleFunToRaw phi)
+
+/-- Continuous-linear evaluation against the zero extension of an angle map. -/
+def angleEvalCLM (theta : ℝ) : AngleFun →L[ℝ] ℝ :=
+  by
+    classical
+    exact
+      if htheta : theta ∈ AngleI then
+        ContinuousMap.evalCLM ℝ (⟨theta, htheta⟩ : AngleI)
+      else
+        0
+
+lemma angleEvalCLM_apply (theta : ℝ) (phi : AngleFun) :
+    angleEvalCLM theta phi = angleFunToRaw phi theta := by
+  classical
+  unfold angleEvalCLM angleFunToRaw
+  split <;> simp [*]
+
+/-- Continuous-linear version of the explicit row functional. -/
+def FCLM (theta0 : ℝ) (n : ℕ) : AngleFun →L[ℝ] ℝ :=
+  by
+    classical
+    exact
+      if n = 0 then
+        0
+      else if IsNodeRow theta0 n then
+        angleEvalCLM theta0
+      else
+        (Finset.range n).sum fun k =>
+          (lambdaWeight theta0 n k) • angleEvalCLM (thetaNode n k)
+
+lemma FCLM_apply (theta0 : ℝ) (n : ℕ) (phi : AngleFun) :
+    FCLM theta0 n phi = F theta0 n phi := by
+  classical
+  unfold FCLM F rowEval
+  split
+  · simp
+  · split
+    · simp [angleEvalCLM_apply]
+    · simp [angleEvalCLM_apply]
 
 /-- A raw function vanishes on an angle-neighbourhood of `theta0`. -/
 def VanishesNear (theta0 : ℝ) (g : ℝ → ℝ) : Prop :=
