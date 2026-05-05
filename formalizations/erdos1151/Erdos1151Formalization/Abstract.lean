@@ -859,6 +859,8 @@ structure ControlledFinitePrefix
   norm_bound :
     ∀ i : ℕ, i < m → ‖psiSeq i‖ ≤ ((1 / 2 : ℝ) ^ i) / 4
   coeff_bound : ∀ i : ℕ, i < m → |coeff i| ≤ 3
+  coeff_eq :
+    ∀ i : ℕ, i < m → coeff i = diagonalCoeff theta0 a c nSeq psiSeq i
 
 /-- A successor prefix extends a prefix if it agrees with it on all old indices. -/
 def ControlledFinitePrefix.Extends
@@ -889,7 +891,8 @@ lemma exists_controlledFinitePrefix_zero
     early_zero := by intro i j hi; exact False.elim (Nat.not_lt_zero i hi)
     future_bound := by intro i j hi; exact False.elim (Nat.not_lt_zero i hi)
     norm_bound := by intro i hi; exact False.elim (Nat.not_lt_zero i hi)
-    coeff_bound := by intro i hi; exact False.elim (Nat.not_lt_zero i hi) }, trivial⟩
+    coeff_bound := by intro i hi; exact False.elim (Nat.not_lt_zero i hi)
+    coeff_eq := by intro i hi; exact False.elim (Nat.not_lt_zero i hi) }, trivial⟩
 
 lemma ControlledFinitePrefix.exists_extend
     {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
@@ -912,6 +915,22 @@ lemma ControlledFinitePrefix.exists_extend
   let psiSeq' : ℕ → AngleFun := fun i => if i = m then S.psi else P.psiSeq i
   let coeff' : ℕ → ℝ := fun i =>
     if i = m then nextCoeff theta0 a c P.coeff P.psiSeq m S.n else P.coeff i
+  have hdiag_prefix :
+      ∀ i : ℕ, i < m →
+        diagonalCoeff theta0 a c P.nSeq P.psiSeq i =
+          diagonalCoeff theta0 a c nSeq' psiSeq' i := by
+    exact diagonalCoeff_congr_of_eq_on_lt theta0 a c
+      (m := m)
+      (nSeq₁ := P.nSeq) (nSeq₂ := nSeq')
+      (psiSeq₁ := P.psiSeq) (psiSeq₂ := psiSeq')
+      (by
+        intro i hi
+        have him : i ≠ m := by omega
+        simp [nSeq', him])
+      (by
+        intro i hi
+        have him : i ≠ m := by omega
+        simp [psiSeq', him])
   refine ⟨{
     upper := S.n + 1
     RSeq := RSeq'
@@ -927,7 +946,8 @@ lemma ControlledFinitePrefix.exists_extend
     early_zero := ?_
     future_bound := ?_
     norm_bound := ?_
-    coeff_bound := ?_ }, ?_⟩
+    coeff_bound := ?_
+    coeff_eq := ?_ }, ?_⟩
   · intro i hi
     by_cases him : i = m
     · simpa [RSeq', him] using S.R_ge_one
@@ -992,6 +1012,24 @@ lemma ControlledFinitePrefix.exists_extend
     · simpa [coeff', him] using hcoeff
     · have hiold : i < m := by omega
       simpa [coeff', him] using P.coeff_bound i hiold
+  · intro i hi
+    by_cases him : i = m
+    · subst i
+      rw [show coeff' m = nextCoeff theta0 a c P.coeff P.psiSeq m S.n by
+        simp [coeff']]
+      rw [nextCoeff, diagonalCoeff_eq]
+      apply congrArg (fun x => a m - c - x)
+      apply Finset.sum_congr rfl
+      intro j hj
+      have hjm : j < m := Finset.mem_range.mp hj
+      have hjne : j ≠ m := by omega
+      have hcoeffj :
+          P.coeff j = diagonalCoeff theta0 a c nSeq' psiSeq' j :=
+        (P.coeff_eq j hjm).trans (hdiag_prefix j hjm)
+      rw [hcoeffj]
+      simp [nSeq', psiSeq', hjne]
+    · have hiold : i < m := by omega
+      simpa [coeff', him] using (P.coeff_eq i hiold).trans (hdiag_prefix i hiold)
   · intro i hi
     have him : i ≠ m := by omega
     simp [RSeq', nSeq', psiSeq', coeff', him]
@@ -1203,6 +1241,38 @@ lemma AbstractBlockSpikeHypothesis.controlledPrefixChain_nSeq_eq_of_lt_le
   obtain ⟨t, rfl⟩ := Nat.exists_eq_add_of_le hkl
   exact H.controlledPrefixChain_nSeq_add_eq_of_lt ha_bound hi t
 
+lemma AbstractBlockSpikeHypothesis.controlledPrefixChain_psiSeq_add_eq_of_lt
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2)
+    {i k : ℕ} (hi : i < k) (t : ℕ) :
+    (H.controlledPrefixChain ha_bound (k + t)).psiSeq i =
+      (H.controlledPrefixChain ha_bound k).psiSeq i := by
+  induction t with
+  | zero =>
+      simp
+  | succ t ih =>
+      have hi' : i < k + t := hi.trans_le (Nat.le_add_right k t)
+      calc
+        (H.controlledPrefixChain ha_bound (k + Nat.succ t)).psiSeq i
+            = (H.controlledPrefixChain ha_bound ((k + t) + 1)).psiSeq i := by
+                rw [Nat.add_succ]
+        _ = (H.controlledPrefixChain ha_bound (k + t)).psiSeq i :=
+            H.controlledPrefixChain_psiSeq_succ_eq_of_lt ha_bound hi'
+        _ = (H.controlledPrefixChain ha_bound k).psiSeq i := ih
+
+lemma AbstractBlockSpikeHypothesis.controlledPrefixChain_psiSeq_eq_of_lt_le
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2)
+    {i k l : ℕ} (hi : i < k) (hkl : k ≤ l) :
+    (H.controlledPrefixChain ha_bound l).psiSeq i =
+      (H.controlledPrefixChain ha_bound k).psiSeq i := by
+  obtain ⟨t, rfl⟩ := Nat.exists_eq_add_of_le hkl
+  exact H.controlledPrefixChain_psiSeq_add_eq_of_lt ha_bound hi t
+
 lemma AbstractBlockSpikeHypothesis.controlledNSeq_strict
     {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
     (H : AbstractBlockSpikeHypothesis theta0 htheta0)
@@ -1221,6 +1291,51 @@ lemma AbstractBlockSpikeHypothesis.controlledNSeq_strict
     exact H.controlledPrefixChain_nSeq_eq_of_lt_le
       ha_bound (i := i) (k := i + 1) (l := j + 1) (by omega) (by omega)
   simpa [controlledNSeq, histable] using hprefix
+
+lemma AbstractBlockSpikeHypothesis.controlledCoeff_eq_diagonalCoeff
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2) (m : ℕ) :
+    H.controlledCoeff ha_bound m =
+      diagonalCoeff theta0 a c
+        (H.controlledNSeq ha_bound) (H.controlledPsiSeq ha_bound) m := by
+  have hprefix :=
+    (H.controlledPrefixChain ha_bound (m + 1)).coeff_eq m (by omega)
+  have hdiag :
+      diagonalCoeff theta0 a c
+          (H.controlledPrefixChain ha_bound (m + 1)).nSeq
+          (H.controlledPrefixChain ha_bound (m + 1)).psiSeq m =
+        diagonalCoeff theta0 a c
+          (H.controlledNSeq ha_bound) (H.controlledPsiSeq ha_bound) m := by
+    exact diagonalCoeff_congr_of_eq_on_lt theta0 a c
+      (m := m + 1)
+      (nSeq₁ := (H.controlledPrefixChain ha_bound (m + 1)).nSeq)
+      (nSeq₂ := H.controlledNSeq ha_bound)
+      (psiSeq₁ := (H.controlledPrefixChain ha_bound (m + 1)).psiSeq)
+      (psiSeq₂ := H.controlledPsiSeq ha_bound)
+      (by
+        intro i hi
+        rw [controlledNSeq]
+        exact H.controlledPrefixChain_nSeq_eq_of_lt_le
+          ha_bound (i := i) (k := i + 1) (l := m + 1) (by omega) (by omega))
+      (by
+        intro i hi
+        rw [controlledPsiSeq]
+        exact H.controlledPrefixChain_psiSeq_eq_of_lt_le
+          ha_bound (i := i) (k := i + 1) (l := m + 1) (by omega) (by omega))
+      m (by omega)
+  exact hprefix.trans hdiag
+
+lemma AbstractBlockSpikeHypothesis.controlledDiagonalCoeffBound
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2) (m : ℕ) :
+    |diagonalCoeff theta0 a c
+      (H.controlledNSeq ha_bound) (H.controlledPsiSeq ha_bound) m| ≤ 3 := by
+  rw [← H.controlledCoeff_eq_diagonalCoeff ha_bound m]
+  exact H.controlledCoeffBound ha_bound m
 
 noncomputable def recursiveSpikePackage
     {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
@@ -1345,7 +1460,19 @@ theorem AbstractBlockSpikeHypothesis.exists_controlledDiagonalSpikeData
     {a : ℕ → ℝ} {c : ℝ}
     (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2) :
     ∃ _ : ControlledDiagonalSpikeData theta0 a c, True := by
-  sorry
+  exact ⟨{
+    RSeq := H.controlledRSeq ha_bound
+    nSeq := H.controlledNSeq ha_bound
+    psiSeq := H.controlledPsiSeq ha_bound
+    R_ge_one := H.controlledRSeq_ge_one ha_bound
+    n_pos := H.controlledNSeq_pos ha_bound
+    n_strict := H.controlledNSeq_strict ha_bound
+    vanishes := H.controlledVanishes ha_bound
+    hit := H.controlledHit ha_bound
+    early_zero := H.controlledEarlyZero ha_bound
+    coeff_bound := H.controlledDiagonalCoeffBound ha_bound
+    norm_bound := H.controlledNormBound ha_bound
+    future_bound := H.controlledFutureBound ha_bound }, trivial⟩
 
 /-- First major milestone: the diagonal construction from abstract block spikes. -/
 theorem angle_theorem_from_block_spikes
