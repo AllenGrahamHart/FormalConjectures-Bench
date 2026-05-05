@@ -559,6 +559,61 @@ lemma floor_shift_distance_lt_of_lt
       _ = (M : ℝ) * Real.pi / (n : ℝ) := by ring
   exact lt_of_le_of_lt (hdist.trans hgrid) hclose
 
+lemma floor_shift_range_div_of_add_inv_le
+    {theta0 : ℝ} {n Q : ℕ}
+    (htheta0_nonneg : 0 ≤ theta0)
+    (hrange : theta0 / Real.pi + 1 / (Q : ℝ) ≤ 1) :
+    Nat.floor (((n : ℝ) * theta0) / Real.pi) + n / Q ≤ n := by
+  let x : ℝ := ((n : ℝ) * theta0) / Real.pi
+  have hx_nonneg : 0 ≤ x := by
+    dsimp [x]
+    positivity
+  have hfloor : ((Nat.floor x : ℕ) : ℝ) ≤ x :=
+    Nat.floor_le hx_nonneg
+  have hdiv : ((n / Q : ℕ) : ℝ) ≤ (n : ℝ) / (Q : ℝ) :=
+    Nat.cast_div_le
+  have hsum_real :
+      ((Nat.floor x + n / Q : ℕ) : ℝ) ≤ (n : ℝ) := by
+    calc
+      ((Nat.floor x + n / Q : ℕ) : ℝ) =
+          ((Nat.floor x : ℕ) : ℝ) + ((n / Q : ℕ) : ℝ) := by
+            norm_num
+      _ ≤ x + (n : ℝ) / (Q : ℝ) := add_le_add hfloor hdiv
+      _ = (n : ℝ) * (theta0 / Real.pi + 1 / (Q : ℝ)) := by
+          dsimp [x]
+          ring
+      _ ≤ (n : ℝ) * 1 := mul_le_mul_of_nonneg_left hrange (by positivity)
+      _ = (n : ℝ) := by ring
+  exact_mod_cast hsum_real
+
+lemma div_block_close_of_pi_div_lt
+    {rho : ℝ} {n Q : ℕ}
+    (hnpos : 0 < n) (hQpos : 0 < Q)
+    (hQrho : Real.pi / (Q : ℝ) < rho) :
+    ((n / Q : ℕ) : ℝ) * Real.pi / (n : ℝ) < rho := by
+  have hdiv : ((n / Q : ℕ) : ℝ) ≤ (n : ℝ) / (Q : ℝ) :=
+    Nat.cast_div_le
+  have hscale_nonneg : 0 ≤ Real.pi / (n : ℝ) := by
+    positivity
+  have hle :
+      ((n / Q : ℕ) : ℝ) * Real.pi / (n : ℝ) ≤
+        ((n : ℝ) / (Q : ℝ)) * Real.pi / (n : ℝ) := by
+    calc
+      ((n / Q : ℕ) : ℝ) * Real.pi / (n : ℝ) =
+          ((n / Q : ℕ) : ℝ) * (Real.pi / (n : ℝ)) := by ring
+      _ ≤ ((n : ℝ) / (Q : ℝ)) * (Real.pi / (n : ℝ)) :=
+          mul_le_mul_of_nonneg_right hdiv hscale_nonneg
+      _ = ((n : ℝ) / (Q : ℝ)) * Real.pi / (n : ℝ) := by ring
+  have hnne : (n : ℝ) ≠ 0 := by
+    exact_mod_cast (Nat.ne_of_gt hnpos)
+  have hQne : (Q : ℝ) ≠ 0 := by
+    exact_mod_cast (Nat.ne_of_gt hQpos)
+  have hright :
+      ((n : ℝ) / (Q : ℝ)) * Real.pi / (n : ℝ) =
+        Real.pi / (Q : ℝ) := by
+    field_simp [hnne, hQne]
+  exact lt_of_le_of_lt (by simpa [hright] using hle) hQrho
+
 lemma grid_inv_le_inv_thetaNode_progression {n s t : ℕ}
     (hnpos : 0 < n) (hspos : 0 < s) (ht : t < n) :
     (n : ℝ) / (((t + 1 : ℕ) : ℝ) * Real.pi) ≤
@@ -774,6 +829,48 @@ lemma log_nat_le_two_log_half_add_one {n : ℕ} (hn : 4 ≤ n) :
       (((n / 2) + 1 : ℕ) : ℝ) ^ 2 := by norm_num
   rw [hpow, Real.log_pow] at hlog
   norm_num at hlog
+  simpa [Nat.cast_add, Nat.cast_one] using hlog
+
+lemma nat_le_div_add_one_sq_of_sq_le {n Q : ℕ}
+    (hQpos : 0 < Q) (hnlarge : Q ^ 2 ≤ n) :
+    n ≤ (n / Q + 1) ^ 2 := by
+  let q := n / Q
+  have hnlt : n < q * Q + Q := by
+    simpa [q, Nat.mul_comm, Nat.mul_left_comm, Nat.mul_assoc] using
+      (Nat.lt_div_mul_add (a := n) (b := Q) hQpos)
+  have hQ_le_q : Q ≤ q := by
+    dsimp [q]
+    exact (Nat.le_div_iff_mul_le hQpos).mpr
+      (by simpa [pow_two] using hnlarge)
+  have hQ_le_q1 : Q ≤ q + 1 :=
+    Nat.le_trans hQ_le_q (Nat.le_succ q)
+  have hmul : Q * (q + 1) ≤ (q + 1) ^ 2 := by
+    rw [pow_two]
+    exact Nat.mul_le_mul_right (q + 1) hQ_le_q1
+  have hnlt_sq : n < (q + 1) ^ 2 := by
+    calc
+      n < q * Q + Q := hnlt
+      _ = Q * (q + 1) := by ring
+      _ ≤ (q + 1) ^ 2 := hmul
+  change n ≤ (q + 1) ^ 2
+  exact Nat.le_of_lt hnlt_sq
+
+lemma log_nat_le_two_log_div_add_one {n Q : ℕ}
+    (hQpos : 0 < Q) (hnlarge : Q ^ 2 ≤ n) :
+    Real.log (n : ℝ) ≤
+      2 * Real.log (((n / Q) + 1 : ℕ) : ℝ) := by
+  have hnpos_nat : 0 < n := by
+    exact lt_of_lt_of_le (pow_pos hQpos 2) hnlarge
+  have hnpos : 0 < (n : ℝ) := by
+    exact_mod_cast hnpos_nat
+  have hle_nat := nat_le_div_add_one_sq_of_sq_le hQpos hnlarge
+  have hle_real : (n : ℝ) ≤ ((((n / Q + 1) ^ 2 : ℕ) : ℝ)) := by
+    exact_mod_cast hle_nat
+  have hlog := Real.log_le_log hnpos hle_real
+  have hpow : ((((n / Q + 1) ^ 2 : ℕ) : ℝ)) =
+      (((n / Q) + 1 : ℕ) : ℝ) ^ 2 := by
+    norm_num
+  rw [hpow, Real.log_pow] at hlog
   simpa [Nat.cast_add, Nat.cast_one] using hlog
 
 lemma zero_endpoint_kernel_sum_range_ge_base_log {n s : ℕ}
@@ -1272,6 +1369,51 @@ lemma interior_progression_kernel_sum_ge_log_of_floor_shift
     (local_inverse_distance_sum_le_progression_kernel_sum
       (theta0 := theta0) (c := c) (rho := rho)
       (n := n) (s := s) hspos hnot hlocal)
+
+lemma interior_progression_kernel_sum_ge_log_of_div_block
+    {theta0 c rho : ℝ} {n s Q : ℕ}
+    (hnpos : 0 < n) (hspos : 0 < s) (hQpos : 0 < Q)
+    (hnlarge : Q ^ 2 ≤ n) (hc_nonneg : 0 ≤ c)
+    (htheta0_nonneg : 0 ≤ theta0)
+    (hnot : ¬ IsNodeRow theta0 (n * s))
+    (hlocal : ∀ theta ∈ AngleI, theta ≠ theta0 →
+      |theta - theta0| < rho →
+        c / |theta - theta0| ≤
+          Real.sin theta / |Real.cos theta0 - Real.cos theta|)
+    (hrange : theta0 / Real.pi + 1 / (Q : ℝ) ≤ 1)
+    (hQrho : Real.pi / (Q : ℝ) < rho) :
+    (c / (2 * Real.pi)) * (n : ℝ) * Real.log (n : ℝ) ≤
+      ∑ t ∈ Finset.range n,
+        Real.sin (thetaNode (n * s) (s * t)) /
+          |Real.cos theta0 -
+            Real.cos (thetaNode (n * s) (s * t))| := by
+  have hlog := log_nat_le_two_log_div_add_one hQpos hnlarge
+  have hlog_half :
+      Real.log (n : ℝ) / 2 ≤
+        Real.log (((n / Q) + 1 : ℕ) : ℝ) := by
+    linarith
+  have hcoef_nonneg : 0 ≤ c * (n : ℝ) / Real.pi := by
+    positivity
+  have hscaled := mul_le_mul_of_nonneg_left hlog_half hcoef_nonneg
+  have hkernel :=
+    interior_progression_kernel_sum_ge_log_of_floor_shift
+      (theta0 := theta0) (c := c) (rho := rho)
+      (n := n) (s := s) (M := n / Q)
+      hnpos hspos hc_nonneg htheta0_nonneg hnot hlocal
+      (floor_shift_range_div_of_add_inv_le (theta0 := theta0)
+        (n := n) (Q := Q) htheta0_nonneg hrange)
+      (div_block_close_of_pi_div_lt (rho := rho) (n := n) (Q := Q)
+        hnpos hQpos hQrho)
+  calc
+    (c / (2 * Real.pi)) * (n : ℝ) * Real.log (n : ℝ) =
+        (c * (n : ℝ) / Real.pi) * (Real.log (n : ℝ) / 2) := by
+          ring
+    _ ≤ (c * (n : ℝ) / Real.pi) *
+          Real.log (((n / Q) + 1 : ℕ) : ℝ) := hscaled
+    _ ≤ ∑ t ∈ Finset.range n,
+        Real.sin (thetaNode (n * s) (s * t)) /
+          |Real.cos theta0 -
+            Real.cos (thetaNode (n * s) (s * t))| := hkernel
 
 /-- If an order-`d` primitive node is viewed in row `d * s`, this is its row index. -/
 def occurrenceIndex (s k : ℕ) : ℕ :=
