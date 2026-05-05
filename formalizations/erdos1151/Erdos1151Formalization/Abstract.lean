@@ -147,6 +147,27 @@ lemma diagonalCoeff_eq
         diagonalCoeff theta0 a c nSeq psiSeq i * F theta0 (nSeq m) (psiSeq i))
   rw [hsum]
 
+lemma diagonalCoeff_congr_of_eq_on_lt
+    (theta0 : ℝ) (a : ℕ → ℝ) (c : ℝ)
+    {nSeq₁ nSeq₂ : ℕ → ℕ} {psiSeq₁ psiSeq₂ : ℕ → AngleFun}
+    {m : ℕ}
+    (hn : ∀ i : ℕ, i < m → nSeq₁ i = nSeq₂ i)
+    (hpsi : ∀ i : ℕ, i < m → psiSeq₁ i = psiSeq₂ i) :
+    ∀ i : ℕ, i < m →
+      diagonalCoeff theta0 a c nSeq₁ psiSeq₁ i =
+        diagonalCoeff theta0 a c nSeq₂ psiSeq₂ i := by
+  intro i
+  induction i using Nat.strong_induction_on with
+  | h i ih =>
+      intro hi
+      rw [diagonalCoeff_eq, diagonalCoeff_eq]
+      apply congrArg
+      apply Finset.sum_congr rfl
+      intro j hj
+      have hji : j < i := Finset.mem_range.mp hj
+      have hjm : j < m := hji.trans hi
+      rw [ih j hji hjm, hn i hi, hpsi j hjm]
+
 lemma selected_row_diagonalCoeff_algebra
     (theta0 : ℝ) (a : ℕ → ℝ) (c : ℝ)
     (nSeq : ℕ → ℕ) (psiSeq : ℕ → AngleFun) (m : ℕ)
@@ -1109,6 +1130,97 @@ lemma AbstractBlockSpikeHypothesis.controlledCoeffBound
     (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2) (m : ℕ) :
     |H.controlledCoeff ha_bound m| ≤ 3 := by
   exact (H.controlledPrefixChain ha_bound (m + 1)).coeff_bound m (by omega)
+
+lemma AbstractBlockSpikeHypothesis.controlledPrefixChain_RSeq_succ_eq_of_lt
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2)
+    {i m : ℕ} (hi : i < m) :
+    (H.controlledPrefixChain ha_bound (m + 1)).RSeq i =
+      (H.controlledPrefixChain ha_bound m).RSeq i :=
+  (H.controlledPrefixChain_extends ha_bound m i hi).1
+
+lemma AbstractBlockSpikeHypothesis.controlledPrefixChain_nSeq_succ_eq_of_lt
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2)
+    {i m : ℕ} (hi : i < m) :
+    (H.controlledPrefixChain ha_bound (m + 1)).nSeq i =
+      (H.controlledPrefixChain ha_bound m).nSeq i :=
+  (H.controlledPrefixChain_extends ha_bound m i hi).2.1
+
+lemma AbstractBlockSpikeHypothesis.controlledPrefixChain_psiSeq_succ_eq_of_lt
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2)
+    {i m : ℕ} (hi : i < m) :
+    (H.controlledPrefixChain ha_bound (m + 1)).psiSeq i =
+      (H.controlledPrefixChain ha_bound m).psiSeq i :=
+  (H.controlledPrefixChain_extends ha_bound m i hi).2.2.1
+
+lemma AbstractBlockSpikeHypothesis.controlledPrefixChain_coeff_succ_eq_of_lt
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2)
+    {i m : ℕ} (hi : i < m) :
+    (H.controlledPrefixChain ha_bound (m + 1)).coeff i =
+      (H.controlledPrefixChain ha_bound m).coeff i :=
+  (H.controlledPrefixChain_extends ha_bound m i hi).2.2.2
+
+lemma AbstractBlockSpikeHypothesis.controlledPrefixChain_nSeq_add_eq_of_lt
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2)
+    {i k : ℕ} (hi : i < k) (t : ℕ) :
+    (H.controlledPrefixChain ha_bound (k + t)).nSeq i =
+      (H.controlledPrefixChain ha_bound k).nSeq i := by
+  induction t with
+  | zero =>
+      simp
+  | succ t ih =>
+      have hi' : i < k + t := hi.trans_le (Nat.le_add_right k t)
+      calc
+        (H.controlledPrefixChain ha_bound (k + Nat.succ t)).nSeq i
+            = (H.controlledPrefixChain ha_bound ((k + t) + 1)).nSeq i := by
+                rw [Nat.add_succ]
+        _ = (H.controlledPrefixChain ha_bound (k + t)).nSeq i :=
+            H.controlledPrefixChain_nSeq_succ_eq_of_lt ha_bound hi'
+        _ = (H.controlledPrefixChain ha_bound k).nSeq i := ih
+
+lemma AbstractBlockSpikeHypothesis.controlledPrefixChain_nSeq_eq_of_lt_le
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2)
+    {i k l : ℕ} (hi : i < k) (hkl : k ≤ l) :
+    (H.controlledPrefixChain ha_bound l).nSeq i =
+      (H.controlledPrefixChain ha_bound k).nSeq i := by
+  obtain ⟨t, rfl⟩ := Nat.exists_eq_add_of_le hkl
+  exact H.controlledPrefixChain_nSeq_add_eq_of_lt ha_bound hi t
+
+lemma AbstractBlockSpikeHypothesis.controlledNSeq_strict
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2) :
+    StrictMono (H.controlledNSeq ha_bound) := by
+  intro i j hij
+  have hprefix :
+      (H.controlledPrefixChain ha_bound (j + 1)).nSeq i <
+        (H.controlledPrefixChain ha_bound (j + 1)).nSeq j :=
+    (H.controlledPrefixChain ha_bound (j + 1)).n_strict i j hij (by omega)
+  have histable :
+      (H.controlledPrefixChain ha_bound (j + 1)).nSeq i =
+        H.controlledNSeq ha_bound i := by
+    rw [controlledNSeq]
+    exact H.controlledPrefixChain_nSeq_eq_of_lt_le
+      ha_bound (i := i) (k := i + 1) (l := j + 1) (by omega) (by omega)
+  simpa [controlledNSeq, histable] using hprefix
 
 noncomputable def recursiveSpikePackage
     {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
