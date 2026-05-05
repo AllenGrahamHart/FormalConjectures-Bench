@@ -47,6 +47,31 @@ lemma exists_nat_forall_ge_const_div_log_lt
   rcases Filter.eventually_atTop.mp hevent with ⟨M, hM⟩
   exact ⟨max N M, le_max_left N M, fun n hn => hM n ((le_max_right N M).trans hn)⟩
 
+lemma tsum_eq_sum_range_succ_of_eq_zero
+    {f : ℕ → ℝ} {m : ℕ}
+    (hzero : ∀ i : ℕ, m < i → f i = 0) :
+    (∑' i : ℕ, f i) = (Finset.range (m + 1)).sum f := by
+  rw [tsum_eq_sum (s := Finset.range (m + 1))]
+  intro i hi
+  exact hzero i (by
+    rw [Finset.mem_range] at hi
+    omega)
+
+lemma tsum_eq_sum_range_add_of_tail_zero
+    {f : ℕ → ℝ} {m : ℕ}
+    (hzero : ∀ i : ℕ, m < i → f i = 0) :
+    (∑' i : ℕ, f i) = (Finset.range m).sum f + f m := by
+  rw [tsum_eq_sum_range_succ_of_eq_zero hzero, Finset.sum_range_succ]
+
+lemma selected_row_algebra
+    {a c : ℝ} {b row : ℕ → ℝ} {m : ℕ}
+    (hb : b m = a - c - (Finset.range m).sum (fun i => b i * row i))
+    (hrow : row m = 1)
+    (htail : ∀ i : ℕ, m < i → b i * row i = 0) :
+    c + ∑' i : ℕ, b i * row i = a := by
+  rw [tsum_eq_sum_range_add_of_tail_zero htail, hrow, mul_one, hb]
+  ring
+
 /-- Abstract block-spike data sufficient for the diagonal cluster-set theorem. -/
 structure AbstractBlockSpikeHypothesis
     (theta0 : ℝ) (_htheta0 : theta0 ∈ AngleI) where
