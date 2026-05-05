@@ -1,0 +1,97 @@
+import FormalConjectures.Util.ProblemImports
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Topology.ClusterPt
+import Mathlib.Topology.ContinuousMap.Basic
+
+/-!
+# Erdős Problem 1151, basic angle-side definitions
+
+This file starts with the fixed-point scalar interpretation.  The first
+formalisation milestone is the angle-variable theorem for the explicit row
+functional `F`; the Lagrange interpolation bridge is intentionally postponed.
+-/
+
+noncomputable section
+
+open Filter Set
+open scoped BigOperators Topology
+
+namespace Erdos1151Formalization
+
+/-- Angle interval `[0, pi]`. -/
+abbrev AngleI : Set ℝ := Set.Icc (0 : ℝ) Real.pi
+
+/-- Spatial interval `[-1, 1]`. -/
+abbrev SpaceI : Set ℝ := Set.Icc (-1 : ℝ) 1
+
+/-- Continuous angle-side functions. -/
+abbrev AngleFun := C(AngleI, ℝ)
+
+/-- Continuous spatial-side functions. -/
+abbrev SpaceFun := C(SpaceI, ℝ)
+
+/-- The finite real cluster set of a real sequence. -/
+def clusterSet (u : ℕ → ℝ) : Set ℝ :=
+  {y | MapClusterPt y Filter.atTop u}
+
+/-- Extend an angle-side continuous map by zero outside `[0, pi]`. -/
+def angleFunToRaw (phi : AngleFun) : ℝ → ℝ :=
+  fun theta => if h : theta ∈ AngleI then phi ⟨theta, h⟩ else 0
+
+lemma angleFunToRaw_of_mem (phi : AngleFun) {theta : ℝ} (htheta : theta ∈ AngleI) :
+    angleFunToRaw phi theta = phi ⟨theta, htheta⟩ := by
+  simp [angleFunToRaw, htheta]
+
+/-- The `k`-th Chebyshev-root angle in row `n`, zero-indexed. -/
+def thetaNode (n k : ℕ) : ℝ :=
+  ((2 * (k : ℝ) + 1) * Real.pi) / (2 * (n : ℝ))
+
+/-- The corresponding Chebyshev root. -/
+def xNode (n k : ℕ) : ℝ :=
+  Real.cos (thetaNode n k)
+
+/-- `theta0` is itself a row-`n` Chebyshev-root angle. -/
+def IsNodeRow (theta0 : ℝ) (n : ℕ) : Prop :=
+  Real.cos ((n : ℝ) * theta0) = 0
+
+/-- The explicit Chebyshev-Lagrange row weight, meaningful for non-node rows. -/
+def lambdaWeight (theta0 : ℝ) (n k : ℕ) : ℝ :=
+  Real.cos ((n : ℝ) * theta0) / (n : ℝ)
+    * ((-1 : ℝ) ^ k)
+    * Real.sin (thetaNode n k)
+    / (Real.cos theta0 - Real.cos (thetaNode n k))
+
+/-- Raw explicit row functional in angle variables.
+
+The `n = 0` value is arbitrary; final sequences use `m.succ`.
+-/
+def rowEval (theta0 : ℝ) (n : ℕ) (g : ℝ → ℝ) : ℝ :=
+  by
+    classical
+    exact
+      if n = 0 then
+        0
+      else if IsNodeRow theta0 n then
+        g theta0
+      else
+        (Finset.range n).sum fun k => lambdaWeight theta0 n k * g (thetaNode n k)
+
+/-- Row functional on continuous angle maps. -/
+def F (theta0 : ℝ) (n : ℕ) (phi : AngleFun) : ℝ :=
+  rowEval theta0 n (angleFunToRaw phi)
+
+/-- A raw function vanishes on an angle-neighbourhood of `theta0`. -/
+def VanishesNear (theta0 : ℝ) (g : ℝ → ℝ) : Prop :=
+  ∃ eps > 0, ∀ theta ∈ AngleI, |theta - theta0| < eps → g theta = 0
+
+/-- Temporary placeholder for the spatial Lagrange evaluation.
+
+This will be replaced by the real Chebyshev-root Lagrange interpolation
+definition once the angle-side core has been built.
+-/
+def chebLagEval (_x0 : ℝ) (_f : SpaceFun) (_n : ℕ) : ℝ :=
+  0
+
+end Erdos1151Formalization
+
+end

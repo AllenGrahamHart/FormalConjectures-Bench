@@ -21,6 +21,30 @@ The website says the original statement is ambiguous and that a claimed solution
 
 ## 1. Chosen target theorem and non-goals
 
+### Revised implementation strategy
+
+The target theorem below remains the final goal, but the implementation should
+not start by proving the full Chebyshev/Lagrange bridge.  The first executable
+formal core should be the angle-variable theorem for the explicit row functional
+`F`, proved from an abstract block-spike hypothesis.  This separates the
+diagonal construction and cluster-set argument from the hardest analytic and
+API-heavy estimates.
+
+Recommended proof chain:
+
+```text
+AbstractBlockSpikeHypothesis
+  ⇒ angle_theorem_from_block_spikes
+  ⇒ concrete block spikes from primitive rows, Möbius cancellation, and tents
+  ⇒ angle_theorem_nonempty
+  ⇒ Lagrange/Chebyshev bridge
+  ⇒ erdos1151_nonempty_fixed_point
+```
+
+This is a deliberate change from a source-order formalisation.  It gives an
+early compiled theorem that exercises the diagonal construction before we spend
+time on the primitive mass estimate and the polynomial interpolation bridge.
+
 ### Target theorem
 
 Formalise the following theorem first:
@@ -156,8 +180,8 @@ Erdos1151/
   Basic.lean
     intervals, nodes, row functional, clusterSet
 
-  LagrangeBridge.lean
-    proof that explicit row functional equals Lagrange interpolation at Chebyshev roots
+  Abstract.lean
+    AbstractBlockSpikeHypothesis and angle_theorem_from_block_spikes
 
   OffPointDecay.lean
     alternating midpoint sum lemma and F_n ψ → 0 for ψ vanishing near θ₀
@@ -178,13 +202,20 @@ Erdos1151/
     sequence in A with cluster set A; selected/nonselected cluster-set lemmas
 
   Construction.lean
-    final diagonal construction in angle variables
+    concrete block-spike theorem and angle_theorem_nonempty
+
+  LagrangeBridge.lean
+    proof that explicit row functional equals Lagrange interpolation at Chebyshev roots
 
   Main.lean
     transfer from angle theorem to original `f : [-1,1] → ℝ`
 ```
 
 For early iteration, it is fine to put everything in one file with many local `sorry`s, but this dependency graph is the best long-term structure.
+
+The first pass should build only `Basic.lean`, `Abstract.lean`, and a skeletal
+`Main.lean`.  `LagrangeBridge.lean` should be postponed until the abstract
+diagonal theorem is working.
 
 ## 4. Imports and namespace setup
 
@@ -611,7 +642,10 @@ lemma chebLagEval_eq_weight_sum
 
 ### Important fallback
 
-If the Chebyshev/Lagrange bridge becomes a time sink, first formalise the angle theorem using `F` as the definition of the row functional. Then add the bridge later. This still gives a meaningful formal core of the submitted proof.
+The Chebyshev/Lagrange bridge is intentionally postponed.  First formalise the
+angle theorem using `F` as the definition of the row functional.  Then add the
+bridge later.  This still gives a meaningful formal core of the submitted proof
+and reduces the risk of spending the first sessions on polynomial API details.
 
 ## 8. Off-point decay
 
@@ -2034,7 +2068,7 @@ theorem erdos1151_nonempty_fixed_point ...
 
 ### Mitigation plan
 
-First prove the final construction from an abstract block-spike hypothesis. That gives a useful compiled theorem independent of the hardest estimates.
+First prove the final construction from an abstract block-spike hypothesis. That gives a useful compiled theorem independent of the hardest estimates. This is now the recommended first major milestone, not merely a mitigation fallback.
 
 Suggested intermediate theorem:
 
@@ -2117,18 +2151,19 @@ or simply rely on `classical` inside proofs. This is not an unproved axiom in th
 
 ## 20. Suggested initial coding sequence
 
-1. Create `Basic.lean` with intervals, nodes, `clusterSet`, `rowEval`, `F`, and `FCLM` as stubs.
-2. Define an abstract `BlockSpikeHypothesis` structure.
-3. Prove `angle_theorem_from_block_spikes` using the diagonal construction. Use `sorry` for sequence-in-`A` and cluster merge if needed.
+1. Create `Basic.lean` with intervals, nodes, `clusterSet`, `rowEval`, `F`, and a temporary placeholder for `chebLagEval`.
+2. Create `Abstract.lean` with `AbstractBlockSpikeHypothesis`.
+3. Prove `angle_theorem_from_block_spikes` from the abstract interface.  Use `sorry` only inside the theorem while building the proof skeleton; avoid adding project-specific axioms.
 4. Fill `exists_seq_clusterSet_eq_closed_nonempty`.
 5. Fill the cluster merge lemma.
-6. Fill summability and continuous linear map/t-sum manipulation.
-7. Prove off-point decay.
+6. Fill summability and continuous linear map/t-sum manipulation, including `FCLM`.
+7. Prove off-point decay for `F`.
 8. Prove finite algebraic spike assuming primitive mass.
 9. Prove continuous block spike assuming finite algebraic spike and the counting estimates.
-10. Prove primitive mass.
+10. Prove primitive mass, using existential constants rather than sharp bounds.
 11. Prove good dyadic rows.
-12. Prove Lagrange bridge and transfer to the final statement.
+12. Replace the temporary `chebLagEval` placeholder with the real Lagrange interpolation definition.
+13. Prove the Lagrange/Chebyshev bridge and transfer to the final statement.
 
 This order gives useful compilation checkpoints and avoids getting stuck at the hardest analytic estimate before the final construction is tested.
 
@@ -2248,4 +2283,3 @@ The entire formal proof can be thought of as this chain:
 7. A summable sequence of such block spikes lets us prescribe selected row values `a_m` whose cluster set is `A`, while all nonselected rows converge to a fixed `c ∈ A`.
 8. Therefore the total cluster set is `A`.
 9. Transfer from angle variables to the original interval using `f(x)=φ(arccos x)`.
-
