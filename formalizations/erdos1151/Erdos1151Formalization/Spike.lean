@@ -510,6 +510,16 @@ lemma sum_abs_lambdaWeight_le_Vprim_of_subset
   exact Finset.sum_le_sum_of_subset_of_nonneg hS
     (by intro k _hkprim _hknot; exact abs_nonneg _)
 
+lemma sum_le_Vprim_of_subset_of_le_abs_lambdaWeight
+    {theta0 : ℝ} {d : ℕ} {S : Finset ℕ} {w : ℕ → ℝ}
+    (hS : S ⊆ primIdx d)
+    (hw : ∀ k : ℕ, k ∈ S → w k ≤ |lambdaWeight theta0 d k|) :
+    ∑ k ∈ S, w k ≤ Vprim theta0 d := by
+  calc
+    ∑ k ∈ S, w k ≤ ∑ k ∈ S, |lambdaWeight theta0 d k| := by
+      exact Finset.sum_le_sum fun k hk => hw k hk
+    _ ≤ Vprim theta0 d := sum_abs_lambdaWeight_le_Vprim_of_subset hS
+
 lemma abs_lambdaWeight_le_Vprim_of_mem
     {theta0 : ℝ} {d k : ℕ} (hk : k ∈ primIdx d) :
     |lambdaWeight theta0 d k| ≤ Vprim theta0 d := by
@@ -524,6 +534,21 @@ lemma abs_lambdaWeight_le_Vprim_mul_powTwo_of_coprime_odd_factor
     |lambdaWeight theta0 (n * s) k| ≤ Vprim theta0 (n * s) := by
   exact abs_lambdaWeight_le_Vprim_of_mem
     (mem_primIdx_mul_powTwo_iff hn |>.mpr ⟨hklt, hcop⟩)
+
+lemma abs_lambdaWeight_eq
+    {theta0 : ℝ} {d k : ℕ} (hk : k < d) :
+    |lambdaWeight theta0 d k| =
+      (|Real.cos ((d : ℝ) * theta0)| / (d : ℝ)) *
+        (Real.sin (thetaNode d k) /
+          |Real.cos theta0 - Real.cos (thetaNode d k)|) := by
+  have hdpos : 0 < d := Nat.lt_of_le_of_lt (Nat.zero_le k) hk
+  have hdnonneg : 0 ≤ (d : ℝ) := by positivity
+  have hsinnonneg : 0 ≤ Real.sin (thetaNode d k) :=
+    le_of_lt (sin_thetaNode_pos hk)
+  unfold lambdaWeight
+  simp [abs_mul, abs_div, abs_pow, abs_of_nonneg hdnonneg,
+    abs_of_nonneg hsinnonneg]
+  ring
 
 lemma lambdaWeight_ne_zero_of_not_isNodeRow
     {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
