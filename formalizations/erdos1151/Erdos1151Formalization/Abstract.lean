@@ -990,6 +990,126 @@ lemma AbstractBlockSpikeHypothesis.exists_controlledFinitePrefix
       obtain ⟨Q, _hQ⟩ := P.exists_extend H ha_bound
       exact ⟨Q, trivial⟩
 
+noncomputable def AbstractBlockSpikeHypothesis.controlledPrefixChain
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2) :
+    (m : ℕ) → ControlledFinitePrefix theta0 a c m
+  | 0 => Classical.choose (exists_controlledFinitePrefix_zero theta0 a c)
+  | m + 1 =>
+      Classical.choose
+        ((H.controlledPrefixChain ha_bound m).exists_extend H ha_bound)
+
+lemma AbstractBlockSpikeHypothesis.controlledPrefixChain_extends
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2) (m : ℕ) :
+    (H.controlledPrefixChain ha_bound m).Extends
+      (H.controlledPrefixChain ha_bound (m + 1)) := by
+  rw [controlledPrefixChain]
+  exact Classical.choose_spec
+    ((H.controlledPrefixChain ha_bound m).exists_extend H ha_bound)
+
+noncomputable def AbstractBlockSpikeHypothesis.controlledRSeq
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2) (m : ℕ) : ℕ :=
+  (H.controlledPrefixChain ha_bound (m + 1)).RSeq m
+
+noncomputable def AbstractBlockSpikeHypothesis.controlledNSeq
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2) (m : ℕ) : ℕ :=
+  (H.controlledPrefixChain ha_bound (m + 1)).nSeq m
+
+noncomputable def AbstractBlockSpikeHypothesis.controlledPsiSeq
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2) (m : ℕ) : AngleFun :=
+  (H.controlledPrefixChain ha_bound (m + 1)).psiSeq m
+
+noncomputable def AbstractBlockSpikeHypothesis.controlledCoeff
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2) (m : ℕ) : ℝ :=
+  (H.controlledPrefixChain ha_bound (m + 1)).coeff m
+
+lemma AbstractBlockSpikeHypothesis.controlledRSeq_ge_one
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2) (m : ℕ) :
+    1 ≤ H.controlledRSeq ha_bound m := by
+  exact (H.controlledPrefixChain ha_bound (m + 1)).R_ge_one m (by omega)
+
+lemma AbstractBlockSpikeHypothesis.controlledNSeq_pos
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2) (m : ℕ) :
+    0 < H.controlledNSeq ha_bound m := by
+  exact (H.controlledPrefixChain ha_bound (m + 1)).n_pos m (by omega)
+
+lemma AbstractBlockSpikeHypothesis.controlledVanishes
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2) (m : ℕ) :
+    VanishesNear theta0 (angleFunToRaw (H.controlledPsiSeq ha_bound m)) := by
+  exact (H.controlledPrefixChain ha_bound (m + 1)).vanishes m (by omega)
+
+lemma AbstractBlockSpikeHypothesis.controlledHit
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2) (m : ℕ) :
+    F theta0 (H.controlledNSeq ha_bound m) (H.controlledPsiSeq ha_bound m) = 1 := by
+  exact (H.controlledPrefixChain ha_bound (m + 1)).hit m (by omega)
+
+lemma AbstractBlockSpikeHypothesis.controlledEarlyZero
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2) (m j : ℕ)
+    (hjpos : 1 ≤ j)
+    (hle : j ≤ H.controlledRSeq ha_bound m * H.controlledNSeq ha_bound m)
+    (hne : j ≠ H.controlledNSeq ha_bound m) :
+    F theta0 j (H.controlledPsiSeq ha_bound m) = 0 := by
+  exact (H.controlledPrefixChain ha_bound (m + 1)).early_zero
+    m j (by omega) hjpos hle hne
+
+lemma AbstractBlockSpikeHypothesis.controlledFutureBound
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2) (m j : ℕ)
+    (hfuture : H.controlledRSeq ha_bound m * H.controlledNSeq ha_bound m < j) :
+    |F theta0 j (H.controlledPsiSeq ha_bound m)| ≤ ((1 / 2 : ℝ) ^ m) / 4 := by
+  exact (H.controlledPrefixChain ha_bound (m + 1)).future_bound
+    m j (by omega) hfuture
+
+lemma AbstractBlockSpikeHypothesis.controlledNormBound
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2) (m : ℕ) :
+    ‖H.controlledPsiSeq ha_bound m‖ ≤ ((1 / 2 : ℝ) ^ m) / 4 := by
+  exact (H.controlledPrefixChain ha_bound (m + 1)).norm_bound m (by omega)
+
+lemma AbstractBlockSpikeHypothesis.controlledCoeffBound
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2) (m : ℕ) :
+    |H.controlledCoeff ha_bound m| ≤ 3 := by
+  exact (H.controlledPrefixChain ha_bound (m + 1)).coeff_bound m (by omega)
+
 noncomputable def recursiveSpikePackage
     {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
     (H : AbstractBlockSpikeHypothesis theta0 htheta0) : ℕ → SpikePackage theta0
