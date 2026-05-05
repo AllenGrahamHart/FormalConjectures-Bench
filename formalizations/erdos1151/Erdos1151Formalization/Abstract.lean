@@ -1,4 +1,4 @@
-import Erdos1151Formalization.Basic
+import Erdos1151Formalization.ClusterSequence
 import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
 

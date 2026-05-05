@@ -1,3 +1,4 @@
 import Erdos1151Formalization.Basic
+import Erdos1151Formalization.ClusterSequence
 import Erdos1151Formalization.Abstract
 import Erdos1151Formalization.Main
