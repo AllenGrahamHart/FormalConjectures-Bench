@@ -65,6 +65,19 @@ lemma clusterSet_repeatedDenseSeq_eq_closed
   · exact clusterSet_subset_of_forall_mem_closed hA_closed (repeatedDenseSeq_mem (A := A))
   · exact subset_clusterSet_repeatedDenseSeq (A := A)
 
+lemma clusterSet_congr_eventually
+    {u v : ℕ → ℝ} (huv : u =ᶠ[Filter.atTop] v) :
+    clusterSet u = clusterSet v := by
+  ext y
+  change ClusterPt y (Filter.map u Filter.atTop) ↔
+    ClusterPt y (Filter.map v Filter.atTop)
+  rw [Filter.map_congr huv]
+
+lemma clusterSet_congr
+    {u v : ℕ → ℝ} (huv : ∀ n : ℕ, u n = v n) :
+    clusterSet u = clusterSet v :=
+  clusterSet_congr_eventually (Filter.Eventually.of_forall huv)
+
 lemma exists_seq_clusterSet_eq_closed_nonempty
     {A : Set ℝ} (hA_closed : IsClosed A) (hA_nonempty : A.Nonempty) :
     ∃ a : ℕ → ℝ,

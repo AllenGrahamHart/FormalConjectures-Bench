@@ -1,5 +1,6 @@
 import FormalConjectures.Util.ProblemImports
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse
 import Mathlib.Topology.Algebra.InfiniteSum.Module
 import Mathlib.Topology.ClusterPt
 import Mathlib.Topology.ContinuousMap.Algebra
@@ -160,6 +161,34 @@ lemma F_const_add_tsum_smul
 /-- A raw function vanishes on an angle-neighbourhood of `theta0`. -/
 def VanishesNear (theta0 : ℝ) (g : ℝ → ℝ) : Prop :=
   ∃ eps > 0, ∀ theta ∈ AngleI, |theta - theta0| < eps → g theta = 0
+
+/-- Convert an angle-side continuous function to a spatial-side continuous
+function using the inverse cosine coordinate. -/
+def angleToSpace (phi : AngleFun) : SpaceFun where
+  toFun := fun x =>
+    phi ⟨Real.arccos x.1, Real.arccos_nonneg x.1, Real.arccos_le_pi x.1⟩
+  continuous_toFun := by
+    exact phi.continuous.comp
+      (Continuous.subtype_mk (Real.continuous_arccos.comp continuous_subtype_val) _)
+
+lemma angleToSpace_apply (phi : AngleFun) (x : SpaceI) :
+    angleToSpace phi x =
+      phi ⟨Real.arccos x.1, Real.arccos_nonneg x.1, Real.arccos_le_pi x.1⟩ :=
+  rfl
+
+lemma angleToSpace_at_cos
+    (phi : AngleFun) {theta : ℝ} (htheta : theta ∈ AngleI) :
+    angleToSpace phi
+      ⟨Real.cos theta, Real.neg_one_le_cos theta, Real.cos_le_one theta⟩ =
+        phi ⟨theta, htheta⟩ := by
+  rw [angleToSpace_apply]
+  congr
+  exact Real.arccos_cos htheta.1 htheta.2
+
+lemma angleToSpace_at_arccos (phi : AngleFun) (x : SpaceI) :
+    angleToSpace phi x =
+      phi ⟨Real.arccos x.1, Real.arccos_nonneg x.1, Real.arccos_le_pi x.1⟩ :=
+  rfl
 
 /-- Temporary placeholder for the spatial Lagrange evaluation.
 
