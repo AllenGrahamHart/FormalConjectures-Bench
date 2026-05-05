@@ -404,6 +404,124 @@ lemma thetaNode_progression_le_succ_mul_pi_div {n s t : ℕ}
         norm_num [Nat.cast_mul]
         ring
 
+lemma thetaNode_progression_ge_mul_pi_div {n s t : ℕ}
+    (hnpos : 0 < n) (hspos : 0 < s) :
+    (t : ℝ) * Real.pi / (n : ℝ) ≤ thetaNode (n * s) (s * t) := by
+  rw [thetaNode_progression_eq_linear hnpos hspos]
+  have hnonneg : 0 ≤ Real.pi / (2 * (((n * s : ℕ) : ℝ))) := by
+    positivity
+  calc
+    (t : ℝ) * Real.pi / (n : ℝ) =
+        (t : ℝ) * (Real.pi / (n : ℝ)) := by ring
+    _ ≤ (t : ℝ) * (Real.pi / (n : ℝ)) +
+        Real.pi / (2 * (((n * s : ℕ) : ℝ))) :=
+      le_add_of_nonneg_right hnonneg
+
+lemma floor_scaled_theta0_mul_pi_div_le
+    {theta0 : ℝ} {n : ℕ} (htheta0_nonneg : 0 ≤ theta0)
+    (hnpos : 0 < n) :
+    ((Nat.floor (((n : ℝ) * theta0) / Real.pi) : ℕ) : ℝ) *
+        Real.pi / (n : ℝ) ≤ theta0 := by
+  let x : ℝ := ((n : ℝ) * theta0) / Real.pi
+  have hx_nonneg : 0 ≤ x := by
+    dsimp [x]
+    positivity
+  have hfloor : ((Nat.floor x : ℕ) : ℝ) ≤ x :=
+    Nat.floor_le hx_nonneg
+  have hscale_nonneg : 0 ≤ Real.pi / (n : ℝ) := by
+    positivity
+  have hmul :
+      ((Nat.floor x : ℕ) : ℝ) * (Real.pi / (n : ℝ)) ≤
+        x * (Real.pi / (n : ℝ)) :=
+    mul_le_mul_of_nonneg_right hfloor hscale_nonneg
+  have hnne : (n : ℝ) ≠ 0 := by
+    exact_mod_cast (Nat.ne_of_gt hnpos)
+  have hxscale : x * (Real.pi / (n : ℝ)) = theta0 := by
+    dsimp [x]
+    field_simp [Real.pi_ne_zero, hnne]
+  change ((Nat.floor x : ℕ) : ℝ) * Real.pi / (n : ℝ) ≤ theta0
+  calc
+    ((Nat.floor x : ℕ) : ℝ) * Real.pi / (n : ℝ) =
+        ((Nat.floor x : ℕ) : ℝ) * (Real.pi / (n : ℝ)) := by ring
+    _ ≤ x * (Real.pi / (n : ℝ)) := hmul
+    _ = theta0 := hxscale
+
+lemma theta0_lt_floor_scaled_succ_mul_pi_div
+    {theta0 : ℝ} {n : ℕ} (hnpos : 0 < n) :
+    theta0 <
+      (((Nat.floor (((n : ℝ) * theta0) / Real.pi) + 1 : ℕ) : ℝ) *
+        Real.pi / (n : ℝ)) := by
+  let x : ℝ := ((n : ℝ) * theta0) / Real.pi
+  have hfloor : x < (Nat.floor x : ℕ) + 1 :=
+    Nat.lt_floor_add_one x
+  have hscale_pos : 0 < Real.pi / (n : ℝ) := by
+    positivity
+  have hmul :
+      x * (Real.pi / (n : ℝ)) <
+        (((Nat.floor x : ℕ) : ℝ) + 1) *
+          (Real.pi / (n : ℝ)) :=
+    mul_lt_mul_of_pos_right hfloor hscale_pos
+  have hnne : (n : ℝ) ≠ 0 := by
+    exact_mod_cast (Nat.ne_of_gt hnpos)
+  have hxscale : x * (Real.pi / (n : ℝ)) = theta0 := by
+    dsimp [x]
+    field_simp [Real.pi_ne_zero, hnne]
+  change theta0 <
+    (((Nat.floor x + 1 : ℕ) : ℝ) * Real.pi / (n : ℝ))
+  calc
+    theta0 = x * (Real.pi / (n : ℝ)) := hxscale.symm
+    _ < (((Nat.floor x : ℕ) : ℝ) + 1) *
+          (Real.pi / (n : ℝ)) := hmul
+    _ = (((Nat.floor x + 1 : ℕ) : ℝ) * Real.pi / (n : ℝ)) := by
+        norm_num [Nat.cast_add]
+        ring
+
+lemma interior_floor_shift_distance_bound
+    {theta0 : ℝ} {n s q : ℕ}
+    (htheta0_nonneg : 0 ≤ theta0) (hnpos : 0 < n) (hspos : 0 < s) :
+    let m : ℕ := Nat.floor (((n : ℝ) * theta0) / Real.pi)
+    |thetaNode (n * s) (s * (m + q)) - theta0| ≤
+      ((q + 1 : ℕ) : ℝ) * Real.pi / (n : ℝ) := by
+  intro m
+  subst m
+  have hnode_low :=
+    thetaNode_progression_ge_mul_pi_div (n := n) (s := s)
+      (t := Nat.floor (((n : ℝ) * theta0) / Real.pi) + q)
+      hnpos hspos
+  have hnode_up :=
+    thetaNode_progression_le_succ_mul_pi_div (n := n) (s := s)
+      (t := Nat.floor (((n : ℝ) * theta0) / Real.pi) + q)
+      hnpos hspos
+  have htheta_low :=
+    floor_scaled_theta0_mul_pi_div_le (theta0 := theta0) (n := n)
+      htheta0_nonneg hnpos
+  have htheta_up :=
+    theta0_lt_floor_scaled_succ_mul_pi_div (theta0 := theta0)
+      (n := n) hnpos
+  rw [abs_le]
+  constructor
+  · have hdiff_left :
+        (((Nat.floor (((n : ℝ) * theta0) / Real.pi) + 1 : ℕ) : ℝ) *
+              Real.pi / (n : ℝ)) -
+            (((Nat.floor (((n : ℝ) * theta0) / Real.pi) + q : ℕ) : ℝ) *
+              Real.pi / (n : ℝ)) ≤
+          ((q + 1 : ℕ) : ℝ) * Real.pi / (n : ℝ) := by
+      norm_num [Nat.cast_add]
+      ring_nf
+      have htail : 0 ≤ Real.pi * (n : ℝ)⁻¹ * (q : ℝ) * 2 := by
+        positivity
+      nlinarith
+    nlinarith
+  · have hdiff :
+        (((Nat.floor (((n : ℝ) * theta0) / Real.pi) + q + 1 : ℕ) : ℝ) *
+              Real.pi / (n : ℝ)) -
+            ((Nat.floor (((n : ℝ) * theta0) / Real.pi) : ℕ) : ℝ) *
+              Real.pi / (n : ℝ) =
+          ((q + 1 : ℕ) : ℝ) * Real.pi / (n : ℝ) := by
+      norm_num [Nat.cast_add]
+      ring
+    nlinarith
+
 lemma grid_inv_le_inv_thetaNode_progression {n s t : ℕ}
     (hnpos : 0 < n) (hspos : 0 < s) (ht : t < n) :
     (n : ℝ) / (((t + 1 : ℕ) : ℝ) * Real.pi) ≤
@@ -933,6 +1051,133 @@ lemma local_inverse_distance_sum_le_progression_kernel_sum
             Real.cos (thetaNode (n * s) (s * t))| :=
       div_nonneg hsin_nonneg (abs_nonneg _)
     simpa [hnear] using hterm_nonneg
+
+lemma scaled_log_le_sum_range_inv_nat_succ {A : ℝ} (M : ℕ)
+    (hA : 0 ≤ A) :
+    A * Real.log (((M + 1 : ℕ) : ℝ)) ≤
+      ∑ q ∈ Finset.range M, A / ((q + 1 : ℕ) : ℝ) := by
+  have hlog := log_nat_le_sum_range_inv_nat_succ M
+  have hscaled := mul_le_mul_of_nonneg_left hlog hA
+  calc
+    A * Real.log (((M + 1 : ℕ) : ℝ)) ≤
+        A * (∑ q ∈ Finset.range M,
+          (1 : ℝ) / ((q + 1 : ℕ) : ℝ)) := by
+          simpa [Nat.cast_add, Nat.cast_one] using hscaled
+    _ = ∑ q ∈ Finset.range M, A / ((q + 1 : ℕ) : ℝ) := by
+        rw [Finset.mul_sum]
+        apply Finset.sum_congr rfl
+        intro q _hq
+        ring
+
+lemma shifted_range_image_subset {m M n : ℕ}
+    (hrange : ∀ q : ℕ, q < M → m + q < n) :
+    (Finset.range M).image (fun q => m + q) ⊆ Finset.range n := by
+  intro t ht
+  rcases Finset.mem_image.mp ht with ⟨q, hq, rfl⟩
+  exact Finset.mem_range.mpr (hrange q (Finset.mem_range.mp hq))
+
+lemma add_left_injOn_range (m M : ℕ) :
+    Set.InjOn (fun q : ℕ => m + q) (Finset.range M : Set ℕ) := by
+  intro a _ha b _hb h
+  exact Nat.add_left_cancel h
+
+lemma sum_shifted_le_sum_range_of_nonneg {m M n : ℕ} {f : ℕ → ℝ}
+    (hrange : ∀ q : ℕ, q < M → m + q < n)
+    (hnonneg : ∀ t : ℕ, t < n → 0 ≤ f t) :
+    ∑ q ∈ Finset.range M, f (m + q) ≤ ∑ t ∈ Finset.range n, f t := by
+  calc
+    ∑ q ∈ Finset.range M, f (m + q) =
+        ∑ t ∈ (Finset.range M).image (fun q => m + q), f t := by
+          exact (Finset.sum_image (s := Finset.range M)
+            (g := fun q => m + q) (f := f)
+            (add_left_injOn_range m M)).symm
+    _ ≤ ∑ t ∈ Finset.range n, f t := by
+        exact Finset.sum_le_sum_of_subset_of_nonneg
+          (shifted_range_image_subset hrange)
+          (by
+            intro t htn _htnot
+            exact hnonneg t (Finset.mem_range.mp htn))
+
+lemma interior_shifted_grid_term_le_local_inverse
+    {theta0 c rho : ℝ} {n s m q : ℕ}
+    (hnpos : 0 < n) (hspos : 0 < s) (hc_nonneg : 0 ≤ c)
+    (hnot : ¬ IsNodeRow theta0 (n * s))
+    (hrange : m + q < n)
+    (hnear : |thetaNode (n * s) (s * (m + q)) - theta0| < rho)
+    (hdist : |thetaNode (n * s) (s * (m + q)) - theta0| ≤
+      ((q + 1 : ℕ) : ℝ) * Real.pi / (n : ℝ)) :
+    (c * (n : ℝ) / Real.pi) / ((q + 1 : ℕ) : ℝ) ≤
+      if |thetaNode (n * s) (s * (m + q)) - theta0| < rho then
+        c / |thetaNode (n * s) (s * (m + q)) - theta0|
+      else 0 := by
+  rw [if_pos hnear]
+  have hklt : s * (m + q) < n * s :=
+    thetaNode_progression_lt_mul hspos hrange
+  have hne : thetaNode (n * s) (s * (m + q)) ≠ theta0 := by
+    intro htheta
+    exact hnot (by simpa [htheta] using isNodeRow_thetaNode hklt)
+  have hdist_pos :
+      0 < |thetaNode (n * s) (s * (m + q)) - theta0| :=
+    abs_pos.mpr (sub_ne_zero_of_ne hne)
+  have hrecip := one_div_le_one_div_of_le hdist_pos hdist
+  have hc_mul := mul_le_mul_of_nonneg_left hrecip hc_nonneg
+  have hrewrite :
+      c * (1 / (((q + 1 : ℕ) : ℝ) * Real.pi / (n : ℝ))) =
+        (c * (n : ℝ) / Real.pi) / ((q + 1 : ℕ) : ℝ) := by
+    field_simp
+      [ne_of_gt (by positivity : 0 < ((q + 1 : ℕ) : ℝ)),
+       ne_of_gt Real.pi_pos,
+       ne_of_gt (by positivity : 0 < (n : ℝ))]
+  simpa [hrewrite, div_eq_mul_inv, mul_comm, mul_left_comm, mul_assoc]
+    using hc_mul
+
+lemma interior_local_inverse_sum_ge_log_of_shift
+    {theta0 c rho : ℝ} {n s m M : ℕ}
+    (hnpos : 0 < n) (hspos : 0 < s) (hc_nonneg : 0 ≤ c)
+    (hnot : ¬ IsNodeRow theta0 (n * s))
+    (hrange : ∀ q : ℕ, q < M → m + q < n)
+    (hnear : ∀ q : ℕ, q < M →
+      |thetaNode (n * s) (s * (m + q)) - theta0| < rho)
+    (hdist : ∀ q : ℕ, q < M →
+      |thetaNode (n * s) (s * (m + q)) - theta0| ≤
+        ((q + 1 : ℕ) : ℝ) * Real.pi / (n : ℝ)) :
+    (c * (n : ℝ) / Real.pi) * Real.log (((M + 1 : ℕ) : ℝ)) ≤
+      ∑ t ∈ Finset.range n,
+        (if |thetaNode (n * s) (s * t) - theta0| < rho then
+          c / |thetaNode (n * s) (s * t) - theta0|
+        else 0) := by
+  let f : ℕ → ℝ := fun t =>
+    if |thetaNode (n * s) (s * t) - theta0| < rho then
+      c / |thetaNode (n * s) (s * t) - theta0| else 0
+  have hA_nonneg : 0 ≤ c * (n : ℝ) / Real.pi := by positivity
+  refine (scaled_log_le_sum_range_inv_nat_succ M hA_nonneg).trans ?_
+  calc
+    ∑ q ∈ Finset.range M,
+        (c * (n : ℝ) / Real.pi) / ((q + 1 : ℕ) : ℝ) ≤
+        ∑ q ∈ Finset.range M, f (m + q) := by
+          exact Finset.sum_le_sum fun q hq =>
+            interior_shifted_grid_term_le_local_inverse hnpos hspos
+              hc_nonneg hnot
+              (hrange q (Finset.mem_range.mp hq))
+              (hnear q (Finset.mem_range.mp hq))
+              (hdist q (Finset.mem_range.mp hq))
+    _ ≤ ∑ t ∈ Finset.range n, f t := by
+      exact sum_shifted_le_sum_range_of_nonneg
+        (m := m) (M := M) (n := n) (f := f) hrange
+        (by
+          intro t ht
+          by_cases hnear_t : |thetaNode (n * s) (s * t) - theta0| < rho
+          · have hklt : s * t < n * s :=
+              thetaNode_progression_lt_mul hspos ht
+            have hne : thetaNode (n * s) (s * t) ≠ theta0 := by
+              intro htheta
+              exact hnot (by simpa [htheta] using isNodeRow_thetaNode hklt)
+            have hdist_pos :
+                0 < |thetaNode (n * s) (s * t) - theta0| :=
+              abs_pos.mpr (sub_ne_zero_of_ne hne)
+            simpa [f, hnear_t] using
+              div_nonneg hc_nonneg (le_of_lt hdist_pos)
+          · simp [f, hnear_t])
 
 /-- If an order-`d` primitive node is viewed in row `d * s`, this is its row index. -/
 def occurrenceIndex (s k : ℕ) : ℕ :=
