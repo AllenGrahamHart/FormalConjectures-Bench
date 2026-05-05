@@ -772,6 +772,47 @@ noncomputable def AbstractBlockSpikeHypothesis.chooseQuantSpikeChoice
     QuantSpikeChoice theta0 N futureTarget normTarget :=
   Classical.choose (H.exists_quantSpikeChoice N hfutureTarget hnormTarget)
 
+lemma AbstractBlockSpikeHypothesis.exists_quantSpikeChoice_with_nextCoeff_bound
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    (a : ℕ → ℝ) (c : ℝ)
+    (coeff : ℕ → ℝ) (psiSeq : ℕ → AngleFun)
+    (m N0 : ℕ)
+    (hvanish :
+      ∀ i : ℕ, i ∈ Finset.range m →
+        VanishesNear theta0 (angleFunToRaw (psiSeq i)))
+    (hbase : |a m - c| ≤ 2)
+    {futureTarget normTarget : ℝ}
+    (hfutureTarget : 0 < futureTarget)
+    (hnormTarget : 0 < normTarget) :
+    ∃ S : QuantSpikeChoice theta0 N0 futureTarget normTarget,
+      |nextCoeff theta0 a c coeff psiSeq m S.n| ≤ 3 := by
+  obtain ⟨N, hN0, hsmall⟩ :=
+    H.exists_finset_spike_rows_abs_lt_of_mem coeff psiSeq
+      (Finset.range m) hvanish zero_lt_one N0
+  obtain ⟨S, _⟩ :=
+    H.exists_quantSpikeChoice N hfutureTarget hnormTarget
+  have hprev :
+      |(Finset.range m).sum
+        (fun i => coeff i * F theta0 S.n (psiSeq i))| < 1 :=
+    hsmall S.n S.n_ge
+  have hcoeff :
+      |nextCoeff theta0 a c coeff psiSeq m S.n| ≤ 3 :=
+    abs_nextCoeff_le_three_of_prev_sum_lt_one
+      theta0 a c coeff psiSeq m S.n hbase hprev
+  exact ⟨{
+    R := S.R
+    n := S.n
+    psi := S.psi
+    R_ge_one := S.R_ge_one
+    n_ge := hN0.trans S.n_ge
+    n_pos := S.n_pos
+    vanishes := S.vanishes
+    hit := S.hit
+    early_zero := S.early_zero
+    future_bound := S.future_bound
+    norm_bound := S.norm_bound }, hcoeff⟩
+
 noncomputable def recursiveSpikePackage
     {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
     (H : AbstractBlockSpikeHypothesis theta0 htheta0) : ℕ → SpikePackage theta0
