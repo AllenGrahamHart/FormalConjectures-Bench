@@ -4121,11 +4121,54 @@
       "theorem_header": "theorem wolstenholme_prime_16483 : IsWolstenholmePrime 16843",
       "theorem_name": "WolstenholmePrime.wolstenholme_prime_16483",
       "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "05",
+        "11"
+      ],
+      "attribute_line": 43,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 44,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "repository_local",
+          "url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench/blob/6160036caab0dcee80395ba3beb7b6ef2731604e/formalizations/erdos330/Erdos330Formalization/Scheduler.lean#L893"
+        }
+      ],
+      "inclusion_status": "included",
+      "instance_id": "erdosproblems-330-upper-density",
+      "local_declaration_name": "erdos_330_upper_density",
+      "metadata_source": "formal-conjectures-bench/local",
+      "namespace": [
+        "Erdos330UpperDensity"
+      ],
+      "oracle_status": "bundled",
+      "allow_internet": false,
+      "selected_oracle": {
+        "formal_proof_kind": "repository_local",
+        "kind": "repository_local_lean4",
+        "licence_status": "project-local",
+        "redistribution_status": "bundled",
+        "url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench/blob/6160036caab0dcee80395ba3beb7b6ef2731604e/formalizations/erdos330/Erdos330Formalization/Scheduler.lean#L893"
+      },
+      "source_file": "benchmark_sources/erdos330/UpperDensity.lean",
+      "source_origin": "local",
+      "task_description": "Prove the benchmark-local upper-density formalization of Erdős Problem 330.",
+      "theorem_header": "theorem erdos_330_upper_density :\n    MainTarget",
+      "theorem_name": "Erdos330UpperDensity.erdos_330_upper_density",
+      "uses_answer_sorry": false
     }
   ],
   "schema_version": 1,
   "source": {
-    "candidate_count": 106,
+    "candidate_count": 107,
     "excluded_count": 5,
     "formal_conjectures_commit": "233a10e857ef78e79fd9fe661d37db724089170a",
     "formal_conjectures_remote": "https://github.com/google-deepmind/formal-conjectures.git",
@@ -4137,7 +4180,7 @@
   "release": {
     "current_version": "1.0.0",
     "released_at": "2026-05-02",
-    "included_count": 72,
+    "included_count": 73,
     "deferred_count": 29,
     "source_excluded_count": 5,
     "policy": "v1.0.0 includes only tasks with bundled local verifier-clean oracles; remaining candidates are explicitly deferred for later repair."

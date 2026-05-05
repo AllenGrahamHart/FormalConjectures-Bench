@@ -5,5 +5,5 @@ lean_toolchain = "leanprover/lean4:v4.27.0"
 mathlib_input_rev = "v4.27.0"
 mathlib_commit = "a3a10db0e9d66acbebf76c5e6a135066525ac900"
 generated_at = "2026-05-01T12:10:31+00:00"
-candidate_count = 106
+candidate_count = 107
 excluded_count = 5

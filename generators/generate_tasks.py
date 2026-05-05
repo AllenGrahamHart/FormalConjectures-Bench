@@ -590,8 +590,14 @@ def open_context(lines: list[str]) -> str:
     return "\n".join(result)
 
 
-def target_source(source_root: Path, instance: dict) -> tuple[str, str, str, str]:
-    source_file = source_root / instance["source_file"]
+def instance_source_file(source_root: Path, workspace_root: Path, instance: dict) -> Path:
+    if instance.get("source_origin") == "local":
+        return workspace_root / instance["source_file"]
+    return source_root / instance["source_file"]
+
+
+def target_source(source_root: Path, workspace_root: Path, instance: dict) -> tuple[str, str, str, str]:
+    source_file = instance_source_file(source_root, workspace_root, instance)
     lines = source_file.read_text(encoding="utf-8").splitlines()
 
     attr_start_index = instance["attribute_line"] - 1
@@ -723,6 +729,8 @@ def solution_explanation(bucket: str, oracle_status: str) -> str:
 
 
 def task_description(instance: dict, bucket: str) -> str:
+    if instance.get("task_description"):
+        return instance["task_description"]
     if instance.get("open_problem_pair_kind") == "answer_boolean":
         source_name = instance.get("source_theorem_name", instance["theorem_name"])
         if instance.get("open_problem_polarity") == "refute":
@@ -730,6 +738,8 @@ def task_description(instance: dict, bucket: str) -> str:
         return f"Prove the proposition underlying the yes/no answer in {source_name}."
     if bucket == "open_problem" and instance.get("open_problem_polarity") == "refute":
         return f"Prove the formal negation of {instance.get('source_theorem_name', instance['theorem_name'])} from Formal Conjectures."
+    if instance.get("source_origin") == "local":
+        return f"Prove {instance['theorem_name']} from the local benchmark source."
     return f"Prove {instance['theorem_name']} from Formal Conjectures."
 
 
@@ -821,6 +831,7 @@ def compare_task_dirs(generated: Path, checked_in: Path) -> list[str]:
 def check_generated_tasks(
     instances: list[dict],
     source_root: Path,
+    workspace_root: Path,
     tasks_dir: Path,
     source_metadata: dict,
     oracles_dir: Path,
@@ -831,6 +842,7 @@ def check_generated_tasks(
             generate_task(
                 instance=instance,
                 source_root=source_root,
+                workspace_root=workspace_root,
                 tasks_dir=generated_tasks_dir,
                 source_metadata=source_metadata,
                 oracles_dir=oracles_dir,
@@ -859,6 +871,7 @@ def check_generated_tasks(
 def generate_task(
     instance: dict,
     source_root: Path,
+    workspace_root: Path,
     tasks_dir: Path,
     source_metadata: dict,
     oracles_dir: Path,
@@ -866,7 +879,7 @@ def generate_task(
     task_dir = tasks_dir / instance["instance_id"]
     clean_task_dir(task_dir)
 
-    target, frozen_prefix, header, theorem_open_context = target_source(source_root, instance)
+    target, frozen_prefix, header, theorem_open_context = target_source(source_root, workspace_root, instance)
     rendered_open_context = f"{theorem_open_context}\n\n" if theorem_open_context else ""
     oracle_dir = oracles_dir / instance["instance_id"]
     oracle_status = "bundled" if (oracle_dir / "Target.lean").exists() else instance.get("oracle_status", "missing")
@@ -882,6 +895,7 @@ def generate_task(
         "task_name": f"formal-conjectures-bench/{instance['instance_id']}",
         "description": task_description(instance, bucket),
         "theorem_name": instance["theorem_name"],
+        "metadata_source": instance.get("metadata_source", "google-deepmind/formal-conjectures"),
         "source_file": instance["source_file"],
         "formal_conjectures_commit": source_metadata.get("formal_conjectures_commit", ""),
         "lean_toolchain": source_metadata.get("lean_toolchain", ""),
@@ -961,6 +975,7 @@ def main() -> None:
     args = parser.parse_args()
 
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
+    workspace_root = args.manifest.resolve().parent.parent
     only = set(args.only)
     id_file_ids = load_id_file(args.id_file)
     buckets = set(args.bucket)
@@ -973,6 +988,7 @@ def main() -> None:
         ok = check_generated_tasks(
             instances=instances,
             source_root=args.formal_conjectures_source,
+            workspace_root=workspace_root,
             tasks_dir=args.tasks_dir,
             source_metadata=manifest["source"],
             oracles_dir=args.oracles_dir,
@@ -984,6 +1000,7 @@ def main() -> None:
         generate_task(
             instance=instance,
             source_root=args.formal_conjectures_source,
+            workspace_root=workspace_root,
             tasks_dir=args.tasks_dir,
             source_metadata=manifest["source"],
             oracles_dir=args.oracles_dir,
