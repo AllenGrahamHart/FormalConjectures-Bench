@@ -324,6 +324,23 @@ lemma AbstractBlockSpikeHypothesis.tendsto_finset_spike_rows_zero
       simpa using hi.const_mul (coeff i))
   simpa using hsum
 
+lemma AbstractBlockSpikeHypothesis.tendsto_finset_spike_rows_zero_of_mem
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    (coeff : ℕ → ℝ) (psiSeq : ℕ → AngleFun)
+    (s : Finset ℕ)
+    (hvanish : ∀ i : ℕ, i ∈ s → VanishesNear theta0 (angleFunToRaw (psiSeq i))) :
+    Tendsto (fun n : ℕ => s.sum fun i => coeff i * F theta0 n (psiSeq i))
+      Filter.atTop (nhds 0) := by
+  have hsum := tendsto_finset_sum s
+    (f := fun i n => coeff i * F theta0 n (psiSeq i))
+    (a := fun _ : ℕ => 0)
+    (x := Filter.atTop)
+    (fun i hi => by
+      have hdecay := H.off_point_decay (psiSeq i) (hvanish i hi)
+      simpa using hdecay.const_mul (coeff i))
+  simpa using hsum
+
 lemma AbstractBlockSpikeHypothesis.tendsto_finset_diagonal_rows_zero
     {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
     (H : AbstractBlockSpikeHypothesis theta0 htheta0)
@@ -342,6 +359,25 @@ lemma AbstractBlockSpikeHypothesis.exists_finset_spike_rows_abs_lt
       ∀ n : ℕ, N ≤ n →
         |s.sum fun i => coeff i * F theta0 n (psiSeq i)| < eps := by
   have hlim := H.tendsto_finset_spike_rows_zero coeff psiSeq hvanish s
+  have hevent :
+      ∀ᶠ n : ℕ in Filter.atTop,
+        |s.sum fun i => coeff i * F theta0 n (psiSeq i)| < eps := by
+    simpa [Real.dist_eq] using (Metric.tendsto_nhds.mp hlim eps heps)
+  rcases Filter.eventually_atTop.mp hevent with ⟨N1, hN1⟩
+  exact ⟨max N0 N1, le_max_left N0 N1,
+    fun n hn => hN1 n ((le_max_right N0 N1).trans hn)⟩
+
+lemma AbstractBlockSpikeHypothesis.exists_finset_spike_rows_abs_lt_of_mem
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    (coeff : ℕ → ℝ) (psiSeq : ℕ → AngleFun)
+    (s : Finset ℕ)
+    (hvanish : ∀ i : ℕ, i ∈ s → VanishesNear theta0 (angleFunToRaw (psiSeq i)))
+    {eps : ℝ} (heps : 0 < eps) (N0 : ℕ) :
+    ∃ N : ℕ, N0 ≤ N ∧
+      ∀ n : ℕ, N ≤ n →
+        |s.sum fun i => coeff i * F theta0 n (psiSeq i)| < eps := by
+  have hlim := H.tendsto_finset_spike_rows_zero_of_mem coeff psiSeq s hvanish
   have hevent :
       ∀ᶠ n : ℕ in Filter.atTop,
         |s.sum fun i => coeff i * F theta0 n (psiSeq i)| < eps := by
@@ -580,7 +616,31 @@ structure SpikeChoice (theta0 : ℝ) (N : ℕ) where
   early_zero :
     ∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n → F theta0 j psi = 0
 
+structure QuantSpikeChoice
+    (theta0 : ℝ) (N : ℕ) (futureTarget normTarget : ℝ) where
+  R : ℕ
+  n : ℕ
+  psi : AngleFun
+  R_ge_one : 1 ≤ R
+  n_ge : N ≤ n
+  n_pos : 0 < n
+  vanishes : VanishesNear theta0 (angleFunToRaw psi)
+  hit : F theta0 n psi = 1
+  early_zero :
+    ∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n → F theta0 j psi = 0
+  future_bound :
+    ∀ j : ℕ, R * n < j → |F theta0 j psi| ≤ futureTarget
+  norm_bound : ‖psi‖ ≤ normTarget
+
 def SpikeChoice.toPackage {theta0 : ℝ} {N : ℕ} (S : SpikeChoice theta0 N) :
+    SpikePackage theta0 where
+  R := S.R
+  n := S.n
+  psi := S.psi
+
+def QuantSpikeChoice.toPackage
+    {theta0 : ℝ} {N : ℕ} {futureTarget normTarget : ℝ}
+    (S : QuantSpikeChoice theta0 N futureTarget normTarget) :
     SpikePackage theta0 where
   R := S.R
   n := S.n
@@ -611,6 +671,48 @@ noncomputable def AbstractBlockSpikeHypothesis.chooseSpikeChoice
     (H : AbstractBlockSpikeHypothesis theta0 htheta0) (N : ℕ) :
     SpikeChoice theta0 N :=
   Classical.choose (H.exists_spikeChoice N)
+
+lemma AbstractBlockSpikeHypothesis.exists_quantSpikeChoice
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    (N : ℕ) {futureTarget normTarget : ℝ}
+    (hfutureTarget : 0 < futureTarget)
+    (hnormTarget : 0 < normTarget) :
+    ∃ _ : QuantSpikeChoice theta0 N futureTarget normTarget, True := by
+  have hhalf_future : 0 < futureTarget / 2 := by positivity
+  obtain ⟨R, _C_R, n, psi, _hRmin, _hRodd, hR3, _hReta, _hC_R_pos, hnrow,
+    hnpos, hvanish, hhit, hearly, hfuture, _hnorm, hnorm_target⟩ :=
+    H.exists_spike_with_eta_lt_norm_le
+      (eps := futureTarget / 2) (delta := futureTarget / 2)
+      (normTarget := normTarget)
+      hhalf_future hhalf_future hnormTarget 3 N
+  have hRone : 1 ≤ R := by omega
+  have hfuture_target :
+      ∀ j : ℕ, R * n < j → |F theta0 j psi| ≤ futureTarget := by
+    intro j hj
+    have hjbound := hfuture j hj
+    linarith
+  exact ⟨{
+    R := R
+    n := n
+    psi := psi
+    R_ge_one := hRone
+    n_ge := hnrow
+    n_pos := hnpos
+    vanishes := hvanish
+    hit := hhit
+    early_zero := hearly
+    future_bound := hfuture_target
+    norm_bound := hnorm_target }, trivial⟩
+
+noncomputable def AbstractBlockSpikeHypothesis.chooseQuantSpikeChoice
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    (N : ℕ) {futureTarget normTarget : ℝ}
+    (hfutureTarget : 0 < futureTarget)
+    (hnormTarget : 0 < normTarget) :
+    QuantSpikeChoice theta0 N futureTarget normTarget :=
+  Classical.choose (H.exists_quantSpikeChoice N hfutureTarget hnormTarget)
 
 noncomputable def recursiveSpikePackage
     {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
