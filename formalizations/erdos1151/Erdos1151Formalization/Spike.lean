@@ -2160,6 +2160,27 @@ lemma rowEval_finiteSpikeRaw_block_and_future_of_good_rows
     fun j hj => rowEval_finiteSpikeRaw_future_le_sqrt_kappa
       htheta0 hR hnpos hj hkappa_pos hkappa_le hcos⟩
 
+lemma exists_finiteSpikeRaw_block_and_future_good_pow_two
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI) {R N : ℕ}
+    (hR : 1 ≤ R) :
+    ∃ n : ℕ,
+      N ≤ n ∧
+      IsPowTwo n ∧
+      0 < n ∧
+      rowEval theta0 n (finiteSpikeRaw theta0 R n) = 1 ∧
+      (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+        rowEval theta0 j (finiteSpikeRaw theta0 R n) = 0) ∧
+      (∀ j : ℕ, R * n < j →
+        |rowEval theta0 j (finiteSpikeRaw theta0 R n)| ≤
+          (1 / (1 / 2 : ℝ)) / Real.sqrt (R : ℝ)) := by
+  rcases exists_large_pow_two_good_cos_oddUpTo theta0 R N with
+    ⟨n, hnN, hpow, hnpos, hcosn, hcos⟩
+  have hpack :=
+    rowEval_finiteSpikeRaw_block_and_future_of_good_rows
+      (theta0 := theta0) htheta0 (R := R) (n := n) (kappa := (1 / 2 : ℝ))
+      hnpos hR (by norm_num) hcosn hcos
+  exact ⟨n, hnN, hpow, hnpos, hpack.1, hpack.2.1, hpack.2.2⟩
+
 lemma abs_le_add_of_sub_abs_le {x y eta delta : ℝ}
     (hy : |y| ≤ eta) (hxy : |x - y| ≤ delta) :
     |x| ≤ eta + delta := by
