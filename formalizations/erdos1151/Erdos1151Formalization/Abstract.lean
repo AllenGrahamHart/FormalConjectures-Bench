@@ -78,6 +78,47 @@ lemma summable_angleFun_of_norm_le_geometric {phis : ℕ → AngleFun}
     Summable phis :=
   Summable.of_norm_bounded summable_geometric_two hphis
 
+/-- The coefficient that should be assigned to a new selected row after a
+finite prefix with already assigned coefficients. -/
+def nextCoeff
+    (theta0 : ℝ) (a : ℕ → ℝ) (c : ℝ)
+    (coeff : ℕ → ℝ) (psiSeq : ℕ → AngleFun) (m n : ℕ) : ℝ :=
+  a m - c - (Finset.range m).sum
+    (fun i => coeff i * F theta0 n (psiSeq i))
+
+lemma abs_nextCoeff_le_of_prev_sum_lt
+    (theta0 : ℝ) (a : ℕ → ℝ) (c : ℝ)
+    (coeff : ℕ → ℝ) (psiSeq : ℕ → AngleFun) (m n : ℕ)
+    {B eps : ℝ}
+    (hbase : |a m - c| ≤ B)
+    (hprev :
+      |(Finset.range m).sum
+        (fun i => coeff i * F theta0 n (psiSeq i))| < eps) :
+    |nextCoeff theta0 a c coeff psiSeq m n| ≤ B + eps := by
+  unfold nextCoeff
+  set prev := (Finset.range m).sum
+    (fun i => coeff i * F theta0 n (psiSeq i))
+  calc
+    |a m - c - prev| ≤ |a m - c| + |prev| := by
+      simpa [sub_eq_add_neg, abs_neg] using abs_add_le (a m - c) (-prev)
+    _ ≤ B + eps := add_le_add hbase (le_of_lt hprev)
+
+lemma abs_nextCoeff_le_three_of_prev_sum_lt_one
+    (theta0 : ℝ) (a : ℕ → ℝ) (c : ℝ)
+    (coeff : ℕ → ℝ) (psiSeq : ℕ → AngleFun) (m n : ℕ)
+    (hbase : |a m - c| ≤ 2)
+    (hprev :
+      |(Finset.range m).sum
+        (fun i => coeff i * F theta0 n (psiSeq i))| < 1) :
+    |nextCoeff theta0 a c coeff psiSeq m n| ≤ 3 := by
+  have h :=
+    abs_nextCoeff_le_of_prev_sum_lt
+      (theta0 := theta0) (a := a) (c := c)
+      (coeff := coeff) (psiSeq := psiSeq) (m := m) (n := n)
+      (B := 2) (eps := 1) hbase hprev
+  norm_num at h
+  exact h
+
 /-- Recursive coefficients cancelling the previously chosen spikes at the selected rows. -/
 def diagonalCoeff
     (theta0 : ℝ) (a : ℕ → ℝ) (c : ℝ)
