@@ -2181,6 +2181,12 @@ lemma exists_finiteSpikeRaw_block_and_future_good_pow_two
       hnpos hR (by norm_num) hcosn hcos
   exact ⟨n, hnN, hpow, hnpos, hpack.1, hpack.2.1, hpack.2.2⟩
 
+lemma log_nat_pos_of_two_le {n : ℕ} (hn : 2 ≤ n) :
+    0 < Real.log (n : ℝ) := by
+  have hnreal : (1 : ℝ) < (n : ℝ) := by
+    exact_mod_cast (Nat.lt_of_lt_of_le (by norm_num : 1 < 2) hn)
+  exact Real.log_pos hnreal
+
 lemma abs_le_add_of_sub_abs_le {x y eta delta : ℝ}
     (hy : |y| ≤ eta) (hxy : |x - y| ≤ delta) :
     |x| ≤ eta + delta := by
@@ -3082,6 +3088,38 @@ lemma exists_continuousSpike_exact_block_of_good_rows_Vprim_lower
     htheta0 hnpos hR hcos hB
     (coeff_bound_of_Vprim_lower hcpos hkpos hlogpos hkappa_le hcos hmass)
 
+lemma exists_continuousSpike_exact_block_good_pow_two_of_Vprim_lower
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
+    {R N : ℕ} {c : ℝ}
+    (hR : 1 ≤ R) (hcpos : 0 < c)
+    (hmass : ∀ n : ℕ, N ≤ n → IsPowTwo n → 0 < n →
+      (∀ s : ℕ, s ∈ oddUpTo R →
+        Real.cos (((n * s : ℕ) : ℝ) * theta0) ≠ 0) →
+      ∀ s : ℕ, s ∈ oddUpTo R →
+        c * |Real.cos (((n * s : ℕ) : ℝ) * theta0)| *
+            Real.log (n : ℝ) ≤ Vprim theta0 (n * s)) :
+    ∃ n : ℕ, ∃ psi : AngleFun,
+      N ≤ n ∧
+      IsPowTwo n ∧
+      0 < n ∧
+      VanishesNear theta0 (angleFunToRaw psi) ∧
+      F theta0 n psi = 1 ∧
+      (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+        F theta0 j psi = 0) ∧
+      ‖psi‖ ≤ (1 / (c * (1 / 2 : ℝ))) / Real.log (n : ℝ) := by
+  rcases exists_large_pow_two_good_cos_oddUpTo theta0 R (max N 2) with
+    ⟨n, hnmax, hpow, hnpos, hkappa_le, hcos⟩
+  have hnN : N ≤ n := (le_max_left N 2).trans hnmax
+  have hn2 : 2 ≤ n := (le_max_right N 2).trans hnmax
+  have hlogpos : 0 < Real.log (n : ℝ) := log_nat_pos_of_two_le hn2
+  rcases exists_continuousSpike_exact_block_of_good_rows_Vprim_lower
+      (theta0 := theta0) htheta0
+      (R := R) (n := n) (c := c) (kappa := (1 / 2 : ℝ))
+      hnpos hR hcpos (by norm_num) hlogpos hkappa_le hcos
+      (hmass n hnN hpow hnpos hcos) with
+    ⟨psi, hvanish, hhit, hearly, hnorm⟩
+  exact ⟨n, psi, hnN, hpow, hnpos, hvanish, hhit, hearly, hnorm⟩
+
 lemma exists_continuousSpike_block_and_finite_future_of_good_rows_Vprim_lower
     {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
     {R n K : ℕ} {c kappa : ℝ}
@@ -3107,6 +3145,42 @@ lemma exists_continuousSpike_block_and_finite_future_of_good_rows_Vprim_lower
   exact exists_continuousSpike_block_and_finite_future_of_good_rows_coeff_bound
     htheta0 hnpos hR hRK hkpos hkappa_le hcos hB
     (coeff_bound_of_Vprim_lower hcpos hkpos hlogpos hkappa_le hcos hmass)
+
+lemma exists_good_pow_two_with_continuousSpike_finite_future_of_Vprim_lower
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
+    {R N : ℕ} {c : ℝ}
+    (hR : 1 ≤ R) (hcpos : 0 < c)
+    (hmass : ∀ n : ℕ, N ≤ n → IsPowTwo n → 0 < n →
+      (∀ s : ℕ, s ∈ oddUpTo R →
+        Real.cos (((n * s : ℕ) : ℝ) * theta0) ≠ 0) →
+      ∀ s : ℕ, s ∈ oddUpTo R →
+        c * |Real.cos (((n * s : ℕ) : ℝ) * theta0)| *
+            Real.log (n : ℝ) ≤ Vprim theta0 (n * s)) :
+    ∃ n : ℕ,
+      N ≤ n ∧
+      IsPowTwo n ∧
+      0 < n ∧
+      (∀ K : ℕ, R * n ≤ K →
+        ∃ psi : AngleFun,
+          VanishesNear theta0 (angleFunToRaw psi) ∧
+          F theta0 n psi = 1 ∧
+          (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+            F theta0 j psi = 0) ∧
+          (∀ j : ℕ, R * n < j → j ≤ K →
+            |F theta0 j psi| ≤ (1 / (1 / 2 : ℝ)) / Real.sqrt (R : ℝ)) ∧
+          ‖psi‖ ≤ (1 / (c * (1 / 2 : ℝ))) / Real.log (n : ℝ)) := by
+  rcases exists_large_pow_two_good_cos_oddUpTo theta0 R (max N 2) with
+    ⟨n, hnmax, hpow, hnpos, hkappa_le, hcos⟩
+  have hnN : N ≤ n := (le_max_left N 2).trans hnmax
+  have hn2 : 2 ≤ n := (le_max_right N 2).trans hnmax
+  have hlogpos : 0 < Real.log (n : ℝ) := log_nat_pos_of_two_le hn2
+  refine ⟨n, hnN, hpow, hnpos, ?_⟩
+  intro K hRK
+  exact exists_continuousSpike_block_and_finite_future_of_good_rows_Vprim_lower
+    (theta0 := theta0) htheta0
+    (R := R) (n := n) (K := K) (c := c) (kappa := (1 / 2 : ℝ))
+    hnpos hR hRK hcpos (by norm_num) hlogpos hkappa_le hcos
+    (hmass n hnN hpow hnpos hcos)
 
 end Erdos1151Formalization
 
