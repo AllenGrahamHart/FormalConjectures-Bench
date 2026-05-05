@@ -4709,6 +4709,103 @@ lemma exists_good_pow_two_with_continuousSpike_finite_future_interior_of_kernel_
     ⟨n, hnmax, hpow, hnpos, hK⟩
   exact ⟨n, (le_max_left N (Q ^ 2)).trans hnmax, hpow, hnpos, hK⟩
 
+lemma exists_nat_good_interior_divisor
+    {theta0 rho : ℝ} (hpi : theta0 < Real.pi) (hrho : 0 < rho) :
+    ∃ Q : ℕ, 0 < Q ∧
+      theta0 / Real.pi + 1 / (Q : ℝ) ≤ 1 ∧
+      Real.pi / (Q : ℝ) < rho := by
+  have hdpos : 0 < Real.pi - theta0 := sub_pos.mpr hpi
+  rcases exists_nat_gt (max (1 : ℝ)
+      (max (Real.pi / (Real.pi - theta0)) (Real.pi / rho))) with
+    ⟨Q, hQ⟩
+  have hQ_gt_one : (1 : ℝ) < (Q : ℝ) :=
+    lt_of_le_of_lt (le_max_left _ _) hQ
+  have hQpos : 0 < Q := by
+    exact_mod_cast
+      (lt_trans (by norm_num : (0 : ℝ) < 1) hQ_gt_one)
+  have hQpos_real : 0 < (Q : ℝ) := by
+    exact_mod_cast hQpos
+  have hQtheta_large :
+      Real.pi / (Real.pi - theta0) < (Q : ℝ) := by
+    exact lt_of_le_of_lt
+      (le_trans (le_max_left _ _) (le_max_right _ _)) hQ
+  have hQrho_large : Real.pi / rho < (Q : ℝ) := by
+    exact lt_of_le_of_lt
+      (le_trans (le_max_right _ _) (le_max_right _ _)) hQ
+  have hpi_lt_Qd : Real.pi < (Q : ℝ) * (Real.pi - theta0) := by
+    have hmul := mul_lt_mul_of_pos_right hQtheta_large hdpos
+    have hleft :
+        (Real.pi / (Real.pi - theta0)) * (Real.pi - theta0) =
+          Real.pi := by
+      field_simp [ne_of_gt hdpos]
+    nlinarith
+  have hone_div_le :
+      1 / (Q : ℝ) ≤ (Real.pi - theta0) / Real.pi := by
+    rw [div_le_iff₀ hQpos_real]
+    have htarget :
+        1 ≤ ((Real.pi - theta0) / Real.pi) * (Q : ℝ) := by
+      rw [div_mul_eq_mul_div]
+      rw [le_div_iff₀ Real.pi_pos]
+      nlinarith
+    simpa [mul_comm, mul_left_comm, mul_assoc] using htarget
+  have hrange : theta0 / Real.pi + 1 / (Q : ℝ) ≤ 1 := by
+    calc
+      theta0 / Real.pi + 1 / (Q : ℝ) ≤
+          theta0 / Real.pi + (Real.pi - theta0) / Real.pi := by
+            simpa [add_comm, add_left_comm, add_assoc] using
+              add_le_add_left hone_div_le (theta0 / Real.pi)
+      _ = 1 := by
+          field_simp [Real.pi_ne_zero]
+          ring
+  have hpi_div_Q_lt : Real.pi / (Q : ℝ) < rho := by
+    rw [div_lt_iff₀ hQpos_real]
+    have hmul := mul_lt_mul_of_pos_right hQrho_large hrho
+    have hleft : (Real.pi / rho) * rho = Real.pi := by
+      field_simp [ne_of_gt hrho]
+    nlinarith
+  exact ⟨Q, hQpos, hrange, hpi_div_Q_lt⟩
+
+lemma exists_continuousSpike_finite_future_interior
+    {theta0 : ℝ} (h0 : 0 < theta0) (hpi : theta0 < Real.pi)
+    {R : ℕ} (hR : 1 ≤ R) :
+    ∃ C_R : ℝ, 0 < C_R ∧ ∀ N : ℕ,
+      ∃ n : ℕ,
+        N ≤ n ∧
+        IsPowTwo n ∧
+        0 < n ∧
+        (∀ K : ℕ, R * n ≤ K →
+          ∃ psi : AngleFun,
+            VanishesNear theta0 (angleFunToRaw psi) ∧
+            F theta0 n psi = 1 ∧
+            (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+              F theta0 j psi = 0) ∧
+            (∀ j : ℕ, R * n < j → j ≤ K →
+              |F theta0 j psi| ≤ (1 / (1 / 2 : ℝ)) /
+                Real.sqrt (R : ℝ)) ∧
+            ‖psi‖ ≤ C_R / Real.log (n : ℝ)) := by
+  have htheta0 : theta0 ∈ AngleI := ⟨le_of_lt h0, le_of_lt hpi⟩
+  rcases exists_interior_kernel_lower_bound h0 hpi with
+    ⟨c, hcpos, rho, hrhopos, hlocal⟩
+  rcases exists_nat_good_interior_divisor
+      (theta0 := theta0) (rho := rho) hpi hrhopos with
+    ⟨Q, hQpos, hrange, hQrho⟩
+  let C_R : ℝ :=
+    1 / (((c / (2 * Real.pi)) / (R : ℝ)) * (1 / 2 : ℝ))
+  have hC_R_pos : 0 < C_R := by
+    dsimp [C_R]
+    positivity
+  refine ⟨C_R, hC_R_pos, ?_⟩
+  intro N
+  rcases exists_good_pow_two_with_continuousSpike_finite_future_interior_of_kernel_params
+      (theta0 := theta0) (c := c) (rho := rho)
+      (Q := Q) (R := R) (N := N)
+      htheta0 hcpos hQpos hR hrange hQrho hlocal with
+    ⟨n, hnN, hpow, hnpos, hK⟩
+  refine ⟨n, hnN, hpow, hnpos, ?_⟩
+  intro K hRK
+  rcases hK K hRK with ⟨psi, hvanish, hhit, hearly, hfuture, hnorm⟩
+  exact ⟨psi, hvanish, hhit, hearly, hfuture, by simpa [C_R] using hnorm⟩
+
 lemma exists_good_pow_two_with_continuousSpike_finite_future_of_progression_kernel_lower
     {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
     {R N : ℕ} {c : ℝ}
