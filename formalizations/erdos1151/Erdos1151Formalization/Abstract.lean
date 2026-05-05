@@ -848,6 +848,14 @@ lemma AbstractBlockSpikeHypothesis.angle_theorem_from_controlledDiagonalSpikeDat
   obtain ⟨D, _⟩ := hcontrolled c hcA a ha_mem ha_cluster ha_bound
   exact ⟨D.diagonalPhi, H.clusterSet_controlledDiagonalPhi_succ D ha_cluster hcA⟩
 
+theorem AbstractBlockSpikeHypothesis.exists_controlledDiagonalSpikeData
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2) :
+    ∃ _ : ControlledDiagonalSpikeData theta0 a c, True := by
+  sorry
+
 /-- First major milestone: the diagonal construction from abstract block spikes. -/
 theorem angle_theorem_from_block_spikes
     {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
@@ -857,10 +865,10 @@ theorem angle_theorem_from_block_spikes
     (hA_subset : A ⊆ SpaceI) :
     ∃ phi : AngleFun,
       clusterSet (fun m : ℕ => F theta0 (m.succ) phi) = A := by
-  refine H.angle_theorem_from_controlledDiagonalSpikeData
-    hA_closed hA_nonempty hA_subset ?_
-  intro c hcA a ha_mem ha_cluster ha_bound
-  sorry
+  exact H.angle_theorem_from_controlledDiagonalSpikeData
+    hA_closed hA_nonempty hA_subset
+    (fun _c _hcA _a _ha_mem _ha_cluster ha_bound =>
+      H.exists_controlledDiagonalSpikeData ha_bound)
 
 end Erdos1151Formalization
 
