@@ -16,6 +16,21 @@ open scoped BigOperators Topology
 
 namespace Erdos1151Formalization
 
+lemma exists_large_odd_eta_lt
+    {eta : ℕ → ℝ} (heta : Tendsto eta Filter.atTop (nhds 0))
+    {eps : ℝ} (heps : 0 < eps) (N : ℕ) :
+    ∃ R : ℕ, N ≤ R ∧ Odd R ∧ 3 ≤ R ∧ eta R < eps := by
+  have hevent : ∀ᶠ R in Filter.atTop, eta R < eps :=
+    (tendsto_order.mp heta).2 eps heps
+  rcases Filter.eventually_atTop.mp hevent with ⟨M, hM⟩
+  let R := 2 * max M N + 3
+  refine ⟨R, ?_, ?_, ?_, ?_⟩
+  · omega
+  · use max M N + 1
+    omega
+  · omega
+  · exact hM R (by omega)
+
 /-- Abstract block-spike data sufficient for the diagonal cluster-set theorem. -/
 structure AbstractBlockSpikeHypothesis
     (theta0 : ℝ) (_htheta0 : theta0 ∈ AngleI) where

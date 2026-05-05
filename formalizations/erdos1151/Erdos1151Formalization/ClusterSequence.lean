@@ -85,6 +85,51 @@ lemma abs_sub_le_two_of_mem_subset_spaceI
     |x - y| ≤ 2 :=
   abs_sub_le_two_of_mem_spaceI (hA_subset hx) (hA_subset hy)
 
+lemma mapClusterPt_of_comp_tendsto_atTop
+    {u : ℕ → ℝ} {v : ℕ → ℕ} {y : ℝ}
+    (hv : Tendsto v Filter.atTop Filter.atTop)
+    (hy : MapClusterPt y Filter.atTop (fun n : ℕ => u (v n))) :
+    MapClusterPt y Filter.atTop u := by
+  rw [MapClusterPt] at hy ⊢
+  change ClusterPt y (Filter.map (u ∘ v) Filter.atTop) at hy
+  rw [← Filter.map_map] at hy
+  exact hy.mono (Filter.map_mono hv)
+
+lemma clusterSet_comp_subset
+    {u : ℕ → ℝ} {v : ℕ → ℕ}
+    (hv : Tendsto v Filter.atTop Filter.atTop) :
+    clusterSet (fun n : ℕ => u (v n)) ⊆ clusterSet u := by
+  intro y hy
+  exact mapClusterPt_of_comp_tendsto_atTop hv hy
+
+lemma clusterSet_subset_of_selected_subsequence
+    {u a : ℕ → ℝ} {nSeq : ℕ → ℕ}
+    (hnSeq : Tendsto nSeq Filter.atTop Filter.atTop)
+    (hselected : ∀ m : ℕ, u (nSeq m) = a m) :
+    clusterSet a ⊆ clusterSet u := by
+  intro y hy
+  have hycomp : MapClusterPt y Filter.atTop (fun m : ℕ => u (nSeq m)) := by
+    simpa [clusterSet, hselected] using hy
+  exact mapClusterPt_of_comp_tendsto_atTop hnSeq hycomp
+
+lemma clusterSet_subset_singleton_of_tendsto
+    {u : ℕ → ℝ} {c : ℝ}
+    (hu : Tendsto u Filter.atTop (nhds c)) :
+    clusterSet u ⊆ {c} := by
+  intro y hy
+  change MapClusterPt y Filter.atTop u at hy
+  rcases mapClusterPt_iff_ultrafilter.mp hy with ⟨U, hU_le, hUy⟩
+  have hUc : Tendsto u (U : Filter ℕ) (nhds c) := hu.mono_left hU_le
+  exact (tendsto_nhds_unique hUc hUy).symm
+
+lemma clusterSet_subset_of_tendsto_mem
+    {u : ℕ → ℝ} {A : Set ℝ} {c : ℝ}
+    (hcA : c ∈ A) (hu : Tendsto u Filter.atTop (nhds c)) :
+    clusterSet u ⊆ A := by
+  intro y hy
+  have hyc : y ∈ ({c} : Set ℝ) := clusterSet_subset_singleton_of_tendsto hu hy
+  simpa using hyc ▸ hcA
+
 end Erdos1151Formalization
 
 end

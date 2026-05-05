@@ -1,5 +1,6 @@
 import FormalConjectures.Util.ProblemImports
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Topology.Algebra.InfiniteSum.Module
 import Mathlib.Topology.ClusterPt
 import Mathlib.Topology.ContinuousMap.Algebra
 import Mathlib.Topology.ContinuousMap.Basic
@@ -119,6 +120,15 @@ lemma FCLM_apply (theta0 : ℝ) (n : ℕ) (phi : AngleFun) :
   · split
     · simp [angleEvalCLM_apply]
     · simp [angleEvalCLM_apply]
+
+lemma F_tsum {theta0 : ℝ} {n : ℕ} {phis : ℕ → AngleFun}
+    (hphis : Summable phis) :
+    F theta0 n (∑' m : ℕ, phis m) =
+      ∑' m : ℕ, F theta0 n (phis m) := by
+  rw [← FCLM_apply theta0 n (∑' m : ℕ, phis m)]
+  rw [(FCLM theta0 n).map_tsum hphis]
+  congr with m
+  exact FCLM_apply theta0 n (phis m)
 
 /-- A raw function vanishes on an angle-neighbourhood of `theta0`. -/
 def VanishesNear (theta0 : ℝ) (g : ℝ → ℝ) : Prop :=
