@@ -4653,6 +4653,62 @@ lemma exists_good_pow_two_with_continuousSpike_finite_future_of_Vprim_lower
     hnpos hR hRK hcpos (by norm_num) hlogpos hkappa_le hcos
     (hmass n hnN hpow hnpos hcos)
 
+lemma exists_good_pow_two_with_continuousSpike_finite_future_interior_of_kernel_params
+    {theta0 c rho : ℝ} {Q R N : ℕ}
+    (htheta0 : theta0 ∈ AngleI) (hcpos : 0 < c)
+    (hQpos : 0 < Q) (hR : 1 ≤ R)
+    (hrange : theta0 / Real.pi + 1 / (Q : ℝ) ≤ 1)
+    (hQrho : Real.pi / (Q : ℝ) < rho)
+    (hlocal : ∀ theta ∈ AngleI, theta ≠ theta0 →
+      |theta - theta0| < rho →
+        c / |theta - theta0| ≤
+          Real.sin theta / |Real.cos theta0 - Real.cos theta|) :
+    ∃ n : ℕ,
+      N ≤ n ∧
+      IsPowTwo n ∧
+      0 < n ∧
+      (∀ K : ℕ, R * n ≤ K →
+        ∃ psi : AngleFun,
+          VanishesNear theta0 (angleFunToRaw psi) ∧
+          F theta0 n psi = 1 ∧
+          (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+            F theta0 j psi = 0) ∧
+          (∀ j : ℕ, R * n < j → j ≤ K →
+            |F theta0 j psi| ≤ (1 / (1 / 2 : ℝ)) /
+              Real.sqrt (R : ℝ)) ∧
+          ‖psi‖ ≤
+            1 / (((c / (2 * Real.pi)) / (R : ℝ)) * (1 / 2 : ℝ)) /
+              Real.log (n : ℝ)) := by
+  have hRpos : 0 < R := lt_of_lt_of_le Nat.zero_lt_one hR
+  have hcbase_pos : 0 < c / (2 * Real.pi) := by
+    positivity
+  have hcmass_pos : 0 < (c / (2 * Real.pi)) / (R : ℝ) := by
+    positivity
+  rcases exists_good_pow_two_with_continuousSpike_finite_future_of_Vprim_lower
+      (theta0 := theta0) htheta0 (R := R) (N := max N (Q ^ 2))
+      (c := (c / (2 * Real.pi)) / (R : ℝ)) hR hcmass_pos
+      (fun n hnmax hpow hnpos hcos s hs => by
+        have hnNQ : Q ^ 2 ≤ n := (le_max_right N (Q ^ 2)).trans hnmax
+        have hs_info := mem_oddUpTo_iff.mp hs
+        have hspos : 0 < s := hs_info.2.2.pos
+        have hsR : s ≤ R := hs_info.2.1
+        have hnot : ¬ IsNodeRow theta0 (n * s) := hcos s hs
+        have hlog_nonneg : 0 ≤ Real.log (n : ℝ) := by
+          exact Real.log_nonneg
+            (by exact_mod_cast (Nat.succ_le_iff.mpr hnpos))
+        exact Vprim_lower_of_progression_kernel_lower_base
+          (theta0 := theta0) (c := c / (2 * Real.pi))
+          (R := R) (n := n) (s := s)
+          hpow hnpos hRpos hspos hsR (le_of_lt hcbase_pos)
+          hlog_nonneg
+          (interior_progression_kernel_sum_ge_log_of_div_block
+            (theta0 := theta0) (c := c) (rho := rho)
+            (n := n) (s := s) (Q := Q)
+            hnpos hspos hQpos hnNQ (le_of_lt hcpos) htheta0.1
+            hnot hlocal hrange hQrho)) with
+    ⟨n, hnmax, hpow, hnpos, hK⟩
+  exact ⟨n, (le_max_left N (Q ^ 2)).trans hnmax, hpow, hnpos, hK⟩
+
 lemma exists_good_pow_two_with_continuousSpike_finite_future_of_progression_kernel_lower
     {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
     {R N : ℕ} {c : ℝ}
