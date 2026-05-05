@@ -1,6 +1,7 @@
 import Erdos1151Formalization.Basic
 import Mathlib.Data.Nat.Pairing
 import Mathlib.Topology.Bases
+import Mathlib.Topology.Ultrafilter
 
 /-!
 # Cluster-set sequences inside closed sets
@@ -129,6 +130,20 @@ lemma clusterSet_subset_of_tendsto_mem
   intro y hy
   have hyc : y ∈ ({c} : Set ℝ) := clusterSet_subset_singleton_of_tendsto hu hy
   simpa using hyc ▸ hcA
+
+lemma mapClusterPt_atTop_split_principal
+    {u : ℕ → ℝ} {S : Set ℕ} {y : ℝ}
+    (hy : MapClusterPt y Filter.atTop u) :
+    MapClusterPt y (Filter.atTop ⊓ Filter.principal S) u ∨
+      MapClusterPt y (Filter.atTop ⊓ Filter.principal Sᶜ) u := by
+  rcases mapClusterPt_iff_ultrafilter.mp hy with ⟨U, hU_atTop, hUy⟩
+  rcases U.mem_or_compl_mem S with hUS | hUSc
+  · left
+    refine mapClusterPt_iff_ultrafilter.mpr ⟨U, ?_, hUy⟩
+    exact le_inf_iff.mpr ⟨hU_atTop, Filter.le_principal_iff.mpr hUS⟩
+  · right
+    refine mapClusterPt_iff_ultrafilter.mpr ⟨U, ?_, hUy⟩
+    exact le_inf_iff.mpr ⟨hU_atTop, Filter.le_principal_iff.mpr hUSc⟩
 
 end Erdos1151Formalization
 
