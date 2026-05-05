@@ -84,6 +84,53 @@ theorem CRTGadget.Pstar_density_lower_half {P : Finset ℕ} {m : ℕ → ℕ} {M
     positivity
   exact mul_le_mul_of_nonneg_left hprod_lower hmaR
 
+theorem CRTGadget.Pstar_card_pos {P : Finset ℕ} {m : ℕ → ℕ} {M a : ℕ}
+    {D : Finset (ZMod M)} (G : CRTGadget P m M a D)
+    (hM_pos : 0 < M) (hma_pos : 0 < m a)
+    (hm_ge2 : ∀ b ∈ P.erase a, 2 ≤ m b) :
+    0 < G.Pstar.card := by
+  have hdiv_pos : 0 < ((G.Pstar.card : ℝ) / (M : ℝ)) := by
+    rw [G.Pstar_card_formula]
+    apply mul_pos
+    · have hmaR : (0 : ℝ) < (m a : ℝ) := by exact_mod_cast hma_pos
+      exact div_pos zero_lt_one hmaR
+    · apply Finset.prod_pos
+      intro b hb
+      have hb_ge2 : 2 ≤ m b := hm_ge2 b hb
+      have hbR_pos : (0 : ℝ) < (m b : ℝ) := by
+        exact_mod_cast (lt_of_lt_of_le (by norm_num : 0 < 2) hb_ge2)
+      have hbR_gt1 : (1 : ℝ) < (m b : ℝ) := by
+        exact_mod_cast (lt_of_lt_of_le (by norm_num : 1 < 2) hb_ge2)
+      have hfrac_lt : (1 : ℝ) / (m b : ℝ) < 1 := by
+        rw [div_lt_iff₀ hbR_pos]
+        simpa using hbR_gt1
+      linarith
+  have hMposR : (0 : ℝ) < (M : ℝ) := by exact_mod_cast hM_pos
+  have hcardR : (0 : ℝ) < (G.Pstar.card : ℝ) := by
+    have hmul := mul_pos hdiv_pos hMposR
+    rwa [div_mul_cancel₀ _ (ne_of_gt hMposR)] at hmul
+  exact_mod_cast hcardR
+
+theorem CRTGadget.M_le_two_mul_selected_mul_Pstar_card {P : Finset ℕ} {m : ℕ → ℕ}
+    {M a : ℕ} {D : Finset (ZMod M)} (G : CRTGadget P m M a D)
+    (hM_pos : 0 < M) (hma_pos : 0 < m a)
+    (hm_pos : ∀ b ∈ P.erase a, 0 < m b)
+    (hbudget : (P.erase a).sum (fun b => (1 : ℝ) / (m b : ℝ)) ≤ (1 / 2 : ℝ)) :
+    M ≤ 2 * m a * G.Pstar.card := by
+  have hreal := G.Pstar_density_lower_half hma_pos hm_pos hbudget
+  have hmaR : (0 : ℝ) < (m a : ℝ) := by exact_mod_cast hma_pos
+  have hMR : (0 : ℝ) < (M : ℝ) := by exact_mod_cast hM_pos
+  have hcast : (M : ℝ) ≤ (2 * m a * G.Pstar.card : ℕ) := by
+    field_simp [ne_of_gt hmaR, ne_of_gt hMR] at hreal
+    have htarget :
+        ((2 * m a * G.Pstar.card : ℕ) : ℝ) =
+          (m a : ℝ) * 2 * (G.Pstar.card : ℝ) := by
+      simp only [Nat.cast_mul, Nat.cast_ofNat]
+      ring
+    rw [htarget]
+    nlinarith
+  exact_mod_cast hcast
+
 /--
 Finite state at one stage of the priority construction.
 

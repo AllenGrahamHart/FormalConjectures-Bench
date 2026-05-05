@@ -339,6 +339,33 @@ theorem natCast_mem_stageCRTTbaseFinset_iff (st : StageState) {a n : ℕ}
     · intro i hbad
       exact ht.2 i (by rw [← stageCRTProductEquiv_snd_natCast st ha i, hbad])
 
+theorem natCast_mem_stageCRTAllowedFinset_iff (st : StageState) {a n : ℕ}
+    (ha : a ∈ st.P) :
+    (n : ZMod (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ))) ∈
+        stageCRTAllowedFinset st ha ↔
+      (n : ZMod (st.m a)) ≠ (a : ZMod (st.m a)) ∧
+        ∀ i : NonselectedIndex st.P a,
+          (n : ZMod (st.m (i : ℕ))) ≠ ((i : ℕ) : ZMod (st.m (i : ℕ))) := by
+  classical
+  letI : NeZero (st.m a * ∏ i : NonselectedIndex st.P a, st.m (i : ℕ)) :=
+    NeZero.of_pos (stage_exact_product_pos st ha)
+  unfold stageCRTAllowedFinset crtProductAllowedFinset productAllowed shiftedNonzeroBox
+  simp only [addEquivPreimageFinset, Finset.mem_filter, Finset.mem_univ, true_and,
+    Set.mem_setOf_eq]
+  constructor
+  · intro hallowed
+    constructor
+    · intro hbad
+      exact hallowed.1 (by rw [stageCRTProductEquiv_fst_natCast st ha, hbad])
+    · intro i hbad
+      exact hallowed.2 i (by rw [stageCRTProductEquiv_snd_natCast st ha i, hbad])
+  · intro hallowed
+    constructor
+    · intro hbad
+      exact hallowed.1 (by rw [← stageCRTProductEquiv_fst_natCast st ha, hbad])
+    · intro i hbad
+      exact hallowed.2 i (by rw [← stageCRTProductEquiv_snd_natCast st ha i, hbad])
+
 theorem exists_stage_exact_product_CRTGadget_on_allowed (st : StageState) {a : ℕ}
     (ha : a ∈ st.P) :
     Nonempty (CRTGadget st.P st.m
@@ -388,6 +415,33 @@ theorem natCast_mem_stageZmodFinsetCast_iff {M M' : ℕ} (hM : M = M')
       (n : ZMod M') ∈ D := by
   cases hM
   simp
+
+theorem natCast_mem_stageCRTAllowedFinsetAtM_iff (st : StageState) {a n : ℕ}
+    (ha : a ∈ st.P) :
+    (n : ZMod st.M) ∈ stageCRTAllowedFinsetAtM st ha ↔
+      (n : ZMod (st.m a)) ≠ (a : ZMod (st.m a)) ∧
+        ∀ i : NonselectedIndex st.P a,
+          (n : ZMod (st.m (i : ℕ))) ≠ ((i : ℕ) : ZMod (st.m (i : ℕ))) := by
+  rw [stageCRTAllowedFinsetAtM]
+  rw [natCast_mem_stageZmodFinsetCast_iff (stage_M_eq_selected_mul_nonselected st ha)]
+  exact natCast_mem_stageCRTAllowedFinset_iff st ha
+
+theorem natCast_mem_stageCRTAllowedFinsetAtM_iff_active (st : StageState)
+    {a n : ℕ} (ha : a ∈ st.P) :
+    (n : ZMod st.M) ∈ stageCRTAllowedFinsetAtM st ha ↔
+      ∀ c ∈ st.P, (n : ZMod (st.m c)) ≠ (c : ZMod (st.m c)) := by
+  rw [natCast_mem_stageCRTAllowedFinsetAtM_iff st ha]
+  constructor
+  · intro h c hc
+    by_cases hca : c = a
+    · subst c
+      exact h.1
+    · let i : NonselectedIndex st.P a := ⟨c, Finset.mem_erase.mpr ⟨hca, hc⟩⟩
+      exact h.2 i
+  · intro h
+    refine ⟨h a ha, ?_⟩
+    intro i
+    exact h (i : ℕ) (Finset.mem_erase.mp i.property).2
 
 theorem natCast_mem_stageCRTTbaseFinsetAtM_iff (st : StageState) {a n : ℕ}
     (ha : a ∈ st.P) (h u1 u2 : ZMod (st.m a)) :

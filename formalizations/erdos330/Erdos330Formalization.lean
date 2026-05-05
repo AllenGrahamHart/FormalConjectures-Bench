@@ -15,3 +15,7 @@ import Erdos330Formalization.ConcreteCRTGadget
 import Erdos330Formalization.LocalReservoir
 import Erdos330Formalization.StageCoverage
 import Erdos330Formalization.StageConstruction
+import Erdos330Formalization.Initial
+import Erdos330Formalization.StageArithmetic
+import Erdos330Formalization.Iteration
+import Erdos330Formalization.Scheduler

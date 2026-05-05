@@ -37,6 +37,42 @@ theorem S_subset_of_le {st : ℕ → StageState} (chain : StageChain st)
         intro n hn
         exact hn
 
+theorem P_subset_of_le {st : ℕ → StageState} (chain : StageChain st)
+    {i j : ℕ} (hij : i ≤ j) :
+    (st i).P ⊆ (st j).P := by
+  induction j with
+  | zero =>
+      have hi : i = 0 := Nat.eq_zero_of_le_zero hij
+      subst hi
+      intro n hn
+      exact hn
+  | succ j ih =>
+      by_cases hle : i ≤ j
+      · intro n hn
+        exact (chain.step j).P_subset ((ih hle) hn)
+      · have hi : i = j + 1 := by omega
+        subst hi
+        intro n hn
+        exact hn
+
+theorem m_eq_of_le_of_mem_P {st : ℕ → StageState} (chain : StageChain st)
+    {i j a : ℕ} (hij : i ≤ j) (ha : a ∈ (st i).P) :
+    (st j).m a = (st i).m a := by
+  induction j with
+  | zero =>
+      have hi : i = 0 := Nat.eq_zero_of_le_zero hij
+      subst hi
+      rfl
+  | succ j ih =>
+      by_cases hle : i ≤ j
+      · calc
+          (st (j + 1)).m a = (st j).m a :=
+            (chain.step j).m_eq_on_old a ((chain.P_subset_of_le hle) ha)
+          _ = (st i).m a := ih hle
+      · have hi : i = j + 1 := by omega
+        subst hi
+        rfl
+
 theorem coverStart_eq_of_le {st : ℕ → StageState} (chain : StageChain st)
     {i j : ℕ} (hij : i ≤ j) :
     (st j).coverStart = (st i).coverStart := by

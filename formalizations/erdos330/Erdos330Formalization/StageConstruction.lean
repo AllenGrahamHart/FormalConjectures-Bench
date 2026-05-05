@@ -20,10 +20,11 @@ structure FreshPrimeData (st : StageState) (p : ℕ) where
   mod4 : p % 4 = 3
   coprime_old : ∀ a ∈ st.P, Nat.Coprime p (st.m a)
 
-theorem exists_freshPrimeData (st : StageState) : ∃ p : ℕ, FreshPrimeData st p := by
+theorem exists_freshPrimeData_ge (st : StageState) (N : ℕ) :
+    ∃ p : ℕ, N ≤ p ∧ FreshPrimeData st p := by
   obtain ⟨p, hpge, hpprime, hpmod⟩ :=
-    exists_prime_three_mod_four_ge (max (max (st.X + 1) (st.M + 1)) 23)
-  refine ⟨p, ?_⟩
+    exists_prime_three_mod_four_ge (max (max (max (st.X + 1) (st.M + 1)) 23) N)
+  refine ⟨p, by omega, ?_⟩
   exact {
     X_lt_p := by omega
     M_lt_p := by omega
@@ -45,6 +46,10 @@ theorem exists_freshPrimeData (st : StageState) : ∃ p : ℕ, FreshPrimeData st
       have hm_lt_p : st.m a < p := lt_of_le_of_lt hm_le_M (by omega)
       exact Nat.coprime_of_lt_prime (Nat.ne_of_gt hmpos) hm_lt_p hpprime
   }
+
+theorem exists_freshPrimeData (st : StageState) : ∃ p : ℕ, FreshPrimeData st p := by
+  obtain ⟨p, _hpN, hp⟩ := exists_freshPrimeData_ge st 0
+  exact ⟨p, hp⟩
 
 theorem FreshPrimeData.eq_of_zmod_eq_of_old {st : StageState} {p u v : ℕ}
     (hp : FreshPrimeData st p) (hu : u ≤ st.X) (hv : v ≤ st.X)
@@ -384,6 +389,27 @@ theorem natCast_mem_activatedCRTAllowedFinsetAtM_iff (st : StageState) {a b p n 
   rw [natCast_mem_eqMp_zmodFinset_iff
     (activatedM_eq_selected_mul_nonselected (a := a) (b := b) (p := p) st ha)]
   exact natCast_mem_activatedCRTAllowedFinsetExact_iff st ha hbDormant hp
+
+theorem natCast_mem_activatedCRTAllowedFinsetAtM_iff_active (st : StageState)
+    {a b p n : ℕ} (ha : a ∈ st.P) (hbDormant : b ∉ st.P)
+    (hp : FreshPrimeData st p) :
+    (n : ZMod (activatedM st b p)) ∈ activatedCRTAllowedFinsetAtM st ha hbDormant hp ↔
+      ∀ c ∈ activatedActiveSet st b,
+        (n : ZMod (activatedModulus st b p c)) ≠
+          (c : ZMod (activatedModulus st b p c)) := by
+  rw [natCast_mem_activatedCRTAllowedFinsetAtM_iff st ha hbDormant hp]
+  constructor
+  · intro h c hc
+    by_cases hca : c = a
+    · subst c
+      exact h.1
+    · let i : NonselectedIndex (activatedActiveSet st b) a :=
+        ⟨c, Finset.mem_erase.mpr ⟨hca, hc⟩⟩
+      exact h.2 i
+  · intro h
+    refine ⟨h a (activated_active_mem_old st ha), ?_⟩
+    intro i
+    exact h (i : ℕ) (Finset.mem_erase.mp i.property).2
 
 theorem activatedCRTAllowedFinsetAtM_projection_lift (st : StageState) {a b p : ℕ}
     (ha : a ∈ st.P) (hbDormant : b ∉ st.P) (hp : FreshPrimeData st p) :
@@ -2032,6 +2058,36 @@ noncomputable def nextStageStateOfParams (st : StageState) {a b p : ℕ}
     exists_dormant := hexists_dormant
   }
 
+theorem nextStageStateOfParams_hasCanonicalD {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p)
+    (ha : a ∈ st.P) (hbS : b ∈ st.S) (hbDormant : b ∉ st.P)
+    (hp : FreshPrimeData st p)
+    (hS_le : ∀ n ∈ params.nextS, n ≤ params.nextX)
+    (hisolated :
+      ∀ c ∈ activatedActiveSet st b, ∀ s ∈ params.nextS,
+        (s : ZMod (activatedModulus st b p c)) =
+          (c : ZMod (activatedModulus st b p c)) → s = c)
+    (hreservoir_long : params.K + 3 * params.Mplus ≤ params.nextX)
+    (hheadroom : params.K + params.nextX + 3 * params.Mplus ≤ params.nextR)
+    (hcoverage :
+      ∀ n : ℕ, st.coverStart ≤ n → n ≤ params.nextR → n ∈ twoFoldFinset params.nextS)
+    (hexists_dormant : ∃ c ∈ params.nextS, c ∉ activatedActiveSet st b)
+    (hDplus : params.Dplus = activatedCRTAllowedFinsetAtM st ha hbDormant hp) :
+    (nextStageStateOfParams st params hbS hbDormant hp hS_le hisolated hreservoir_long
+      hheadroom hcoverage hexists_dormant).HasCanonicalD := by
+  classical
+  letI : NeZero (activatedM st b p) := NeZero.of_pos (activatedM_pos st hbDormant hp)
+  let st' := nextStageStateOfParams st params hbS hbDormant hp hS_le hisolated
+    hreservoir_long hheadroom hcoverage hexists_dormant
+  intro c hc
+  change params.Dplus = stageCRTAllowedFinsetAtM st' hc
+  rw [hDplus]
+  ext z
+  obtain ⟨n, rfl⟩ := ZMod.natCast_zmod_surjective z
+  rw [natCast_mem_activatedCRTAllowedFinsetAtM_iff_active st ha hbDormant hp]
+  rw [natCast_mem_stageCRTAllowedFinsetAtM_iff_active st' hc]
+  simp [st', nextStageStateOfParams]
+
 theorem exists_stageExtension_of_params {st : StageState} {a b p : ℕ}
     (params : StageParams st a b p)
     (ha : a ∈ st.P) (hbS : b ∈ st.S) (hbDormant : b ∉ st.P)
@@ -2064,6 +2120,42 @@ theorem exists_stageExtension_of_params {st : StageState} {a b p : ℕ}
     hX_next hR_next ha hN hK
   intro c hc
   exact activatedModulus_old_of_mem st hbDormant hc
+
+theorem exists_stageExtension_of_params_hasCanonicalD {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p)
+    (ha : a ∈ st.P) (hbS : b ∈ st.S) (hbDormant : b ∉ st.P)
+    (hp : FreshPrimeData st p)
+    (hDplus : params.Dplus = activatedCRTAllowedFinsetAtM st ha hbDormant hp)
+    (hN : st.X < params.N) (hK : st.X < params.K)
+    (hX_next : st.X ≤ params.nextX) (hR_next : st.R ≤ params.nextR)
+    (hlower : params.N + params.L ≤ params.nextX)
+    (hprivate : params.serviceR ≤ params.nextX)
+    (hnew_avoid :
+      ∀ c ∈ activatedActiveSet st b, ∀ s ∈ params.nextS, s ∉ st.S →
+        (s : ZMod (activatedModulus st b p c)) ≠
+          (c : ZMod (activatedModulus st b p c)))
+    (hreservoir_long : params.K + 3 * params.Mplus ≤ params.nextX)
+    (hheadroom : params.K + params.nextX + 3 * params.Mplus ≤ params.nextR)
+    (hcoverage :
+      ∀ n : ℕ, st.coverStart ≤ n → n ≤ params.nextR → n ∈ twoFoldFinset params.nextS)
+    (hexists_dormant : ∃ c ∈ params.nextS, c ∉ activatedActiveSet st b) :
+    ∃ st' : StageState,
+      StageExtension st st' ∧ st'.HasCanonicalD ∧
+        st'.S = params.nextS ∧ st'.P = activatedActiveSet st b ∧
+          st'.m = activatedModulus st b p ∧ st'.M = activatedM st b p ∧
+            st'.H = params.K ∧ st'.X = params.nextX ∧
+              st'.R = params.nextR ∧ st'.coverStart = st.coverStart := by
+  let hS_le := params.nextS_le_nextX hX_next hlower hprivate
+  let hisolated := stageParams_isolated_of_new_avoid params hbS hbDormant hp hnew_avoid
+  let st' := nextStageStateOfParams st params hbS hbDormant hp hS_le hisolated
+    hreservoir_long hheadroom hcoverage hexists_dormant
+  refine ⟨st', ?_, ?_, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩
+  · refine stageExtension_of_stageParams_next_state params (st' := st') rfl rfl ?_ rfl
+      hX_next hR_next ha hN hK
+    intro c hc
+    exact activatedModulus_old_of_mem st hbDormant hc
+  · exact nextStageStateOfParams_hasCanonicalD params ha hbS hbDormant hp hS_le hisolated
+      hreservoir_long hheadroom hcoverage hexists_dormant hDplus
 
 noncomputable def serviceExtensionOfParams {st : StageState} {a b p : ℕ}
     (params : StageParams st a b p)
@@ -2111,6 +2203,65 @@ noncomputable def serviceExtensionOfParams {st : StageState} {a b p : ℕ}
     protectedEndpoint_le_X := hendpoint_le_nextX
     protectedBlock := cert
   }⟩
+
+/-- A service step together with the canonical-residue invariant for its target state. -/
+structure CanonicalServiceExtension (st : StageState) (a : ℕ) where
+  next : StageState
+  service : ServiceExtension st next a
+  canonicalD : next.HasCanonicalD
+
+noncomputable def serviceExtensionOfParamsWithCanonicalD {st : StageState} {a b p : ℕ}
+    (params : StageParams st a b p)
+    (ha : a ∈ st.P) (hbS : b ∈ st.S) (hbDormant : b ∉ st.P)
+    (hp : FreshPrimeData st p)
+    (hDplus : params.Dplus = activatedCRTAllowedFinsetAtM st ha hbDormant hp)
+    (hN : st.X < params.N) (hK : st.X < params.K)
+    (hX_next : st.X ≤ params.nextX) (hR_next : st.R ≤ params.nextR)
+    (hlower : params.N + params.L ≤ params.nextX)
+    (hprivate_height : params.serviceR ≤ params.nextX)
+    (hnew_avoid :
+      ∀ c ∈ activatedActiveSet st b, ∀ s ∈ params.nextS, s ∉ st.S →
+        (s : ZMod (activatedModulus st b p c)) ≠
+          (c : ZMod (activatedModulus st b p c)))
+    (hreservoir_long : params.K + 3 * params.Mplus ≤ params.nextX)
+    (hheadroom : params.K + params.nextX + 3 * params.Mplus ≤ params.nextR)
+    (hcoverage :
+      ∀ n : ℕ, st.coverStart ≤ n → n ≤ params.nextR → n ∈ twoFoldFinset params.nextS)
+    (hexists_dormant : ∃ c ∈ params.nextS, c ∉ activatedActiveSet st b)
+    (hendpoint_le_nextX : params.protectedEndpoint ≤ params.nextX)
+    {densityNumerator densityDenominator : ℕ}
+    (hdensityDenominator_pos : 0 < densityDenominator)
+    (hcore_private :
+      ∀ n ∈ params.protectedSumBlock, n ∈ privateSet {x : ℕ | x ∈ params.nextS} a)
+    (hcore_density :
+      densityNumerator * params.protectedEndpoint ≤
+        densityDenominator * params.protectedSumBlock.card) :
+    CanonicalServiceExtension st a := by
+  let hS_le := params.nextS_le_nextX hX_next hlower hprivate_height
+  let hisolated := stageParams_isolated_of_new_avoid params hbS hbDormant hp hnew_avoid
+  let st' := nextStageStateOfParams st params hbS hbDormant hp hS_le hisolated
+    hreservoir_long hheadroom hcoverage hexists_dormant
+  let ext : StageExtension st st' :=
+    stageExtension_of_stageParams_next_state params (st' := st') rfl rfl
+      (by
+        intro c hc
+        exact activatedModulus_old_of_mem st hbDormant hc)
+      rfl hX_next hR_next ha hN hK
+  let cert : ProtectedBlockCertificate st'.S a params.protectedEndpoint :=
+    params.protectedBlockCertificate_of_sumBlock hdensityDenominator_pos hcore_private
+      hcore_density
+  exact {
+    next := st'
+    service := {
+      toStageExtension := ext
+      served_active := ha
+      protectedEndpoint := params.protectedEndpoint
+      protectedEndpoint_le_X := hendpoint_le_nextX
+      protectedBlock := cert
+    }
+    canonicalD := nextStageStateOfParams_hasCanonicalD params ha hbS hbDormant hp hS_le hisolated
+      hreservoir_long hheadroom hcoverage hexists_dormant hDplus
+  }
 
 noncomputable def serviceExtensionOfParamsFromPairExclusions {st : StageState} {a b p : ℕ}
     (params : StageParams st a b p) [NeZero (activatedM st b p)]
