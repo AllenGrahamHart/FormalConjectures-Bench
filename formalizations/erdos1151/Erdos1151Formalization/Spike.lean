@@ -228,6 +228,48 @@ lemma Vprim_nonneg (theta0 : ℝ) (d : ℕ) :
   unfold Vprim
   exact Finset.sum_nonneg fun _ _ => abs_nonneg _
 
+lemma lambdaWeight_ne_zero_of_not_isNodeRow
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
+    {d k : ℕ} (hk : k < d) (hnot : ¬ IsNodeRow theta0 d) :
+    lambdaWeight theta0 d k ≠ 0 := by
+  have hdpos : 0 < d := Nat.lt_of_le_of_lt (Nat.zero_le k) hk
+  have hdne : (d : ℝ) ≠ 0 := by
+    exact_mod_cast (Nat.ne_of_gt hdpos)
+  have hcos : Real.cos ((d : ℝ) * theta0) ≠ 0 := hnot
+  have hden : Real.cos theta0 - Real.cos (thetaNode d k) ≠ 0 := by
+    have hcos_ne :=
+      cos_ne_xNode_of_not_isNodeRow htheta0 hnot k (Finset.mem_range.mpr hk)
+    simpa [xNode, sub_eq_zero] using hcos_ne
+  have hfirst : Real.cos ((d : ℝ) * theta0) / (d : ℝ) ≠ 0 :=
+    div_ne_zero hcos hdne
+  have hpow : (-1 : ℝ) ^ k ≠ 0 :=
+    pow_ne_zero _ (by norm_num)
+  have hsin : Real.sin (thetaNode d k) ≠ 0 :=
+    ne_of_gt (sin_thetaNode_pos hk)
+  unfold lambdaWeight
+  exact div_ne_zero (mul_ne_zero (mul_ne_zero hfirst hpow) hsin) hden
+
+lemma Vprim_pos_of_not_isNodeRow
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
+    {d : ℕ} (hdpos : 0 < d) (hnot : ¬ IsNodeRow theta0 d) :
+    0 < Vprim theta0 d := by
+  have h0mem : 0 ∈ primIdx d := by
+    simp [mem_primIdx_iff, hdpos]
+  have hterm_pos : 0 < |lambdaWeight theta0 d 0| := by
+    exact abs_pos.mpr
+      (lambdaWeight_ne_zero_of_not_isNodeRow htheta0 (by simpa using hdpos) hnot)
+  unfold Vprim
+  exact hterm_pos.trans_le
+    (Finset.single_le_sum
+      (s := primIdx d) (f := fun k => |lambdaWeight theta0 d k|)
+      (fun _ _ => abs_nonneg _) h0mem)
+
+lemma Vprim_ne_zero_of_not_isNodeRow
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
+    {d : ℕ} (hdpos : 0 < d) (hnot : ¬ IsNodeRow theta0 d) :
+    Vprim theta0 d ≠ 0 :=
+  ne_of_gt (Vprim_pos_of_not_isNodeRow htheta0 hdpos hnot)
+
 /-- Odd integers in `[1, R]`. -/
 def oddUpTo (R : ℕ) : Finset ℕ :=
   (Finset.Icc 1 R).filter Odd
@@ -423,6 +465,36 @@ lemma spikeCoeff_one {theta0 : ℝ} {n : ℕ}
   unfold spikeCoeff
   simp [muR_one, chi_one, hcos]
 
+lemma abs_spikeCoeff_le
+    {theta0 : ℝ} {n s : ℕ} (hspos : 0 < s)
+    (hcosn : Real.cos ((n : ℝ) * theta0) ≠ 0) :
+    |spikeCoeff theta0 n s| ≤
+      |Real.cos (((n * s : ℕ) : ℝ) * theta0)| /
+        ((s : ℝ) * |Real.cos ((n : ℝ) * theta0)|) := by
+  have hs_nonneg : 0 ≤ (s : ℝ) := by positivity
+  have hden_pos : 0 < (s : ℝ) * |Real.cos ((n : ℝ) * theta0)| := by
+    exact mul_pos (by positivity) (abs_pos.mpr hcosn)
+  have hnum_le :
+      |muR s| * |chi s| * |Real.cos (((n * s : ℕ) : ℝ) * theta0)| ≤
+        |Real.cos (((n * s : ℕ) : ℝ) * theta0)| := by
+    rw [abs_chi]
+    calc
+      |muR s| * 1 * |Real.cos (((n * s : ℕ) : ℝ) * theta0)| ≤
+          1 * 1 * |Real.cos (((n * s : ℕ) : ℝ) * theta0)| := by
+          gcongr
+          exact abs_muR_le_one s
+      _ = |Real.cos (((n * s : ℕ) : ℝ) * theta0)| := by ring
+  unfold spikeCoeff
+  calc
+    |muR s * chi s * Real.cos (((n * s : ℕ) : ℝ) * theta0) /
+        ((s : ℝ) * Real.cos ((n : ℝ) * theta0))| =
+        (|muR s| * |chi s| * |Real.cos (((n * s : ℕ) : ℝ) * theta0)|) /
+          ((s : ℝ) * |Real.cos ((n : ℝ) * theta0)|) := by
+          rw [abs_div, abs_mul, abs_mul, abs_mul, abs_of_nonneg hs_nonneg]
+    _ ≤ |Real.cos (((n * s : ℕ) : ℝ) * theta0)| /
+          ((s : ℝ) * |Real.cos ((n : ℝ) * theta0)|) := by
+          exact div_le_div_of_nonneg_right hnum_le (le_of_lt hden_pos)
+
 lemma gamma_mul_spikeCoeff_eq_prefactor_mul_muR
     {theta0 : ℝ} {n u s : ℕ}
     (hnpos : 0 < n) (huodd : Odd u) (hdiv : s ∣ u)
@@ -555,6 +627,13 @@ lemma real_sign_mul_eq_abs (x : ℝ) :
   rw [mul_comm]
   exact real_mul_sign_eq_abs x
 
+lemma abs_real_sign_le_one (x : ℝ) :
+    |Real.sign x| ≤ 1 := by
+  rcases Real.sign_apply_eq x with h | h | h
+  · simp [h]
+  · simp [h]
+  · simp [h]
+
 /-- Indices `(s, k)` for primitive nodes of order `n * s`. -/
 def spikeIdx (n R : ℕ) : Finset (Σ _ : ℕ, ℕ) :=
   (oddUpTo R).sigma fun s => primIdx (n * s)
@@ -567,6 +646,27 @@ lemma mem_spikeIdx_iff {n R : ℕ} {p : Σ _ : ℕ, ℕ} :
 def finiteSpikeValueAtPrimitive (theta0 : ℝ) (n s k : ℕ) : ℝ :=
   spikeCoeff theta0 n s / Vprim theta0 (n * s) *
     Real.sign (lambdaWeight theta0 (n * s) k)
+
+lemma abs_finiteSpikeValueAtPrimitive_le
+    {theta0 : ℝ} {n s k : ℕ} {B : ℝ}
+    (hVpos : 0 < Vprim theta0 (n * s))
+    (hbound : |spikeCoeff theta0 n s| / Vprim theta0 (n * s) ≤ B) :
+    |finiteSpikeValueAtPrimitive theta0 n s k| ≤ B := by
+  have hV_nonneg : 0 ≤ Vprim theta0 (n * s) := le_of_lt hVpos
+  have hquot_nonneg : 0 ≤ |spikeCoeff theta0 n s| / Vprim theta0 (n * s) :=
+    div_nonneg (abs_nonneg _) hV_nonneg
+  unfold finiteSpikeValueAtPrimitive
+  calc
+    |spikeCoeff theta0 n s / Vprim theta0 (n * s) *
+        Real.sign (lambdaWeight theta0 (n * s) k)| =
+        (|spikeCoeff theta0 n s| / Vprim theta0 (n * s)) *
+          |Real.sign (lambdaWeight theta0 (n * s) k)| := by
+          rw [abs_mul, abs_div, abs_of_nonneg hV_nonneg]
+    _ ≤ (|spikeCoeff theta0 n s| / Vprim theta0 (n * s)) * 1 := by
+          exact mul_le_mul_of_nonneg_left
+            (abs_real_sign_le_one _) hquot_nonneg
+    _ = |spikeCoeff theta0 n s| / Vprim theta0 (n * s) := by ring
+    _ ≤ B := hbound
 
 /-- The finite algebraic spike as a raw function, supported on primitive nodes
 of the orders `n * s` with odd `s ≤ R`. -/
@@ -955,6 +1055,96 @@ lemma row_sum_finiteSpikeRaw_eq_oddUpTo_if
     simp [hdiv]
     exact hzero'
 
+lemma row_sum_finiteSpikeRaw_eq_oddUpTo_if_of_good_divisors
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI) {R n u : ℕ}
+    (hnpos : 0 < n) (huodd : Odd u)
+    (hcosns : ∀ s : ℕ, s ∣ u →
+      Real.cos (((n * s : ℕ) : ℝ) * theta0) ≠ 0) :
+    (∑ l ∈ Finset.range (n * u),
+      lambdaWeight theta0 (n * u) l *
+        finiteSpikeRaw theta0 R n (thetaNode (n * u) l)) =
+    ∑ s ∈ oddUpTo R,
+      if s ∣ u then
+        gamma theta0 (n * u) (n * s) * spikeCoeff theta0 n s
+      else 0 := by
+  have hV : ∀ s : ℕ, s ∣ u → Vprim theta0 (n * s) ≠ 0 := by
+    intro s hdiv
+    have hsodd : Odd s := odd_of_dvd_odd huodd hdiv
+    have hdpos : 0 < n * s := Nat.mul_pos hnpos hsodd.pos
+    have hnot : ¬ IsNodeRow theta0 (n * s) := by
+      simpa [IsNodeRow] using hcosns s hdiv
+    exact Vprim_ne_zero_of_not_isNodeRow htheta0 hdpos hnot
+  exact row_sum_finiteSpikeRaw_eq_oddUpTo_if hnpos huodd hcosns hV
+
+lemma rowEval_finiteSpikeRaw_odd_eq_oddUpTo_if_of_not_isNodeRow
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI) {R n u : ℕ}
+    (hnpos : 0 < n) (huodd : Odd u)
+    (hnot : ¬ IsNodeRow theta0 (n * u))
+    (hcosns : ∀ s : ℕ, s ∣ u →
+      Real.cos (((n * s : ℕ) : ℝ) * theta0) ≠ 0) :
+    rowEval theta0 (n * u) (finiteSpikeRaw theta0 R n) =
+    ∑ s ∈ oddUpTo R,
+      if s ∣ u then
+        gamma theta0 (n * u) (n * s) * spikeCoeff theta0 n s
+      else 0 := by
+  have hrowpos : 0 < n * u := Nat.mul_pos hnpos huodd.pos
+  have hrowne : n * u ≠ 0 := Nat.ne_of_gt hrowpos
+  rw [rowEval, if_neg hrowne, if_neg hnot]
+  exact row_sum_finiteSpikeRaw_eq_oddUpTo_if_of_good_divisors
+    htheta0 hnpos huodd hcosns
+
+lemma sum_oddUpTo_if_dvd_gamma_mul_spikeCoeff_eq_prefactor_mul
+    {theta0 : ℝ} {R n u : ℕ}
+    (hnpos : 0 < n) (huodd : Odd u)
+    (hcosns : ∀ s : ℕ, s ∣ u →
+      Real.cos (((n * s : ℕ) : ℝ) * theta0) ≠ 0) :
+    (∑ s ∈ oddUpTo R,
+      if s ∣ u then
+        gamma theta0 (n * u) (n * s) * spikeCoeff theta0 n s
+      else 0) =
+      (chi u * Real.cos (((n * u : ℕ) : ℝ) * theta0) /
+          ((u : ℝ) * Real.cos ((n : ℝ) * theta0))) *
+        (∑ s ∈ oddUpTo R, if s ∣ u then muR s else 0) := by
+  classical
+  let P : ℝ :=
+    chi u * Real.cos (((n * u : ℕ) : ℝ) * theta0) /
+      ((u : ℝ) * Real.cos ((n : ℝ) * theta0))
+  have hcosn : Real.cos ((n : ℝ) * theta0) ≠ 0 := by
+    simpa using hcosns 1 (one_dvd u)
+  calc
+    (∑ s ∈ oddUpTo R,
+      if s ∣ u then
+        gamma theta0 (n * u) (n * s) * spikeCoeff theta0 n s
+      else 0) =
+        ∑ s ∈ oddUpTo R, P * (if s ∣ u then muR s else 0) := by
+          apply Finset.sum_congr rfl
+          intro s hs
+          by_cases hdiv : s ∣ u
+          · have hgamma :=
+              gamma_mul_spikeCoeff_eq_prefactor_mul_muR
+              (theta0 := theta0) (n := n) (u := u) (s := s)
+              hnpos huodd hdiv hcosn (hcosns s hdiv)
+            simpa [hdiv, P, Nat.cast_mul, mul_assoc] using hgamma
+          · simp [hdiv]
+    _ =
+      P * (∑ s ∈ oddUpTo R, if s ∣ u then muR s else 0) := by
+        rw [Finset.mul_sum]
+
+lemma rowEval_finiteSpikeRaw_odd_eq_prefactor_mul_partial_mu
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI) {R n u : ℕ}
+    (hnpos : 0 < n) (huodd : Odd u)
+    (hnot : ¬ IsNodeRow theta0 (n * u))
+    (hcosns : ∀ s : ℕ, s ∣ u →
+      Real.cos (((n * s : ℕ) : ℝ) * theta0) ≠ 0) :
+    rowEval theta0 (n * u) (finiteSpikeRaw theta0 R n) =
+      (chi u * Real.cos (((n * u : ℕ) : ℝ) * theta0) /
+          ((u : ℝ) * Real.cos ((n : ℝ) * theta0))) *
+        (∑ s ∈ oddUpTo R, if s ∣ u then muR s else 0) := by
+  rw [rowEval_finiteSpikeRaw_odd_eq_oddUpTo_if_of_not_isNodeRow
+    htheta0 hnpos huodd hnot hcosns]
+  exact sum_oddUpTo_if_dvd_gamma_mul_spikeCoeff_eq_prefactor_mul
+    hnpos huodd hcosns
+
 lemma divisors_subset_oddUpTo {R u : ℕ} (huodd : Odd u) (huR : u ≤ R) :
     Nat.divisors u ⊆ oddUpTo R := by
   intro s hs
@@ -989,6 +1179,355 @@ lemma sum_oddUpTo_if_dvd_eq_sum_divisors
           intro s hs
           have hdiv : s ∣ u := (Nat.mem_divisors.mp hs).1
           simp [hdiv]
+
+lemma sum_oddUpTo_if_dvd_eq_sum_divisors_le
+    {R u : ℕ} (huodd : Odd u) (G : ℕ → ℝ) :
+    (∑ s ∈ oddUpTo R, if s ∣ u then G s else 0) =
+      ∑ s ∈ Nat.divisors u, if s ≤ R then G s else 0 := by
+  classical
+  let D : Finset ℕ := (Nat.divisors u).filter fun s => s ≤ R
+  have hsubset : D ⊆ oddUpTo R := by
+    intro s hs
+    have hsD := Finset.mem_filter.mp hs
+    have hdiv : s ∣ u := (Nat.mem_divisors.mp hsD.1).1
+    have hspos : 0 < s := Nat.pos_of_mem_divisors hsD.1
+    have hsodd : Odd s := odd_of_dvd_odd huodd hdiv
+    exact mem_oddUpTo_iff.mpr ⟨hspos, hsD.2, hsodd⟩
+  have houtside :
+      ∀ x ∈ oddUpTo R, x ∉ D →
+        (if x ∣ u then G x else 0) = 0 := by
+    intro x hx hnot
+    by_cases hdiv : x ∣ u
+    · have hxdiv : x ∈ Nat.divisors u :=
+        Nat.mem_divisors.mpr ⟨hdiv, Nat.ne_of_gt huodd.pos⟩
+      have hxle : x ≤ R := (mem_oddUpTo_iff.mp hx).2.1
+      have hxD : x ∈ D := by
+        exact Finset.mem_filter.mpr ⟨hxdiv, hxle⟩
+      exact False.elim (hnot hxD)
+    · simp [hdiv]
+  calc
+    (∑ s ∈ oddUpTo R, if s ∣ u then G s else 0) =
+        ∑ s ∈ D, if s ∣ u then G s else 0 := by
+          exact (Finset.sum_subset hsubset houtside).symm
+    _ = ∑ s ∈ D, G s := by
+          apply Finset.sum_congr rfl
+          intro s hs
+          have hdiv : s ∣ u := (Nat.mem_divisors.mp (Finset.mem_filter.mp hs).1).1
+          simp [hdiv]
+    _ = ∑ s ∈ Nat.divisors u, if s ≤ R then G s else 0 := by
+          simp [D, Finset.sum_filter]
+
+lemma partial_mu_sum_eq_neg_tail
+    {R u : ℕ} (huodd : Odd u) (hu_ne : u ≠ 1) :
+    (∑ s ∈ oddUpTo R, if s ∣ u then muR s else 0) =
+      -∑ s ∈ Nat.divisors u, if R < s then muR s else 0 := by
+  classical
+  have hpartial :=
+    sum_oddUpTo_if_dvd_eq_sum_divisors_le (R := R) (u := u) huodd muR
+  have hsplit :
+      (∑ s ∈ Nat.divisors u, muR s) =
+        (∑ s ∈ Nat.divisors u, if s ≤ R then muR s else 0) +
+          ∑ s ∈ Nat.divisors u, if R < s then muR s else 0 := by
+    rw [← Finset.sum_add_distrib]
+    apply Finset.sum_congr rfl
+    intro s hs
+    by_cases hsR : s ≤ R
+    · simp [hsR, not_lt.mpr hsR]
+    · have hRs : R < s := Nat.lt_of_not_ge hsR
+      simp [hsR, hRs]
+  have hfull : (∑ s ∈ Nat.divisors u, muR s) = 0 :=
+    sum_muR_divisors_eq_zero_of_ne_one huodd.pos hu_ne
+  rw [hsplit, ← hpartial] at hfull
+  linarith
+
+lemma abs_sum_muR_tail_le_card (R u : ℕ) :
+    |∑ s ∈ Nat.divisors u, if R < s then muR s else 0| ≤
+      (((Nat.divisors u).filter fun s => R < s).card : ℝ) := by
+  classical
+  rw [← Finset.sum_filter]
+  calc
+    |∑ s ∈ (Nat.divisors u).filter fun s => R < s, muR s| ≤
+        ∑ s ∈ (Nat.divisors u).filter fun s => R < s, |muR s| := by
+          exact Finset.abs_sum_le_sum_abs _ _
+    _ ≤ ∑ s ∈ (Nat.divisors u).filter fun s => R < s, (1 : ℝ) := by
+          apply Finset.sum_le_sum
+          intro s hs
+          exact abs_muR_le_one s
+    _ = (((Nat.divisors u).filter fun s => R < s).card : ℝ) := by
+          simp
+
+lemma abs_future_prefactor_le
+    {theta0 : ℝ} {n u : ℕ}
+    (huodd : Odd u)
+    (hcosn : Real.cos ((n : ℝ) * theta0) ≠ 0) :
+    |chi u * Real.cos (((n * u : ℕ) : ℝ) * theta0) /
+        ((u : ℝ) * Real.cos ((n : ℝ) * theta0))| ≤
+      1 / ((u : ℝ) * |Real.cos ((n : ℝ) * theta0)|) := by
+  have hupos : 0 < u := huodd.pos
+  have hu_nonneg : 0 ≤ (u : ℝ) := by positivity
+  have hden_pos : 0 < (u : ℝ) * |Real.cos ((n : ℝ) * theta0)| := by
+    exact mul_pos (by positivity) (abs_pos.mpr hcosn)
+  calc
+    |chi u * Real.cos (((n * u : ℕ) : ℝ) * theta0) /
+        ((u : ℝ) * Real.cos ((n : ℝ) * theta0))| =
+        |Real.cos (((n * u : ℕ) : ℝ) * theta0)| /
+          ((u : ℝ) * |Real.cos ((n : ℝ) * theta0)|) := by
+          rw [abs_div, abs_mul, abs_mul, abs_chi,
+            abs_of_nonneg hu_nonneg]
+          ring
+    _ ≤ 1 / ((u : ℝ) * |Real.cos ((n : ℝ) * theta0)|) := by
+          exact div_le_div_of_nonneg_right
+            (Real.abs_cos_le_one _) (le_of_lt hden_pos)
+
+lemma rowEval_finiteSpikeRaw_odd_eq_neg_prefactor_mul_tail_mu
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI) {R n u : ℕ}
+    (hnpos : 0 < n) (huodd : Odd u) (hu_ne : u ≠ 1)
+    (hnot : ¬ IsNodeRow theta0 (n * u))
+    (hcosns : ∀ s : ℕ, s ∣ u →
+      Real.cos (((n * s : ℕ) : ℝ) * theta0) ≠ 0) :
+    rowEval theta0 (n * u) (finiteSpikeRaw theta0 R n) =
+      -((chi u * Real.cos (((n * u : ℕ) : ℝ) * theta0) /
+          ((u : ℝ) * Real.cos ((n : ℝ) * theta0))) *
+        (∑ s ∈ Nat.divisors u, if R < s then muR s else 0)) := by
+  rw [rowEval_finiteSpikeRaw_odd_eq_prefactor_mul_partial_mu
+    htheta0 hnpos huodd hnot hcosns]
+  rw [partial_mu_sum_eq_neg_tail (R := R) (u := u) huodd hu_ne]
+  ring
+
+lemma abs_rowEval_finiteSpikeRaw_odd_le_tail_card
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI) {R n u : ℕ}
+    (hnpos : 0 < n) (huodd : Odd u) (hu_ne : u ≠ 1)
+    (hnot : ¬ IsNodeRow theta0 (n * u))
+    (hcosns : ∀ s : ℕ, s ∣ u →
+      Real.cos (((n * s : ℕ) : ℝ) * theta0) ≠ 0) :
+    |rowEval theta0 (n * u) (finiteSpikeRaw theta0 R n)| ≤
+      (1 / ((u : ℝ) * |Real.cos ((n : ℝ) * theta0)|)) *
+        (((Nat.divisors u).filter fun s => R < s).card : ℝ) := by
+  have hcosn : Real.cos ((n : ℝ) * theta0) ≠ 0 := by
+    simpa using hcosns 1 (one_dvd u)
+  rw [rowEval_finiteSpikeRaw_odd_eq_neg_prefactor_mul_tail_mu
+    htheta0 hnpos huodd hu_ne hnot hcosns]
+  rw [abs_neg, abs_mul]
+  have hpref :=
+    abs_future_prefactor_le (theta0 := theta0) (n := n) (u := u)
+      huodd hcosn
+  have htail := abs_sum_muR_tail_le_card R u
+  exact mul_le_mul hpref htail (abs_nonneg _)
+    (div_nonneg zero_le_one
+      (mul_nonneg (by positivity) (abs_nonneg _)))
+
+lemma divisor_tail_card_le_complement_small_card (R u : ℕ) :
+    ((Nat.divisors u).filter fun s => R < s).card ≤
+      ((Nat.divisors u).filter fun t => R * t < u).card := by
+  classical
+  refine Finset.card_le_card_of_injOn (fun s => u / s) ?_ ?_
+  · intro s hs
+    rw [Finset.mem_coe, Finset.mem_filter] at hs
+    rw [Finset.mem_coe, Finset.mem_filter]
+    rcases hs with ⟨hsdivs, hRs⟩
+    have hsdiv : s ∣ u := (Nat.mem_divisors.mp hsdivs).1
+    have hune : u ≠ 0 := (Nat.mem_divisors.mp hsdivs).2
+    have hspos : 0 < s := Nat.pos_of_mem_divisors hsdivs
+    have hcompdiv : u / s ∣ u := Nat.div_dvd_of_dvd hsdiv
+    have hcompmem : u / s ∈ Nat.divisors u :=
+      Nat.mem_divisors.mpr ⟨hcompdiv, hune⟩
+    have hsu : s ≤ u := Nat.le_of_dvd (Nat.pos_of_ne_zero hune) hsdiv
+    have hqpos : 0 < u / s := Nat.div_pos hsu hspos
+    have hmul_lt : R * (u / s) < s * (u / s) :=
+      Nat.mul_lt_mul_of_pos_right hRs hqpos
+    have hsqu : s * (u / s) = u := by
+      simpa [Nat.mul_comm] using Nat.div_mul_cancel hsdiv
+    exact ⟨hcompmem, by simpa [hsqu] using hmul_lt⟩
+  · intro a ha b hb hab
+    change u / a = u / b at hab
+    rw [Finset.mem_coe, Finset.mem_filter] at ha hb
+    rcases ha with ⟨hadivs, _hRa⟩
+    rcases hb with ⟨hbdivs, _hRb⟩
+    have hadiv : a ∣ u := (Nat.mem_divisors.mp hadivs).1
+    have hbdiv : b ∣ u := (Nat.mem_divisors.mp hbdivs).1
+    have hune : u ≠ 0 := (Nat.mem_divisors.mp hadivs).2
+    have hapos : 0 < a := Nat.pos_of_mem_divisors hadivs
+    have hau : a ≤ u := Nat.le_of_dvd (Nat.pos_of_ne_zero hune) hadiv
+    have hqpos : 0 < u / a := Nat.div_pos hau hapos
+    have hmul_a : (u / a) * a = u := Nat.div_mul_cancel hadiv
+    have hmul_b : (u / b) * b = u := Nat.div_mul_cancel hbdiv
+    have hmul : (u / a) * a = (u / a) * b := by
+      calc
+        (u / a) * a = u := hmul_a
+        _ = (u / b) * b := hmul_b.symm
+        _ = (u / a) * b := by rw [hab]
+    exact Nat.eq_of_mul_eq_mul_left hqpos hmul
+
+lemma abs_rowEval_finiteSpikeRaw_odd_le_complement_small_card
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI) {R n u : ℕ}
+    (hnpos : 0 < n) (huodd : Odd u) (hu_ne : u ≠ 1)
+    (hnot : ¬ IsNodeRow theta0 (n * u))
+    (hcosns : ∀ s : ℕ, s ∣ u →
+      Real.cos (((n * s : ℕ) : ℝ) * theta0) ≠ 0) :
+    |rowEval theta0 (n * u) (finiteSpikeRaw theta0 R n)| ≤
+      (1 / ((u : ℝ) * |Real.cos ((n : ℝ) * theta0)|)) *
+        (((Nat.divisors u).filter fun t => R * t < u).card : ℝ) := by
+  have htail :=
+    abs_rowEval_finiteSpikeRaw_odd_le_tail_card
+      (R := R) htheta0 hnpos huodd hu_ne hnot hcosns
+  have hcard_nat := divisor_tail_card_le_complement_small_card R u
+  have hcard :
+      (((Nat.divisors u).filter fun s => R < s).card : ℝ) ≤
+        (((Nat.divisors u).filter fun t => R * t < u).card : ℝ) := by
+    exact_mod_cast hcard_nat
+  have hpref_nonneg :
+      0 ≤ 1 / ((u : ℝ) * |Real.cos ((n : ℝ) * theta0)|) := by
+    exact div_nonneg zero_le_one
+      (mul_nonneg (by positivity) (abs_nonneg _))
+  exact htail.trans (mul_le_mul_of_nonneg_left hcard hpref_nonneg)
+
+lemma complement_small_card_le_div {R u : ℕ} (hRpos : 0 < R) :
+    ((Nat.divisors u).filter fun t => R * t < u).card ≤ u / R := by
+  classical
+  have hsubset :
+      ((Nat.divisors u).filter fun t => R * t < u) ⊆ Finset.Icc 1 (u / R) := by
+    intro t ht
+    rw [Finset.mem_filter] at ht
+    rw [Finset.mem_Icc]
+    rcases ht with ⟨htdivs, hRt⟩
+    have htpos : 0 < t := Nat.pos_of_mem_divisors htdivs
+    have hle_mul : t * R ≤ u := by
+      have hle : R * t ≤ u := Nat.le_of_lt hRt
+      simpa [Nat.mul_comm] using hle
+    exact ⟨htpos, (Nat.le_div_iff_mul_le hRpos).mpr hle_mul⟩
+  have hcard := Finset.card_le_card hsubset
+  rw [Nat.card_Icc] at hcard
+  simpa using hcard
+
+lemma complement_small_card_div_le_inv {R u : ℕ}
+    (hRpos : 0 < R) (hupos : 0 < u) :
+    ((((Nat.divisors u).filter fun t => R * t < u).card : ℝ) / (u : ℝ)) ≤
+      1 / (R : ℝ) := by
+  classical
+  let C : ℕ := ((Nat.divisors u).filter fun t => R * t < u).card
+  have hcard_nat : C ≤ u / R := by
+    simpa [C] using complement_small_card_le_div (R := R) (u := u) hRpos
+  have hcard_cast : (C : ℝ) ≤ ((u / R : ℕ) : ℝ) := by
+    exact_mod_cast hcard_nat
+  have hfloor : ((u / R : ℕ) : ℝ) ≤ (u : ℝ) / (R : ℝ) :=
+    Nat.cast_div_le
+  have hcard_real : (C : ℝ) ≤ (u : ℝ) / (R : ℝ) :=
+    hcard_cast.trans hfloor
+  have hu_nonneg : 0 ≤ (u : ℝ) := by positivity
+  have hu_ne : (u : ℝ) ≠ 0 := by
+    exact_mod_cast Nat.ne_of_gt hupos
+  have hR_ne : (R : ℝ) ≠ 0 := by
+    exact_mod_cast Nat.ne_of_gt hRpos
+  have h := div_le_div_of_nonneg_right hcard_real hu_nonneg
+  have hcalc : ((u : ℝ) / (R : ℝ)) / (u : ℝ) = 1 / (R : ℝ) := by
+    field_simp [hu_ne, hR_ne]
+  simpa [C, hcalc] using h
+
+lemma abs_rowEval_finiteSpikeRaw_odd_le_inv_R_abs_cos
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI) {R n u : ℕ}
+    (hRpos : 0 < R) (hnpos : 0 < n) (huodd : Odd u) (hu_ne : u ≠ 1)
+    (hnot : ¬ IsNodeRow theta0 (n * u))
+    (hcosns : ∀ s : ℕ, s ∣ u →
+      Real.cos (((n * s : ℕ) : ℝ) * theta0) ≠ 0) :
+    |rowEval theta0 (n * u) (finiteSpikeRaw theta0 R n)| ≤
+      1 / ((R : ℝ) * |Real.cos ((n : ℝ) * theta0)|) := by
+  have hbase :=
+    abs_rowEval_finiteSpikeRaw_odd_le_complement_small_card
+      (R := R) htheta0 hnpos huodd hu_ne hnot hcosns
+  have hcard_div :=
+    complement_small_card_div_le_inv (R := R) (u := u) hRpos huodd.pos
+  have hcosn : Real.cos ((n : ℝ) * theta0) ≠ 0 := by
+    simpa using hcosns 1 (one_dvd u)
+  have hcos_abs_pos : 0 < |Real.cos ((n : ℝ) * theta0)| := abs_pos.mpr hcosn
+  have hu_ne_real : (u : ℝ) ≠ 0 := by
+    exact_mod_cast Nat.ne_of_gt huodd.pos
+  have hR_ne_real : (R : ℝ) ≠ 0 := by
+    exact_mod_cast Nat.ne_of_gt hRpos
+  have hcos_abs_ne : |Real.cos ((n : ℝ) * theta0)| ≠ 0 :=
+    ne_of_gt hcos_abs_pos
+  calc
+    |rowEval theta0 (n * u) (finiteSpikeRaw theta0 R n)| ≤
+        (1 / ((u : ℝ) * |Real.cos ((n : ℝ) * theta0)|)) *
+          (((Nat.divisors u).filter fun t => R * t < u).card : ℝ) := hbase
+    _ = ((((Nat.divisors u).filter fun t => R * t < u).card : ℝ) / (u : ℝ)) *
+          (1 / |Real.cos ((n : ℝ) * theta0)|) := by
+          field_simp [hu_ne_real, hcos_abs_ne]
+    _ ≤ (1 / (R : ℝ)) * (1 / |Real.cos ((n : ℝ) * theta0)|) := by
+          exact mul_le_mul_of_nonneg_right hcard_div (by positivity)
+    _ = 1 / ((R : ℝ) * |Real.cos ((n : ℝ) * theta0)|) := by
+          field_simp [hR_ne_real, hcos_abs_ne]
+
+lemma abs_rowEval_finiteSpikeRaw_odd_le_inv_R_kappa
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI) {R n u : ℕ} {kappa : ℝ}
+    (hRpos : 0 < R) (hnpos : 0 < n) (huodd : Odd u) (hu_ne : u ≠ 1)
+    (hkappa_pos : 0 < kappa)
+    (hkappa_le : kappa ≤ |Real.cos ((n : ℝ) * theta0)|)
+    (hnot : ¬ IsNodeRow theta0 (n * u))
+    (hcosns : ∀ s : ℕ, s ∣ u →
+      Real.cos (((n * s : ℕ) : ℝ) * theta0) ≠ 0) :
+    |rowEval theta0 (n * u) (finiteSpikeRaw theta0 R n)| ≤
+      1 / ((R : ℝ) * kappa) := by
+  have hbase :=
+    abs_rowEval_finiteSpikeRaw_odd_le_inv_R_abs_cos
+      (R := R) htheta0 hRpos hnpos huodd hu_ne hnot hcosns
+  have hR_pos_real : 0 < (R : ℝ) := by
+    exact_mod_cast hRpos
+  have hden_pos : 0 < (R : ℝ) * kappa := mul_pos hR_pos_real hkappa_pos
+  have hden_le :
+      (R : ℝ) * kappa ≤
+        (R : ℝ) * |Real.cos ((n : ℝ) * theta0)| := by
+    exact mul_le_mul_of_nonneg_left hkappa_le (le_of_lt hR_pos_real)
+  exact hbase.trans (one_div_le_one_div_of_le hden_pos hden_le)
+
+lemma sqrt_nat_le_self {R : ℕ} (hR : 1 ≤ R) :
+    Real.sqrt (R : ℝ) ≤ (R : ℝ) := by
+  have hR_nonneg : 0 ≤ (R : ℝ) := by positivity
+  have hsq : (Real.sqrt (R : ℝ)) ^ 2 ≤ (R : ℝ) ^ 2 := by
+    rw [Real.sq_sqrt hR_nonneg]
+    nlinarith [show (1 : ℝ) ≤ (R : ℝ) by exact_mod_cast hR]
+  have habs := sq_le_sq.mp hsq
+  simpa [abs_of_nonneg (Real.sqrt_nonneg _), abs_of_nonneg hR_nonneg] using habs
+
+lemma one_div_nat_le_one_div_sqrt {R : ℕ} (hR : 1 ≤ R) :
+    1 / (R : ℝ) ≤ 1 / Real.sqrt (R : ℝ) := by
+  have hsqrt_pos : 0 < Real.sqrt (R : ℝ) := by
+    exact Real.sqrt_pos_of_pos (by exact_mod_cast (lt_of_lt_of_le Nat.zero_lt_one hR))
+  exact one_div_le_one_div_of_le hsqrt_pos (sqrt_nat_le_self hR)
+
+lemma inv_R_kappa_le_sqrt {R : ℕ} {kappa : ℝ}
+    (hR : 1 ≤ R) (hkappa_pos : 0 < kappa) :
+    1 / ((R : ℝ) * kappa) ≤ (1 / kappa) / Real.sqrt (R : ℝ) := by
+  have hR_ne : (R : ℝ) ≠ 0 := by
+    exact_mod_cast Nat.ne_of_gt (lt_of_lt_of_le Nat.zero_lt_one hR)
+  have hk_ne : kappa ≠ 0 := ne_of_gt hkappa_pos
+  have hsqrt_ne : Real.sqrt (R : ℝ) ≠ 0 := by
+    exact ne_of_gt
+      (Real.sqrt_pos_of_pos (by exact_mod_cast (lt_of_lt_of_le Nat.zero_lt_one hR)))
+  have hbase := one_div_nat_le_one_div_sqrt hR
+  have hmul := mul_le_mul_of_nonneg_right hbase (by positivity : 0 ≤ 1 / kappa)
+  calc
+    1 / ((R : ℝ) * kappa) = (1 / (R : ℝ)) * (1 / kappa) := by
+      field_simp [hR_ne, hk_ne]
+    _ ≤ (1 / Real.sqrt (R : ℝ)) * (1 / kappa) := hmul
+    _ = (1 / kappa) / Real.sqrt (R : ℝ) := by
+      field_simp [hk_ne, hsqrt_ne]
+
+lemma abs_rowEval_finiteSpikeRaw_odd_le_sqrt_kappa
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI) {R n u : ℕ} {kappa : ℝ}
+    (hR : 1 ≤ R) (hnpos : 0 < n) (huodd : Odd u) (hu_ne : u ≠ 1)
+    (hkappa_pos : 0 < kappa)
+    (hkappa_le : kappa ≤ |Real.cos ((n : ℝ) * theta0)|)
+    (hnot : ¬ IsNodeRow theta0 (n * u))
+    (hcosns : ∀ s : ℕ, s ∣ u →
+      Real.cos (((n * s : ℕ) : ℝ) * theta0) ≠ 0) :
+    |rowEval theta0 (n * u) (finiteSpikeRaw theta0 R n)| ≤
+      (1 / kappa) / Real.sqrt (R : ℝ) := by
+  have hRpos : 0 < R := lt_of_lt_of_le Nat.zero_lt_one hR
+  have hbase :=
+    abs_rowEval_finiteSpikeRaw_odd_le_inv_R_kappa
+      (R := R) htheta0 hRpos hnpos huodd hu_ne
+      hkappa_pos hkappa_le hnot hcosns
+  exact hbase.trans (inv_R_kappa_le_sqrt hR hkappa_pos)
 
 lemma row_sum_finiteSpikeRaw_eq_sum_divisors_gamma
     {theta0 : ℝ} {R n u : ℕ}
@@ -1319,6 +1858,29 @@ lemma mem_spikePoints_of_mem
   refine Finset.mem_image.mpr ?_
   exact ⟨⟨s, k⟩, by simpa [spikeIdx] using And.intro hs hk, rfl⟩
 
+lemma finiteSpikeRaw_abs_le_on_spikePoints_of_primitive_bound
+    {theta0 : ℝ} {R n : ℕ} {B : ℝ} (hnpos : 0 < n)
+    (hbound : ∀ s : ℕ, s ∈ oddUpTo R → ∀ k : ℕ, k ∈ primIdx (n * s) →
+      |finiteSpikeValueAtPrimitive theta0 n s k| ≤ B) :
+    ∀ p : ℝ, p ∈ spikePoints n R → |finiteSpikeRaw theta0 R n p| ≤ B := by
+  classical
+  intro p hp
+  rcases Finset.mem_image.mp hp with ⟨q, hq, hp_eq⟩
+  have hqmem := mem_spikeIdx_iff.mp hq
+  rw [← hp_eq]
+  rw [finiteSpikeRaw_at_primitive hnpos hqmem.1 hqmem.2]
+  exact hbound q.1 hqmem.1 q.2 hqmem.2
+
+lemma finiteSpikeRaw_abs_le_on_spikePoints_of_coeff_bound
+    {theta0 : ℝ} {R n : ℕ} {B : ℝ} (hnpos : 0 < n)
+    (hVpos : ∀ s : ℕ, s ∈ oddUpTo R → 0 < Vprim theta0 (n * s))
+    (hcoeff : ∀ s : ℕ, s ∈ oddUpTo R →
+      |spikeCoeff theta0 n s| / Vprim theta0 (n * s) ≤ B) :
+    ∀ p : ℝ, p ∈ spikePoints n R → |finiteSpikeRaw theta0 R n p| ≤ B := by
+  exact finiteSpikeRaw_abs_le_on_spikePoints_of_primitive_bound hnpos
+    (fun s hs k _hk =>
+      abs_finiteSpikeValueAtPrimitive_le (hVpos s hs) (hcoeff s hs))
+
 lemma finiteSpikeRaw_eq_zero_of_not_mem_spikePoints
     {theta0 theta : ℝ} {R n : ℕ}
     (hnot : theta ∉ spikePoints n R) :
@@ -1435,18 +1997,26 @@ lemma exists_constant_isolating_radius
       (∀ p : ℝ, p ∈ P → 0 < radius p) ∧
       (∀ p : ℝ, p ∈ P → ∀ e : ℝ, e ∈ E → e ≠ p →
         radius p ≤ |e - p|) ∧
+      (∀ p : ℝ, p ∈ P → ∀ q : ℝ, q ∈ P → p ≠ q →
+        radius p + radius q ≤ |p - q|) ∧
       (∃ eps > 0, ∀ theta ∈ AngleI, |theta - theta0| < eps →
         ∀ p : ℝ, p ∈ P → radius p ≤ |theta - p|) := by
   classical
   rcases finite_set_pair_positive_separation E with ⟨rho, hrho, hpair⟩
   let radius : ℝ → ℝ := fun _ => rho / 4
-  refine ⟨radius, ?_, ?_, ?_⟩
+  refine ⟨radius, ?_, ?_, ?_, ?_⟩
   · intro p hp
     dsimp [radius]
     positivity
   · intro p hp e he hne
     have hpE : p ∈ E := hPE hp
     have hle : rho ≤ |e - p| := hpair e he p hpE hne
+    dsimp [radius]
+    linarith
+  · intro p hp q hq hpq
+    have hpE : p ∈ E := hPE hp
+    have hqE : q ∈ E := hPE hq
+    have hle : rho ≤ |p - q| := hpair p hpE q hqE hpq
     dsimp [radius]
     linarith
   · refine ⟨rho / 4, by positivity, ?_⟩
@@ -1643,6 +2213,64 @@ lemma abs_continuousSpikeRaw_le_sum_abs_height
           intro p hp
           exact abs_tent_le_abs_height (hradpos p hp)
 
+lemma abs_continuousSpikeRaw_le_height_bound
+    {P : Finset ℝ} {radius height : ℝ → ℝ} {B theta : ℝ}
+    (hB : 0 ≤ B)
+    (hradpos : ∀ p : ℝ, p ∈ P → 0 < radius p)
+    (hsep : ∀ p : ℝ, p ∈ P → ∀ q : ℝ, q ∈ P → p ≠ q →
+      radius p + radius q ≤ |p - q|)
+    (hheight : ∀ p : ℝ, p ∈ P → |height p| ≤ B) :
+    |continuousSpikeRaw P radius height theta| ≤ B := by
+  classical
+  induction P using Finset.induction_on with
+  | empty =>
+      simp [continuousSpikeRaw, hB]
+  | insert a P haP ih =>
+      have hrad_a : 0 < radius a := hradpos a (Finset.mem_insert_self a P)
+      rw [continuousSpikeRaw, Finset.sum_insert haP]
+      by_cases hfar_a : radius a ≤ |theta - a|
+      · have htent_a : tent a (radius a) (height a) theta = 0 :=
+          tent_eq_zero_of_radius_le hrad_a hfar_a
+        rw [htent_a, zero_add]
+        have hradP : ∀ p : ℝ, p ∈ P → 0 < radius p := by
+          intro p hp
+          exact hradpos p (Finset.mem_insert_of_mem hp)
+        have hsepP : ∀ p : ℝ, p ∈ P → ∀ q : ℝ, q ∈ P → p ≠ q →
+            radius p + radius q ≤ |p - q| := by
+          intro p hp q hq hpq
+          exact hsep p (Finset.mem_insert_of_mem hp)
+            q (Finset.mem_insert_of_mem hq) hpq
+        have hheightP : ∀ p : ℝ, p ∈ P → |height p| ≤ B := by
+          intro p hp
+          exact hheight p (Finset.mem_insert_of_mem hp)
+        simpa [continuousSpikeRaw] using ih hradP hsepP hheightP
+      · have hnear_a : |theta - a| < radius a := lt_of_not_ge hfar_a
+        have hfarP : ∀ p : ℝ, p ∈ P → radius p ≤ |theta - p| := by
+          intro p hp
+          by_contra hnot
+          have hnear_p : |theta - p| < radius p := lt_of_not_ge hnot
+          have hap : a ≠ p := by
+            intro hap
+            exact haP (hap ▸ hp)
+          have hsep_ap : radius a + radius p ≤ |a - p| :=
+            hsep a (Finset.mem_insert_self a P)
+              p (Finset.mem_insert_of_mem hp) hap
+          have htri : |a - p| ≤ |theta - a| + |theta - p| := by
+            have h := abs_add_le (a - theta) (theta - p)
+            have hsum : a - theta + (theta - p) = a - p := by ring
+            simpa [hsum, abs_sub_comm a theta] using h
+          have hlt : |theta - a| + |theta - p| < radius a + radius p :=
+            add_lt_add hnear_a hnear_p
+          linarith
+        have hsumP : (∑ p ∈ P, tent p (radius p) (height p) theta) = 0 := by
+          apply Finset.sum_eq_zero
+          intro p hp
+          exact tent_eq_zero_of_radius_le
+            (hradpos p (Finset.mem_insert_of_mem hp)) (hfarP p hp)
+        rw [hsumP, add_zero]
+        exact (abs_tent_le_abs_height hrad_a).trans
+          (hheight a (Finset.mem_insert_self a P))
+
 lemma norm_continuousSpike_le_sum_abs_height
     {P : Finset ℝ} {radius height : ℝ → ℝ}
     (hradpos : ∀ p : ℝ, p ∈ P → 0 < radius p) :
@@ -1652,6 +2280,21 @@ lemma norm_continuousSpike_le_sum_abs_height
   simpa [Real.norm_eq_abs, continuousSpike] using
     abs_continuousSpikeRaw_le_sum_abs_height
       (P := P) (radius := radius) (height := height) (theta := theta.1) hradpos
+
+lemma norm_continuousSpike_le_height_bound
+    {P : Finset ℝ} {radius height : ℝ → ℝ} {B : ℝ}
+    (hB : 0 ≤ B)
+    (hradpos : ∀ p : ℝ, p ∈ P → 0 < radius p)
+    (hsep : ∀ p : ℝ, p ∈ P → ∀ q : ℝ, q ∈ P → p ≠ q →
+      radius p + radius q ≤ |p - q|)
+    (hheight : ∀ p : ℝ, p ∈ P → |height p| ≤ B) :
+    ‖continuousSpike P radius height‖ ≤ B := by
+  rw [ContinuousMap.norm_le _ hB]
+  intro theta
+  simpa [Real.norm_eq_abs, continuousSpike] using
+    abs_continuousSpikeRaw_le_height_bound
+      (P := P) (radius := radius) (height := height)
+      (B := B) (theta := theta.1) hB hradpos hsep hheight
 
 lemma exists_continuousSpike_exact_block
     {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
@@ -1680,12 +2323,44 @@ lemma exists_continuousSpike_exact_block
   · exact continuousSpike_vanishesNear_of_radius_away hradpos haway
   · exact norm_continuousSpike_le_sum_abs_height hradpos
 
+lemma exists_continuousSpike_exact_block_norm_le
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
+    {R n : ℕ} (hnpos : 0 < n) (hR : 1 ≤ R) {radius : ℝ → ℝ}
+    (hradpos : ∀ p : ℝ, p ∈ spikePoints n R → 0 < radius p)
+    (hsep : ∀ p : ℝ, p ∈ spikePoints n R →
+      ∀ e : ℝ, e ∈ insert theta0 (nodesUpTo (R * n)) → e ≠ p →
+        radius p ≤ |e - p|)
+    (hpairsep : ∀ p : ℝ, p ∈ spikePoints n R →
+      ∀ q : ℝ, q ∈ spikePoints n R → p ≠ q →
+        radius p + radius q ≤ |p - q|)
+    (haway : ∃ eps > 0, ∀ theta ∈ AngleI, |theta - theta0| < eps →
+      ∀ p : ℝ, p ∈ spikePoints n R → radius p ≤ |theta - p|)
+    (hcos : ∀ s : ℕ, s ∈ oddUpTo R →
+      Real.cos (((n * s : ℕ) : ℝ) * theta0) ≠ 0)
+    (hV : ∀ s : ℕ, s ∈ oddUpTo R → Vprim theta0 (n * s) ≠ 0)
+    {B : ℝ} (hB : 0 ≤ B)
+    (hheight : ∀ p : ℝ, p ∈ spikePoints n R →
+      |finiteSpikeRaw theta0 R n p| ≤ B) :
+    ∃ psi : AngleFun,
+      VanishesNear theta0 (angleFunToRaw psi) ∧
+      F theta0 n psi = 1 ∧
+      (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+        F theta0 j psi = 0) ∧
+      ‖psi‖ ≤ B := by
+  let psi : AngleFun :=
+    continuousSpike (spikePoints n R) radius (finiteSpikeRaw theta0 R n)
+  have hblock :=
+    F_continuousSpike_block_rows
+      (theta0 := theta0) htheta0 hnpos hR hradpos hsep hcos hV
+  refine ⟨psi, ?_, hblock.1, hblock.2, ?_⟩
+  · exact continuousSpike_vanishesNear_of_radius_away hradpos haway
+  · exact norm_continuousSpike_le_height_bound hB hradpos hpairsep hheight
+
 lemma exists_continuousSpike_exact_block_of_good_rows
     {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
     {R n : ℕ} (hnpos : 0 < n) (hR : 1 ≤ R)
     (hcos : ∀ s : ℕ, s ∈ oddUpTo R →
-      Real.cos (((n * s : ℕ) : ℝ) * theta0) ≠ 0)
-    (hV : ∀ s : ℕ, s ∈ oddUpTo R → Vprim theta0 (n * s) ≠ 0) :
+      Real.cos (((n * s : ℕ) : ℝ) * theta0) ≠ 0) :
     ∃ psi : AngleFun,
       VanishesNear theta0 (angleFunToRaw psi) ∧
       F theta0 n psi = 1 ∧
@@ -1704,9 +2379,82 @@ lemma exists_continuousSpike_exact_block_of_good_rows
   rcases exists_constant_isolating_radius
       (P := spikePoints n R) (E := E) (theta0 := theta0)
       hPE hthetaE hthetaP with
-    ⟨radius, hradpos, hsep, haway⟩
+    ⟨radius, hradpos, hsep, _hpairsep, haway⟩
+  have hV : ∀ s : ℕ, s ∈ oddUpTo R → Vprim theta0 (n * s) ≠ 0 := by
+    intro s hs
+    have hspos : 0 < s := (mem_oddUpTo_iff.mp hs).2.2.pos
+    have hdpos : 0 < n * s := Nat.mul_pos hnpos hspos
+    have hnot : ¬ IsNodeRow theta0 (n * s) := by
+      simpa [IsNodeRow] using hcos s hs
+    exact Vprim_ne_zero_of_not_isNodeRow htheta0 hdpos hnot
   exact exists_continuousSpike_exact_block
     htheta0 hnpos hR hradpos hsep haway hcos hV
+
+lemma exists_continuousSpike_exact_block_of_good_rows_norm_le
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
+    {R n : ℕ} (hnpos : 0 < n) (hR : 1 ≤ R)
+    (hcos : ∀ s : ℕ, s ∈ oddUpTo R →
+      Real.cos (((n * s : ℕ) : ℝ) * theta0) ≠ 0)
+    {B : ℝ} (hB : 0 ≤ B)
+    (hheight : ∀ p : ℝ, p ∈ spikePoints n R →
+      |finiteSpikeRaw theta0 R n p| ≤ B) :
+    ∃ psi : AngleFun,
+      VanishesNear theta0 (angleFunToRaw psi) ∧
+      F theta0 n psi = 1 ∧
+      (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+        F theta0 j psi = 0) ∧
+      ‖psi‖ ≤ B := by
+  classical
+  let E : Finset ℝ := insert theta0 (nodesUpTo (R * n))
+  have hPE : spikePoints n R ⊆ E := by
+    intro p hp
+    exact Finset.mem_insert.mpr
+      (Or.inr (spikePoints_subset_nodesUpTo hnpos hp))
+  have hthetaE : theta0 ∈ E := Finset.mem_insert_self _ _
+  have hthetaP : theta0 ∉ spikePoints n R :=
+    theta0_not_mem_spikePoints_of_good_rows hcos
+  rcases exists_constant_isolating_radius
+      (P := spikePoints n R) (E := E) (theta0 := theta0)
+      hPE hthetaE hthetaP with
+    ⟨radius, hradpos, hsep, hpairsep, haway⟩
+  have hV : ∀ s : ℕ, s ∈ oddUpTo R → Vprim theta0 (n * s) ≠ 0 := by
+    intro s hs
+    have hspos : 0 < s := (mem_oddUpTo_iff.mp hs).2.2.pos
+    have hdpos : 0 < n * s := Nat.mul_pos hnpos hspos
+    have hnot : ¬ IsNodeRow theta0 (n * s) := by
+      simpa [IsNodeRow] using hcos s hs
+    exact Vprim_ne_zero_of_not_isNodeRow htheta0 hdpos hnot
+  exact exists_continuousSpike_exact_block_norm_le
+    htheta0 hnpos hR hradpos hsep hpairsep haway hcos hV hB hheight
+
+lemma exists_continuousSpike_exact_block_of_good_rows_coeff_bound
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
+    {R n : ℕ} (hnpos : 0 < n) (hR : 1 ≤ R)
+    (hcos : ∀ s : ℕ, s ∈ oddUpTo R →
+      Real.cos (((n * s : ℕ) : ℝ) * theta0) ≠ 0)
+    {B : ℝ} (hB : 0 ≤ B)
+    (hcoeff : ∀ s : ℕ, s ∈ oddUpTo R →
+      |spikeCoeff theta0 n s| / Vprim theta0 (n * s) ≤ B) :
+    ∃ psi : AngleFun,
+      VanishesNear theta0 (angleFunToRaw psi) ∧
+      F theta0 n psi = 1 ∧
+      (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+        F theta0 j psi = 0) ∧
+      ‖psi‖ ≤ B := by
+  have hVpos : ∀ s : ℕ, s ∈ oddUpTo R → 0 < Vprim theta0 (n * s) := by
+    intro s hs
+    have hspos : 0 < s := (mem_oddUpTo_iff.mp hs).2.2.pos
+    have hdpos : 0 < n * s := Nat.mul_pos hnpos hspos
+    have hnot : ¬ IsNodeRow theta0 (n * s) := by
+      simpa [IsNodeRow] using hcos s hs
+    exact Vprim_pos_of_not_isNodeRow htheta0 hdpos hnot
+  have hheight :
+      ∀ p : ℝ, p ∈ spikePoints n R →
+        |finiteSpikeRaw theta0 R n p| ≤ B :=
+    finiteSpikeRaw_abs_le_on_spikePoints_of_coeff_bound
+      hnpos hVpos hcoeff
+  exact exists_continuousSpike_exact_block_of_good_rows_norm_le
+    htheta0 hnpos hR hcos hB hheight
 
 end Erdos1151Formalization
 
