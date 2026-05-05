@@ -2158,12 +2158,13 @@ or simply rely on `classical` inside proofs. This is not an unproved axiom in th
 5. Fill the cluster merge lemma.
 6. Fill summability and continuous linear map/t-sum manipulation, including `FCLM`.
 7. Prove off-point decay for `F`.
-8. Prove finite algebraic spike assuming primitive mass.
-9. Prove continuous block spike assuming finite algebraic spike and the counting estimates.
-10. Prove primitive mass, using existential constants rather than sharp bounds.
-11. Prove good dyadic rows.
-12. Replace the temporary `chebLagEval` placeholder with the real Lagrange interpolation definition.
-13. Prove the Lagrange/Chebyshev bridge and transfer to the final statement.
+8. Prove the constant-row lemma `F θ₀ n (const c) = c` for `0 < n`.
+9. Prove finite algebraic spike assuming primitive mass.
+10. Prove continuous block spike assuming finite algebraic spike and the counting estimates.
+11. Prove primitive mass, using existential constants rather than sharp bounds.
+12. Prove good dyadic rows.
+13. Replace the temporary `chebLagEval` placeholder with the real Lagrange interpolation definition.
+14. Prove the Lagrange/Chebyshev bridge and transfer to the final statement.
 
 This order gives useful compilation checkpoints and avoids getting stuck at the hardest analytic estimate before the final construction is tested.
 
@@ -2174,6 +2175,15 @@ This is the interface I recommend using while developing the final construction.
 ```lean
 structure AbstractBlockSpikeHypothesis
     (θ₀ : ℝ) (hθ₀ : θ₀ ∈ AngleI) where
+  /-- Constant functions are fixed by positive rows. -/
+  const_eval : ∀ c : ℝ, ∀ n : ℕ, 0 < n →
+    F θ₀ n (ContinuousMap.const AngleI c) = c
+
+  /-- The off-point decay lemma needed for finite sums of old spikes. -/
+  off_point_decay : ∀ ψ : AngleFun,
+    VanishesNear θ₀ ψ.toRaw →
+      Tendsto (fun n : ℕ => F θ₀ n ψ) atTop (nhds 0)
+
   η : ℕ → ℝ
   η_nonneg : ∀ R, 0 ≤ η R
   η_tendsto_zero : Tendsto η atTop (nhds 0)

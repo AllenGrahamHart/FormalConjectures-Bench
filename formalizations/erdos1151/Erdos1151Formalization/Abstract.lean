@@ -34,6 +34,11 @@ lemma exists_large_odd_eta_lt
 /-- Abstract block-spike data sufficient for the diagonal cluster-set theorem. -/
 structure AbstractBlockSpikeHypothesis
     (theta0 : ℝ) (_htheta0 : theta0 ∈ AngleI) where
+  const_eval : ∀ c : ℝ, ∀ n : ℕ, 0 < n →
+    F theta0 n (ContinuousMap.const AngleI c) = c
+  off_point_decay : ∀ psi : AngleFun,
+    VanishesNear theta0 (angleFunToRaw psi) →
+      Tendsto (fun n : ℕ => F theta0 n psi) Filter.atTop (nhds 0)
   eta : ℕ → ℝ
   eta_nonneg : ∀ R, 0 ≤ eta R
   eta_tendsto_zero : Tendsto eta atTop (nhds 0)
@@ -47,6 +52,32 @@ structure AbstractBlockSpikeHypothesis
         (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n → F theta0 j psi = 0) ∧
         (∀ j : ℕ, R * n < j → |F theta0 j psi| ≤ eta R + delta) ∧
         ‖psi‖ ≤ C_R / Real.log (n : ℝ)
+
+lemma AbstractBlockSpikeHypothesis.exists_spike_with_eta_lt
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {eps delta : ℝ} (heps : 0 < eps) (hdelta : 0 < delta)
+    (Rmin Nrow : ℕ) :
+    ∃ R : ℕ, ∃ C_R : ℝ, ∃ n : ℕ, ∃ psi : AngleFun,
+      Rmin ≤ R ∧
+      Odd R ∧
+      3 ≤ R ∧
+      H.eta R < eps ∧
+      0 < C_R ∧
+      Nrow ≤ n ∧
+      0 < n ∧
+      VanishesNear theta0 (angleFunToRaw psi) ∧
+      F theta0 n psi = 1 ∧
+      (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n → F theta0 j psi = 0) ∧
+      (∀ j : ℕ, R * n < j → |F theta0 j psi| ≤ H.eta R + delta) ∧
+      ‖psi‖ ≤ C_R / Real.log (n : ℝ) := by
+  obtain ⟨R, hRmin, hRodd, hR3, hReta⟩ :=
+    exists_large_odd_eta_lt H.eta_tendsto_zero heps Rmin
+  obtain ⟨C_R, hC_R_pos, hspikes⟩ := H.exists_spike R hRodd hR3
+  obtain ⟨n, psi, hnrow, hnpos, hvanish, hhit, hearly, hfuture, hnorm⟩ :=
+    hspikes Nrow delta hdelta
+  exact ⟨R, C_R, n, psi, hRmin, hRodd, hR3, hReta, hC_R_pos, hnrow, hnpos,
+    hvanish, hhit, hearly, hfuture, hnorm⟩
 
 /-- First major milestone: the diagonal construction from abstract block spikes. -/
 theorem angle_theorem_from_block_spikes
