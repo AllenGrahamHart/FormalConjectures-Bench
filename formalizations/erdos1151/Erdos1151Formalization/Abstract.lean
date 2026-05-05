@@ -2,6 +2,7 @@ import Erdos1151Formalization.ClusterSequence
 import Mathlib.Analysis.Normed.Group.Tannery
 import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Data.Real.Sqrt
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
 
 /-!
@@ -32,6 +33,21 @@ lemma exists_large_odd_eta_lt
     omega
   · omega
   · exact hM R (by omega)
+
+/-- A concrete tail error rate for the block-spike interface. -/
+def etaSqrt (C : ℝ) (R : ℕ) : ℝ :=
+  C / Real.sqrt (R : ℝ)
+
+lemma etaSqrt_nonneg {C : ℝ} (hC : 0 ≤ C) (R : ℕ) :
+    0 ≤ etaSqrt C R := by
+  exact div_nonneg hC (Real.sqrt_nonneg _)
+
+lemma etaSqrt_tendsto_zero (C : ℝ) :
+    Tendsto (etaSqrt C) Filter.atTop (nhds 0) := by
+  have hsqrt :
+      Tendsto (fun R : ℕ => Real.sqrt (R : ℝ)) Filter.atTop Filter.atTop :=
+    Real.tendsto_sqrt_atTop.comp tendsto_natCast_atTop_atTop
+  simpa [etaSqrt] using tendsto_const_nhds.div_atTop hsqrt
 
 lemma tendsto_const_div_log_nat_atTop_zero (C : ℝ) :
     Tendsto (fun n : ℕ => C / Real.log (n : ℝ)) Filter.atTop (nhds 0) := by
