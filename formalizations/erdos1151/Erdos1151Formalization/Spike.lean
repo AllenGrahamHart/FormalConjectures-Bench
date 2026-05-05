@@ -244,6 +244,38 @@ lemma mem_primIdx_iff {d k : ℕ} :
     k ∈ primIdx d ↔ k < d ∧ Nat.Coprime (2 * k + 1) d := by
   simp [primIdx]
 
+lemma odd_coprime_pow_two {a r : ℕ} (ha : Odd a) :
+    Nat.Coprime a (2 ^ r) := by
+  rcases r with _ | r
+  · simp
+  · rw [Nat.coprime_pow_right_iff (Nat.succ_pos r)]
+    exact Nat.coprime_two_right.mpr ha
+
+lemma odd_num_coprime_pow_two (k r : ℕ) :
+    Nat.Coprime (2 * k + 1) (2 ^ r) :=
+  odd_coprime_pow_two (odd_two_mul_add_one k)
+
+lemma IsPowTwo.odd_num_coprime {n k : ℕ} (hn : IsPowTwo n) :
+    Nat.Coprime (2 * k + 1) n := by
+  rcases hn with ⟨r, rfl⟩
+  exact odd_num_coprime_pow_two k r
+
+lemma coprime_odd_num_mul_powTwo_iff
+    {n s k : ℕ} (hn : IsPowTwo n) :
+    Nat.Coprime (2 * k + 1) (n * s) ↔
+      Nat.Coprime (2 * k + 1) s := by
+  constructor
+  · intro h
+    exact (h.symm.coprime_mul_left).symm
+  · intro h
+    exact (hn.odd_num_coprime (k := k)).mul_right h
+
+lemma mem_primIdx_mul_powTwo_iff
+    {n s k : ℕ} (hn : IsPowTwo n) :
+    k ∈ primIdx (n * s) ↔
+      k < n * s ∧ Nat.Coprime (2 * k + 1) s := by
+  rw [mem_primIdx_iff, coprime_odd_num_mul_powTwo_iff hn]
+
 /-- If an order-`d` primitive node is viewed in row `d * s`, this is its row index. -/
 def occurrenceIndex (s k : ℕ) : ℕ :=
   (((2 * k + 1) * s - 1) / 2)
@@ -439,10 +471,59 @@ lemma primitive_node_unique_of_theta_eq {n s t k l : ℕ}
 def Vprim (theta0 : ℝ) (d : ℕ) : ℝ :=
   ∑ k ∈ primIdx d, |lambdaWeight theta0 d k|
 
+lemma primIdx_mul_powTwo_eq_filter_coprime_odd_factor
+    {n s : ℕ} (hn : IsPowTwo n) :
+    primIdx (n * s) =
+      (Finset.range (n * s)).filter fun k => Nat.Coprime (2 * k + 1) s := by
+  ext k
+  simp [mem_primIdx_mul_powTwo_iff hn]
+
+lemma primIdx_powTwo_eq_range {n : ℕ} (hn : IsPowTwo n) :
+    primIdx n = Finset.range n := by
+  have h := primIdx_mul_powTwo_eq_filter_coprime_odd_factor
+    (n := n) (s := 1) hn
+  simpa using h
+
+lemma Vprim_mul_powTwo_eq_sum_coprime_odd_factor
+    {theta0 : ℝ} {n s : ℕ} (hn : IsPowTwo n) :
+    Vprim theta0 (n * s) =
+      ∑ k ∈ (Finset.range (n * s)).filter
+          (fun k => Nat.Coprime (2 * k + 1) s),
+        |lambdaWeight theta0 (n * s) k| := by
+  rw [Vprim, primIdx_mul_powTwo_eq_filter_coprime_odd_factor hn]
+
+lemma Vprim_powTwo_eq_sum_range
+    {theta0 : ℝ} {n : ℕ} (hn : IsPowTwo n) :
+    Vprim theta0 n = ∑ k ∈ Finset.range n, |lambdaWeight theta0 n k| := by
+  rw [Vprim, primIdx_powTwo_eq_range hn]
+
 lemma Vprim_nonneg (theta0 : ℝ) (d : ℕ) :
     0 ≤ Vprim theta0 d := by
   unfold Vprim
   exact Finset.sum_nonneg fun _ _ => abs_nonneg _
+
+lemma sum_abs_lambdaWeight_le_Vprim_of_subset
+    {theta0 : ℝ} {d : ℕ} {S : Finset ℕ}
+    (hS : S ⊆ primIdx d) :
+    ∑ k ∈ S, |lambdaWeight theta0 d k| ≤ Vprim theta0 d := by
+  unfold Vprim
+  exact Finset.sum_le_sum_of_subset_of_nonneg hS
+    (by intro k _hkprim _hknot; exact abs_nonneg _)
+
+lemma abs_lambdaWeight_le_Vprim_of_mem
+    {theta0 : ℝ} {d k : ℕ} (hk : k ∈ primIdx d) :
+    |lambdaWeight theta0 d k| ≤ Vprim theta0 d := by
+  unfold Vprim
+  exact Finset.single_le_sum
+    (s := primIdx d) (f := fun k => |lambdaWeight theta0 d k|)
+    (fun _ _ => abs_nonneg _) hk
+
+lemma abs_lambdaWeight_le_Vprim_mul_powTwo_of_coprime_odd_factor
+    {theta0 : ℝ} {n s k : ℕ} (hn : IsPowTwo n)
+    (hklt : k < n * s) (hcop : Nat.Coprime (2 * k + 1) s) :
+    |lambdaWeight theta0 (n * s) k| ≤ Vprim theta0 (n * s) := by
+  exact abs_lambdaWeight_le_Vprim_of_mem
+    (mem_primIdx_mul_powTwo_iff hn |>.mpr ⟨hklt, hcop⟩)
 
 lemma lambdaWeight_ne_zero_of_not_isNodeRow
     {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
