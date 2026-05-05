@@ -276,6 +276,36 @@ lemma mem_primIdx_mul_powTwo_iff
       k < n * s ∧ Nat.Coprime (2 * k + 1) s := by
   rw [mem_primIdx_iff, coprime_odd_num_mul_powTwo_iff hn]
 
+lemma coprime_progression_odd_num (s t : ℕ) :
+    Nat.Coprime (2 * (s * t) + 1) s := by
+  have h :
+      Nat.Coprime (s * (2 * t) + 1) s := by
+    have hbase : Nat.Coprime 1 s := by simp
+    exact (Nat.coprime_mul_left_add_left (m := 1) (n := s) (k := 2 * t)).mpr hbase
+  convert h using 1
+  ring
+
+lemma progression_mem_primIdx_mul_powTwo
+    {n s t : ℕ} (hn : IsPowTwo n) (hspos : 0 < s) (ht : t < n) :
+    s * t ∈ primIdx (n * s) := by
+  rw [mem_primIdx_mul_powTwo_iff hn]
+  constructor
+  · have hlt : s * t < s * n := Nat.mul_lt_mul_of_pos_left ht hspos
+    simpa [Nat.mul_comm] using hlt
+  · exact coprime_progression_odd_num s t
+
+lemma progression_image_subset_primIdx_mul_powTwo
+    {n s : ℕ} (hn : IsPowTwo n) (hspos : 0 < s) :
+    (Finset.range n).image (fun t => s * t) ⊆ primIdx (n * s) := by
+  intro k hk
+  rcases Finset.mem_image.mp hk with ⟨t, ht, rfl⟩
+  exact progression_mem_primIdx_mul_powTwo hn hspos (Finset.mem_range.mp ht)
+
+lemma mul_left_injOn_range {n s : ℕ} (hspos : 0 < s) :
+    Set.InjOn (fun t => s * t) (Finset.range n : Set ℕ) := by
+  intro a _ha b _hb h
+  exact Nat.mul_left_cancel hspos h
+
 /-- If an order-`d` primitive node is viewed in row `d * s`, this is its row index. -/
 def occurrenceIndex (s k : ℕ) : ℕ :=
   (((2 * k + 1) * s - 1) / 2)
@@ -520,6 +550,41 @@ lemma sum_le_Vprim_of_subset_of_le_abs_lambdaWeight
       exact Finset.sum_le_sum fun k hk => hw k hk
     _ ≤ Vprim theta0 d := sum_abs_lambdaWeight_le_Vprim_of_subset hS
 
+lemma sum_progression_image_abs_lambdaWeight_le_Vprim
+    {theta0 : ℝ} {n s : ℕ} (hn : IsPowTwo n) (hspos : 0 < s) :
+    ∑ k ∈ (Finset.range n).image (fun t => s * t),
+        |lambdaWeight theta0 (n * s) k| ≤ Vprim theta0 (n * s) :=
+  sum_abs_lambdaWeight_le_Vprim_of_subset
+    (progression_image_subset_primIdx_mul_powTwo hn hspos)
+
+lemma sum_progression_abs_lambdaWeight_le_Vprim
+    {theta0 : ℝ} {n s : ℕ} (hn : IsPowTwo n) (hspos : 0 < s) :
+    ∑ t ∈ Finset.range n, |lambdaWeight theta0 (n * s) (s * t)| ≤
+      Vprim theta0 (n * s) := by
+  calc
+    ∑ t ∈ Finset.range n, |lambdaWeight theta0 (n * s) (s * t)| =
+        ∑ k ∈ (Finset.range n).image (fun t => s * t),
+          |lambdaWeight theta0 (n * s) k| := by
+          exact (Finset.sum_image (s := Finset.range n)
+            (g := fun t => s * t)
+            (f := fun k => |lambdaWeight theta0 (n * s) k|)
+            (mul_left_injOn_range hspos)).symm
+    _ ≤ Vprim theta0 (n * s) :=
+        sum_progression_image_abs_lambdaWeight_le_Vprim hn hspos
+
+lemma sum_progression_le_Vprim_of_le_abs_lambdaWeight
+    {theta0 : ℝ} {n s : ℕ} (hn : IsPowTwo n) (hspos : 0 < s)
+    {w : ℕ → ℝ}
+    (hw : ∀ t : ℕ, t ∈ Finset.range n →
+      w t ≤ |lambdaWeight theta0 (n * s) (s * t)|) :
+    ∑ t ∈ Finset.range n, w t ≤ Vprim theta0 (n * s) := by
+  calc
+    ∑ t ∈ Finset.range n, w t ≤
+        ∑ t ∈ Finset.range n, |lambdaWeight theta0 (n * s) (s * t)| := by
+      exact Finset.sum_le_sum fun t ht => hw t ht
+    _ ≤ Vprim theta0 (n * s) :=
+      sum_progression_abs_lambdaWeight_le_Vprim hn hspos
+
 lemma abs_lambdaWeight_le_Vprim_of_mem
     {theta0 : ℝ} {d k : ℕ} (hk : k ∈ primIdx d) :
     |lambdaWeight theta0 d k| ≤ Vprim theta0 d := by
@@ -549,6 +614,17 @@ lemma abs_lambdaWeight_eq
   simp [abs_mul, abs_div, abs_pow, abs_of_nonneg hdnonneg,
     abs_of_nonneg hsinnonneg]
   ring
+
+lemma abs_lambdaWeight_progression_eq
+    {theta0 : ℝ} {n s t : ℕ} (hspos : 0 < s) (ht : t < n) :
+    |lambdaWeight theta0 (n * s) (s * t)| =
+      (|Real.cos (((n * s : ℕ) : ℝ) * theta0)| / ((n * s : ℕ) : ℝ)) *
+        (Real.sin (thetaNode (n * s) (s * t)) /
+          |Real.cos theta0 - Real.cos (thetaNode (n * s) (s * t))|) := by
+  have hklt : s * t < n * s := by
+    have hlt : s * t < s * n := Nat.mul_lt_mul_of_pos_left ht hspos
+    simpa [Nat.mul_comm] using hlt
+  exact abs_lambdaWeight_eq hklt
 
 lemma lambdaWeight_ne_zero_of_not_isNodeRow
     {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
