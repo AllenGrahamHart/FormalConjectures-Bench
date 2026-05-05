@@ -642,6 +642,180 @@ lemma zero_endpoint_kernel_sum_range_ge_base_log {n s : ℕ}
   rw [hleft_eq]
   exact hscaled.trans (zero_endpoint_kernel_sum_range_ge_log hnpos hspos)
 
+lemma pi_sub_thetaNode_progression_mirror_le_succ_mul_pi_div
+    {n s q : ℕ} (hnpos : 0 < n) (hspos : 0 < s)
+    (hq : q < n / 2) :
+    Real.pi - thetaNode (n * s) (s * (n - 1 - q)) ≤
+      ((q + 1 : ℕ) : ℝ) * Real.pi / (n : ℝ) := by
+  have hnne : (n : ℝ) ≠ 0 := by exact_mod_cast Nat.ne_of_gt hnpos
+  have hsne : (s : ℝ) ≠ 0 := by exact_mod_cast Nat.ne_of_gt hspos
+  have hq_lt_n : q < n := by omega
+  have hcast_sub :
+      ((n - 1 - q : ℕ) : ℝ) = (n : ℝ) - 1 - (q : ℝ) := by
+    rw [Nat.cast_sub (by omega : q ≤ n - 1),
+      Nat.cast_sub (by omega : 1 ≤ n)]
+    ring
+  unfold thetaNode
+  simp only [Nat.cast_mul, hcast_sub]
+  field_simp [hnne, hsne]
+  norm_num [Nat.cast_add]
+  nlinarith [Real.pi_pos]
+
+lemma pi_div_two_le_thetaNode_progression_mirror_of_lt_half
+    {n s q : ℕ} (hspos : 0 < s) (hq : q < n / 2) :
+    Real.pi / 2 ≤ thetaNode (n * s) (s * (n - 1 - q)) := by
+  have hnpos : 0 < n := by omega
+  have hdpos : 0 < ((n * s : ℕ) : ℝ) := by positivity
+  have hnum_ge_nat : n * s ≤ 2 * (s * (n - 1 - q)) + 1 := by
+    have ht_ge : n ≤ 2 * (n - 1 - q) := by omega
+    nlinarith [Nat.mul_le_mul_right s ht_ge, hspos]
+  have hnum_ge :
+      ((n * s : ℕ) : ℝ) ≤
+        2 * ((s * (n - 1 - q) : ℕ) : ℝ) + 1 := by
+    exact_mod_cast hnum_ge_nat
+  unfold thetaNode
+  calc
+    Real.pi / 2 = (((n * s : ℕ) : ℝ) * Real.pi) /
+        (2 * ((n * s : ℕ) : ℝ)) := by field_simp [ne_of_gt hdpos]
+    _ ≤ ((2 * ((s * (n - 1 - q) : ℕ) : ℝ) + 1) *
+          Real.pi) / (2 * ((n * s : ℕ) : ℝ)) := by gcongr
+
+lemma grid_inv_le_inv_pi_sub_thetaNode_progression_mirror
+    {n s q : ℕ} (hnpos : 0 < n) (hspos : 0 < s)
+    (hq : q < n / 2) :
+    (n : ℝ) / (((q + 1 : ℕ) : ℝ) * Real.pi) ≤
+      1 / (Real.pi - thetaNode (n * s) (s * (n - 1 - q))) := by
+  have ht_lt : s * (n - 1 - q) < n * s := by
+    have hmir : n - 1 - q < n := by omega
+    have hlt : s * (n - 1 - q) < s * n :=
+      Nat.mul_lt_mul_of_pos_left hmir hspos
+    simpa [Nat.mul_comm] using hlt
+  have htheta_lt : thetaNode (n * s) (s * (n - 1 - q)) < Real.pi :=
+    thetaNode_lt_pi ht_lt
+  have hdenpos : 0 < Real.pi - thetaNode (n * s) (s * (n - 1 - q)) :=
+    sub_pos.mpr htheta_lt
+  have hupper := pi_sub_thetaNode_progression_mirror_le_succ_mul_pi_div
+    (n := n) (s := s) (q := q) hnpos hspos hq
+  have h := one_div_le_one_div_of_le hdenpos hupper
+  have heq :
+      1 / (((q + 1 : ℕ) : ℝ) * Real.pi / (n : ℝ)) =
+        (n : ℝ) / (((q + 1 : ℕ) : ℝ) * Real.pi) := by
+    field_simp
+      [ne_of_gt (by positivity :
+        0 < ((q + 1 : ℕ) : ℝ) * Real.pi),
+       ne_of_gt (by positivity : 0 < (n : ℝ))]
+  simpa [heq] using h
+
+lemma pi_endpoint_progression_kernel_ge_grid_inv
+    {n s q : ℕ} (hnpos : 0 < n) (hspos : 0 < s)
+    (hq : q < n / 2) :
+    (n : ℝ) / (((q + 1 : ℕ) : ℝ) * Real.pi) ≤
+      Real.sin (thetaNode (n * s) (s * (n - 1 - q))) /
+        |Real.cos Real.pi -
+          Real.cos (thetaNode (n * s) (s * (n - 1 - q)))| := by
+  have hgrid :=
+    grid_inv_le_inv_pi_sub_thetaNode_progression_mirror hnpos hspos hq
+  have ht_lt : s * (n - 1 - q) < n * s := by
+    have hmir : n - 1 - q < n := by omega
+    have hlt : s * (n - 1 - q) < s * n :=
+      Nat.mul_lt_mul_of_pos_left hmir hspos
+    simpa [Nat.mul_comm] using hlt
+  have htheta_lt : thetaNode (n * s) (s * (n - 1 - q)) < Real.pi :=
+    thetaNode_lt_pi ht_lt
+  have htheta_half :
+      Real.pi / 2 ≤ thetaNode (n * s) (s * (n - 1 - q)) :=
+    pi_div_two_le_thetaNode_progression_mirror_of_lt_half hspos hq
+  have hkernel := pi_endpoint_kernel_ge_inv htheta_lt htheta_half
+  exact hgrid.trans hkernel
+
+lemma mirror_injOn_range_half (n : ℕ) :
+    Set.InjOn (fun q : ℕ => n - 1 - q)
+      (Finset.range (n / 2) : Set ℕ) := by
+  intro a ha b hb h
+  have ha_lt : a < n := by
+    have : a < n / 2 := Finset.mem_range.mp ha
+    omega
+  have hb_lt : b < n := by
+    have : b < n / 2 := Finset.mem_range.mp hb
+    omega
+  have ha_le : a ≤ n - 1 := Nat.le_sub_one_of_lt ha_lt
+  have hb_le : b ≤ n - 1 := Nat.le_sub_one_of_lt hb_lt
+  have h1 : n - 1 = (n - 1 - b) + a := by
+    exact (Nat.sub_eq_iff_eq_add ha_le).mp h
+  have h2 : n - 1 = (n - 1 - b) + b := by
+    exact (Nat.sub_eq_iff_eq_add hb_le).mp rfl
+  omega
+
+lemma sum_range_half_grid_inv_le_pi_endpoint_kernel_mirror {n s : ℕ}
+    (hnpos : 0 < n) (hspos : 0 < s) :
+    ∑ q ∈ Finset.range (n / 2),
+        (n : ℝ) / (((q + 1 : ℕ) : ℝ) * Real.pi) ≤
+      ∑ q ∈ Finset.range (n / 2),
+        Real.sin (thetaNode (n * s) (s * (n - 1 - q))) /
+          |Real.cos Real.pi -
+            Real.cos (thetaNode (n * s) (s * (n - 1 - q)))| := by
+  exact Finset.sum_le_sum fun q hq =>
+    pi_endpoint_progression_kernel_ge_grid_inv
+      hnpos hspos (Finset.mem_range.mp hq)
+
+lemma pi_endpoint_kernel_sum_range_ge_log {n s : ℕ}
+    (hnpos : 0 < n) (hspos : 0 < s) :
+    ((n : ℝ) / Real.pi) * Real.log (((n / 2) + 1 : ℕ) : ℝ) ≤
+      ∑ t ∈ Finset.range n,
+        Real.sin (thetaNode (n * s) (s * t)) /
+          |Real.cos Real.pi - Real.cos (thetaNode (n * s) (s * t))| := by
+  refine (zero_endpoint_grid_half_lower_log n).trans ?_
+  refine (sum_range_half_grid_inv_le_pi_endpoint_kernel_mirror hnpos hspos).trans ?_
+  let f : ℕ → ℝ := fun t =>
+    Real.sin (thetaNode (n * s) (s * t)) /
+      |Real.cos Real.pi - Real.cos (thetaNode (n * s) (s * t))|
+  have himage_subset :
+      (Finset.range (n / 2)).image (fun q => n - 1 - q) ⊆
+        Finset.range n := by
+    intro t ht
+    rcases Finset.mem_image.mp ht with ⟨q, hq, rfl⟩
+    have hqhalf : q < n / 2 := Finset.mem_range.mp hq
+    exact Finset.mem_range.mpr (by omega)
+  calc
+    ∑ q ∈ Finset.range (n / 2),
+        Real.sin (thetaNode (n * s) (s * (n - 1 - q))) /
+          |Real.cos Real.pi -
+            Real.cos (thetaNode (n * s) (s * (n - 1 - q)))| =
+        ∑ t ∈ (Finset.range (n / 2)).image (fun q => n - 1 - q),
+          f t := by
+          exact (Finset.sum_image (s := Finset.range (n / 2))
+            (g := fun q => n - 1 - q) (f := f)
+            (mirror_injOn_range_half n)).symm
+    _ ≤ ∑ t ∈ Finset.range n, f t := by
+        exact Finset.sum_le_sum_of_subset_of_nonneg himage_subset
+          (by
+            intro t htn _htnot
+            have ht : t < n := Finset.mem_range.mp htn
+            exact div_nonneg
+              (le_of_lt (sin_thetaNode_progression_pos hspos ht))
+              (abs_nonneg _))
+
+lemma pi_endpoint_kernel_sum_range_ge_base_log {n s : ℕ}
+    (hn4 : 4 ≤ n) (hspos : 0 < s) :
+    (1 / (2 * Real.pi)) * (n : ℝ) * Real.log (n : ℝ) ≤
+      ∑ t ∈ Finset.range n,
+        Real.sin (thetaNode (n * s) (s * t)) /
+          |Real.cos Real.pi - Real.cos (thetaNode (n * s) (s * t))| := by
+  have hnpos : 0 < n := lt_of_lt_of_le (by norm_num : 0 < 4) hn4
+  have hlog := log_nat_le_two_log_half_add_one hn4
+  have hhalf :
+      Real.log (n : ℝ) / 2 ≤
+        Real.log (((n / 2) + 1 : ℕ) : ℝ) := by
+    nlinarith
+  have hcoef_nonneg : 0 ≤ (n : ℝ) / Real.pi := by positivity
+  have hscaled := mul_le_mul_of_nonneg_left hhalf hcoef_nonneg
+  have hleft_eq :
+      (1 / (2 * Real.pi)) * (n : ℝ) * Real.log (n : ℝ) =
+        ((n : ℝ) / Real.pi) * (Real.log (n : ℝ) / 2) := by
+    ring
+  rw [hleft_eq]
+  exact hscaled.trans (pi_endpoint_kernel_sum_range_ge_log hnpos hspos)
+
 /-- If an order-`d` primitive node is viewed in row `d * s`, this is its row index. -/
 def occurrenceIndex (s k : ℕ) : ℕ :=
   (((2 * k + 1) * s - 1) / 2)
@@ -3981,6 +4155,34 @@ lemma exists_good_pow_two_with_continuousSpike_finite_future_zero_endpoint
       (c := 1 / (2 * Real.pi)) hR (by positivity)
       (fun n hnmax _hpow _hnpos s hs =>
         zero_endpoint_kernel_sum_range_ge_base_log
+          ((le_max_right N 4).trans hnmax)
+          (mem_oddUpTo_iff.mp hs).2.2.pos) with
+    ⟨n, hnmax, hpow, hnpos, hK⟩
+  exact ⟨n, (le_max_left N 4).trans hnmax, hpow, hnpos, hK⟩
+
+lemma exists_good_pow_two_with_continuousSpike_finite_future_pi_endpoint
+    {R N : ℕ} (hR : 1 ≤ R) :
+    ∃ n : ℕ,
+      N ≤ n ∧
+      IsPowTwo n ∧
+      0 < n ∧
+      (∀ K : ℕ, R * n ≤ K →
+        ∃ psi : AngleFun,
+          VanishesNear Real.pi (angleFunToRaw psi) ∧
+          F Real.pi n psi = 1 ∧
+          (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+            F Real.pi j psi = 0) ∧
+          (∀ j : ℕ, R * n < j → j ≤ K →
+            |F Real.pi j psi| ≤ (1 / (1 / 2 : ℝ)) / Real.sqrt (R : ℝ)) ∧
+          ‖psi‖ ≤
+            (1 / (((1 / (2 * Real.pi)) / (R : ℝ)) *
+              (1 / 2 : ℝ))) / Real.log (n : ℝ)) := by
+  have htheta0 : Real.pi ∈ AngleI := ⟨Real.pi_pos.le, le_rfl⟩
+  rcases exists_good_pow_two_with_continuousSpike_finite_future_of_base_kernel_lower
+      (theta0 := Real.pi) htheta0 (R := R) (N := max N 4)
+      (c := 1 / (2 * Real.pi)) hR (by positivity)
+      (fun n hnmax _hpow _hnpos s hs =>
+        pi_endpoint_kernel_sum_range_ge_base_log
           ((le_max_right N 4).trans hnmax)
           (mem_oddUpTo_iff.mp hs).2.2.pos) with
     ⟨n, hnmax, hpow, hnpos, hK⟩
