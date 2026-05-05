@@ -1,5 +1,6 @@
 import Erdos1151Formalization.ClusterSequence
 import Mathlib.Analysis.SpecificLimits.Basic
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
 
 /-!
@@ -30,6 +31,21 @@ lemma exists_large_odd_eta_lt
     omega
   · omega
   · exact hM R (by omega)
+
+lemma tendsto_const_div_log_nat_atTop_zero (C : ℝ) :
+    Tendsto (fun n : ℕ => C / Real.log (n : ℝ)) Filter.atTop (nhds 0) := by
+  exact Filter.Tendsto.const_div_atTop
+    (Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop) C
+
+lemma exists_nat_forall_ge_const_div_log_lt
+    (C : ℝ) {eps : ℝ} (heps : 0 < eps) (N : ℕ) :
+    ∃ M : ℕ, N ≤ M ∧ ∀ n : ℕ, M ≤ n → C / Real.log (n : ℝ) < eps := by
+  have hlim := tendsto_const_div_log_nat_atTop_zero C
+  have hevent :
+      ∀ᶠ (n : ℕ) in (Filter.atTop : Filter ℕ), C / Real.log (n : ℝ) < eps :=
+    (tendsto_order.mp hlim).2 eps heps
+  rcases Filter.eventually_atTop.mp hevent with ⟨M, hM⟩
+  exact ⟨max N M, le_max_left N M, fun n hn => hM n ((le_max_right N M).trans hn)⟩
 
 /-- Abstract block-spike data sufficient for the diagonal cluster-set theorem. -/
 structure AbstractBlockSpikeHypothesis
@@ -78,6 +94,39 @@ lemma AbstractBlockSpikeHypothesis.exists_spike_with_eta_lt
     hspikes Nrow delta hdelta
   exact ⟨R, C_R, n, psi, hRmin, hRodd, hR3, hReta, hC_R_pos, hnrow, hnpos,
     hvanish, hhit, hearly, hfuture, hnorm⟩
+
+lemma AbstractBlockSpikeHypothesis.exists_spike_with_eta_lt_norm_le
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {eps delta normTarget : ℝ}
+    (heps : 0 < eps) (hdelta : 0 < delta) (hnormTarget : 0 < normTarget)
+    (Rmin Nrow : ℕ) :
+    ∃ R : ℕ, ∃ C_R : ℝ, ∃ n : ℕ, ∃ psi : AngleFun,
+      Rmin ≤ R ∧
+      Odd R ∧
+      3 ≤ R ∧
+      H.eta R < eps ∧
+      0 < C_R ∧
+      Nrow ≤ n ∧
+      0 < n ∧
+      VanishesNear theta0 (angleFunToRaw psi) ∧
+      F theta0 n psi = 1 ∧
+      (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n → F theta0 j psi = 0) ∧
+      (∀ j : ℕ, R * n < j → |F theta0 j psi| ≤ H.eta R + delta) ∧
+      ‖psi‖ ≤ C_R / Real.log (n : ℝ) ∧
+      ‖psi‖ ≤ normTarget := by
+  obtain ⟨R, hRmin, hRodd, hR3, hReta⟩ :=
+    exists_large_odd_eta_lt H.eta_tendsto_zero heps Rmin
+  obtain ⟨C_R, hC_R_pos, hspikes⟩ := H.exists_spike R hRodd hR3
+  obtain ⟨M, hNrowM, hM⟩ :=
+    exists_nat_forall_ge_const_div_log_lt C_R hnormTarget Nrow
+  obtain ⟨n, psi, hnM, hnpos, hvanish, hhit, hearly, hfuture, hnorm⟩ :=
+    hspikes M delta hdelta
+  have hnrow : Nrow ≤ n := hNrowM.trans hnM
+  have hnorm_target : ‖psi‖ ≤ normTarget :=
+    hnorm.trans (le_of_lt (hM n hnM))
+  exact ⟨R, C_R, n, psi, hRmin, hRodd, hR3, hReta, hC_R_pos, hnrow, hnpos,
+    hvanish, hhit, hearly, hfuture, hnorm, hnorm_target⟩
 
 /-- First major milestone: the diagonal construction from abstract block spikes. -/
 theorem angle_theorem_from_block_spikes

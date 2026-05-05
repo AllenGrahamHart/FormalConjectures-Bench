@@ -86,6 +86,19 @@ lemma abs_sub_le_two_of_mem_subset_spaceI
     |x - y| ≤ 2 :=
   abs_sub_le_two_of_mem_spaceI (hA_subset hx) (hA_subset hy)
 
+lemma exists_center_seq_clusterSet_eq_closed_nonempty_bounded
+    {A : Set ℝ} (hA_closed : IsClosed A) (hA_nonempty : A.Nonempty)
+    (hA_subset : A ⊆ SpaceI) :
+    ∃ c : ℝ, c ∈ A ∧ ∃ a : ℕ → ℝ,
+      (∀ m, a m ∈ A) ∧
+      clusterSet a = A ∧
+      ∀ m, |a m - c| ≤ 2 := by
+  rcases hA_nonempty with ⟨c, hcA⟩
+  obtain ⟨a, ha_mem, ha_cluster⟩ :=
+    exists_seq_clusterSet_eq_closed_nonempty hA_closed ⟨c, hcA⟩
+  exact ⟨c, hcA, a, ha_mem, ha_cluster,
+    fun m => abs_sub_le_two_of_mem_subset_spaceI hA_subset (ha_mem m) hcA⟩
+
 lemma mapClusterPt_of_comp_tendsto_atTop
     {u : ℕ → ℝ} {v : ℕ → ℕ} {y : ℝ}
     (hv : Tendsto v Filter.atTop Filter.atTop)
@@ -131,6 +144,71 @@ lemma clusterSet_subset_of_tendsto_mem
   have hyc : y ∈ ({c} : Set ℝ) := clusterSet_subset_singleton_of_tendsto hu hy
   simpa using hyc ▸ hcA
 
+lemma map_nat_succ_atTop :
+    Filter.map Nat.succ Filter.atTop = (Filter.atTop : Filter ℕ) := by
+  apply le_antisymm
+  · have hsucc : StrictMono Nat.succ := fun _ _ h => Nat.succ_lt_succ h
+    exact hsucc.tendsto_atTop
+  · intro s hs
+    rw [Filter.mem_map] at hs
+    rcases Filter.eventually_atTop.mp hs with ⟨N, hN⟩
+    refine Filter.eventually_atTop.mpr ⟨N.succ, ?_⟩
+    intro n hn
+    cases n with
+    | zero => exact False.elim (Nat.not_succ_le_zero N hn)
+    | succ n => exact hN n (Nat.succ_le_succ_iff.mp hn)
+
+lemma clusterSet_succ_eq (u : ℕ → ℝ) :
+    clusterSet (fun n : ℕ => u n.succ) = clusterSet u := by
+  ext y
+  change ClusterPt y (Filter.map (fun n : ℕ => u n.succ) Filter.atTop) ↔
+    ClusterPt y (Filter.map u Filter.atTop)
+  have hmap :
+      Filter.map (fun n : ℕ => u n.succ) Filter.atTop =
+        Filter.map u Filter.atTop := by
+    change Filter.map (u ∘ Nat.succ) Filter.atTop = Filter.map u Filter.atTop
+    rw [← Filter.map_map, map_nat_succ_atTop]
+  rw [hmap]
+
+lemma mapClusterPt_eq_of_tendsto
+    {u : ℕ → ℝ} {l : Filter ℕ} {c y : ℝ}
+    (hu : Tendsto u l (nhds c))
+    (hy : MapClusterPt y l u) :
+    y = c := by
+  rcases mapClusterPt_iff_ultrafilter.mp hy with ⟨U, hU_le, hUy⟩
+  have hUc : Tendsto u (U : Filter ℕ) (nhds c) := hu.mono_left hU_le
+  exact (tendsto_nhds_unique hUc hUy).symm
+
+lemma map_strictMono_atTop_eq_atTop_inf_principal_range
+    {nSeq : ℕ → ℕ} (hnSeq : StrictMono nSeq) :
+    Filter.map nSeq Filter.atTop =
+      Filter.atTop ⊓ Filter.principal (Set.range nSeq) := by
+  apply le_antisymm
+  · refine le_inf_iff.mpr ⟨hnSeq.tendsto_atTop, ?_⟩
+    refine Filter.le_principal_iff.mpr ?_
+    rw [Filter.mem_map]
+    exact Filter.Eventually.of_forall fun m => ⟨m, rfl⟩
+  · intro s hs
+    rw [Filter.mem_map] at hs
+    rcases Filter.eventually_atTop.mp hs with ⟨M, hM⟩
+    rw [Filter.mem_inf_principal]
+    refine Filter.eventually_atTop.mpr ⟨nSeq M, ?_⟩
+    intro x hx hxrange
+    rcases hxrange with ⟨m, rfl⟩
+    exact hM m ((hnSeq.le_iff_le).mp hx)
+
+lemma mapClusterPt_selected_range_of_strictMono
+    {u : ℕ → ℝ} {nSeq : ℕ → ℕ} {y : ℝ}
+    (hnSeq : StrictMono nSeq)
+    (hy : MapClusterPt y
+      (Filter.atTop ⊓ Filter.principal (Set.range nSeq)) u) :
+    MapClusterPt y Filter.atTop (fun m : ℕ => u (nSeq m)) := by
+  rw [MapClusterPt] at hy ⊢
+  change ClusterPt y
+    (Filter.map u (Filter.atTop ⊓ Filter.principal (Set.range nSeq))) at hy
+  rw [← map_strictMono_atTop_eq_atTop_inf_principal_range hnSeq] at hy
+  simpa [Function.comp_def, Filter.map_map] using hy
+
 lemma mapClusterPt_atTop_split_principal
     {u : ℕ → ℝ} {S : Set ℕ} {y : ℝ}
     (hy : MapClusterPt y Filter.atTop u) :
@@ -144,6 +222,30 @@ lemma mapClusterPt_atTop_split_principal
   · right
     refine mapClusterPt_iff_ultrafilter.mpr ⟨U, ?_, hUy⟩
     exact le_inf_iff.mpr ⟨hU_atTop, Filter.le_principal_iff.mpr hUSc⟩
+
+lemma clusterSet_of_selected_rows_and_complement_tendsto
+    {u a : ℕ → ℝ} {nSeq : ℕ → ℕ} {A : Set ℝ} {c : ℝ}
+    (hnSeq : StrictMono nSeq)
+    (hselected : ∀ m : ℕ, u (nSeq m) = a m)
+    (ha_cluster : clusterSet a = A)
+    (hcA : c ∈ A)
+    (hcomp : Tendsto u
+      (Filter.atTop ⊓ Filter.principal (Set.range nSeq)ᶜ) (nhds c)) :
+    clusterSet u = A := by
+  apply Set.Subset.antisymm
+  · intro y hy
+    rcases mapClusterPt_atTop_split_principal
+      (S := Set.range nSeq) (u := u) hy with hsel | hcomp_cluster
+    · have hyseq :
+          MapClusterPt y Filter.atTop (fun m : ℕ => u (nSeq m)) :=
+        mapClusterPt_selected_range_of_strictMono hnSeq hsel
+      have hya : y ∈ clusterSet a := by
+        simpa [clusterSet, hselected] using hyseq
+      simpa [ha_cluster] using hya
+    · have hyc : y = c := mapClusterPt_eq_of_tendsto hcomp hcomp_cluster
+      simpa [hyc] using hcA
+  · rw [← ha_cluster]
+    exact clusterSet_subset_of_selected_subsequence hnSeq.tendsto_atTop hselected
 
 end Erdos1151Formalization
 
