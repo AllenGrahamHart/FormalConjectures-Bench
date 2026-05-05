@@ -84,6 +84,70 @@ lemma cos_four_mul_eq_one_of_cos_eq_zero {x : ℝ}
   rw [hangle, Real.cos_two_mul, h2]
   norm_num
 
+lemma cos_two_pow_succ_succ_mul_eq_one_of_cos_eq_zero {x : ℝ}
+    (h : Real.cos x = 0) (m : ℕ) :
+    Real.cos (((2 ^ (m + 2) : ℕ) : ℝ) * x) = 1 := by
+  induction m with
+  | zero =>
+      simpa using cos_four_mul_eq_one_of_cos_eq_zero h
+  | succ m ih =>
+      have hangle :
+          ((2 ^ (m.succ + 2) : ℕ) : ℝ) * x =
+            2 * (((2 ^ (m + 2) : ℕ) : ℝ) * x) := by
+        have hexp : m.succ + 2 = (m + 2) + 1 := by omega
+        rw [hexp, pow_succ]
+        norm_num [Nat.cast_mul]
+        ring
+      rw [hangle]
+      exact cos_two_mul_eq_one_of_cos_eq_one ih
+
+lemma cos_two_pow_mul_ne_zero_of_cos_eq_zero {x : ℝ} {m : ℕ}
+    (hm : 0 < m) (h : Real.cos x = 0) :
+    Real.cos (((2 ^ m : ℕ) : ℝ) * x) ≠ 0 := by
+  rcases m with _ | m
+  · exact False.elim (Nat.lt_irrefl 0 hm)
+  rcases m with _ | m
+  · have h2 : Real.cos (((2 ^ 1 : ℕ) : ℝ) * x) = -1 := by
+      simpa using cos_two_mul_eq_neg_one_of_cos_eq_zero h
+    intro hz
+    rw [h2] at hz
+    norm_num at hz
+  · have hpow :
+        Real.cos (((2 ^ (m.succ + 1) : ℕ) : ℝ) * x) = 1 := by
+      have hexp : m.succ + 1 = m + 2 := by omega
+      simpa [hexp] using
+        cos_two_pow_succ_succ_mul_eq_one_of_cos_eq_zero h m
+    intro hz
+    rw [hpow] at hz
+    norm_num at hz
+
+lemma cos_two_pow_mul_ne_zero_of_lt_of_cos_two_pow_mul_eq_zero
+    {theta : ℝ} {r q : ℕ} (hrq : r < q)
+    (hzero : Real.cos (((2 ^ r : ℕ) : ℝ) * theta) = 0) :
+    Real.cos (((2 ^ q : ℕ) : ℝ) * theta) ≠ 0 := by
+  obtain ⟨m, hm⟩ := Nat.exists_eq_add_of_le (le_of_lt hrq)
+  have hmpos : 0 < m := by omega
+  have hangle :
+      ((2 ^ q : ℕ) : ℝ) * theta =
+        ((2 ^ m : ℕ) : ℝ) * (((2 ^ r : ℕ) : ℝ) * theta) := by
+    rw [hm, pow_add]
+    norm_num [Nat.cast_mul]
+    ring
+  rw [hangle]
+  exact cos_two_pow_mul_ne_zero_of_cos_eq_zero hmpos hzero
+
+lemma cos_two_pow_mul_odd_factor_ne_zero_of_lt_of_eq_zero
+    {theta : ℝ} {s r q : ℕ} (hrq : r < q)
+    (hzero : Real.cos ((((2 ^ r) * s : ℕ) : ℝ) * theta) = 0) :
+    Real.cos ((((2 ^ q) * s : ℕ) : ℝ) * theta) ≠ 0 := by
+  have hzero' :
+      Real.cos (((2 ^ r : ℕ) : ℝ) * ((s : ℝ) * theta)) = 0 := by
+    simpa [Nat.cast_mul, mul_assoc] using hzero
+  have hne :=
+    cos_two_pow_mul_ne_zero_of_lt_of_cos_two_pow_mul_eq_zero
+      (theta := (s : ℝ) * theta) hrq hzero'
+  simpa [Nat.cast_mul, mul_assoc] using hne
+
 /-- Primitive numerator indices for order `d`. -/
 def primIdx (d : ℕ) : Finset ℕ :=
   (Finset.range d).filter fun k => Nat.Coprime (2 * k + 1) d
