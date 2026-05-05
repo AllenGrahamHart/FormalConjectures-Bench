@@ -319,6 +319,152 @@ lemma AbstractBlockSpikeHypothesis.exists_spike_with_eta_lt_norm_le
   exact ⟨R, C_R, n, psi, hRmin, hRodd, hR3, hReta, hC_R_pos, hnrow, hnpos,
     hvanish, hhit, hearly, hfuture, hnorm, hnorm_target⟩
 
+structure SpikePackage (theta0 : ℝ) where
+  R : ℕ
+  n : ℕ
+  psi : AngleFun
+
+structure SpikeChoice (theta0 : ℝ) (N : ℕ) where
+  R : ℕ
+  n : ℕ
+  psi : AngleFun
+  R_ge_one : 1 ≤ R
+  n_ge : N ≤ n
+  n_pos : 0 < n
+  vanishes : VanishesNear theta0 (angleFunToRaw psi)
+  hit : F theta0 n psi = 1
+  early_zero :
+    ∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n → F theta0 j psi = 0
+
+def SpikeChoice.toPackage {theta0 : ℝ} {N : ℕ} (S : SpikeChoice theta0 N) :
+    SpikePackage theta0 where
+  R := S.R
+  n := S.n
+  psi := S.psi
+
+lemma AbstractBlockSpikeHypothesis.exists_spikeChoice
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0) (N : ℕ) :
+    ∃ _ : SpikeChoice theta0 N, True := by
+  obtain ⟨R, _C_R, n, psi, _hRmin, _hRodd, hR3, _hReta, _hC_R_pos, hnrow,
+    hnpos, hvanish, hhit, hearly, _hfuture, _hnorm⟩ :=
+    H.exists_spike_with_eta_lt (eps := 1) (delta := 1)
+      zero_lt_one zero_lt_one 3 N
+  have hRone : 1 ≤ R := by omega
+  exact ⟨{
+    R := R
+    n := n
+    psi := psi
+    R_ge_one := hRone
+    n_ge := hnrow
+    n_pos := hnpos
+    vanishes := hvanish
+    hit := hhit
+    early_zero := hearly }, trivial⟩
+
+noncomputable def AbstractBlockSpikeHypothesis.chooseSpikeChoice
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0) (N : ℕ) :
+    SpikeChoice theta0 N :=
+  Classical.choose (H.exists_spikeChoice N)
+
+noncomputable def recursiveSpikePackage
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0) : ℕ → SpikePackage theta0
+  | 0 => (H.chooseSpikeChoice 1).toPackage
+  | m + 1 => (H.chooseSpikeChoice ((recursiveSpikePackage H m).n + 1)).toPackage
+
+lemma recursiveSpikePackage_succ_n_ge
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0) (m : ℕ) :
+    (recursiveSpikePackage H m).n + 1 ≤ (recursiveSpikePackage H (m + 1)).n := by
+  rw [recursiveSpikePackage]
+  exact (H.chooseSpikeChoice ((recursiveSpikePackage H m).n + 1)).n_ge
+
+lemma recursiveSpikePackage_n_strict
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0) :
+    StrictMono fun m : ℕ => (recursiveSpikePackage H m).n :=
+  strictMono_nat_of_lt_succ fun m =>
+    Nat.lt_of_succ_le (recursiveSpikePackage_succ_n_ge H m)
+
+lemma recursiveSpikePackage_R_ge_one
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0) (m : ℕ) :
+    1 ≤ (recursiveSpikePackage H m).R := by
+  cases m with
+  | zero =>
+      rw [recursiveSpikePackage]
+      exact (H.chooseSpikeChoice 1).R_ge_one
+  | succ m =>
+      rw [recursiveSpikePackage]
+      exact (H.chooseSpikeChoice ((recursiveSpikePackage H m).n + 1)).R_ge_one
+
+lemma recursiveSpikePackage_n_pos
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0) (m : ℕ) :
+    0 < (recursiveSpikePackage H m).n := by
+  cases m with
+  | zero =>
+      rw [recursiveSpikePackage]
+      exact (H.chooseSpikeChoice 1).n_pos
+  | succ m =>
+      rw [recursiveSpikePackage]
+      exact (H.chooseSpikeChoice ((recursiveSpikePackage H m).n + 1)).n_pos
+
+lemma recursiveSpikePackage_vanishes
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0) (m : ℕ) :
+    VanishesNear theta0 (angleFunToRaw ((recursiveSpikePackage H m).psi)) := by
+  cases m with
+  | zero =>
+      rw [recursiveSpikePackage]
+      exact (H.chooseSpikeChoice 1).vanishes
+  | succ m =>
+      rw [recursiveSpikePackage]
+      exact (H.chooseSpikeChoice ((recursiveSpikePackage H m).n + 1)).vanishes
+
+lemma recursiveSpikePackage_hit
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0) (m : ℕ) :
+    F theta0 (recursiveSpikePackage H m).n (recursiveSpikePackage H m).psi = 1 := by
+  cases m with
+  | zero =>
+      rw [recursiveSpikePackage]
+      exact (H.chooseSpikeChoice 1).hit
+  | succ m =>
+      rw [recursiveSpikePackage]
+      exact (H.chooseSpikeChoice ((recursiveSpikePackage H m).n + 1)).hit
+
+lemma recursiveSpikePackage_early_zero
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0) (m j : ℕ)
+    (hjpos : 1 ≤ j)
+    (hle : j ≤ (recursiveSpikePackage H m).R * (recursiveSpikePackage H m).n)
+    (hne : j ≠ (recursiveSpikePackage H m).n) :
+    F theta0 j (recursiveSpikePackage H m).psi = 0 := by
+  cases m with
+  | zero =>
+      rw [recursiveSpikePackage] at hle hne ⊢
+      exact (H.chooseSpikeChoice 1).early_zero j hjpos hle hne
+  | succ m =>
+      rw [recursiveSpikePackage] at hle hne ⊢
+      exact (H.chooseSpikeChoice ((recursiveSpikePackage H m).n + 1)).early_zero j hjpos hle hne
+
+noncomputable def AbstractBlockSpikeHypothesis.diagonalSpikeData
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0) :
+    DiagonalSpikeData theta0 where
+  RSeq := fun m => (recursiveSpikePackage H m).R
+  nSeq := fun m => (recursiveSpikePackage H m).n
+  psiSeq := fun m => (recursiveSpikePackage H m).psi
+  R_ge_one := recursiveSpikePackage_R_ge_one H
+  n_pos := recursiveSpikePackage_n_pos H
+  n_strict := recursiveSpikePackage_n_strict H
+  vanishes := recursiveSpikePackage_vanishes H
+  hit := recursiveSpikePackage_hit H
+  early_zero := recursiveSpikePackage_early_zero H
+
 /-- First major milestone: the diagonal construction from abstract block spikes. -/
 theorem angle_theorem_from_block_spikes
     {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
