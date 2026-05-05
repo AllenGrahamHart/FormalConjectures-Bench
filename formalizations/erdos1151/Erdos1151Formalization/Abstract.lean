@@ -839,6 +839,17 @@ structure ControlledFinitePrefix
     ∀ i : ℕ, i < m → ‖psiSeq i‖ ≤ ((1 / 2 : ℝ) ^ i) / 4
   coeff_bound : ∀ i : ℕ, i < m → |coeff i| ≤ 3
 
+/-- A successor prefix extends a prefix if it agrees with it on all old indices. -/
+def ControlledFinitePrefix.Extends
+    {theta0 : ℝ} {a : ℕ → ℝ} {c : ℝ} {m : ℕ}
+    (P : ControlledFinitePrefix theta0 a c m)
+    (Q : ControlledFinitePrefix theta0 a c (m + 1)) : Prop :=
+  ∀ i : ℕ, i < m →
+    Q.RSeq i = P.RSeq i ∧
+    Q.nSeq i = P.nSeq i ∧
+    Q.psiSeq i = P.psiSeq i ∧
+    Q.coeff i = P.coeff i
+
 lemma exists_controlledFinitePrefix_zero
     (theta0 : ℝ) (a : ℕ → ℝ) (c : ℝ) :
     ∃ _ : ControlledFinitePrefix theta0 a c 0, True := by
@@ -865,7 +876,7 @@ lemma ControlledFinitePrefix.exists_extend
     {a : ℕ → ℝ} {c : ℝ}
     (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2)
     {m : ℕ} (P : ControlledFinitePrefix theta0 a c m) :
-    ∃ _ : ControlledFinitePrefix theta0 a c (m + 1), True := by
+    ∃ Q : ControlledFinitePrefix theta0 a c (m + 1), P.Extends Q := by
   have htarget_pos : 0 < ((1 / 2 : ℝ) ^ m) / 4 := by positivity
   have hvanish :
       ∀ i : ℕ, i ∈ Finset.range m →
@@ -895,7 +906,7 @@ lemma ControlledFinitePrefix.exists_extend
     early_zero := ?_
     future_bound := ?_
     norm_bound := ?_
-    coeff_bound := ?_ }, trivial⟩
+    coeff_bound := ?_ }, ?_⟩
   · intro i hi
     by_cases him : i = m
     · simpa [RSeq', him] using S.R_ge_one
@@ -960,6 +971,9 @@ lemma ControlledFinitePrefix.exists_extend
     · simpa [coeff', him] using hcoeff
     · have hiold : i < m := by omega
       simpa [coeff', him] using P.coeff_bound i hiold
+  · intro i hi
+    have him : i ≠ m := by omega
+    simp [RSeq', nSeq', psiSeq', coeff', him]
 
 lemma AbstractBlockSpikeHypothesis.exists_controlledFinitePrefix
     {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
@@ -973,7 +987,8 @@ lemma AbstractBlockSpikeHypothesis.exists_controlledFinitePrefix
       exact exists_controlledFinitePrefix_zero theta0 a c
   | succ m ih =>
       obtain ⟨P, _⟩ := ih
-      exact P.exists_extend H ha_bound
+      obtain ⟨Q, _hQ⟩ := P.exists_extend H ha_bound
+      exact ⟨Q, trivial⟩
 
 noncomputable def recursiveSpikePackage
     {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
