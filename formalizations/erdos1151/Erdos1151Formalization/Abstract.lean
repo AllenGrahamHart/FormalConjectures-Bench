@@ -1,4 +1,5 @@
 import Erdos1151Formalization.ClusterSequence
+import Mathlib.Analysis.Normed.Group.Tannery
 import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
@@ -407,6 +408,101 @@ lemma AbstractBlockSpikeHypothesis.clusterSet_controlledDiagonalPhi_succ_of_comp
     clusterSet (fun m : ℕ => F theta0 (m.succ) D.diagonalPhi) = A := by
   exact H.clusterSet_diagonalPhi_succ_of_complement_tendsto
     D.toDiagonalSpikeData a c D.summable_terms ha_cluster hcA hcomp
+
+lemma AbstractBlockSpikeHypothesis.controlledDiagonal_scalar_tsum_complement_tendsto_zero
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (D : ControlledDiagonalSpikeData theta0 a c) :
+    Tendsto
+      (fun n : ℕ =>
+        ∑' i : ℕ,
+          diagonalCoeff theta0 a c D.nSeq D.psiSeq i *
+            F theta0 n (D.psiSeq i))
+      (Filter.atTop ⊓ Filter.principal (Set.range D.nSeq)ᶜ)
+      (nhds 0) := by
+  let L : Filter ℕ := Filter.atTop ⊓ Filter.principal (Set.range D.nSeq)ᶜ
+  have hsum_bound : Summable fun i : ℕ => ((1 / 2 : ℝ) ^ i) :=
+    summable_geometric_two
+  have hterm :
+      ∀ i : ℕ,
+        Tendsto
+          (fun n : ℕ =>
+            diagonalCoeff theta0 a c D.nSeq D.psiSeq i *
+              F theta0 n (D.psiSeq i))
+          L (nhds 0) := by
+    intro i
+    have hi :=
+      H.off_point_decay (D.psiSeq i) (D.vanishes i)
+    simpa [L, mul_zero] using
+      (hi.const_mul (diagonalCoeff theta0 a c D.nSeq D.psiSeq i)).mono_left inf_le_left
+  have hbound :
+      ∀ᶠ n : ℕ in L, ∀ i : ℕ,
+        ‖diagonalCoeff theta0 a c D.nSeq D.psiSeq i *
+          F theta0 n (D.psiSeq i)‖ ≤ ((1 / 2 : ℝ) ^ i) := by
+    have hpos_atTop : ∀ᶠ n : ℕ in Filter.atTop, 1 ≤ n :=
+      Filter.eventually_atTop.mpr ⟨1, fun n hn => hn⟩
+    have hpos : ∀ᶠ n : ℕ in L, 1 ≤ n :=
+      hpos_atTop.filter_mono inf_le_left
+    have hnot : ∀ᶠ n : ℕ in L, n ∉ Set.range D.nSeq :=
+      Filter.le_principal_iff.mp inf_le_right
+    filter_upwards [hpos, hnot] with n hnpos hnnot i
+    simpa [Real.norm_eq_abs] using
+      D.off_range_term_abs_le_geometric (m := i) (j := n) hnpos hnnot
+  have htsum :=
+    tendsto_tsum_of_dominated_convergence
+      (𝓕 := L)
+      (f := fun n i =>
+        diagonalCoeff theta0 a c D.nSeq D.psiSeq i *
+          F theta0 n (D.psiSeq i))
+      (g := fun _ : ℕ => (0 : ℝ))
+      (bound := fun i : ℕ => ((1 / 2 : ℝ) ^ i))
+      hsum_bound hterm hbound
+  simpa using htsum
+
+lemma AbstractBlockSpikeHypothesis.controlledDiagonalPhi_complement_tendsto
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (D : ControlledDiagonalSpikeData theta0 a c) :
+      Tendsto (fun n : ℕ => F theta0 n D.diagonalPhi)
+      (Filter.atTop ⊓ Filter.principal (Set.range D.nSeq)ᶜ) (nhds c) := by
+  let L : Filter ℕ := Filter.atTop ⊓ Filter.principal (Set.range D.nSeq)ᶜ
+  have hseries := H.controlledDiagonal_scalar_tsum_complement_tendsto_zero D
+  have hrewrite :
+      ∀ᶠ n : ℕ in L,
+        F theta0 n D.diagonalPhi =
+          c + ∑' i : ℕ,
+            diagonalCoeff theta0 a c D.nSeq D.psiSeq i *
+              F theta0 n (D.psiSeq i) := by
+    have hpos_atTop : ∀ᶠ n : ℕ in Filter.atTop, 0 < n :=
+      Filter.eventually_atTop.mpr ⟨1, fun n hn => Nat.lt_of_lt_of_le Nat.zero_lt_one hn⟩
+    have hpos : ∀ᶠ n : ℕ in L, 0 < n :=
+      hpos_atTop.filter_mono inf_le_left
+    filter_upwards [hpos] with n hnpos
+    rw [ControlledDiagonalSpikeData.diagonalPhi, DiagonalSpikeData.diagonalPhi]
+    rw [F_const_add_tsum_smul (H.const_eval c n hnpos) D.summable_terms]
+  have htarget :
+      Tendsto
+        (fun n : ℕ =>
+          c + ∑' i : ℕ,
+            diagonalCoeff theta0 a c D.nSeq D.psiSeq i *
+              F theta0 n (D.psiSeq i))
+        L (nhds c) := by
+    simpa using (tendsto_const_nhds.add hseries)
+  exact htarget.congr' (hrewrite.mono fun _ h => h.symm)
+
+lemma AbstractBlockSpikeHypothesis.clusterSet_controlledDiagonalPhi_succ
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (D : ControlledDiagonalSpikeData theta0 a c)
+    {A : Set ℝ}
+    (ha_cluster : clusterSet a = A)
+    (hcA : c ∈ A) :
+    clusterSet (fun m : ℕ => F theta0 (m.succ) D.diagonalPhi) = A :=
+  H.clusterSet_controlledDiagonalPhi_succ_of_complement_tendsto D
+    ha_cluster hcA (H.controlledDiagonalPhi_complement_tendsto D)
 
 lemma AbstractBlockSpikeHypothesis.exists_spike_with_eta_lt
     {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
