@@ -813,6 +813,168 @@ lemma AbstractBlockSpikeHypothesis.exists_quantSpikeChoice_with_nextCoeff_bound
     future_bound := S.future_bound
     norm_bound := S.norm_bound }, hcoeff⟩
 
+/-- A finite controlled prefix of the diagonal spike construction.  The
+sequence-valued fields are only constrained on indices `< m`; outside the
+prefix they may take arbitrary values. -/
+structure ControlledFinitePrefix
+    (theta0 : ℝ) (a : ℕ → ℝ) (c : ℝ) (m : ℕ) where
+  upper : ℕ
+  RSeq : ℕ → ℕ
+  nSeq : ℕ → ℕ
+  psiSeq : ℕ → AngleFun
+  coeff : ℕ → ℝ
+  R_ge_one : ∀ i : ℕ, i < m → 1 ≤ RSeq i
+  n_pos : ∀ i : ℕ, i < m → 0 < nSeq i
+  n_lt_upper : ∀ i : ℕ, i < m → nSeq i < upper
+  n_strict : ∀ i j : ℕ, i < j → j < m → nSeq i < nSeq j
+  vanishes : ∀ i : ℕ, i < m → VanishesNear theta0 (angleFunToRaw (psiSeq i))
+  hit : ∀ i : ℕ, i < m → F theta0 (nSeq i) (psiSeq i) = 1
+  early_zero :
+    ∀ i j : ℕ, i < m → 1 ≤ j → j ≤ RSeq i * nSeq i → j ≠ nSeq i →
+      F theta0 j (psiSeq i) = 0
+  future_bound :
+    ∀ i j : ℕ, i < m → RSeq i * nSeq i < j →
+      |F theta0 j (psiSeq i)| ≤ ((1 / 2 : ℝ) ^ i) / 4
+  norm_bound :
+    ∀ i : ℕ, i < m → ‖psiSeq i‖ ≤ ((1 / 2 : ℝ) ^ i) / 4
+  coeff_bound : ∀ i : ℕ, i < m → |coeff i| ≤ 3
+
+lemma exists_controlledFinitePrefix_zero
+    (theta0 : ℝ) (a : ℕ → ℝ) (c : ℝ) :
+    ∃ _ : ControlledFinitePrefix theta0 a c 0, True := by
+  exact ⟨{
+    upper := 1
+    RSeq := fun _ => 1
+    nSeq := fun _ => 1
+    psiSeq := fun _ => ContinuousMap.const AngleI 0
+    coeff := fun _ => 0
+    R_ge_one := by intro i hi; exact False.elim (Nat.not_lt_zero i hi)
+    n_pos := by intro i hi; exact False.elim (Nat.not_lt_zero i hi)
+    n_lt_upper := by intro i hi; exact False.elim (Nat.not_lt_zero i hi)
+    n_strict := by intro i j hij hj; exact False.elim (Nat.not_lt_zero j hj)
+    vanishes := by intro i hi; exact False.elim (Nat.not_lt_zero i hi)
+    hit := by intro i hi; exact False.elim (Nat.not_lt_zero i hi)
+    early_zero := by intro i j hi; exact False.elim (Nat.not_lt_zero i hi)
+    future_bound := by intro i j hi; exact False.elim (Nat.not_lt_zero i hi)
+    norm_bound := by intro i hi; exact False.elim (Nat.not_lt_zero i hi)
+    coeff_bound := by intro i hi; exact False.elim (Nat.not_lt_zero i hi) }, trivial⟩
+
+lemma ControlledFinitePrefix.exists_extend
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2)
+    {m : ℕ} (P : ControlledFinitePrefix theta0 a c m) :
+    ∃ _ : ControlledFinitePrefix theta0 a c (m + 1), True := by
+  have htarget_pos : 0 < ((1 / 2 : ℝ) ^ m) / 4 := by positivity
+  have hvanish :
+      ∀ i : ℕ, i ∈ Finset.range m →
+        VanishesNear theta0 (angleFunToRaw (P.psiSeq i)) := by
+    intro i hi
+    exact P.vanishes i (Finset.mem_range.mp hi)
+  obtain ⟨S, hcoeff⟩ :=
+    H.exists_quantSpikeChoice_with_nextCoeff_bound a c P.coeff P.psiSeq
+      m P.upper hvanish (ha_bound m) htarget_pos htarget_pos
+  let RSeq' : ℕ → ℕ := fun i => if i = m then S.R else P.RSeq i
+  let nSeq' : ℕ → ℕ := fun i => if i = m then S.n else P.nSeq i
+  let psiSeq' : ℕ → AngleFun := fun i => if i = m then S.psi else P.psiSeq i
+  let coeff' : ℕ → ℝ := fun i =>
+    if i = m then nextCoeff theta0 a c P.coeff P.psiSeq m S.n else P.coeff i
+  refine ⟨{
+    upper := S.n + 1
+    RSeq := RSeq'
+    nSeq := nSeq'
+    psiSeq := psiSeq'
+    coeff := coeff'
+    R_ge_one := ?_
+    n_pos := ?_
+    n_lt_upper := ?_
+    n_strict := ?_
+    vanishes := ?_
+    hit := ?_
+    early_zero := ?_
+    future_bound := ?_
+    norm_bound := ?_
+    coeff_bound := ?_ }, trivial⟩
+  · intro i hi
+    by_cases him : i = m
+    · simpa [RSeq', him] using S.R_ge_one
+    · have hiold : i < m := by omega
+      simpa [RSeq', him] using P.R_ge_one i hiold
+  · intro i hi
+    by_cases him : i = m
+    · simpa [nSeq', him] using S.n_pos
+    · have hiold : i < m := by omega
+      simpa [nSeq', him] using P.n_pos i hiold
+  · intro i hi
+    by_cases him : i = m
+    · simp [nSeq', him]
+    · have hiold : i < m := by omega
+      have hlt : P.nSeq i < S.n := (P.n_lt_upper i hiold).trans_le S.n_ge
+      have hlt' : P.nSeq i < S.n + 1 := hlt.trans (Nat.lt_succ_self S.n)
+      simpa [nSeq', him] using hlt'
+  · intro i j hij hj
+    by_cases hjm : j = m
+    · have hiold : i < m := by omega
+      have him : i ≠ m := by omega
+      have hlt : P.nSeq i < S.n := (P.n_lt_upper i hiold).trans_le S.n_ge
+      simpa [nSeq', him, hjm] using hlt
+    · have hjold : j < m := by omega
+      have hiold : i < m := lt_trans hij hjold
+      have him : i ≠ m := by omega
+      simpa [nSeq', him, hjm] using P.n_strict i j hij hjold
+  · intro i hi
+    by_cases him : i = m
+    · simpa [psiSeq', him] using S.vanishes
+    · have hiold : i < m := by omega
+      simpa [psiSeq', him] using P.vanishes i hiold
+  · intro i hi
+    by_cases him : i = m
+    · simpa [nSeq', psiSeq', him] using S.hit
+    · have hiold : i < m := by omega
+      simpa [nSeq', psiSeq', him] using P.hit i hiold
+  · intro i j hi hjpos hle hne
+    by_cases him : i = m
+    · simpa [RSeq', nSeq', psiSeq', him] using
+        S.early_zero j hjpos (by simpa [RSeq', nSeq', him] using hle)
+          (by simpa [nSeq', him] using hne)
+    · have hiold : i < m := by omega
+      simpa [RSeq', nSeq', psiSeq', him] using
+        P.early_zero i j hiold hjpos
+          (by simpa [RSeq', nSeq', him] using hle)
+          (by simpa [nSeq', him] using hne)
+  · intro i j hi hfuture
+    by_cases him : i = m
+    · simpa [RSeq', nSeq', psiSeq', him] using
+        S.future_bound j (by simpa [RSeq', nSeq', him] using hfuture)
+    · have hiold : i < m := by omega
+      simpa [RSeq', nSeq', psiSeq', him] using
+        P.future_bound i j hiold (by simpa [RSeq', nSeq', him] using hfuture)
+  · intro i hi
+    by_cases him : i = m
+    · simpa [psiSeq', him] using S.norm_bound
+    · have hiold : i < m := by omega
+      simpa [psiSeq', him] using P.norm_bound i hiold
+  · intro i hi
+    by_cases him : i = m
+    · simpa [coeff', him] using hcoeff
+    · have hiold : i < m := by omega
+      simpa [coeff', him] using P.coeff_bound i hiold
+
+lemma AbstractBlockSpikeHypothesis.exists_controlledFinitePrefix
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {a : ℕ → ℝ} {c : ℝ}
+    (ha_bound : ∀ m : ℕ, |a m - c| ≤ 2)
+    (m : ℕ) :
+    ∃ _ : ControlledFinitePrefix theta0 a c m, True := by
+  induction m with
+  | zero =>
+      exact exists_controlledFinitePrefix_zero theta0 a c
+  | succ m ih =>
+      obtain ⟨P, _⟩ := ih
+      exact P.exists_extend H ha_bound
+
 noncomputable def recursiveSpikePackage
     {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
     (H : AbstractBlockSpikeHypothesis theta0 htheta0) : ℕ → SpikePackage theta0
