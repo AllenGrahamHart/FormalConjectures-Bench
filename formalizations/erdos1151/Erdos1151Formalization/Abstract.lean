@@ -811,6 +811,26 @@ noncomputable def AbstractBlockSpikeHypothesis.diagonalSpikeData
   hit := recursiveSpikePackage_hit H
   early_zero := recursiveSpikePackage_early_zero H
 
+lemma AbstractBlockSpikeHypothesis.angle_theorem_from_controlledDiagonalSpikeData
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractBlockSpikeHypothesis theta0 htheta0)
+    {A : Set ℝ} (hA_closed : IsClosed A)
+    (hA_nonempty : A.Nonempty)
+    (hA_subset : A ⊆ SpaceI)
+    (hcontrolled :
+      ∀ c : ℝ, c ∈ A → ∀ a : ℕ → ℝ,
+        (∀ m : ℕ, a m ∈ A) →
+        clusterSet a = A →
+        (∀ m : ℕ, |a m - c| ≤ 2) →
+        ∃ _ : ControlledDiagonalSpikeData theta0 a c, True) :
+    ∃ phi : AngleFun,
+      clusterSet (fun m : ℕ => F theta0 (m.succ) phi) = A := by
+  obtain ⟨c, hcA, a, ha_mem, ha_cluster, ha_bound⟩ :=
+    exists_center_seq_clusterSet_eq_closed_nonempty_bounded
+      hA_closed hA_nonempty hA_subset
+  obtain ⟨D, _⟩ := hcontrolled c hcA a ha_mem ha_cluster ha_bound
+  exact ⟨D.diagonalPhi, H.clusterSet_controlledDiagonalPhi_succ D ha_cluster hcA⟩
+
 /-- First major milestone: the diagonal construction from abstract block spikes. -/
 theorem angle_theorem_from_block_spikes
     {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
@@ -820,6 +840,9 @@ theorem angle_theorem_from_block_spikes
     (hA_subset : A ⊆ SpaceI) :
     ∃ phi : AngleFun,
       clusterSet (fun m : ℕ => F theta0 (m.succ) phi) = A := by
+  refine H.angle_theorem_from_controlledDiagonalSpikeData
+    hA_closed hA_nonempty hA_subset ?_
+  intro c hcA a ha_mem ha_cluster ha_bound
   sorry
 
 end Erdos1151Formalization
