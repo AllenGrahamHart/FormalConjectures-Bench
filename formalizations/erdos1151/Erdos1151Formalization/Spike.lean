@@ -816,6 +816,124 @@ lemma pi_endpoint_kernel_sum_range_ge_base_log {n s : ℕ}
   rw [hleft_eq]
   exact hscaled.trans (pi_endpoint_kernel_sum_range_ge_log hnpos hspos)
 
+lemma sin_ge_two_div_pi_mul_of_core {rho theta : ℝ}
+    (hleft : rho ≤ theta) (hright : rho ≤ Real.pi - theta)
+    (htheta : theta ∈ AngleI) :
+    (2 / Real.pi) * rho ≤ Real.sin theta := by
+  by_cases hhalf : theta ≤ Real.pi / 2
+  · have hcoef_nonneg : 0 ≤ 2 / Real.pi := by positivity
+    have hmul : (2 / Real.pi) * rho ≤ (2 / Real.pi) * theta :=
+      mul_le_mul_of_nonneg_left hleft hcoef_nonneg
+    exact hmul.trans (Real.mul_le_sin htheta.1 hhalf)
+  · have hy_nonneg : 0 ≤ Real.pi - theta := sub_nonneg.mpr htheta.2
+    have hy_le : Real.pi - theta ≤ Real.pi / 2 := by
+      have hhalf_le : Real.pi / 2 ≤ theta := le_of_not_ge hhalf
+      linarith
+    have hcoef_nonneg : 0 ≤ 2 / Real.pi := by positivity
+    have hmul :
+        (2 / Real.pi) * rho ≤
+          (2 / Real.pi) * (Real.pi - theta) :=
+      mul_le_mul_of_nonneg_left hright hcoef_nonneg
+    have hsin := Real.mul_le_sin hy_nonneg hy_le
+    rw [Real.sin_pi_sub] at hsin
+    exact hmul.trans hsin
+
+lemma exists_interior_kernel_lower_bound
+    {theta0 : ℝ} (h0 : 0 < theta0) (hpi : theta0 < Real.pi) :
+    ∃ c > 0, ∃ rho > 0,
+      ∀ theta ∈ AngleI, theta ≠ theta0 → |theta - theta0| < rho →
+        c / |theta - theta0| ≤
+          Real.sin theta / |Real.cos theta0 - Real.cos theta| := by
+  let rho : ℝ := min theta0 (Real.pi - theta0) / 2
+  let c : ℝ := (2 / Real.pi) * rho
+  have htheta0 : theta0 ∈ AngleI := ⟨le_of_lt h0, le_of_lt hpi⟩
+  have hpi_sub_pos : 0 < Real.pi - theta0 := sub_pos.mpr hpi
+  have hmin_pos : 0 < min theta0 (Real.pi - theta0) :=
+    lt_min h0 hpi_sub_pos
+  have hrho_pos : 0 < rho := by
+    dsimp [rho]
+    exact half_pos hmin_pos
+  have hcpos : 0 < c := by
+    dsimp [c]
+    positivity
+  refine ⟨c, hcpos, rho, hrho_pos, ?_⟩
+  intro theta htheta hne hdist
+  have hrho_le_theta0_half : rho ≤ theta0 / 2 := by
+    dsimp [rho]
+    exact div_le_div_of_nonneg_right
+      (min_le_left theta0 (Real.pi - theta0)) (by norm_num)
+  have hrho_le_pi_sub_half : rho ≤ (Real.pi - theta0) / 2 := by
+    dsimp [rho]
+    exact div_le_div_of_nonneg_right
+      (min_le_right theta0 (Real.pi - theta0)) (by norm_num)
+  have hdist_pair := abs_lt.mp hdist
+  have htheta_lower : theta0 - rho < theta := by linarith
+  have htheta_upper : theta < theta0 + rho := by linarith
+  have hleft : rho ≤ theta := by nlinarith
+  have hright : rho ≤ Real.pi - theta := by nlinarith
+  have hc_le_sin : c ≤ Real.sin theta := by
+    dsimp [c]
+    exact sin_ge_two_div_pi_mul_of_core hleft hright htheta
+  have hdist_pos : 0 < |theta - theta0| :=
+    abs_pos.mpr (sub_ne_zero_of_ne hne)
+  have hcos_den_ne : Real.cos theta0 - Real.cos theta ≠ 0 := by
+    apply sub_ne_zero.mpr
+    intro hcos
+    have htheta_eq : theta0 = theta := Real.injOn_cos htheta0 htheta hcos
+    exact hne htheta_eq.symm
+  have hcos_den_pos : 0 < |Real.cos theta0 - Real.cos theta| :=
+    abs_pos.mpr hcos_den_ne
+  have hcos_dist : |Real.cos theta0 - Real.cos theta| ≤
+      |theta - theta0| := by
+    simpa [abs_sub_comm] using Real.abs_cos_sub_cos_le theta0 theta
+  have hsin_nonneg : 0 ≤ Real.sin theta :=
+    Real.sin_nonneg_of_mem_Icc htheta
+  have hfirst :
+      c / |theta - theta0| ≤ Real.sin theta / |theta - theta0| :=
+    div_le_div_of_nonneg_right hc_le_sin (le_of_lt hdist_pos)
+  have hsecond :
+      Real.sin theta / |theta - theta0| ≤
+        Real.sin theta / |Real.cos theta0 - Real.cos theta| :=
+    div_le_div_of_nonneg_left hsin_nonneg hcos_den_pos hcos_dist
+  exact hfirst.trans hsecond
+
+lemma local_inverse_distance_sum_le_progression_kernel_sum
+    {theta0 c rho : ℝ} {n s : ℕ}
+    (hspos : 0 < s) (hnot : ¬ IsNodeRow theta0 (n * s))
+    (hlocal : ∀ theta ∈ AngleI, theta ≠ theta0 →
+      |theta - theta0| < rho →
+        c / |theta - theta0| ≤
+          Real.sin theta / |Real.cos theta0 - Real.cos theta|) :
+    ∑ t ∈ Finset.range n,
+        (if |thetaNode (n * s) (s * t) - theta0| < rho then
+          c / |thetaNode (n * s) (s * t) - theta0|
+        else 0) ≤
+      ∑ t ∈ Finset.range n,
+        Real.sin (thetaNode (n * s) (s * t)) /
+          |Real.cos theta0 -
+            Real.cos (thetaNode (n * s) (s * t))| := by
+  refine Finset.sum_le_sum ?_
+  intro t ht
+  have htlt : t < n := Finset.mem_range.mp ht
+  have hklt : s * t < n * s := thetaNode_progression_lt_mul hspos htlt
+  by_cases hnear : |thetaNode (n * s) (s * t) - theta0| < rho
+  · have hmem : thetaNode (n * s) (s * t) ∈ AngleI :=
+      thetaNode_mem_angleI hklt
+    have hne : thetaNode (n * s) (s * t) ≠ theta0 := by
+      intro htheta
+      exact hnot (by simpa [htheta] using isNodeRow_thetaNode hklt)
+    simpa [hnear] using
+      hlocal (thetaNode (n * s) (s * t)) hmem hne hnear
+  · have hsin_nonneg :
+        0 ≤ Real.sin (thetaNode (n * s) (s * t)) :=
+      le_of_lt (sin_thetaNode_pos hklt)
+    have hterm_nonneg :
+        0 ≤ Real.sin (thetaNode (n * s) (s * t)) /
+          |Real.cos theta0 -
+            Real.cos (thetaNode (n * s) (s * t))| :=
+      div_nonneg hsin_nonneg (abs_nonneg _)
+    simpa [hnear] using hterm_nonneg
+
 /-- If an order-`d` primitive node is viewed in row `d * s`, this is its row index. -/
 def occurrenceIndex (s k : ℕ) : ℕ :=
   (((2 * k + 1) * s - 1) / 2)
