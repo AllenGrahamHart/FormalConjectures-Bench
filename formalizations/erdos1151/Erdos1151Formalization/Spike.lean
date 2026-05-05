@@ -20,6 +20,14 @@ namespace Erdos1151Formalization
 def IsPowTwo (n : ℕ) : Prop :=
   ∃ r : ℕ, n = 2 ^ r
 
+/-- Odd integers in `[1, R]`. -/
+def oddUpTo (R : ℕ) : Finset ℕ :=
+  (Finset.Icc 1 R).filter Odd
+
+lemma mem_oddUpTo_iff {R s : ℕ} :
+    s ∈ oddUpTo R ↔ 1 ≤ s ∧ s ≤ R ∧ Odd s := by
+  simp [oddUpTo, and_assoc, and_comm]
+
 lemma one_half_le_abs_cos_or_one_half_le_abs_cos_two_mul (x : ℝ) :
     (1 / 2 : ℝ) ≤ |Real.cos x| ∨
       (1 / 2 : ℝ) ≤ |Real.cos (2 * x)| := by
@@ -147,6 +155,86 @@ lemma cos_two_pow_mul_odd_factor_ne_zero_of_lt_of_eq_zero
     cos_two_pow_mul_ne_zero_of_lt_of_cos_two_pow_mul_eq_zero
       (theta := (s : ℝ) * theta) hrq hzero'
   simpa [Nat.cast_mul, mul_assoc] using hne
+
+lemma exists_large_dyadic_exponent_abs_cos_ge_half (theta : ℝ) (M : ℕ) :
+    ∃ r : ℕ, M ≤ r ∧
+      (1 / 2 : ℝ) ≤ |Real.cos (((2 ^ r : ℕ) : ℝ) * theta)| := by
+  let x : ℝ := ((2 ^ M : ℕ) : ℝ) * theta
+  rcases one_half_le_abs_cos_or_one_half_le_abs_cos_two_mul x with h | h
+  · exact ⟨M, le_rfl, by simpa [x] using h⟩
+  · refine ⟨M + 1, by omega, ?_⟩
+    have hangle :
+        2 * (((2 ^ M : ℕ) : ℝ) * theta) =
+          ((2 ^ (M + 1) : ℕ) : ℝ) * theta := by
+      rw [pow_succ]
+      norm_num [Nat.cast_mul]
+      ring
+    rw [← hangle]
+    simpa [x] using h
+
+lemma exists_dyadic_exponent_after_no_cos_zero_for_factor
+    (theta : ℝ) (s : ℕ) :
+    ∃ M : ℕ, ∀ r : ℕ, M ≤ r →
+      Real.cos ((((2 ^ r) * s : ℕ) : ℝ) * theta) ≠ 0 := by
+  classical
+  by_cases hbad :
+      ∃ r : ℕ, Real.cos ((((2 ^ r) * s : ℕ) : ℝ) * theta) = 0
+  · rcases hbad with ⟨r0, hr0⟩
+    refine ⟨r0 + 1, ?_⟩
+    intro r hr
+    exact cos_two_pow_mul_odd_factor_ne_zero_of_lt_of_eq_zero
+      (theta := theta) (s := s) (r := r0) (q := r) (by omega) hr0
+  · refine ⟨0, ?_⟩
+    intro r _hr hz
+    exact hbad ⟨r, hz⟩
+
+lemma exists_dyadic_exponent_after_no_cos_zero_for_finset
+    (theta : ℝ) (S : Finset ℕ) :
+    ∃ M : ℕ, ∀ r : ℕ, M ≤ r → ∀ s : ℕ, s ∈ S →
+      Real.cos ((((2 ^ r) * s : ℕ) : ℝ) * theta) ≠ 0 := by
+  classical
+  induction S using Finset.induction_on with
+  | empty =>
+      exact ⟨0, by simp⟩
+  | insert a S haS ih =>
+      rcases exists_dyadic_exponent_after_no_cos_zero_for_factor theta a with
+        ⟨Ma, hMa⟩
+      rcases ih with ⟨MS, hMS⟩
+      refine ⟨max Ma MS, ?_⟩
+      intro r hr s hs
+      rw [Finset.mem_insert] at hs
+      rcases hs with rfl | hsS
+      · exact hMa r ((le_max_left Ma MS).trans hr)
+      · exact hMS r ((le_max_right Ma MS).trans hr) s hsS
+
+lemma exists_large_dyadic_exponent_good_cos_oddUpTo
+    (theta : ℝ) (R N : ℕ) :
+    ∃ r : ℕ, N ≤ r ∧
+      (1 / 2 : ℝ) ≤ |Real.cos (((2 ^ r : ℕ) : ℝ) * theta)| ∧
+      ∀ s : ℕ, s ∈ oddUpTo R →
+        Real.cos ((((2 ^ r) * s : ℕ) : ℝ) * theta) ≠ 0 := by
+  rcases exists_dyadic_exponent_after_no_cos_zero_for_finset
+      theta (oddUpTo R) with
+    ⟨M, hM⟩
+  rcases exists_large_dyadic_exponent_abs_cos_ge_half theta (max N M) with
+    ⟨r, hr, hcos⟩
+  refine ⟨r, (le_max_left N M).trans hr, hcos, ?_⟩
+  intro s hs
+  exact hM r ((le_max_right N M).trans hr) s hs
+
+lemma exists_large_pow_two_good_cos_oddUpTo
+    (theta : ℝ) (R N : ℕ) :
+    ∃ n : ℕ, N ≤ n ∧ IsPowTwo n ∧ 0 < n ∧
+      (1 / 2 : ℝ) ≤ |Real.cos ((n : ℝ) * theta)| ∧
+      ∀ s : ℕ, s ∈ oddUpTo R →
+        Real.cos (((n * s : ℕ) : ℝ) * theta) ≠ 0 := by
+  rcases exists_large_dyadic_exponent_good_cos_oddUpTo theta R N with
+    ⟨r, hNr, hcos, hnonzero⟩
+  refine ⟨2 ^ r, ?_, ⟨r, rfl⟩, ?_, hcos, ?_⟩
+  · exact hNr.trans (Nat.lt_two_pow_self (n := r)).le
+  · exact Nat.pow_pos (by norm_num : 0 < 2)
+  · intro s hs
+    exact hnonzero s hs
 
 /-- Primitive numerator indices for order `d`. -/
 def primIdx (d : ℕ) : Finset ℕ :=
@@ -397,14 +485,6 @@ lemma Vprim_ne_zero_of_not_isNodeRow
     {d : ℕ} (hdpos : 0 < d) (hnot : ¬ IsNodeRow theta0 d) :
     Vprim theta0 d ≠ 0 :=
   ne_of_gt (Vprim_pos_of_not_isNodeRow htheta0 hdpos hnot)
-
-/-- Odd integers in `[1, R]`. -/
-def oddUpTo (R : ℕ) : Finset ℕ :=
-  (Finset.Icc 1 R).filter Odd
-
-lemma mem_oddUpTo_iff {R s : ℕ} :
-    s ∈ oddUpTo R ↔ 1 ≤ s ∧ s ≤ R ∧ Odd s := by
-  simp [oddUpTo, and_assoc, and_comm]
 
 /-- The quadratic character appearing in the row-occurrence sign. -/
 def chi (s : ℕ) : ℝ :=
