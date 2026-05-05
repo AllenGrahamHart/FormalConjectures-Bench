@@ -1979,6 +1979,30 @@ lemma F_future_bound_of_rowEval_finiteSpikeRaw_close
       htheta0 hR hnpos hj hkappa_pos hkappa_le hcos)
     (hclose j hj)
 
+lemma exists_F_abs_le_of_tendsto_zero
+    {theta0 : ℝ} {psi : AngleFun}
+    (hlim : Filter.Tendsto (fun j : ℕ => F theta0 j psi) Filter.atTop (nhds 0))
+    {delta : ℝ} (hdelta : 0 < delta) :
+    ∃ K : ℕ, ∀ j : ℕ, K ≤ j → |F theta0 j psi| ≤ delta := by
+  have hevent :
+      ∀ᶠ j : ℕ in Filter.atTop, |F theta0 j psi| < delta := by
+    simpa [Real.dist_eq] using (Metric.tendsto_nhds.mp hlim delta hdelta)
+  rcases Filter.eventually_atTop.mp hevent with ⟨K, hK⟩
+  exact ⟨K, fun j hj => le_of_lt (hK j hj)⟩
+
+lemma F_future_bound_of_finite_cutoff_and_tail
+    {theta0 : ℝ} {R n K : ℕ} {psi : AngleFun} {eta delta : ℝ}
+    (heta_nonneg : 0 ≤ eta) (hdelta_nonneg : 0 ≤ delta)
+    (hfinite : ∀ j : ℕ, R * n < j → j ≤ K →
+      |F theta0 j psi| ≤ eta)
+    (htail : ∀ j : ℕ, K < j → |F theta0 j psi| ≤ delta) :
+    ∀ j : ℕ, R * n < j → |F theta0 j psi| ≤ eta + delta := by
+  intro j hjfuture
+  by_cases hjK : j ≤ K
+  · exact (hfinite j hjfuture hjK).trans (by linarith)
+  · have hKj : K < j := Nat.lt_of_not_ge hjK
+    exact (htail j hKj).trans (by linarith)
+
 /-- A triangular tent of height `a`, centered at `p`, with radius `r`. -/
 def tent (p r a : ℝ) : ℝ → ℝ :=
   fun theta => a * max 0 (1 - |theta - p| / r)
@@ -2103,6 +2127,27 @@ lemma spikePoints_subset_nodesUpTo
   have hjK : n * p.1 ≤ R * n := by
     simpa [Nat.mul_comm] using Nat.mul_le_mul_left n hs_info.2.1
   exact mem_nodesUpTo_of_row hjpos hjK hklt
+
+lemma nodesUpTo_mono {K L : ℕ} (hKL : K ≤ L) :
+    nodesUpTo K ⊆ nodesUpTo L := by
+  classical
+  intro theta htheta
+  unfold nodesUpTo at htheta ⊢
+  rcases Finset.mem_image.mp htheta with ⟨p, hp, rfl⟩
+  refine Finset.mem_image.mpr ?_
+  refine ⟨p, ?_, rfl⟩
+  rcases Finset.mem_sigma.mp hp with ⟨hpIcc, hprange⟩
+  exact Finset.mem_sigma.mpr
+    ⟨Finset.mem_Icc.mpr
+      ⟨(Finset.mem_Icc.mp hpIcc).1,
+        (Finset.mem_Icc.mp hpIcc).2.trans hKL⟩,
+      hprange⟩
+
+lemma spikePoints_subset_nodesUpTo_of_le
+    {R n K : ℕ} (hnpos : 0 < n) (hRK : R * n ≤ K) :
+    spikePoints n R ⊆ nodesUpTo K := by
+  intro theta htheta
+  exact nodesUpTo_mono hRK (spikePoints_subset_nodesUpTo hnpos htheta)
 
 lemma theta0_not_mem_spikePoints_of_good_rows
     {theta0 : ℝ} {R n : ℕ}
@@ -2341,6 +2386,49 @@ lemma F_continuousSpike_block_rows
       htheta0 hjle hradpos hsep]
     exact hraw.2 j hjpos hjle hjne
 
+lemma F_continuousSpike_block_and_finite_future_of_good_rows
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
+    {R n K : ℕ} {kappa : ℝ}
+    (hnpos : 0 < n) (hR : 1 ≤ R) (hRK : R * n ≤ K)
+    (hkappa_pos : 0 < kappa)
+    (hkappa_le : kappa ≤ |Real.cos ((n : ℝ) * theta0)|)
+    {radius : ℝ → ℝ}
+    (hradpos : ∀ p : ℝ, p ∈ spikePoints n R → 0 < radius p)
+    (hsep : ∀ p : ℝ, p ∈ spikePoints n R →
+      ∀ e : ℝ, e ∈ insert theta0 (nodesUpTo K) → e ≠ p →
+        radius p ≤ |e - p|)
+    (hcos : ∀ s : ℕ, s ∈ oddUpTo R →
+      Real.cos (((n * s : ℕ) : ℝ) * theta0) ≠ 0) :
+    F theta0 n
+        (continuousSpike (spikePoints n R) radius (finiteSpikeRaw theta0 R n)) = 1 ∧
+      (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+        F theta0 j
+          (continuousSpike (spikePoints n R) radius (finiteSpikeRaw theta0 R n)) = 0) ∧
+      (∀ j : ℕ, R * n < j → j ≤ K →
+        |F theta0 j
+          (continuousSpike (spikePoints n R) radius (finiteSpikeRaw theta0 R n))| ≤
+            (1 / kappa) / Real.sqrt (R : ℝ)) := by
+  have hraw :=
+    rowEval_finiteSpikeRaw_block_and_future_of_good_rows
+      htheta0 hnpos hR hkappa_pos hkappa_le hcos
+  have hnK : n ≤ K := by
+    have hn_le_Rn : n ≤ R * n := by
+      simpa [one_mul] using Nat.mul_le_mul_right n hR
+    exact hn_le_Rn.trans hRK
+  refine ⟨?_, ?_, ?_⟩
+  · rw [F_continuousSpike_eq_rowEval_finiteSpikeRaw
+      htheta0 hnK hradpos hsep]
+    exact hraw.1
+  · intro j hjpos hjle hjne
+    have hjK : j ≤ K := hjle.trans hRK
+    rw [F_continuousSpike_eq_rowEval_finiteSpikeRaw
+      htheta0 hjK hradpos hsep]
+    exact hraw.2.1 j hjpos hjle hjne
+  · intro j hjfuture hjK
+    rw [F_continuousSpike_eq_rowEval_finiteSpikeRaw
+      htheta0 hjK hradpos hsep]
+    exact hraw.2.2 j hjfuture
+
 lemma continuousSpike_vanishesNear_of_radius_away
     {theta0 : ℝ} {P : Finset ℝ} {radius height : ℝ → ℝ}
     (hradpos : ∀ p : ℝ, p ∈ P → 0 < radius p)
@@ -2532,6 +2620,45 @@ lemma exists_continuousSpike_exact_block_norm_le
   · exact continuousSpike_vanishesNear_of_radius_away hradpos haway
   · exact norm_continuousSpike_le_height_bound hB hradpos hpairsep hheight
 
+lemma exists_continuousSpike_block_and_finite_future_norm_le
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
+    {R n K : ℕ} {kappa : ℝ}
+    (hnpos : 0 < n) (hR : 1 ≤ R) (hRK : R * n ≤ K)
+    (hkappa_pos : 0 < kappa)
+    (hkappa_le : kappa ≤ |Real.cos ((n : ℝ) * theta0)|)
+    {radius : ℝ → ℝ}
+    (hradpos : ∀ p : ℝ, p ∈ spikePoints n R → 0 < radius p)
+    (hsep : ∀ p : ℝ, p ∈ spikePoints n R →
+      ∀ e : ℝ, e ∈ insert theta0 (nodesUpTo K) → e ≠ p →
+        radius p ≤ |e - p|)
+    (hpairsep : ∀ p : ℝ, p ∈ spikePoints n R →
+      ∀ q : ℝ, q ∈ spikePoints n R → p ≠ q →
+        radius p + radius q ≤ |p - q|)
+    (haway : ∃ eps > 0, ∀ theta ∈ AngleI, |theta - theta0| < eps →
+      ∀ p : ℝ, p ∈ spikePoints n R → radius p ≤ |theta - p|)
+    (hcos : ∀ s : ℕ, s ∈ oddUpTo R →
+      Real.cos (((n * s : ℕ) : ℝ) * theta0) ≠ 0)
+    {B : ℝ} (hB : 0 ≤ B)
+    (hheight : ∀ p : ℝ, p ∈ spikePoints n R →
+      |finiteSpikeRaw theta0 R n p| ≤ B) :
+    ∃ psi : AngleFun,
+      VanishesNear theta0 (angleFunToRaw psi) ∧
+      F theta0 n psi = 1 ∧
+      (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+        F theta0 j psi = 0) ∧
+      (∀ j : ℕ, R * n < j → j ≤ K →
+        |F theta0 j psi| ≤ (1 / kappa) / Real.sqrt (R : ℝ)) ∧
+      ‖psi‖ ≤ B := by
+  let psi : AngleFun :=
+    continuousSpike (spikePoints n R) radius (finiteSpikeRaw theta0 R n)
+  have hpack :=
+    F_continuousSpike_block_and_finite_future_of_good_rows
+      (theta0 := theta0) htheta0 hnpos hR hRK
+      hkappa_pos hkappa_le hradpos hsep hcos
+  refine ⟨psi, ?_, hpack.1, hpack.2.1, hpack.2.2, ?_⟩
+  · exact continuousSpike_vanishesNear_of_radius_away hradpos haway
+  · exact norm_continuousSpike_le_height_bound hB hradpos hpairsep hheight
+
 lemma exists_continuousSpike_exact_block_of_good_rows
     {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
     {R n : ℕ} (hnpos : 0 < n) (hR : 1 ≤ R)
@@ -2603,6 +2730,42 @@ lemma exists_continuousSpike_exact_block_of_good_rows_norm_le
   exact exists_continuousSpike_exact_block_norm_le
     htheta0 hnpos hR hradpos hsep hpairsep haway hcos hV hB hheight
 
+lemma exists_continuousSpike_block_and_finite_future_of_good_rows_norm_le
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
+    {R n K : ℕ} {kappa : ℝ}
+    (hnpos : 0 < n) (hR : 1 ≤ R) (hRK : R * n ≤ K)
+    (hkappa_pos : 0 < kappa)
+    (hkappa_le : kappa ≤ |Real.cos ((n : ℝ) * theta0)|)
+    (hcos : ∀ s : ℕ, s ∈ oddUpTo R →
+      Real.cos (((n * s : ℕ) : ℝ) * theta0) ≠ 0)
+    {B : ℝ} (hB : 0 ≤ B)
+    (hheight : ∀ p : ℝ, p ∈ spikePoints n R →
+      |finiteSpikeRaw theta0 R n p| ≤ B) :
+    ∃ psi : AngleFun,
+      VanishesNear theta0 (angleFunToRaw psi) ∧
+      F theta0 n psi = 1 ∧
+      (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+        F theta0 j psi = 0) ∧
+      (∀ j : ℕ, R * n < j → j ≤ K →
+        |F theta0 j psi| ≤ (1 / kappa) / Real.sqrt (R : ℝ)) ∧
+      ‖psi‖ ≤ B := by
+  classical
+  let E : Finset ℝ := insert theta0 (nodesUpTo K)
+  have hPE : spikePoints n R ⊆ E := by
+    intro p hp
+    exact Finset.mem_insert.mpr
+      (Or.inr (spikePoints_subset_nodesUpTo_of_le hnpos hRK hp))
+  have hthetaE : theta0 ∈ E := Finset.mem_insert_self _ _
+  have hthetaP : theta0 ∉ spikePoints n R :=
+    theta0_not_mem_spikePoints_of_good_rows hcos
+  rcases exists_constant_isolating_radius
+      (P := spikePoints n R) (E := E) (theta0 := theta0)
+      hPE hthetaE hthetaP with
+    ⟨radius, hradpos, hsep, hpairsep, haway⟩
+  exact exists_continuousSpike_block_and_finite_future_norm_le
+    htheta0 hnpos hR hRK hkappa_pos hkappa_le
+    hradpos hsep hpairsep haway hcos hB hheight
+
 lemma exists_continuousSpike_exact_block_of_good_rows_coeff_bound
     {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
     {R n : ℕ} (hnpos : 0 < n) (hR : 1 ≤ R)
@@ -2632,6 +2795,40 @@ lemma exists_continuousSpike_exact_block_of_good_rows_coeff_bound
   exact exists_continuousSpike_exact_block_of_good_rows_norm_le
     htheta0 hnpos hR hcos hB hheight
 
+lemma exists_continuousSpike_block_and_finite_future_of_good_rows_coeff_bound
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
+    {R n K : ℕ} {kappa : ℝ}
+    (hnpos : 0 < n) (hR : 1 ≤ R) (hRK : R * n ≤ K)
+    (hkappa_pos : 0 < kappa)
+    (hkappa_le : kappa ≤ |Real.cos ((n : ℝ) * theta0)|)
+    (hcos : ∀ s : ℕ, s ∈ oddUpTo R →
+      Real.cos (((n * s : ℕ) : ℝ) * theta0) ≠ 0)
+    {B : ℝ} (hB : 0 ≤ B)
+    (hcoeff : ∀ s : ℕ, s ∈ oddUpTo R →
+      |spikeCoeff theta0 n s| / Vprim theta0 (n * s) ≤ B) :
+    ∃ psi : AngleFun,
+      VanishesNear theta0 (angleFunToRaw psi) ∧
+      F theta0 n psi = 1 ∧
+      (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+        F theta0 j psi = 0) ∧
+      (∀ j : ℕ, R * n < j → j ≤ K →
+        |F theta0 j psi| ≤ (1 / kappa) / Real.sqrt (R : ℝ)) ∧
+      ‖psi‖ ≤ B := by
+  have hVpos : ∀ s : ℕ, s ∈ oddUpTo R → 0 < Vprim theta0 (n * s) := by
+    intro s hs
+    have hspos : 0 < s := (mem_oddUpTo_iff.mp hs).2.2.pos
+    have hdpos : 0 < n * s := Nat.mul_pos hnpos hspos
+    have hnot : ¬ IsNodeRow theta0 (n * s) := by
+      simpa [IsNodeRow] using hcos s hs
+    exact Vprim_pos_of_not_isNodeRow htheta0 hdpos hnot
+  have hheight :
+      ∀ p : ℝ, p ∈ spikePoints n R →
+        |finiteSpikeRaw theta0 R n p| ≤ B :=
+    finiteSpikeRaw_abs_le_on_spikePoints_of_coeff_bound
+      hnpos hVpos hcoeff
+  exact exists_continuousSpike_block_and_finite_future_of_good_rows_norm_le
+    htheta0 hnpos hR hRK hkappa_pos hkappa_le hcos hB hheight
+
 lemma exists_continuousSpike_exact_block_of_good_rows_Vprim_lower
     {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
     {R n : ℕ} {c kappa : ℝ}
@@ -2654,6 +2851,32 @@ lemma exists_continuousSpike_exact_block_of_good_rows_Vprim_lower
     positivity
   exact exists_continuousSpike_exact_block_of_good_rows_coeff_bound
     htheta0 hnpos hR hcos hB
+    (coeff_bound_of_Vprim_lower hcpos hkpos hlogpos hkappa_le hcos hmass)
+
+lemma exists_continuousSpike_block_and_finite_future_of_good_rows_Vprim_lower
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
+    {R n K : ℕ} {c kappa : ℝ}
+    (hnpos : 0 < n) (hR : 1 ≤ R) (hRK : R * n ≤ K)
+    (hcpos : 0 < c) (hkpos : 0 < kappa)
+    (hlogpos : 0 < Real.log (n : ℝ))
+    (hkappa_le : kappa ≤ |Real.cos ((n : ℝ) * theta0)|)
+    (hcos : ∀ s : ℕ, s ∈ oddUpTo R →
+      Real.cos (((n * s : ℕ) : ℝ) * theta0) ≠ 0)
+    (hmass : ∀ s : ℕ, s ∈ oddUpTo R →
+      c * |Real.cos (((n * s : ℕ) : ℝ) * theta0)| * Real.log (n : ℝ) ≤
+        Vprim theta0 (n * s)) :
+    ∃ psi : AngleFun,
+      VanishesNear theta0 (angleFunToRaw psi) ∧
+      F theta0 n psi = 1 ∧
+      (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+        F theta0 j psi = 0) ∧
+      (∀ j : ℕ, R * n < j → j ≤ K →
+        |F theta0 j psi| ≤ (1 / kappa) / Real.sqrt (R : ℝ)) ∧
+      ‖psi‖ ≤ (1 / (c * kappa)) / Real.log (n : ℝ) := by
+  have hB : 0 ≤ (1 / (c * kappa)) / Real.log (n : ℝ) := by
+    positivity
+  exact exists_continuousSpike_block_and_finite_future_of_good_rows_coeff_bound
+    htheta0 hnpos hR hRK hkpos hkappa_le hcos hB
     (coeff_bound_of_Vprim_lower hcpos hkpos hlogpos hkappa_le hcos hmass)
 
 end Erdos1151Formalization
