@@ -20,6 +20,70 @@ namespace Erdos1151Formalization
 def IsPowTwo (n : ℕ) : Prop :=
   ∃ r : ℕ, n = 2 ^ r
 
+lemma one_half_le_abs_cos_or_one_half_le_abs_cos_two_mul (x : ℝ) :
+    (1 / 2 : ℝ) ≤ |Real.cos x| ∨
+      (1 / 2 : ℝ) ≤ |Real.cos (2 * x)| := by
+  by_cases h : (1 / 2 : ℝ) ≤ |Real.cos x|
+  · exact Or.inl h
+  · right
+    have hlt : |Real.cos x| < (1 / 2 : ℝ) := lt_of_not_ge h
+    have hsq_lt : Real.cos x ^ 2 < (1 / 2 : ℝ) ^ 2 := by
+      rw [sq_lt_sq]
+      simpa [abs_of_nonneg (by norm_num : (0 : ℝ) ≤ 1 / 2)] using hlt
+    have hcos_le : Real.cos (2 * x) ≤ -(1 / 2 : ℝ) := by
+      rw [Real.cos_two_mul]
+      nlinarith
+    have hcos_nonpos : Real.cos (2 * x) ≤ 0 := by
+      nlinarith
+    rw [abs_of_nonpos hcos_nonpos]
+    nlinarith
+
+lemma exists_large_pow_two_abs_cos_ge_half (theta : ℝ) (N : ℕ) :
+    ∃ n : ℕ, N ≤ n ∧ IsPowTwo n ∧ 0 < n ∧
+      (1 / 2 : ℝ) ≤ |Real.cos ((n : ℝ) * theta)| := by
+  let x : ℝ := ((2 ^ N : ℕ) : ℝ) * theta
+  rcases one_half_le_abs_cos_or_one_half_le_abs_cos_two_mul x with h | h
+  · refine ⟨2 ^ N, ?_, ?_, ?_, ?_⟩
+    · exact Nat.lt_two_pow_self.le
+    · exact ⟨N, rfl⟩
+    · exact Nat.pow_pos (by norm_num : 0 < 2)
+    · simpa [x] using h
+  · refine ⟨2 ^ (N + 1), ?_, ?_, ?_, ?_⟩
+    · have hpowle : 2 ^ N ≤ 2 ^ (N + 1) :=
+        pow_le_pow_right₀ (by norm_num : 1 ≤ (2 : ℕ)) (Nat.le_succ N)
+      exact ((Nat.lt_two_pow_self (n := N)).trans_le hpowle).le
+    · exact ⟨N + 1, rfl⟩
+    · exact Nat.pow_pos (by norm_num : 0 < 2)
+    · have hangle :
+          2 * (((2 ^ N : ℕ) : ℝ) * theta) =
+            ((2 ^ (N + 1) : ℕ) : ℝ) * theta := by
+        rw [pow_succ]
+        norm_num [Nat.cast_mul]
+        ring
+      rw [← hangle]
+      simpa [x] using h
+
+lemma cos_two_mul_eq_neg_one_of_cos_eq_zero {x : ℝ}
+    (h : Real.cos x = 0) :
+    Real.cos (2 * x) = -1 := by
+  rw [Real.cos_two_mul, h]
+  norm_num
+
+lemma cos_two_mul_eq_one_of_cos_eq_one {x : ℝ}
+    (h : Real.cos x = 1) :
+    Real.cos (2 * x) = 1 := by
+  rw [Real.cos_two_mul, h]
+  norm_num
+
+lemma cos_four_mul_eq_one_of_cos_eq_zero {x : ℝ}
+    (h : Real.cos x = 0) :
+    Real.cos (4 * x) = 1 := by
+  have h2 : Real.cos (2 * x) = -1 :=
+    cos_two_mul_eq_neg_one_of_cos_eq_zero h
+  have hangle : 4 * x = 2 * (2 * x) := by ring
+  rw [hangle, Real.cos_two_mul, h2]
+  norm_num
+
 /-- Primitive numerator indices for order `d`. -/
 def primIdx (d : ℕ) : Finset ℕ :=
   (Finset.range d).filter fun k => Nat.Coprime (2 * k + 1) d
