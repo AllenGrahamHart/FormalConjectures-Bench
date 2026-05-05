@@ -4940,6 +4940,62 @@ lemma exists_good_pow_two_with_continuousSpike_finite_future_pi_endpoint
     ⟨n, hnmax, hpow, hnpos, hK⟩
   exact ⟨n, (le_max_left N 4).trans hnmax, hpow, hnpos, hK⟩
 
+lemma exists_continuousSpike_finite_future_angle
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
+    {R : ℕ} (hR : 1 ≤ R) :
+    ∃ C_R : ℝ, 0 < C_R ∧ ∀ N : ℕ,
+      ∃ n : ℕ,
+        N ≤ n ∧
+        IsPowTwo n ∧
+        0 < n ∧
+        (∀ K : ℕ, R * n ≤ K →
+          ∃ psi : AngleFun,
+            VanishesNear theta0 (angleFunToRaw psi) ∧
+            F theta0 n psi = 1 ∧
+            (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+              F theta0 j psi = 0) ∧
+            (∀ j : ℕ, R * n < j → j ≤ K →
+              |F theta0 j psi| ≤ (1 / (1 / 2 : ℝ)) /
+                Real.sqrt (R : ℝ)) ∧
+            ‖psi‖ ≤ C_R / Real.log (n : ℝ)) := by
+  by_cases hzero : theta0 = 0
+  · let C_R : ℝ :=
+      1 / ((((1 / (2 * Real.pi)) / (R : ℝ)) * (1 / 2 : ℝ)))
+    have hC_R_pos : 0 < C_R := by
+      dsimp [C_R]
+      positivity
+    refine ⟨C_R, hC_R_pos, ?_⟩
+    intro N
+    rcases exists_good_pow_two_with_continuousSpike_finite_future_zero_endpoint
+        (R := R) (N := N) hR with
+      ⟨n, hnN, hpow, hnpos, hK⟩
+    refine ⟨n, hnN, hpow, hnpos, ?_⟩
+    intro K hRK
+    rcases hK K hRK with ⟨psi, hvanish, hhit, hearly, hfuture, hnorm⟩
+    subst theta0
+    exact ⟨psi, hvanish, hhit, hearly, hfuture,
+      by simpa [C_R] using hnorm⟩
+  · by_cases hpi_eq : theta0 = Real.pi
+    · let C_R : ℝ :=
+        1 / ((((1 / (2 * Real.pi)) / (R : ℝ)) * (1 / 2 : ℝ)))
+      have hC_R_pos : 0 < C_R := by
+        dsimp [C_R]
+        positivity
+      refine ⟨C_R, hC_R_pos, ?_⟩
+      intro N
+      rcases exists_good_pow_two_with_continuousSpike_finite_future_pi_endpoint
+          (R := R) (N := N) hR with
+        ⟨n, hnN, hpow, hnpos, hK⟩
+      refine ⟨n, hnN, hpow, hnpos, ?_⟩
+      intro K hRK
+      rcases hK K hRK with ⟨psi, hvanish, hhit, hearly, hfuture, hnorm⟩
+      subst theta0
+      exact ⟨psi, hvanish, hhit, hearly, hfuture,
+        by simpa [C_R] using hnorm⟩
+    · have h0 : 0 < theta0 := lt_of_le_of_ne htheta0.1 (Ne.symm hzero)
+      have hpi : theta0 < Real.pi := lt_of_le_of_ne htheta0.2 hpi_eq
+      exact exists_continuousSpike_finite_future_interior h0 hpi hR
+
 end Erdos1151Formalization
 
 end
