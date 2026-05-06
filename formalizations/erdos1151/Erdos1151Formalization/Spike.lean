@@ -4996,6 +4996,35 @@ lemma exists_continuousSpike_finite_future_angle
       have hpi : theta0 < Real.pi := lt_of_le_of_ne htheta0.2 hpi_eq
       exact exists_continuousSpike_finite_future_interior h0 hpi hR
 
+lemma exists_continuousSpike_finite_future_angle_with_delta
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
+    {R : ℕ} (hR : 1 ≤ R) :
+    ∃ C_R : ℝ, 0 < C_R ∧ ∀ N : ℕ, ∀ delta > 0,
+      ∃ n : ℕ,
+        N ≤ n ∧
+        0 < n ∧
+        (∀ K : ℕ, R * n ≤ K →
+          ∃ psi : AngleFun,
+            VanishesNear theta0 (angleFunToRaw psi) ∧
+            F theta0 n psi = 1 ∧
+            (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+              F theta0 j psi = 0) ∧
+            (∀ j : ℕ, R * n < j → j ≤ K →
+              |F theta0 j psi| ≤
+                (1 / (1 / 2 : ℝ)) / Real.sqrt (R : ℝ) + delta) ∧
+            ‖psi‖ ≤ C_R / Real.log (n : ℝ)) := by
+  rcases exists_continuousSpike_finite_future_angle htheta0 hR with
+    ⟨C_R, hC_R_pos, hspike⟩
+  refine ⟨C_R, hC_R_pos, ?_⟩
+  intro N delta hdelta
+  rcases hspike N with ⟨n, hnN, _hpow, hnpos, hK⟩
+  refine ⟨n, hnN, hnpos, ?_⟩
+  intro K hRK
+  rcases hK K hRK with ⟨psi, hvanish, hhit, hearly, hfuture, hnorm⟩
+  refine ⟨psi, hvanish, hhit, hearly, ?_, hnorm⟩
+  intro j hj hjK
+  exact (hfuture j hj hjK).trans (by linarith [le_of_lt hdelta])
+
 end Erdos1151Formalization
 
 end
