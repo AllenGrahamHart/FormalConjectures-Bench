@@ -1,4 +1,5 @@
 import Erdos1151Formalization.Abstract
+import Erdos1151Formalization.Spike
 
 /-!
 # Erdős Problem 1151, final target statement scaffold
@@ -22,6 +23,25 @@ namespace Erdos1151Formalization
 lemma arccos_mem_angleI (x0 : ℝ) :
     Real.arccos x0 ∈ AngleI :=
   ⟨Real.arccos_nonneg x0, Real.arccos_le_pi x0⟩
+
+noncomputable def concrete_finite_block_spike_hypothesis_angle
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI) :
+    AbstractFiniteBlockSpikeHypothesis theta0 htheta0 := by
+  refine {
+    const_eval := ?_
+    off_point_decay := ?_
+    eta := etaSqrt (1 / (1 / 2 : ℝ))
+    eta_nonneg := ?_
+    eta_tendsto_zero := ?_
+    exists_finite_spike := ?_ }
+  · intro c n hnpos
+    exact F_const_eval htheta0 c hnpos
+  · intro psi hpsi
+    exact off_point_decay htheta0 hpsi
+  · exact etaSqrt_nonneg (by positivity)
+  · exact etaSqrt_tendsto_zero (1 / (1 / 2 : ℝ))
+  · simpa [etaSqrt] using
+      exists_continuousSpike_finite_future_angle_all_odd htheta0
 
 /-- Spatial fixed-point theorem, conditional on the angle-side block-spike
 hypothesis at a matching angle. This is the completed Lagrange bridge from

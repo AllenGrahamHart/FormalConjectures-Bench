@@ -382,6 +382,63 @@ structure AbstractBlockSpikeHypothesis
         (∀ j : ℕ, R * n < j → |F theta0 j psi| ≤ eta R + delta) ∧
         ‖psi‖ ≤ C_R / Real.log (n : ℝ)
 
+/-- Variant of the block-spike interface where the square-root future bound is
+only required up to an arbitrary finite cutoff.  This matches the concrete
+continuous-spike construction, where the interpolation identities are exact on
+any prescribed finite set of rows. -/
+structure AbstractFiniteBlockSpikeHypothesis
+    (theta0 : ℝ) (_htheta0 : theta0 ∈ AngleI) where
+  const_eval : ∀ c : ℝ, ∀ n : ℕ, 0 < n →
+    F theta0 n (ContinuousMap.const AngleI c) = c
+  off_point_decay : ∀ psi : AngleFun,
+    VanishesNear theta0 (angleFunToRaw psi) →
+      Tendsto (fun n : ℕ => F theta0 n psi) Filter.atTop (nhds 0)
+  eta : ℕ → ℝ
+  eta_nonneg : ∀ R, 0 ≤ eta R
+  eta_tendsto_zero : Tendsto eta atTop (nhds 0)
+  exists_finite_spike :
+    ∀ R : ℕ, Odd R → 3 ≤ R →
+      ∃ C_R > 0, ∀ N : ℕ, ∀ delta > 0, ∃ n : ℕ,
+        N ≤ n ∧
+        0 < n ∧
+        (∀ K : ℕ, R * n ≤ K →
+          ∃ psi : AngleFun,
+            VanishesNear theta0 (angleFunToRaw psi) ∧
+            F theta0 n psi = 1 ∧
+            (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+              F theta0 j psi = 0) ∧
+            (∀ j : ℕ, R * n < j → j ≤ K →
+              |F theta0 j psi| ≤ eta R + delta) ∧
+            ‖psi‖ ≤ C_R / Real.log (n : ℝ))
+
+lemma AbstractFiniteBlockSpikeHypothesis.exists_finite_spike_with_eta_lt
+    {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
+    (H : AbstractFiniteBlockSpikeHypothesis theta0 htheta0)
+    {eps delta : ℝ} (heps : 0 < eps) (hdelta : 0 < delta)
+    (Rmin Nrow : ℕ) :
+    ∃ R : ℕ, ∃ C_R : ℝ, ∃ n : ℕ,
+      Rmin ≤ R ∧
+      Odd R ∧
+      3 ≤ R ∧
+      H.eta R < eps ∧
+      0 < C_R ∧
+      Nrow ≤ n ∧
+      0 < n ∧
+      (∀ K : ℕ, R * n ≤ K →
+        ∃ psi : AngleFun,
+          VanishesNear theta0 (angleFunToRaw psi) ∧
+          F theta0 n psi = 1 ∧
+          (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+            F theta0 j psi = 0) ∧
+          (∀ j : ℕ, R * n < j → j ≤ K →
+            |F theta0 j psi| ≤ H.eta R + delta) ∧
+          ‖psi‖ ≤ C_R / Real.log (n : ℝ)) := by
+  obtain ⟨R, hRmin, hRodd, hR3, hReta⟩ :=
+    exists_large_odd_eta_lt H.eta_tendsto_zero heps Rmin
+  obtain ⟨C_R, hC_R_pos, hspikes⟩ := H.exists_finite_spike R hRodd hR3
+  obtain ⟨n, hnrow, hnpos, hK⟩ := hspikes Nrow delta hdelta
+  exact ⟨R, C_R, n, hRmin, hRodd, hR3, hReta, hC_R_pos, hnrow, hnpos, hK⟩
+
 lemma AbstractBlockSpikeHypothesis.F_diagonalPhi_selected
     {theta0 : ℝ} {htheta0 : theta0 ∈ AngleI}
     (H : AbstractBlockSpikeHypothesis theta0 htheta0)
