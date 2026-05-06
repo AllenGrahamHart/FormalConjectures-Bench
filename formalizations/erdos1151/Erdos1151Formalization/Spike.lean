@@ -5025,6 +5025,27 @@ lemma exists_continuousSpike_finite_future_angle_with_delta
   intro j hj hjK
   exact (hfuture j hj hjK).trans (by linarith [le_of_lt hdelta])
 
+lemma exists_continuousSpike_finite_future_angle_all_odd
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI) :
+    ∀ R : ℕ, Odd R → 3 ≤ R →
+      ∃ C_R : ℝ, 0 < C_R ∧ ∀ N : ℕ, ∀ delta > 0,
+        ∃ n : ℕ,
+          N ≤ n ∧
+          0 < n ∧
+          (∀ K : ℕ, R * n ≤ K →
+            ∃ psi : AngleFun,
+              VanishesNear theta0 (angleFunToRaw psi) ∧
+              F theta0 n psi = 1 ∧
+              (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+                F theta0 j psi = 0) ∧
+              (∀ j : ℕ, R * n < j → j ≤ K →
+                |F theta0 j psi| ≤
+                  (1 / (1 / 2 : ℝ)) / Real.sqrt (R : ℝ) + delta) ∧
+              ‖psi‖ ≤ C_R / Real.log (n : ℝ)) := by
+  intro R _hRodd hR3
+  exact exists_continuousSpike_finite_future_angle_with_delta
+    htheta0 (by omega : 1 ≤ R)
+
 end Erdos1151Formalization
 
 end
