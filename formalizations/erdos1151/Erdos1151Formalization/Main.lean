@@ -259,7 +259,12 @@ theorem erdos1151_nonempty_fixed_point
     (hA_subset : A ⊆ SpaceI) :
     ∃ f : SpaceFun,
       clusterSet (fun m : ℕ => chebLagEval x0 f (m.succ)) = A := by
-  sorry
+  refine erdos1151_nonempty_fixed_point_from_concrete_sqrt_spikes
+    hx0 (1 / (1 / 2 : ℝ)) (by positivity) ?_
+    hA_closed hA_nonempty hA_subset
+  simpa [etaSqrt] using
+    (exists_continuousSpike_global_future_angle_all_odd
+      (arccos_mem_angleI x0))
 
 end Erdos1151Formalization
 

@@ -5416,6 +5416,41 @@ lemma exists_continuousSpike_block_and_finite_future_of_good_rows_coeff_bound
   exact exists_continuousSpike_block_and_finite_future_of_good_rows_norm_le
     htheta0 hnpos hR hRK hkappa_pos hkappa_le hcos hB hheight
 
+lemma exists_continuousSpike_block_and_global_future_of_good_rows_coeff_bound
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
+    {R n : ℕ} {kappa tailTarget : ℝ}
+    (hnpos : 0 < n) (hR : 1 ≤ R)
+    (hkappa_pos : 0 < kappa)
+    (hkappa_le : kappa ≤ |Real.cos ((n : ℝ) * theta0)|)
+    (htailTarget : 0 < tailTarget)
+    (hcos : ∀ s : ℕ, s ∈ oddUpTo R →
+      Real.cos (((n * s : ℕ) : ℝ) * theta0) ≠ 0)
+    {B : ℝ} (hB : 0 ≤ B)
+    (hcoeff : ∀ s : ℕ, s ∈ oddUpTo R →
+      |spikeCoeff theta0 n s| / Vprim theta0 (n * s) ≤ B) :
+    ∃ psi : AngleFun,
+      VanishesNear theta0 (angleFunToRaw psi) ∧
+      F theta0 n psi = 1 ∧
+      (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+        F theta0 j psi = 0) ∧
+      (∀ j : ℕ, R * n < j →
+        |F theta0 j psi| ≤ (1 / kappa) / Real.sqrt (R : ℝ) + tailTarget) ∧
+      ‖psi‖ ≤ B := by
+  have hVpos : ∀ s : ℕ, s ∈ oddUpTo R → 0 < Vprim theta0 (n * s) := by
+    intro s hs
+    have hspos : 0 < s := (mem_oddUpTo_iff.mp hs).2.2.pos
+    have hdpos : 0 < n * s := Nat.mul_pos hnpos hspos
+    have hnot : ¬ IsNodeRow theta0 (n * s) := by
+      simpa [IsNodeRow] using hcos s hs
+    exact Vprim_pos_of_not_isNodeRow htheta0 hdpos hnot
+  have hheight :
+      ∀ p : ℝ, p ∈ spikePoints n R →
+        |finiteSpikeRaw theta0 R n p| ≤ B :=
+    finiteSpikeRaw_abs_le_on_spikePoints_of_coeff_bound
+      hnpos hVpos hcoeff
+  exact exists_continuousSpike_block_and_global_future_of_good_rows_norm_le
+    htheta0 hnpos hR hkappa_pos hkappa_le htailTarget hcos hB hheight
+
 lemma exists_continuousSpike_exact_block_of_good_rows_Vprim_lower
     {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
     {R n : ℕ} {c kappa : ℝ}
@@ -5498,6 +5533,33 @@ lemma exists_continuousSpike_block_and_finite_future_of_good_rows_Vprim_lower
     htheta0 hnpos hR hRK hkpos hkappa_le hcos hB
     (coeff_bound_of_Vprim_lower hcpos hkpos hlogpos hkappa_le hcos hmass)
 
+lemma exists_continuousSpike_block_and_global_future_of_good_rows_Vprim_lower
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
+    {R n : ℕ} {c kappa tailTarget : ℝ}
+    (hnpos : 0 < n) (hR : 1 ≤ R)
+    (hcpos : 0 < c) (hkpos : 0 < kappa)
+    (hlogpos : 0 < Real.log (n : ℝ))
+    (hkappa_le : kappa ≤ |Real.cos ((n : ℝ) * theta0)|)
+    (htailTarget : 0 < tailTarget)
+    (hcos : ∀ s : ℕ, s ∈ oddUpTo R →
+      Real.cos (((n * s : ℕ) : ℝ) * theta0) ≠ 0)
+    (hmass : ∀ s : ℕ, s ∈ oddUpTo R →
+      c * |Real.cos (((n * s : ℕ) : ℝ) * theta0)| * Real.log (n : ℝ) ≤
+        Vprim theta0 (n * s)) :
+    ∃ psi : AngleFun,
+      VanishesNear theta0 (angleFunToRaw psi) ∧
+      F theta0 n psi = 1 ∧
+      (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+        F theta0 j psi = 0) ∧
+      (∀ j : ℕ, R * n < j →
+        |F theta0 j psi| ≤ (1 / kappa) / Real.sqrt (R : ℝ) + tailTarget) ∧
+      ‖psi‖ ≤ (1 / (c * kappa)) / Real.log (n : ℝ) := by
+  have hB : 0 ≤ (1 / (c * kappa)) / Real.log (n : ℝ) := by
+    positivity
+  exact exists_continuousSpike_block_and_global_future_of_good_rows_coeff_bound
+    htheta0 hnpos hR hkpos hkappa_le htailTarget hcos hB
+    (coeff_bound_of_Vprim_lower hcpos hkpos hlogpos hkappa_le hcos hmass)
+
 lemma exists_good_pow_two_with_continuousSpike_finite_future_of_Vprim_lower
     {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
     {R N : ℕ} {c : ℝ}
@@ -5533,6 +5595,42 @@ lemma exists_good_pow_two_with_continuousSpike_finite_future_of_Vprim_lower
     (R := R) (n := n) (K := K) (c := c) (kappa := (1 / 2 : ℝ))
     hnpos hR hRK hcpos (by norm_num) hlogpos hkappa_le hcos
     (hmass n hnN hpow hnpos hcos)
+
+lemma exists_good_pow_two_with_continuousSpike_global_future_of_Vprim_lower
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
+    {R N : ℕ} {c tailTarget : ℝ}
+    (hR : 1 ≤ R) (hcpos : 0 < c) (htailTarget : 0 < tailTarget)
+    (hmass : ∀ n : ℕ, N ≤ n → IsPowTwo n → 0 < n →
+      (∀ s : ℕ, s ∈ oddUpTo R →
+        Real.cos (((n * s : ℕ) : ℝ) * theta0) ≠ 0) →
+      ∀ s : ℕ, s ∈ oddUpTo R →
+        c * |Real.cos (((n * s : ℕ) : ℝ) * theta0)| *
+            Real.log (n : ℝ) ≤ Vprim theta0 (n * s)) :
+    ∃ n : ℕ, ∃ psi : AngleFun,
+      N ≤ n ∧
+      IsPowTwo n ∧
+      0 < n ∧
+      VanishesNear theta0 (angleFunToRaw psi) ∧
+      F theta0 n psi = 1 ∧
+      (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+        F theta0 j psi = 0) ∧
+      (∀ j : ℕ, R * n < j →
+        |F theta0 j psi| ≤
+          (1 / (1 / 2 : ℝ)) / Real.sqrt (R : ℝ) + tailTarget) ∧
+      ‖psi‖ ≤ (1 / (c * (1 / 2 : ℝ))) / Real.log (n : ℝ) := by
+  rcases exists_large_pow_two_good_cos_oddUpTo theta0 R (max N 2) with
+    ⟨n, hnmax, hpow, hnpos, hkappa_le, hcos⟩
+  have hnN : N ≤ n := (le_max_left N 2).trans hnmax
+  have hn2 : 2 ≤ n := (le_max_right N 2).trans hnmax
+  have hlogpos : 0 < Real.log (n : ℝ) := log_nat_pos_of_two_le hn2
+  rcases exists_continuousSpike_block_and_global_future_of_good_rows_Vprim_lower
+      (theta0 := theta0) htheta0
+      (R := R) (n := n) (c := c) (kappa := (1 / 2 : ℝ))
+      (tailTarget := tailTarget)
+      hnpos hR hcpos (by norm_num) hlogpos hkappa_le htailTarget hcos
+      (hmass n hnN hpow hnpos hcos) with
+    ⟨psi, hvanish, hhit, hearly, hfuture, hnorm⟩
+  exact ⟨n, psi, hnN, hpow, hnpos, hvanish, hhit, hearly, hfuture, hnorm⟩
 
 lemma exists_good_pow_two_with_continuousSpike_finite_future_interior_of_kernel_params
     {theta0 c rho : ℝ} {Q R N : ℕ}
@@ -5589,6 +5687,63 @@ lemma exists_good_pow_two_with_continuousSpike_finite_future_interior_of_kernel_
             hnot hlocal hrange hQrho)) with
     ⟨n, hnmax, hpow, hnpos, hK⟩
   exact ⟨n, (le_max_left N (Q ^ 2)).trans hnmax, hpow, hnpos, hK⟩
+
+lemma exists_good_pow_two_with_continuousSpike_global_future_interior_of_kernel_params
+    {theta0 c rho tailTarget : ℝ} {Q R N : ℕ}
+    (htheta0 : theta0 ∈ AngleI) (hcpos : 0 < c)
+    (hQpos : 0 < Q) (hR : 1 ≤ R)
+    (htailTarget : 0 < tailTarget)
+    (hrange : theta0 / Real.pi + 1 / (Q : ℝ) ≤ 1)
+    (hQrho : Real.pi / (Q : ℝ) < rho)
+    (hlocal : ∀ theta ∈ AngleI, theta ≠ theta0 →
+      |theta - theta0| < rho →
+        c / |theta - theta0| ≤
+          Real.sin theta / |Real.cos theta0 - Real.cos theta|) :
+    ∃ n : ℕ, ∃ psi : AngleFun,
+      N ≤ n ∧
+      IsPowTwo n ∧
+      0 < n ∧
+      VanishesNear theta0 (angleFunToRaw psi) ∧
+      F theta0 n psi = 1 ∧
+      (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+        F theta0 j psi = 0) ∧
+      (∀ j : ℕ, R * n < j →
+        |F theta0 j psi| ≤ (1 / (1 / 2 : ℝ)) /
+          Real.sqrt (R : ℝ) + tailTarget) ∧
+      ‖psi‖ ≤
+        1 / (((c / (2 * Real.pi)) / (R : ℝ)) * (1 / 2 : ℝ)) /
+          Real.log (n : ℝ) := by
+  have hRpos : 0 < R := lt_of_lt_of_le Nat.zero_lt_one hR
+  have hcbase_pos : 0 < c / (2 * Real.pi) := by
+    positivity
+  have hcmass_pos : 0 < (c / (2 * Real.pi)) / (R : ℝ) := by
+    positivity
+  rcases exists_good_pow_two_with_continuousSpike_global_future_of_Vprim_lower
+      (theta0 := theta0) htheta0 (R := R) (N := max N (Q ^ 2))
+      (c := (c / (2 * Real.pi)) / (R : ℝ))
+      (tailTarget := tailTarget) hR hcmass_pos htailTarget
+      (fun n hnmax hpow hnpos hcos s hs => by
+        have hnNQ : Q ^ 2 ≤ n := (le_max_right N (Q ^ 2)).trans hnmax
+        have hs_info := mem_oddUpTo_iff.mp hs
+        have hspos : 0 < s := hs_info.2.2.pos
+        have hsR : s ≤ R := hs_info.2.1
+        have hnot : ¬ IsNodeRow theta0 (n * s) := hcos s hs
+        have hlog_nonneg : 0 ≤ Real.log (n : ℝ) := by
+          exact Real.log_nonneg
+            (by exact_mod_cast (Nat.succ_le_iff.mpr hnpos))
+        exact Vprim_lower_of_progression_kernel_lower_base
+          (theta0 := theta0) (c := c / (2 * Real.pi))
+          (R := R) (n := n) (s := s)
+          hpow hnpos hRpos hspos hsR (le_of_lt hcbase_pos)
+          hlog_nonneg
+          (interior_progression_kernel_sum_ge_log_of_div_block
+            (theta0 := theta0) (c := c) (rho := rho)
+            (n := n) (s := s) (Q := Q)
+            hnpos hspos hQpos hnNQ (le_of_lt hcpos) htheta0.1
+            hnot hlocal hrange hQrho)) with
+    ⟨n, psi, hnmax, hpow, hnpos, hvanish, hhit, hearly, hfuture, hnorm⟩
+  exact ⟨n, psi, (le_max_left N (Q ^ 2)).trans hnmax, hpow, hnpos,
+    hvanish, hhit, hearly, hfuture, hnorm⟩
 
 lemma exists_nat_good_interior_divisor
     {theta0 rho : ℝ} (hpi : theta0 < Real.pi) (hrho : 0 < rho) :
@@ -5687,6 +5842,43 @@ lemma exists_continuousSpike_finite_future_interior
   rcases hK K hRK with ⟨psi, hvanish, hhit, hearly, hfuture, hnorm⟩
   exact ⟨psi, hvanish, hhit, hearly, hfuture, by simpa [C_R] using hnorm⟩
 
+lemma exists_continuousSpike_global_future_interior_with_delta
+    {theta0 : ℝ} (h0 : 0 < theta0) (hpi : theta0 < Real.pi)
+    {R : ℕ} (hR : 1 ≤ R) :
+    ∃ C_R : ℝ, 0 < C_R ∧ ∀ N : ℕ, ∀ delta > 0,
+      ∃ n : ℕ, ∃ psi : AngleFun,
+        N ≤ n ∧
+        IsPowTwo n ∧
+        0 < n ∧
+        VanishesNear theta0 (angleFunToRaw psi) ∧
+        F theta0 n psi = 1 ∧
+        (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+          F theta0 j psi = 0) ∧
+        (∀ j : ℕ, R * n < j →
+          |F theta0 j psi| ≤ (1 / (1 / 2 : ℝ)) /
+            Real.sqrt (R : ℝ) + delta) ∧
+        ‖psi‖ ≤ C_R / Real.log (n : ℝ) := by
+  have htheta0 : theta0 ∈ AngleI := ⟨le_of_lt h0, le_of_lt hpi⟩
+  rcases exists_interior_kernel_lower_bound h0 hpi with
+    ⟨c, hcpos, rho, hrhopos, hlocal⟩
+  rcases exists_nat_good_interior_divisor
+      (theta0 := theta0) (rho := rho) hpi hrhopos with
+    ⟨Q, hQpos, hrange, hQrho⟩
+  let C_R : ℝ :=
+    1 / (((c / (2 * Real.pi)) / (R : ℝ)) * (1 / 2 : ℝ))
+  have hC_R_pos : 0 < C_R := by
+    dsimp [C_R]
+    positivity
+  refine ⟨C_R, hC_R_pos, ?_⟩
+  intro N delta hdelta
+  rcases exists_good_pow_two_with_continuousSpike_global_future_interior_of_kernel_params
+      (theta0 := theta0) (c := c) (rho := rho) (tailTarget := delta)
+      (Q := Q) (R := R) (N := N)
+      htheta0 hcpos hQpos hR hdelta hrange hQrho hlocal with
+    ⟨n, psi, hnN, hpow, hnpos, hvanish, hhit, hearly, hfuture, hnorm⟩
+  exact ⟨n, psi, hnN, hpow, hnpos, hvanish, hhit, hearly, hfuture,
+    by simpa [C_R] using hnorm⟩
+
 lemma exists_good_pow_two_with_continuousSpike_finite_future_of_progression_kernel_lower
     {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
     {R N : ℕ} {c : ℝ}
@@ -5765,6 +5957,53 @@ lemma exists_good_pow_two_with_continuousSpike_finite_future_of_base_kernel_lowe
         (le_of_lt hcpos) (le_of_lt hlogpos)
         (hkernel n hnN hpow hnpos s hs))
 
+lemma exists_good_pow_two_with_continuousSpike_global_future_of_base_kernel_lower
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
+    {R N : ℕ} {c tailTarget : ℝ}
+    (hR : 1 ≤ R) (hcpos : 0 < c) (htailTarget : 0 < tailTarget)
+    (hkernel : ∀ n : ℕ, N ≤ n → IsPowTwo n → 0 < n →
+      ∀ s : ℕ, s ∈ oddUpTo R →
+        c * (n : ℝ) * Real.log (n : ℝ) ≤
+          ∑ t ∈ Finset.range n,
+            Real.sin (thetaNode (n * s) (s * t)) /
+              |Real.cos theta0 -
+                Real.cos (thetaNode (n * s) (s * t))|) :
+    ∃ n : ℕ, ∃ psi : AngleFun,
+      N ≤ n ∧
+      IsPowTwo n ∧
+      0 < n ∧
+      VanishesNear theta0 (angleFunToRaw psi) ∧
+      F theta0 n psi = 1 ∧
+      (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+        F theta0 j psi = 0) ∧
+      (∀ j : ℕ, R * n < j →
+        |F theta0 j psi| ≤ (1 / (1 / 2 : ℝ)) / Real.sqrt (R : ℝ) +
+          tailTarget) ∧
+      ‖psi‖ ≤
+        (1 / ((c / (R : ℝ)) * (1 / 2 : ℝ))) /
+          Real.log (n : ℝ) := by
+  have hRpos : 0 < R := lt_of_lt_of_le Nat.zero_lt_one hR
+  have hcRpos : 0 < c / (R : ℝ) := by
+    positivity
+  rcases exists_large_pow_two_good_cos_oddUpTo theta0 R (max N 2) with
+    ⟨n, hnmax, hpow, hnpos, hkappa_le, hcos⟩
+  have hnN : N ≤ n := (le_max_left N 2).trans hnmax
+  have hn2 : 2 ≤ n := (le_max_right N 2).trans hnmax
+  have hlogpos : 0 < Real.log (n : ℝ) := log_nat_pos_of_two_le hn2
+  rcases exists_continuousSpike_block_and_global_future_of_good_rows_Vprim_lower
+      (theta0 := theta0) htheta0
+      (R := R) (n := n)
+      (c := c / (R : ℝ)) (kappa := (1 / 2 : ℝ))
+      (tailTarget := tailTarget)
+      hnpos hR hcRpos (by norm_num) hlogpos hkappa_le htailTarget hcos
+      (fun s hs =>
+        Vprim_lower_of_progression_kernel_lower_base hpow hnpos hRpos
+          (mem_oddUpTo_iff.mp hs).2.2.pos (mem_oddUpTo_iff.mp hs).2.1
+          (le_of_lt hcpos) (le_of_lt hlogpos)
+          (hkernel n hnN hpow hnpos s hs)) with
+    ⟨psi, hvanish, hhit, hearly, hfuture, hnorm⟩
+  exact ⟨n, psi, hnN, hpow, hnpos, hvanish, hhit, hearly, hfuture, hnorm⟩
+
 lemma exists_good_pow_two_with_continuousSpike_finite_future_zero_endpoint
     {R N : ℕ} (hR : 1 ≤ R) :
     ∃ n : ℕ,
@@ -5793,6 +6032,36 @@ lemma exists_good_pow_two_with_continuousSpike_finite_future_zero_endpoint
     ⟨n, hnmax, hpow, hnpos, hK⟩
   exact ⟨n, (le_max_left N 4).trans hnmax, hpow, hnpos, hK⟩
 
+lemma exists_good_pow_two_with_continuousSpike_global_future_zero_endpoint
+    {R N : ℕ} {tailTarget : ℝ}
+    (hR : 1 ≤ R) (htailTarget : 0 < tailTarget) :
+    ∃ n : ℕ, ∃ psi : AngleFun,
+      N ≤ n ∧
+      IsPowTwo n ∧
+      0 < n ∧
+      VanishesNear 0 (angleFunToRaw psi) ∧
+      F 0 n psi = 1 ∧
+      (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+        F 0 j psi = 0) ∧
+      (∀ j : ℕ, R * n < j →
+        |F 0 j psi| ≤ (1 / (1 / 2 : ℝ)) / Real.sqrt (R : ℝ) +
+          tailTarget) ∧
+      ‖psi‖ ≤
+        (1 / (((1 / (2 * Real.pi)) / (R : ℝ)) *
+          (1 / 2 : ℝ))) / Real.log (n : ℝ) := by
+  have htheta0 : (0 : ℝ) ∈ AngleI := ⟨le_rfl, Real.pi_pos.le⟩
+  rcases exists_good_pow_two_with_continuousSpike_global_future_of_base_kernel_lower
+      (theta0 := 0) htheta0 (R := R) (N := max N 4)
+      (c := 1 / (2 * Real.pi)) (tailTarget := tailTarget)
+      hR (by positivity) htailTarget
+      (fun n hnmax _hpow _hnpos s hs =>
+        zero_endpoint_kernel_sum_range_ge_base_log
+          ((le_max_right N 4).trans hnmax)
+          (mem_oddUpTo_iff.mp hs).2.2.pos) with
+    ⟨n, psi, hnmax, hpow, hnpos, hvanish, hhit, hearly, hfuture, hnorm⟩
+  exact ⟨n, psi, (le_max_left N 4).trans hnmax, hpow, hnpos,
+    hvanish, hhit, hearly, hfuture, hnorm⟩
+
 lemma exists_good_pow_two_with_continuousSpike_finite_future_pi_endpoint
     {R N : ℕ} (hR : 1 ≤ R) :
     ∃ n : ℕ,
@@ -5820,6 +6089,36 @@ lemma exists_good_pow_two_with_continuousSpike_finite_future_pi_endpoint
           (mem_oddUpTo_iff.mp hs).2.2.pos) with
     ⟨n, hnmax, hpow, hnpos, hK⟩
   exact ⟨n, (le_max_left N 4).trans hnmax, hpow, hnpos, hK⟩
+
+lemma exists_good_pow_two_with_continuousSpike_global_future_pi_endpoint
+    {R N : ℕ} {tailTarget : ℝ}
+    (hR : 1 ≤ R) (htailTarget : 0 < tailTarget) :
+    ∃ n : ℕ, ∃ psi : AngleFun,
+      N ≤ n ∧
+      IsPowTwo n ∧
+      0 < n ∧
+      VanishesNear Real.pi (angleFunToRaw psi) ∧
+      F Real.pi n psi = 1 ∧
+      (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+        F Real.pi j psi = 0) ∧
+      (∀ j : ℕ, R * n < j →
+        |F Real.pi j psi| ≤ (1 / (1 / 2 : ℝ)) / Real.sqrt (R : ℝ) +
+          tailTarget) ∧
+      ‖psi‖ ≤
+        (1 / (((1 / (2 * Real.pi)) / (R : ℝ)) *
+          (1 / 2 : ℝ))) / Real.log (n : ℝ) := by
+  have htheta0 : Real.pi ∈ AngleI := ⟨Real.pi_pos.le, le_rfl⟩
+  rcases exists_good_pow_two_with_continuousSpike_global_future_of_base_kernel_lower
+      (theta0 := Real.pi) htheta0 (R := R) (N := max N 4)
+      (c := 1 / (2 * Real.pi)) (tailTarget := tailTarget)
+      hR (by positivity) htailTarget
+      (fun n hnmax _hpow _hnpos s hs =>
+        pi_endpoint_kernel_sum_range_ge_base_log
+          ((le_max_right N 4).trans hnmax)
+          (mem_oddUpTo_iff.mp hs).2.2.pos) with
+    ⟨n, psi, hnmax, hpow, hnpos, hvanish, hhit, hearly, hfuture, hnorm⟩
+  exact ⟨n, psi, (le_max_left N 4).trans hnmax, hpow, hnpos,
+    hvanish, hhit, hearly, hfuture, hnorm⟩
 
 lemma exists_continuousSpike_finite_future_angle
     {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
@@ -5925,6 +6224,79 @@ lemma exists_continuousSpike_finite_future_angle_all_odd
               ‖psi‖ ≤ C_R / Real.log (n : ℝ)) := by
   intro R _hRodd hR3
   exact exists_continuousSpike_finite_future_angle_with_delta
+    htheta0 (by omega : 1 ≤ R)
+
+lemma exists_continuousSpike_global_future_angle_with_delta
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
+    {R : ℕ} (hR : 1 ≤ R) :
+    ∃ C_R : ℝ, 0 < C_R ∧ ∀ N : ℕ, ∀ delta > 0,
+      ∃ n : ℕ, ∃ psi : AngleFun,
+        N ≤ n ∧
+        0 < n ∧
+        VanishesNear theta0 (angleFunToRaw psi) ∧
+        F theta0 n psi = 1 ∧
+        (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+          F theta0 j psi = 0) ∧
+        (∀ j : ℕ, R * n < j →
+          |F theta0 j psi| ≤
+            (1 / (1 / 2 : ℝ)) / Real.sqrt (R : ℝ) + delta) ∧
+        ‖psi‖ ≤ C_R / Real.log (n : ℝ) := by
+  by_cases hzero : theta0 = 0
+  · let C_R : ℝ :=
+      1 / ((((1 / (2 * Real.pi)) / (R : ℝ)) * (1 / 2 : ℝ)))
+    have hC_R_pos : 0 < C_R := by
+      dsimp [C_R]
+      positivity
+    refine ⟨C_R, hC_R_pos, ?_⟩
+    intro N delta hdelta
+    rcases exists_good_pow_two_with_continuousSpike_global_future_zero_endpoint
+        (R := R) (N := N) (tailTarget := delta) hR hdelta with
+      ⟨n, psi, hnN, _hpow, hnpos, hvanish, hhit, hearly, hfuture, hnorm⟩
+    subst theta0
+    exact ⟨n, psi, hnN, hnpos, hvanish, hhit, hearly, hfuture,
+      by simpa [C_R] using hnorm⟩
+  · by_cases hpi_eq : theta0 = Real.pi
+    · let C_R : ℝ :=
+        1 / ((((1 / (2 * Real.pi)) / (R : ℝ)) * (1 / 2 : ℝ)))
+      have hC_R_pos : 0 < C_R := by
+        dsimp [C_R]
+        positivity
+      refine ⟨C_R, hC_R_pos, ?_⟩
+      intro N delta hdelta
+      rcases exists_good_pow_two_with_continuousSpike_global_future_pi_endpoint
+          (R := R) (N := N) (tailTarget := delta) hR hdelta with
+        ⟨n, psi, hnN, _hpow, hnpos, hvanish, hhit, hearly, hfuture, hnorm⟩
+      subst theta0
+      exact ⟨n, psi, hnN, hnpos, hvanish, hhit, hearly, hfuture,
+        by simpa [C_R] using hnorm⟩
+    · have h0 : 0 < theta0 := lt_of_le_of_ne htheta0.1 (Ne.symm hzero)
+      have hpi : theta0 < Real.pi := lt_of_le_of_ne htheta0.2 hpi_eq
+      rcases exists_continuousSpike_global_future_interior_with_delta
+          h0 hpi hR with
+        ⟨C_R, hC_R_pos, hspikes⟩
+      refine ⟨C_R, hC_R_pos, ?_⟩
+      intro N delta hdelta
+      rcases hspikes N delta hdelta with
+        ⟨n, psi, hnN, _hpow, hnpos, hvanish, hhit, hearly, hfuture, hnorm⟩
+      exact ⟨n, psi, hnN, hnpos, hvanish, hhit, hearly, hfuture, hnorm⟩
+
+lemma exists_continuousSpike_global_future_angle_all_odd
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI) :
+    ∀ R : ℕ, Odd R → 3 ≤ R →
+      ∃ C_R : ℝ, 0 < C_R ∧ ∀ N : ℕ, ∀ delta > 0,
+        ∃ n : ℕ, ∃ psi : AngleFun,
+          N ≤ n ∧
+          0 < n ∧
+          VanishesNear theta0 (angleFunToRaw psi) ∧
+          F theta0 n psi = 1 ∧
+          (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+            F theta0 j psi = 0) ∧
+          (∀ j : ℕ, R * n < j →
+            |F theta0 j psi| ≤
+              (1 / (1 / 2 : ℝ)) / Real.sqrt (R : ℝ) + delta) ∧
+          ‖psi‖ ≤ C_R / Real.log (n : ℝ) := by
+  intro R _hRodd hR3
+  exact exists_continuousSpike_global_future_angle_with_delta
     htheta0 (by omega : 1 ≤ R)
 
 end Erdos1151Formalization
