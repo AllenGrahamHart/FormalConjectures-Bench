@@ -5,24 +5,25 @@ tasks derived from Google DeepMind's Formal Conjectures project.
 
 The current `main` branch has two checked-in task roots:
 
-- `tasks/`: 73 gold-solution tasks with bundled local Lean oracles. These run
+- `tasks/`: 74 gold-solution tasks with bundled local Lean oracles. These run
   with internet access disabled.
 - `tasks-v2/`: 2,558 non-gold tasks without bundled oracles. These run with
   internet access enabled so agents can use external literature while trying to
   produce new Lean proofs.
 
-The checked-in task roots contain 2,631 task instances: 73 gold instances are
+The checked-in task roots contain 2,632 task instances: 74 gold instances are
 emitted under `tasks/`, and the remaining 2,558 non-gold instances are emitted
 under `tasks-v2/`. The GDM-derived v2 candidate manifest records 2,630 task
-instances; the additional Erdős 330 upper-density gold task is benchmark-local.
+instances; the additional Erdős 330 upper-density and Erdős 1151 non-empty
+fixed-point gold tasks are benchmark-local.
 
 ## Benchmark Card
 
 | Field | Value |
 | --- | --- |
-| Current task instances | 2,631 |
+| Current task instances | 2,632 |
 | Gold task root | `tasks/` |
-| Gold tasks | 73 |
+| Gold tasks | 74 |
 | Non-gold v2 task root | `tasks-v2/` |
 | Non-gold v2 tasks | 2,558 |
 | V2 batch manifests | `manifest/v2_batches/batch-001.json` through `batch-027.json` |
@@ -36,7 +37,7 @@ instances; the additional Erdős 330 upper-density gold task is benchmark-local.
 
 | Bucket | Count | Task root | Internet | Oracle |
 | --- | ---: | --- | --- | --- |
-| `gold_solution` | 73 | `tasks/` | Off | Bundled local oracle |
+| `gold_solution` | 74 | `tasks/` | Off | Bundled local oracle |
 | `informal_proof` | 722 | `tasks-v2/` | On | None |
 | `deferred_formal_candidate` | 26 | `tasks-v2/` | On | None |
 | `open_problem` | 1,810 | `tasks-v2/` | On | None |
@@ -59,7 +60,7 @@ forms that are not part of the open prove/refute scoring model.
 
 ## Repository Layout
 
-- `manifest/manifest.json` is the source of truth for the 73 gold tasks emitted
+- `manifest/manifest.json` is the source of truth for the 74 gold tasks emitted
   under `tasks/`.
 - `manifest/v2_candidates.json` records the 2,630 GDM-derived v2 instances and
   their benchmark buckets.
