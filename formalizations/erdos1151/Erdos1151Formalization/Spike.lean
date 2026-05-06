@@ -3709,6 +3709,113 @@ lemma F_future_bound_of_finite_cutoff_and_tail
   · have hKj : K < j := Nat.lt_of_not_ge hjK
     exact (htail j hKj).trans (by linarith)
 
+lemma exists_nat_forall_ge_const_div_nat_lt
+    (C : ℝ) {eps : ℝ} (heps : 0 < eps) (N : ℕ) :
+    ∃ M : ℕ, N ≤ M ∧ ∀ n : ℕ, M ≤ n → C / (n : ℝ) < eps := by
+  have hlim : Filter.Tendsto (fun n : ℕ => C / (n : ℝ))
+      Filter.atTop (nhds 0) :=
+    tendsto_const_div_atTop_nhds_zero_nat C
+  have hevent :
+      ∀ᶠ n : ℕ in Filter.atTop, C / (n : ℝ) < eps :=
+    (tendsto_order.mp hlim).2 eps heps
+  rcases Filter.eventually_atTop.mp hevent with ⟨M, hM⟩
+  exact ⟨max N M, le_max_left N M,
+    fun n hn => hM n ((le_max_right N M).trans hn)⟩
+
+lemma thetaNode_sub_eq_index_sub_mul {n a b : ℕ}
+    (hnpos : 0 < n) (hab : a ≤ b) :
+    thetaNode n b - thetaNode n a =
+      ((b - a : ℕ) : ℝ) * Real.pi / (n : ℝ) := by
+  have hnne : (n : ℝ) ≠ 0 := by exact_mod_cast (Nat.ne_of_gt hnpos)
+  unfold thetaNode
+  rw [Nat.cast_sub hab]
+  field_simp [hnne]
+  ring
+
+lemma finset_nat_card_le_max_sub_min_add_one
+    (S : Finset ℕ) (hS : S.Nonempty) :
+    S.card ≤ S.max' hS - S.min' hS + 1 := by
+  have hsubset : S ⊆ Finset.Icc (S.min' hS) (S.max' hS) := by
+    intro x hx
+    exact Finset.mem_Icc.mpr
+      ⟨Finset.min'_le S x hx, Finset.le_max' S x hx⟩
+  have hcard := Finset.card_le_card hsubset
+  rw [Nat.card_Icc] at hcard
+  omega
+
+lemma abs_F_le_nonzero_node_count_mul_kernel_bound
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
+    {n : ℕ} (hnpos : 0 < n) {phi : AngleFun}
+    (hphi : VanishesNear theta0 (angleFunToRaw phi))
+    {A B : ℝ} (hA : 0 ≤ A) (hB : 0 ≤ B)
+    (hkernel : ∀ k : ℕ, k < n →
+      angleFunToRaw phi (thetaNode n k) ≠ 0 →
+      |Real.sin (thetaNode n k) /
+        (Real.cos theta0 - Real.cos (thetaNode n k))| ≤ A)
+    (hvalue : ∀ k : ℕ, k < n →
+      angleFunToRaw phi (thetaNode n k) ≠ 0 →
+      |angleFunToRaw phi (thetaNode n k)| ≤ B) :
+    |F theta0 n phi| ≤
+      (1 / (n : ℝ)) *
+        ((((Finset.range n).filter
+          (fun k : ℕ => angleFunToRaw phi (thetaNode n k) ≠ 0)).card : ℝ) *
+          (A * B)) := by
+  classical
+  by_cases hnode : IsNodeRow theta0 n
+  · rw [F_of_isNodeRow_vanishesNear htheta0 hphi hnpos hnode, abs_zero]
+    positivity
+  · let active : Finset ℕ :=
+      (Finset.range n).filter
+        (fun k : ℕ => angleFunToRaw phi (thetaNode n k) ≠ 0)
+    let term : ℕ → ℝ := fun k =>
+      ((-1 : ℝ) ^ k) *
+        (Real.sin (thetaNode n k) /
+          (Real.cos theta0 - Real.cos (thetaNode n k))) *
+        angleFunToRaw phi (thetaNode n k)
+    have hsum_filter :
+        active.sum term = (Finset.range n).sum term := by
+      dsimp [active]
+      apply Finset.sum_filter_of_ne
+      intro k hk hterm
+      dsimp [term]
+      intro hzero
+      simp [hzero] at hterm
+    have hterm_le :
+        ∀ k : ℕ, k ∈ active → |term k| ≤ A * B := by
+      intro k hk
+      have hk_range : k ∈ Finset.range n := by
+        exact (Finset.mem_filter.mp hk).1
+      have hk_active : angleFunToRaw phi (thetaNode n k) ≠ 0 :=
+        (Finset.mem_filter.mp hk).2
+      have hklt : k < n := Finset.mem_range.mp hk_range
+      calc
+        |term k| =
+            |Real.sin (thetaNode n k) /
+                (Real.cos theta0 - Real.cos (thetaNode n k))| *
+              |angleFunToRaw phi (thetaNode n k)| := by
+              simp [term, abs_mul, abs_pow]
+        _ ≤ A * B :=
+              mul_le_mul (hkernel k hklt hk_active) (hvalue k hklt hk_active)
+                (abs_nonneg _) hA
+    have hsum_le :
+        active.sum (fun k => |term k|) ≤ (active.card : ℝ) * (A * B) := by
+      simpa using
+        (Finset.sum_le_card_nsmul active (fun k => |term k|) (A * B) hterm_le)
+    have habs_sum :
+        |(Finset.range n).sum term| ≤ (active.card : ℝ) * (A * B) := by
+      rw [← hsum_filter]
+      exact (Finset.abs_sum_le_sum_abs term active).trans hsum_le
+    have hnreal_pos : 0 < (n : ℝ) := by exact_mod_cast hnpos
+    have hcoef :
+        |Real.cos ((n : ℝ) * theta0) / (n : ℝ)| ≤ 1 / (n : ℝ) := by
+      rw [abs_div, abs_of_pos hnreal_pos]
+      exact div_le_div_of_nonneg_right
+        (Real.abs_cos_le_one ((n : ℝ) * theta0)) (le_of_lt hnreal_pos)
+    rw [F_eq_cos_div_mul_sum_of_not_isNodeRow hnpos hnode]
+    dsimp [term]
+    rw [abs_mul]
+    exact mul_le_mul hcoef habs_sum (abs_nonneg _) (by positivity)
+
 /-- A triangular tent of height `a`, centered at `p`, with radius `r`. -/
 def tent (p r a : ℝ) : ℝ → ℝ :=
   fun theta => a * max 0 (1 - |theta - p| / r)
@@ -3833,6 +3940,16 @@ lemma spikePoints_subset_nodesUpTo
   have hjK : n * p.1 ≤ R * n := by
     simpa [Nat.mul_comm] using Nat.mul_le_mul_left n hs_info.2.1
   exact mem_nodesUpTo_of_row hjpos hjK hklt
+
+lemma spikePoints_mem_angleI
+    {R n : ℕ} {p : ℝ} (hp : p ∈ spikePoints n R) :
+    p ∈ AngleI := by
+  classical
+  rcases Finset.mem_image.mp hp with ⟨q, hq, rfl⟩
+  have hqmem := mem_spikeIdx_iff.mp hq
+  have hspos : 0 < q.1 := (mem_oddUpTo_iff.mp hqmem.1).2.2.pos
+  have hklt : q.2 < n * q.1 := (mem_primIdx_iff.mp hqmem.2).1
+  exact thetaNode_mem_angleI hklt
 
 lemma nodesUpTo_mono {K L : ℕ} (hKL : K ≤ L) :
     nodesUpTo K ⊆ nodesUpTo L := by
@@ -3963,6 +4080,223 @@ lemma exists_constant_isolating_radius
     dsimp [radius]
     linarith
 
+lemma card_mul_eps_div_card_add_one_le
+    (P : Finset ℝ) {eps : ℝ} (heps : 0 < eps) :
+    (P.card : ℝ) * (eps / ((P.card : ℝ) + 1)) ≤ eps := by
+  have hcard_nonneg : 0 ≤ (P.card : ℝ) := by positivity
+  have hden : 0 < (P.card : ℝ) + 1 := by positivity
+  have heps_nonneg : 0 ≤ eps := le_of_lt heps
+  calc
+    (P.card : ℝ) * (eps / ((P.card : ℝ) + 1))
+        = eps * ((P.card : ℝ) / ((P.card : ℝ) + 1)) := by ring
+    _ ≤ eps * 1 := by
+        apply mul_le_mul_of_nonneg_left ?_ heps_nonneg
+        rw [div_le_one hden]
+        linarith
+    _ = eps := by ring
+
+lemma mul_tail_div_two_mul_add_one_le_half
+    {C eps : ℝ} (hC : 0 ≤ C) (heps : 0 < eps) :
+    C * (eps / (2 * (C + 1))) ≤ eps / 2 := by
+  have hden : 0 < C + 1 := by linarith
+  calc
+    C * (eps / (2 * (C + 1)))
+        = (eps / 2) * (C / (C + 1)) := by
+            field_simp [ne_of_gt hden]
+    _ ≤ (eps / 2) * 1 := by
+        apply mul_le_mul_of_nonneg_left ?_ (by positivity)
+        rw [div_le_one hden]
+        linarith
+    _ = eps / 2 := by ring
+
+lemma exists_small_isolating_radius
+    {P E : Finset ℝ} {theta0 : ℝ}
+    (hPE : P ⊆ E) (hthetaE : theta0 ∈ E) (hthetaP : theta0 ∉ P)
+    {eps : ℝ} (heps : 0 < eps)
+    (safe : ℝ → ℝ) (hsafe : ∀ p : ℝ, p ∈ P → 0 < safe p) :
+    ∃ radius : ℝ → ℝ,
+      (∀ p : ℝ, p ∈ P → 0 < radius p) ∧
+      (∀ p : ℝ, p ∈ P → radius p ≤ safe p) ∧
+      (∀ p : ℝ, p ∈ P → ∀ e : ℝ, e ∈ E → e ≠ p →
+        radius p ≤ |e - p|) ∧
+      (∀ p : ℝ, p ∈ P → ∀ q : ℝ, q ∈ P → p ≠ q →
+        radius p + radius q ≤ |p - q|) ∧
+      (∃ eps0 > 0, ∀ theta ∈ AngleI, |theta - theta0| < eps0 →
+        ∀ p : ℝ, p ∈ P → radius p ≤ |theta - p|) ∧
+      (∑ p ∈ P, radius p ≤ eps) := by
+  classical
+  rcases finite_set_pair_positive_separation E with ⟨rho, hrho, hpair⟩
+  let base : ℝ := min (rho / 4) (eps / ((P.card : ℝ) + 1))
+  let radius : ℝ → ℝ := fun p => min base (safe p)
+  have hbase_pos : 0 < base := by
+    dsimp [base]
+    exact lt_min (by positivity) (by positivity)
+  have hbase_le_rho : base ≤ rho / 4 := by
+    dsimp [base]
+    exact min_le_left _ _
+  have hbase_le_eps : base ≤ eps / ((P.card : ℝ) + 1) := by
+    dsimp [base]
+    exact min_le_right _ _
+  refine ⟨radius, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  · intro p hp
+    dsimp [radius]
+    exact lt_min hbase_pos (hsafe p hp)
+  · intro p hp
+    dsimp [radius]
+    exact min_le_right _ _
+  · intro p hp e he hne
+    have hpE : p ∈ E := hPE hp
+    have hle : rho ≤ |e - p| := hpair e he p hpE hne
+    have hrad_le : radius p ≤ rho / 4 := by
+      dsimp [radius]
+      exact (min_le_left _ _).trans hbase_le_rho
+    linarith
+  · intro p hp q hq hpq
+    have hpE : p ∈ E := hPE hp
+    have hqE : q ∈ E := hPE hq
+    have hle : rho ≤ |p - q| := hpair p hpE q hqE hpq
+    have hp_le : radius p ≤ rho / 4 := by
+      dsimp [radius]
+      exact (min_le_left _ _).trans hbase_le_rho
+    have hq_le : radius q ≤ rho / 4 := by
+      dsimp [radius]
+      exact (min_le_left _ _).trans hbase_le_rho
+    linarith
+  · refine ⟨rho / 4, by positivity, ?_⟩
+    intro theta _htheta hdist p hp
+    have hpE : p ∈ E := hPE hp
+    have hne : theta0 ≠ p := by
+      intro h
+      exact hthetaP (h ▸ hp)
+    have hdist0 : rho ≤ |theta0 - p| :=
+      hpair theta0 hthetaE p hpE hne
+    have htri : |theta0 - p| ≤ |theta - theta0| + |theta - p| := by
+      have h := abs_add_le (theta0 - theta) (theta - p)
+      have hsum : theta0 - theta + (theta - p) = theta0 - p := by ring
+      simpa [hsum, abs_sub_comm theta0 theta] using h
+    have hle : rho ≤ |theta - theta0| + |theta - p| :=
+      hdist0.trans htri
+    have hrad_le : radius p ≤ rho / 4 := by
+      dsimp [radius]
+      exact (min_le_left _ _).trans hbase_le_rho
+    linarith
+  · have hsum_le_base :
+        ∑ p ∈ P, radius p ≤ ∑ _p ∈ P, base := by
+      refine Finset.sum_le_sum ?_
+      intro p _hp
+      dsimp [radius]
+      exact min_le_left _ _
+    have hbase_sum :
+        ∑ _p ∈ P, base = (P.card : ℝ) * base := by simp
+    calc
+      ∑ p ∈ P, radius p ≤ ∑ _p ∈ P, base := hsum_le_base
+      _ = (P.card : ℝ) * base := hbase_sum
+      _ ≤ (P.card : ℝ) * (eps / ((P.card : ℝ) + 1)) := by
+          exact mul_le_mul_of_nonneg_left hbase_le_eps (by positivity)
+      _ ≤ eps := card_mul_eps_div_card_add_one_le P heps
+
+def kernelSafeRadius (theta0 p : ℝ) : ℝ :=
+  |Real.cos theta0 - Real.cos p| / 2
+
+def finiteKernelBound (theta0 : ℝ) (P : Finset ℝ) : ℝ :=
+  ∑ p ∈ P, 2 / |Real.cos theta0 - Real.cos p|
+
+lemma cos_sub_abs_pos_of_angle_ne
+    {theta0 p : ℝ} (htheta0 : theta0 ∈ AngleI) (hp : p ∈ AngleI)
+    (hne : p ≠ theta0) :
+    0 < |Real.cos theta0 - Real.cos p| := by
+  apply abs_pos.mpr
+  intro hzero
+  have hcos : Real.cos theta0 = Real.cos p := sub_eq_zero.mp hzero
+  have htheta : theta0 = p := Real.injOn_cos htheta0 hp hcos
+  exact hne htheta.symm
+
+lemma kernelSafeRadius_pos_of_angle_ne
+    {theta0 p : ℝ} (htheta0 : theta0 ∈ AngleI) (hp : p ∈ AngleI)
+    (hne : p ≠ theta0) :
+    0 < kernelSafeRadius theta0 p := by
+  dsimp [kernelSafeRadius]
+  exact half_pos (cos_sub_abs_pos_of_angle_ne htheta0 hp hne)
+
+lemma abs_kernel_le_two_div_cos_gap_of_near
+    {theta0 p theta : ℝ}
+    (hgap : 0 < |Real.cos theta0 - Real.cos p|)
+    (hnear : |theta - p| < kernelSafeRadius theta0 p) :
+    |Real.sin theta / (Real.cos theta0 - Real.cos theta)| ≤
+      2 / |Real.cos theta0 - Real.cos p| := by
+  let D : ℝ := |Real.cos theta0 - Real.cos p|
+  have hDpos : 0 < D := hgap
+  have hnearD : |theta - p| < D / 2 := by
+    simpa [D, kernelSafeRadius] using hnear
+  have hcos_theta_p_lt : |Real.cos theta - Real.cos p| < D / 2 :=
+    lt_of_le_of_lt (Real.abs_cos_sub_cos_le theta p) hnearD
+  have htri :
+      D ≤ |Real.cos theta0 - Real.cos theta| +
+          |Real.cos theta - Real.cos p| := by
+    have h :=
+      abs_add_le (Real.cos theta0 - Real.cos theta)
+        (Real.cos theta - Real.cos p)
+    have hsum :
+        Real.cos theta0 - Real.cos theta +
+            (Real.cos theta - Real.cos p) =
+          Real.cos theta0 - Real.cos p := by ring
+    simpa [D, hsum] using h
+  have hden_half : D / 2 < |Real.cos theta0 - Real.cos theta| := by
+    linarith
+  have hden_half_le : D / 2 ≤ |Real.cos theta0 - Real.cos theta| :=
+    le_of_lt hden_half
+  rw [abs_div]
+  calc
+    |Real.sin theta| / |Real.cos theta0 - Real.cos theta|
+        ≤ 1 / |Real.cos theta0 - Real.cos theta| := by
+          exact div_le_div_of_nonneg_right
+            (Real.abs_sin_le_one theta) (abs_nonneg _)
+    _ ≤ 1 / (D / 2) := by
+          exact div_le_div_of_nonneg_left zero_le_one
+            (by positivity : 0 < D / 2) hden_half_le
+    _ = 2 / |Real.cos theta0 - Real.cos p| := by
+          dsimp [D]
+          field_simp [ne_of_gt hgap]
+
+lemma finiteKernelBound_nonneg
+    {theta0 : ℝ} {P : Finset ℝ}
+    (htheta0 : theta0 ∈ AngleI)
+    (hP_angle : ∀ p : ℝ, p ∈ P → p ∈ AngleI)
+    (hP_ne : ∀ p : ℝ, p ∈ P → p ≠ theta0) :
+    0 ≤ finiteKernelBound theta0 P := by
+  dsimp [finiteKernelBound]
+  exact Finset.sum_nonneg fun p hp =>
+    div_nonneg (by norm_num)
+      (le_of_lt (cos_sub_abs_pos_of_angle_ne htheta0 (hP_angle p hp) (hP_ne p hp)))
+
+lemma finiteKernelBound_point_le
+    {theta0 p : ℝ} {P : Finset ℝ}
+    (htheta0 : theta0 ∈ AngleI)
+    (hP_angle : ∀ q : ℝ, q ∈ P → q ∈ AngleI)
+    (hP_ne : ∀ q : ℝ, q ∈ P → q ≠ theta0)
+    (hp : p ∈ P) :
+    2 / |Real.cos theta0 - Real.cos p| ≤ finiteKernelBound theta0 P := by
+  dsimp [finiteKernelBound]
+  exact Finset.single_le_sum
+    (fun q hq =>
+      div_nonneg (by norm_num)
+        (le_of_lt (cos_sub_abs_pos_of_angle_ne htheta0 (hP_angle q hq) (hP_ne q hq))))
+    hp
+
+lemma abs_kernel_le_finiteKernelBound_of_near_point
+    {theta0 theta p : ℝ} {P : Finset ℝ}
+    (htheta0 : theta0 ∈ AngleI)
+    (hP_angle : ∀ q : ℝ, q ∈ P → q ∈ AngleI)
+    (hP_ne : ∀ q : ℝ, q ∈ P → q ≠ theta0)
+    (hp : p ∈ P)
+    (hnear : |theta - p| < kernelSafeRadius theta0 p) :
+    |Real.sin theta / (Real.cos theta0 - Real.cos theta)| ≤
+      finiteKernelBound theta0 P := by
+  exact (abs_kernel_le_two_div_cos_gap_of_near
+      (cos_sub_abs_pos_of_angle_ne htheta0 (hP_angle p hp) (hP_ne p hp))
+      hnear).trans
+    (finiteKernelBound_point_le htheta0 hP_angle hP_ne hp)
+
 lemma continuousSpikeRaw_apply_eq_height
     {P : Finset ℝ} {radius height : ℝ → ℝ} {x : ℝ}
     (hxP : x ∈ P)
@@ -3988,6 +4322,176 @@ lemma continuousSpikeRaw_apply_eq_zero_of_far
   apply Finset.sum_eq_zero
   intro p hp
   exact tent_eq_zero_of_radius_le (hradpos p hp) (hfar p hp)
+
+lemma continuousSpikeRaw_ne_zero_exists_lt_radius
+    {P : Finset ℝ} {radius height : ℝ → ℝ} {x : ℝ}
+    (hradpos : ∀ p : ℝ, p ∈ P → 0 < radius p)
+    (hne : continuousSpikeRaw P radius height x ≠ 0) :
+    ∃ p : ℝ, p ∈ P ∧ |x - p| < radius p := by
+  classical
+  by_contra hnone
+  have hfar : ∀ p : ℝ, p ∈ P → radius p ≤ |x - p| := by
+    intro p hp
+    exact le_of_not_gt (fun hlt => hnone ⟨p, hp, hlt⟩)
+  exact hne (continuousSpikeRaw_apply_eq_zero_of_far hradpos hfar)
+
+lemma angleFunToRaw_continuousSpike_ne_zero_exists_lt_radius
+    {P : Finset ℝ} {radius height : ℝ → ℝ} {theta : ℝ}
+    (htheta : theta ∈ AngleI)
+    (hradpos : ∀ p : ℝ, p ∈ P → 0 < radius p)
+    (hne : angleFunToRaw (continuousSpike P radius height) theta ≠ 0) :
+    ∃ p : ℝ, p ∈ P ∧ |theta - p| < radius p := by
+  rw [angleFunToRaw_of_mem _ htheta] at hne
+  exact continuousSpikeRaw_ne_zero_exists_lt_radius
+    (P := P) (radius := radius) (height := height)
+    (x := theta) hradpos (by simpa [continuousSpike] using hne)
+
+def nearSpikeNodeSet (P : Finset ℝ) (radius : ℝ → ℝ) (n : ℕ) : Finset ℕ :=
+  by
+    classical
+    exact (Finset.range n).filter fun k : ℕ =>
+      ∃ p : ℝ, p ∈ P ∧ |thetaNode n k - p| < radius p
+
+def nearPointNodeSet (p r : ℝ) (n : ℕ) : Finset ℕ :=
+  (Finset.range n).filter fun k : ℕ => |thetaNode n k - p| < r
+
+lemma nearPointNodeSet_card_le_two_add
+    {p r : ℝ} {n : ℕ} (hnpos : 0 < n) (hr : 0 ≤ r) :
+    ((nearPointNodeSet p r n).card : ℝ) ≤
+      2 + (2 * (n : ℝ) * r) / Real.pi := by
+  classical
+  let S : Finset ℕ := nearPointNodeSet p r n
+  by_cases hS : S.Nonempty
+  · let a : ℕ := S.min' hS
+    let b : ℕ := S.max' hS
+    have haS : a ∈ S := Finset.min'_mem S hS
+    have hbS : b ∈ S := Finset.max'_mem S hS
+    have hab : a ≤ b := Finset.min'_le S b hbS
+    have ha_near : |thetaNode n a - p| < r :=
+      (Finset.mem_filter.mp haS).2
+    have hb_near : |thetaNode n b - p| < r :=
+      (Finset.mem_filter.mp hbS).2
+    have hdiff_lt : thetaNode n b - thetaNode n a < 2 * r := by
+      have h1 : thetaNode n b - p ≤ |thetaNode n b - p| :=
+        le_abs_self _
+      have h2 : p - thetaNode n a ≤ |p - thetaNode n a| :=
+        le_abs_self _
+      have h2' : p - thetaNode n a ≤ |thetaNode n a - p| := by
+        simpa [abs_sub_comm] using h2
+      have hsum :
+          thetaNode n b - thetaNode n a =
+            (thetaNode n b - p) + (p - thetaNode n a) := by ring
+      rw [hsum]
+      linarith
+    have hspread :
+        ((b - a : ℕ) : ℝ) < (2 * (n : ℝ) * r) / Real.pi := by
+      have hnreal_pos : 0 < (n : ℝ) := by exact_mod_cast hnpos
+      have hspread0 :
+          ((b - a : ℕ) : ℝ) * Real.pi / (n : ℝ) < 2 * r := by
+        simpa [thetaNode_sub_eq_index_sub_mul hnpos hab] using hdiff_lt
+      have hmul :
+          ((b - a : ℕ) : ℝ) * Real.pi < 2 * r * (n : ℝ) := by
+        rwa [div_lt_iff₀ hnreal_pos] at hspread0
+      have hdiv :
+          ((b - a : ℕ) : ℝ) < (2 * r * (n : ℝ)) / Real.pi := by
+        rwa [lt_div_iff₀ Real.pi_pos]
+      simpa [mul_comm, mul_left_comm, mul_assoc] using hdiv
+    have hcard_nat : S.card ≤ b - a + 1 :=
+      finset_nat_card_le_max_sub_min_add_one S hS
+    have hcard_real :
+        ((nearPointNodeSet p r n).card : ℝ) ≤ ((b - a + 1 : ℕ) : ℝ) := by
+      dsimp [S] at hcard_nat
+      exact_mod_cast hcard_nat
+    calc
+      ((nearPointNodeSet p r n).card : ℝ)
+          ≤ ((b - a + 1 : ℕ) : ℝ) := hcard_real
+      _ = ((b - a : ℕ) : ℝ) + 1 := by norm_num
+      _ ≤ 2 + (2 * (n : ℝ) * r) / Real.pi := by linarith
+  · have hcard : (nearPointNodeSet p r n).card = 0 := by
+      dsimp [S] at hS
+      exact Finset.card_eq_zero.mpr (Finset.not_nonempty_iff_eq_empty.mp hS)
+    rw [hcard]
+    have hnonneg : 0 ≤ (2 * (n : ℝ) * r) / Real.pi := by
+      positivity
+    linarith
+
+lemma nearSpikeNodeSet_subset_biUnion_nearPointNodeSet
+    (P : Finset ℝ) (radius : ℝ → ℝ) (n : ℕ) :
+    nearSpikeNodeSet P radius n ⊆
+      P.biUnion (fun p : ℝ => nearPointNodeSet p (radius p) n) := by
+  classical
+  intro k hk
+  rcases Finset.mem_filter.mp hk with ⟨hkrange, p, hp, hdist⟩
+  exact Finset.mem_biUnion.mpr
+    ⟨p, hp, Finset.mem_filter.mpr ⟨hkrange, hdist⟩⟩
+
+lemma nearSpikeNodeSet_card_le_sum_nearPointNodeSet_card
+    (P : Finset ℝ) (radius : ℝ → ℝ) (n : ℕ) :
+    (nearSpikeNodeSet P radius n).card ≤
+      ∑ p ∈ P, (nearPointNodeSet p (radius p) n).card := by
+  classical
+  exact (Finset.card_le_card
+    (nearSpikeNodeSet_subset_biUnion_nearPointNodeSet P radius n)).trans
+      (Finset.card_biUnion_le (s := P)
+        (t := fun p : ℝ => nearPointNodeSet p (radius p) n))
+
+lemma nearSpikeNodeSet_card_le_sum_nearPointNodeSet_card_real
+    (P : Finset ℝ) (radius : ℝ → ℝ) (n : ℕ) :
+    ((nearSpikeNodeSet P radius n).card : ℝ) ≤
+      ∑ p ∈ P, ((nearPointNodeSet p (radius p) n).card : ℝ) := by
+  exact_mod_cast nearSpikeNodeSet_card_le_sum_nearPointNodeSet_card P radius n
+
+lemma nearSpikeNodeSet_card_le_two_card_add_radius_sum
+    {P : Finset ℝ} {radius : ℝ → ℝ} {n : ℕ}
+    (hnpos : 0 < n) (hradius_nonneg : ∀ p : ℝ, p ∈ P → 0 ≤ radius p) :
+    ((nearSpikeNodeSet P radius n).card : ℝ) ≤
+      (P.card : ℝ) * 2 +
+        (2 * (n : ℝ) / Real.pi) * ∑ p ∈ P, radius p := by
+  have hnear :=
+    nearSpikeNodeSet_card_le_sum_nearPointNodeSet_card_real P radius n
+  have hpoint :
+      (∑ p ∈ P, ((nearPointNodeSet p (radius p) n).card : ℝ)) ≤
+        ∑ p ∈ P, (2 + (2 * (n : ℝ) * radius p) / Real.pi) := by
+    refine Finset.sum_le_sum ?_
+    intro p hp
+    exact nearPointNodeSet_card_le_two_add hnpos (hradius_nonneg p hp)
+  have hsum :
+      (∑ p ∈ P, (2 + (2 * (n : ℝ) * radius p) / Real.pi)) =
+        (P.card : ℝ) * 2 +
+          (2 * (n : ℝ) / Real.pi) * ∑ p ∈ P, radius p := by
+    rw [Finset.sum_add_distrib]
+    simp [Finset.sum_mul, div_eq_mul_inv, mul_comm, mul_left_comm]
+  exact hnear.trans (hpoint.trans_eq hsum)
+
+lemma active_continuousSpike_nodes_subset_nearSpikeNodeSet
+    {P : Finset ℝ} {radius height : ℝ → ℝ} {n : ℕ}
+    (hradpos : ∀ p : ℝ, p ∈ P → 0 < radius p) :
+    ((Finset.range n).filter
+        (fun k : ℕ =>
+          angleFunToRaw (continuousSpike P radius height) (thetaNode n k) ≠ 0)) ⊆
+      nearSpikeNodeSet P radius n := by
+  classical
+  intro k hk
+  rcases Finset.mem_filter.mp hk with ⟨hkrange, hne⟩
+  have hklt : k < n := Finset.mem_range.mp hkrange
+  have htheta : thetaNode n k ∈ AngleI := thetaNode_mem_angleI hklt
+  rcases angleFunToRaw_continuousSpike_ne_zero_exists_lt_radius
+      (P := P) (radius := radius) (height := height)
+      htheta hradpos hne with
+    ⟨p, hp, hdist⟩
+  exact Finset.mem_filter.mpr ⟨hkrange, ⟨p, hp, hdist⟩⟩
+
+lemma active_continuousSpike_node_count_le_nearSpikeNodeSet_card
+    {P : Finset ℝ} {radius height : ℝ → ℝ} {n : ℕ}
+    (hradpos : ∀ p : ℝ, p ∈ P → 0 < radius p) :
+    (((Finset.range n).filter
+        (fun k : ℕ =>
+          angleFunToRaw (continuousSpike P radius height) (thetaNode n k) ≠ 0)).card :
+        ℝ) ≤
+      ((nearSpikeNodeSet P radius n).card : ℝ) := by
+  exact_mod_cast Finset.card_le_card
+    (active_continuousSpike_nodes_subset_nearSpikeNodeSet
+      (P := P) (radius := radius) (height := height) (n := n) hradpos)
 
 lemma continuousSpikeRaw_eq_finiteSpikeRaw_of_isolated_at
     {theta0 theta : ℝ} {R n : ℕ} {E : Finset ℝ} {radius : ℝ → ℝ}
@@ -4240,6 +4744,232 @@ lemma abs_continuousSpikeRaw_le_height_bound
         rw [hsumP, add_zero]
         exact (abs_tent_le_abs_height hrad_a).trans
           (hheight a (Finset.mem_insert_self a P))
+
+lemma abs_F_continuousSpike_le_nearSpikeNodeSet_card_mul_kernel_bound
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
+    {n : ℕ} (hnpos : 0 < n)
+    {P : Finset ℝ} {radius height : ℝ → ℝ}
+    (hvanish :
+      VanishesNear theta0
+        (angleFunToRaw (continuousSpike P radius height)))
+    {A B : ℝ} (hA : 0 ≤ A) (hB : 0 ≤ B)
+    (hradpos : ∀ p : ℝ, p ∈ P → 0 < radius p)
+    (hpairsep : ∀ p : ℝ, p ∈ P → ∀ q : ℝ, q ∈ P → p ≠ q →
+      radius p + radius q ≤ |p - q|)
+    (hheight : ∀ p : ℝ, p ∈ P → |height p| ≤ B)
+    (hkernel : ∀ k : ℕ, k < n →
+      angleFunToRaw (continuousSpike P radius height) (thetaNode n k) ≠ 0 →
+      |Real.sin (thetaNode n k) /
+        (Real.cos theta0 - Real.cos (thetaNode n k))| ≤ A) :
+    |F theta0 n (continuousSpike P radius height)| ≤
+      (1 / (n : ℝ)) *
+        (((nearSpikeNodeSet P radius n).card : ℝ) * (A * B)) := by
+  have hvalue : ∀ k : ℕ, k < n →
+      |angleFunToRaw (continuousSpike P radius height) (thetaNode n k)| ≤ B := by
+    intro k hk
+    have htheta : thetaNode n k ∈ AngleI := thetaNode_mem_angleI hk
+    rw [angleFunToRaw_of_mem _ htheta]
+    simpa [continuousSpike] using
+      abs_continuousSpikeRaw_le_height_bound
+        (P := P) (radius := radius) (height := height)
+        (B := B) (theta := thetaNode n k)
+        hB hradpos hpairsep hheight
+  have hactive :=
+    abs_F_le_nonzero_node_count_mul_kernel_bound
+      (theta0 := theta0) htheta0 (n := n) hnpos
+      (phi := continuousSpike P radius height)
+      hvanish hA hB hkernel (fun k hk _hactive => hvalue k hk)
+  have hcard :=
+    active_continuousSpike_node_count_le_nearSpikeNodeSet_card
+      (P := P) (radius := radius) (height := height) (n := n) hradpos
+  have hAB : 0 ≤ A * B := mul_nonneg hA hB
+  have hinner :
+      ((((Finset.range n).filter
+        (fun k : ℕ =>
+          angleFunToRaw (continuousSpike P radius height) (thetaNode n k) ≠ 0)).card :
+          ℝ) * (A * B)) ≤
+        ((nearSpikeNodeSet P radius n).card : ℝ) * (A * B) :=
+    mul_le_mul_of_nonneg_right hcard hAB
+  exact hactive.trans
+    (mul_le_mul_of_nonneg_left hinner (by positivity))
+
+lemma abs_F_continuousSpike_le_radius_sum_kernel_bound
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
+    {n : ℕ} (hnpos : 0 < n)
+    {P : Finset ℝ} {radius height : ℝ → ℝ}
+    (hvanish :
+      VanishesNear theta0
+        (angleFunToRaw (continuousSpike P radius height)))
+    {A B : ℝ} (hA : 0 ≤ A) (hB : 0 ≤ B)
+    (hradpos : ∀ p : ℝ, p ∈ P → 0 < radius p)
+    (hradius_nonneg : ∀ p : ℝ, p ∈ P → 0 ≤ radius p)
+    (hpairsep : ∀ p : ℝ, p ∈ P → ∀ q : ℝ, q ∈ P → p ≠ q →
+      radius p + radius q ≤ |p - q|)
+    (hheight : ∀ p : ℝ, p ∈ P → |height p| ≤ B)
+    (hkernel : ∀ k : ℕ, k < n →
+      angleFunToRaw (continuousSpike P radius height) (thetaNode n k) ≠ 0 →
+      |Real.sin (thetaNode n k) /
+        (Real.cos theta0 - Real.cos (thetaNode n k))| ≤ A) :
+    |F theta0 n (continuousSpike P radius height)| ≤
+      (((P.card : ℝ) * 2) / (n : ℝ) +
+          (2 / Real.pi) * ∑ p ∈ P, radius p) *
+        (A * B) := by
+  have hnear :=
+    abs_F_continuousSpike_le_nearSpikeNodeSet_card_mul_kernel_bound
+      (theta0 := theta0) htheta0 (n := n) hnpos
+      (P := P) (radius := radius) (height := height)
+      hvanish hA hB hradpos hpairsep hheight hkernel
+  have hcard :=
+    nearSpikeNodeSet_card_le_two_card_add_radius_sum
+      (P := P) (radius := radius) (n := n) hnpos hradius_nonneg
+  have hAB : 0 ≤ A * B := mul_nonneg hA hB
+  have hinner :
+      ((nearSpikeNodeSet P radius n).card : ℝ) * (A * B) ≤
+        ((P.card : ℝ) * 2 +
+            (2 * (n : ℝ) / Real.pi) * ∑ p ∈ P, radius p) *
+          (A * B) :=
+    mul_le_mul_of_nonneg_right hcard hAB
+  have hscaled :
+      (1 / (n : ℝ)) *
+          (((nearSpikeNodeSet P radius n).card : ℝ) * (A * B)) ≤
+        (1 / (n : ℝ)) *
+          (((P.card : ℝ) * 2 +
+              (2 * (n : ℝ) / Real.pi) * ∑ p ∈ P, radius p) *
+            (A * B)) :=
+    mul_le_mul_of_nonneg_left hinner (by positivity)
+  have halg :
+      (1 / (n : ℝ)) *
+          (((P.card : ℝ) * 2 +
+              (2 * (n : ℝ) / Real.pi) * ∑ p ∈ P, radius p) *
+            (A * B)) =
+        (((P.card : ℝ) * 2) / (n : ℝ) +
+            (2 / Real.pi) * ∑ p ∈ P, radius p) *
+          (A * B) := by
+    have hnne : (n : ℝ) ≠ 0 := by exact_mod_cast Nat.ne_of_gt hnpos
+    field_simp [hnne, Real.pi_ne_zero]
+  exact hnear.trans (hscaled.trans_eq halg)
+
+lemma abs_F_continuousSpike_le_small_radius_sum_kernel_bound
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
+    {n : ℕ} (hnpos : 0 < n)
+    {P : Finset ℝ} {radius height : ℝ → ℝ}
+    (hP_angle : ∀ p : ℝ, p ∈ P → p ∈ AngleI)
+    (hP_ne : ∀ p : ℝ, p ∈ P → p ≠ theta0)
+    (hvanish :
+      VanishesNear theta0
+        (angleFunToRaw (continuousSpike P radius height)))
+    {B epsRadius : ℝ} (hB : 0 ≤ B)
+    (hradpos : ∀ p : ℝ, p ∈ P → 0 < radius p)
+    (hradius_safe :
+      ∀ p : ℝ, p ∈ P → radius p ≤ kernelSafeRadius theta0 p)
+    (hradius_sum : ∑ p ∈ P, radius p ≤ epsRadius)
+    (hpairsep : ∀ p : ℝ, p ∈ P → ∀ q : ℝ, q ∈ P → p ≠ q →
+      radius p + radius q ≤ |p - q|)
+    (hheight : ∀ p : ℝ, p ∈ P → |height p| ≤ B) :
+    |F theta0 n (continuousSpike P radius height)| ≤
+      (((P.card : ℝ) * 2) / (n : ℝ) +
+          (2 / Real.pi) * epsRadius) *
+        (finiteKernelBound theta0 P * B) := by
+  have hA : 0 ≤ finiteKernelBound theta0 P :=
+    finiteKernelBound_nonneg htheta0 hP_angle hP_ne
+  have hradius_nonneg : ∀ p : ℝ, p ∈ P → 0 ≤ radius p := by
+    intro p hp
+    exact le_of_lt (hradpos p hp)
+  have hkernel :
+      ∀ k : ℕ, k < n →
+        angleFunToRaw (continuousSpike P radius height) (thetaNode n k) ≠ 0 →
+        |Real.sin (thetaNode n k) /
+          (Real.cos theta0 - Real.cos (thetaNode n k))| ≤
+            finiteKernelBound theta0 P := by
+    intro k hk hactive
+    have htheta : thetaNode n k ∈ AngleI := thetaNode_mem_angleI hk
+    rcases angleFunToRaw_continuousSpike_ne_zero_exists_lt_radius
+        (P := P) (radius := radius) (height := height)
+        htheta hradpos hactive with
+      ⟨p, hp, hnear_radius⟩
+    have hnear_safe : |thetaNode n k - p| < kernelSafeRadius theta0 p :=
+      lt_of_lt_of_le hnear_radius (hradius_safe p hp)
+    exact abs_kernel_le_finiteKernelBound_of_near_point
+      htheta0 hP_angle hP_ne hp hnear_safe
+  have hraw :=
+    abs_F_continuousSpike_le_radius_sum_kernel_bound
+      (theta0 := theta0) htheta0 (n := n) hnpos
+      (P := P) (radius := radius) (height := height)
+      hvanish hA hB hradpos hradius_nonneg hpairsep hheight hkernel
+  have hsum_term :
+      (2 / Real.pi) * ∑ p ∈ P, radius p ≤
+        (2 / Real.pi) * epsRadius := by
+    exact mul_le_mul_of_nonneg_left hradius_sum
+      (by positivity : 0 ≤ 2 / Real.pi)
+  have hinner :
+      (((P.card : ℝ) * 2) / (n : ℝ) +
+          (2 / Real.pi) * ∑ p ∈ P, radius p) ≤
+        (((P.card : ℝ) * 2) / (n : ℝ) +
+          (2 / Real.pi) * epsRadius) :=
+    by
+      simpa [add_comm, add_left_comm, add_assoc] using
+        add_le_add_left hsum_term (((P.card : ℝ) * 2) / (n : ℝ))
+  have hAB : 0 ≤ finiteKernelBound theta0 P * B := mul_nonneg hA hB
+  exact hraw.trans (mul_le_mul_of_nonneg_right hinner hAB)
+
+lemma exists_tail_cutoff_continuousSpike_of_small_radius_sum
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
+    {P : Finset ℝ} {radius height : ℝ → ℝ}
+    (hP_angle : ∀ p : ℝ, p ∈ P → p ∈ AngleI)
+    (hP_ne : ∀ p : ℝ, p ∈ P → p ≠ theta0)
+    (hvanish :
+      VanishesNear theta0
+        (angleFunToRaw (continuousSpike P radius height)))
+    {B epsRadius tailTarget : ℝ} (hB : 0 ≤ B) (htailTarget : 0 < tailTarget)
+    (hradpos : ∀ p : ℝ, p ∈ P → 0 < radius p)
+    (hradius_safe :
+      ∀ p : ℝ, p ∈ P → radius p ≤ kernelSafeRadius theta0 p)
+    (hradius_sum : ∑ p ∈ P, radius p ≤ epsRadius)
+    (hpairsep : ∀ p : ℝ, p ∈ P → ∀ q : ℝ, q ∈ P → p ≠ q →
+      radius p + radius q ≤ |p - q|)
+    (hheight : ∀ p : ℝ, p ∈ P → |height p| ≤ B)
+    (hradius_part :
+      ((2 / Real.pi) * epsRadius) * (finiteKernelBound theta0 P * B) ≤
+        tailTarget / 2)
+    (Kmin : ℕ) :
+    ∃ K : ℕ, Kmin ≤ K ∧
+      ∀ j : ℕ, K ≤ j →
+        |F theta0 j (continuousSpike P radius height)| ≤ tailTarget := by
+  let A : ℝ := finiteKernelBound theta0 P
+  let AB : ℝ := A * B
+  let C : ℝ := ((P.card : ℝ) * 2) * AB
+  have hhalf : 0 < tailTarget / 2 := by positivity
+  obtain ⟨K, hKmin, hKsmall⟩ :=
+    exists_nat_forall_ge_const_div_nat_lt C hhalf (max Kmin 1)
+  refine ⟨K, (le_max_left Kmin 1).trans hKmin, ?_⟩
+  intro j hj
+  have hjpos : 0 < j := by
+    have hKone : 1 ≤ K := (le_max_right Kmin 1).trans hKmin
+    omega
+  have hrow :=
+    abs_F_continuousSpike_le_small_radius_sum_kernel_bound
+      (theta0 := theta0) htheta0 (n := j) hjpos
+      (P := P) (radius := radius) (height := height)
+      hP_angle hP_ne hvanish hB hradpos hradius_safe
+      hradius_sum hpairsep hheight
+  have hsmall : C / (j : ℝ) < tailTarget / 2 := hKsmall j hj
+  have hfirst_eq :
+      (((P.card : ℝ) * 2) / (j : ℝ)) * AB = C / (j : ℝ) := by
+    have hjne : (j : ℝ) ≠ 0 := by exact_mod_cast Nat.ne_of_gt hjpos
+    dsimp [C]
+    field_simp [hjne]
+  have halg :
+      ((((P.card : ℝ) * 2) / (j : ℝ) +
+          (2 / Real.pi) * epsRadius) * AB) =
+        (((P.card : ℝ) * 2) / (j : ℝ)) * AB +
+          ((2 / Real.pi) * epsRadius) * AB := by ring
+  have htarget :
+      ((((P.card : ℝ) * 2) / (j : ℝ) +
+          (2 / Real.pi) * epsRadius) * AB) ≤ tailTarget := by
+    rw [halg, hfirst_eq]
+    change ((2 / Real.pi) * epsRadius) * AB ≤ tailTarget / 2 at hradius_part
+    linarith
+  exact hrow.trans htarget
 
 lemma norm_continuousSpike_le_sum_abs_height
     {P : Finset ℝ} {radius height : ℝ → ℝ}
