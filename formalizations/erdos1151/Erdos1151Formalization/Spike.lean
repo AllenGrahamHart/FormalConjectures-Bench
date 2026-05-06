@@ -5202,6 +5202,157 @@ lemma exists_continuousSpike_block_and_finite_future_of_good_rows_norm_le
     htheta0 hnpos hR hRK hkappa_pos hkappa_le
     hradpos hsep hpairsep haway hcos hB hheight
 
+lemma exists_continuousSpike_block_and_global_future_of_good_rows_norm_le
+    {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
+    {R n : ℕ} {kappa tailTarget : ℝ}
+    (hnpos : 0 < n) (hR : 1 ≤ R)
+    (hkappa_pos : 0 < kappa)
+    (hkappa_le : kappa ≤ |Real.cos ((n : ℝ) * theta0)|)
+    (htailTarget : 0 < tailTarget)
+    (hcos : ∀ s : ℕ, s ∈ oddUpTo R →
+      Real.cos (((n * s : ℕ) : ℝ) * theta0) ≠ 0)
+    {B : ℝ} (hB : 0 ≤ B)
+    (hheight : ∀ p : ℝ, p ∈ spikePoints n R →
+      |finiteSpikeRaw theta0 R n p| ≤ B) :
+    ∃ psi : AngleFun,
+      VanishesNear theta0 (angleFunToRaw psi) ∧
+      F theta0 n psi = 1 ∧
+      (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+        F theta0 j psi = 0) ∧
+      (∀ j : ℕ, R * n < j →
+        |F theta0 j psi| ≤ (1 / kappa) / Real.sqrt (R : ℝ) + tailTarget) ∧
+      ‖psi‖ ≤ B := by
+  classical
+  let P : Finset ℝ := spikePoints n R
+  let A : ℝ := finiteKernelBound theta0 P
+  let AB : ℝ := A * B
+  let D : ℝ := (2 / Real.pi) * AB
+  let epsRadius : ℝ := tailTarget / (2 * (D + 1))
+  let Ctail : ℝ := ((P.card : ℝ) * 2) * AB
+  have hthetaP : theta0 ∉ P := by
+    simpa [P] using theta0_not_mem_spikePoints_of_good_rows hcos
+  have hP_angle : ∀ p : ℝ, p ∈ P → p ∈ AngleI := by
+    intro p hp
+    exact spikePoints_mem_angleI (by simpa [P] using hp)
+  have hP_ne : ∀ p : ℝ, p ∈ P → p ≠ theta0 := by
+    intro p hp hpeq
+    exact hthetaP (by simpa [hpeq] using hp)
+  have hA_nonneg : 0 ≤ A := by
+    dsimp [A]
+    exact finiteKernelBound_nonneg htheta0 hP_angle hP_ne
+  have hAB_nonneg : 0 ≤ AB := by
+    dsimp [AB]
+    exact mul_nonneg hA_nonneg hB
+  have hD_nonneg : 0 ≤ D := by
+    dsimp [D]
+    positivity
+  have hepsRadius_pos : 0 < epsRadius := by
+    dsimp [epsRadius]
+    positivity
+  have hhalf : 0 < tailTarget / 2 := by positivity
+  obtain ⟨K, hRK, hKtail⟩ :=
+    exists_nat_forall_ge_const_div_nat_lt Ctail hhalf (R * n)
+  let E : Finset ℝ := insert theta0 (nodesUpTo K)
+  have hPE : P ⊆ E := by
+    intro p hp
+    exact Finset.mem_insert.mpr
+      (Or.inr (spikePoints_subset_nodesUpTo_of_le hnpos hRK (by simpa [P] using hp)))
+  have hthetaE : theta0 ∈ E := by
+    dsimp [E]
+    exact Finset.mem_insert_self _ _
+  have hsafe : ∀ p : ℝ, p ∈ P → 0 < kernelSafeRadius theta0 p := by
+    intro p hp
+    exact kernelSafeRadius_pos_of_angle_ne htheta0 (hP_angle p hp) (hP_ne p hp)
+  rcases exists_small_isolating_radius
+      (P := P) (E := E) (theta0 := theta0)
+      hPE hthetaE hthetaP hepsRadius_pos
+      (fun p => kernelSafeRadius theta0 p) hsafe with
+    ⟨radius, hradpos, hradius_safe, hsep, hpairsep, haway, hradius_sum⟩
+  let psi : AngleFun :=
+    continuousSpike P radius (finiteSpikeRaw theta0 R n)
+  have hvanish :
+      VanishesNear theta0 (angleFunToRaw psi) := by
+    dsimp [psi]
+    exact continuousSpike_vanishesNear_of_radius_away hradpos haway
+  have hfinite_pack :
+      F theta0 n psi = 1 ∧
+        (∀ j : ℕ, 1 ≤ j → j ≤ R * n → j ≠ n →
+          F theta0 j psi = 0) ∧
+        (∀ j : ℕ, R * n < j → j ≤ K →
+          |F theta0 j psi| ≤ (1 / kappa) / Real.sqrt (R : ℝ)) := by
+    dsimp [psi]
+    exact F_continuousSpike_block_and_finite_future_of_good_rows
+      (theta0 := theta0) htheta0 hnpos hR hRK hkappa_pos hkappa_le
+      hradpos
+      (by
+        intro p hp e he hne
+        exact hsep p hp e (by simpa [E] using he) hne)
+      hcos
+  have hnorm : ‖psi‖ ≤ B := by
+    dsimp [psi]
+    exact norm_continuousSpike_le_height_bound hB hradpos hpairsep
+      (by
+        intro p hp
+        exact hheight p (by simpa [P] using hp))
+  have hradius_part :
+      ((2 / Real.pi) * epsRadius) * (finiteKernelBound theta0 P * B) ≤
+        tailTarget / 2 := by
+    have hsmall :=
+      mul_tail_div_two_mul_add_one_le_half (C := D) (eps := tailTarget)
+        hD_nonneg htailTarget
+    calc
+      ((2 / Real.pi) * epsRadius) * (finiteKernelBound theta0 P * B)
+          = D * epsRadius := by
+              dsimp [D, AB, A]
+              ring
+      _ = D * (tailTarget / (2 * (D + 1))) := by rfl
+      _ ≤ tailTarget / 2 := hsmall
+  have htail : ∀ j : ℕ, K < j → |F theta0 j psi| ≤ tailTarget := by
+    intro j hKj
+    have hjpos : 0 < j := by omega
+    have hjKle : K ≤ j := le_of_lt hKj
+    have hrow :=
+      abs_F_continuousSpike_le_small_radius_sum_kernel_bound
+        (theta0 := theta0) htheta0 (n := j) hjpos
+        (P := P) (radius := radius) (height := finiteSpikeRaw theta0 R n)
+        hP_angle hP_ne hvanish hB hradpos hradius_safe
+        hradius_sum hpairsep
+        (by
+          intro p hp
+          exact hheight p (by simpa [P] using hp))
+    have hsmall : Ctail / (j : ℝ) < tailTarget / 2 := hKtail j hjKle
+    have hfirst_eq :
+        (((P.card : ℝ) * 2) / (j : ℝ)) *
+            (finiteKernelBound theta0 P * B) =
+          Ctail / (j : ℝ) := by
+      have hjne : (j : ℝ) ≠ 0 := by exact_mod_cast Nat.ne_of_gt hjpos
+      dsimp [Ctail, AB, A]
+      field_simp [hjne]
+    have halg :
+        ((((P.card : ℝ) * 2) / (j : ℝ) +
+            (2 / Real.pi) * epsRadius) *
+            (finiteKernelBound theta0 P * B)) =
+          (((P.card : ℝ) * 2) / (j : ℝ)) *
+              (finiteKernelBound theta0 P * B) +
+            ((2 / Real.pi) * epsRadius) *
+              (finiteKernelBound theta0 P * B) := by ring
+    have htarget :
+        ((((P.card : ℝ) * 2) / (j : ℝ) +
+            (2 / Real.pi) * epsRadius) *
+            (finiteKernelBound theta0 P * B)) ≤ tailTarget := by
+      rw [halg, hfirst_eq]
+      linarith
+    exact hrow.trans htarget
+  have heta_nonneg : 0 ≤ (1 / kappa) / Real.sqrt (R : ℝ) := by
+    positivity
+  have hfuture :
+      ∀ j : ℕ, R * n < j →
+        |F theta0 j psi| ≤ (1 / kappa) / Real.sqrt (R : ℝ) + tailTarget :=
+    F_future_bound_of_finite_cutoff_and_tail
+      (theta0 := theta0) (R := R) (n := n) (K := K) (psi := psi)
+      heta_nonneg (le_of_lt htailTarget) hfinite_pack.2.2 htail
+  exact ⟨psi, hvanish, hfinite_pack.1, hfinite_pack.2.1, hfuture, hnorm⟩
+
 lemma exists_continuousSpike_exact_block_of_good_rows_coeff_bound
     {theta0 : ℝ} (htheta0 : theta0 ∈ AngleI)
     {R n : ℕ} (hnpos : 0 < n) (hR : 1 ≤ R)
