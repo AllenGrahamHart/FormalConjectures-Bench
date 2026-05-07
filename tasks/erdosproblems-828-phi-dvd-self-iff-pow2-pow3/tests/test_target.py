@@ -28,7 +28,7 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "c49968e6884b6644094bed952a2b8e5a03ca661e3ce091eae11a4f28ac91668f"
+EXPECTED_PREFIX_SHA256 = "2f8fc09348025bff22276e3b68e66c7a4f95dac92f995009ce8da779e06d0b9b"
 EXPECTED_HEADER = "theorem erdos_828.variants.phi_dvd_self_iff_pow2_pow3 {n : \u2115} :\n    \u03c6 n \u2223 n \u2194 n \u2264 1 \u2228 \u2203\u1d49 (a > 0) (b), n = 2 ^ a * 3 ^ b"
 THEOREM_NAME = "Erdos828.erdos_828.variants.phi_dvd_self_iff_pow2_pow3"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])

@@ -28,7 +28,7 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "f948ecdd9703600bfe9f7711b38db45dc4ce9a13f4442dd930e37cd4baa506c3"
+EXPECTED_PREFIX_SHA256 = "45eb812b0cb2e67d19dd9a0dd4c5b8d3067468dea2d5b8e762e2d8a6619d3e8b"
 EXPECTED_HEADER = "theorem erdos_12.parts.i : answer(True) \u2194 \u2203 (A : Set \u2115), IsGood A \u2227\n    (0 : \u211d) < Filter.atTop.liminf\n      (fun N => (A \u2229 Icc 1 N).ncard / (N : \u211d).sqrt)"
 THEOREM_NAME = "Erdos12.erdos_12.parts.i"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])

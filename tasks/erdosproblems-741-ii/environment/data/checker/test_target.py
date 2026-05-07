@@ -28,7 +28,7 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "5502bd5f1a1796a4d2cd570ab760ae1714097d1f1eafe277023632058139440a"
+EXPECTED_PREFIX_SHA256 = "162adfb1a65297f080da6d335796254e99443c1fff39f8ced87d672bb81abf63"
 EXPECTED_HEADER = "theorem erdos_741.parts.ii : answer(True) \u2194 \u2203 A : Set \u2115, IsAddBasisOfOrder (A \u222a {0}) 2 \u2227 \u2200 A\u2081 A\u2082,\n    A = A\u2081 \u222a A\u2082 \u2192 Disjoint A\u2081 A\u2082 \u2192 \u00ac (IsSyndetic (A\u2081 + A\u2081) \u2227 IsSyndetic (A\u2082 + A\u2082))"
 THEOREM_NAME = "Erdos741.erdos_741.parts.ii"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])

@@ -28,7 +28,7 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "52040d34673c40f6d843dcf0af980028e422074ceefa0434e74ff4ca280c29a1"
+EXPECTED_PREFIX_SHA256 = "a23179cc9d0882a363c1dc35f6158590ca7be7f5b72e09ec27798dcaef86bfaf"
 EXPECTED_HEADER = "theorem green_57 :\n  answer(False) \u2194\n    \u2200 (G : Type) [AddCommGroup G] [Fintype G] [DecidableEq G],\n      \u03a6 G = \u03a6' G"
 THEOREM_NAME = "Green57.green_57"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])

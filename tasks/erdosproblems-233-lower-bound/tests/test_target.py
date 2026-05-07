@@ -28,7 +28,7 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "c67a64028ba58ca2a6f44be36852498809f7d7754908a79c57f0ddd7f4f81d9a"
+EXPECTED_PREFIX_SHA256 = "75c343555cce4fdfd977c87f6bf52f08bcd979737588eb045baada025c2f0809"
 EXPECTED_HEADER = "theorem erdos_233.variants.lower_bound :\n    (fun (N : \u2115) => N * (log N)^2) =O[atTop]\n    (fun N => ((\u2211 n \u2208 Finset.range N, (primeGap n) ^ 2) : \u211d))"
 THEOREM_NAME = "Erdos233.erdos_233.variants.lower_bound"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])

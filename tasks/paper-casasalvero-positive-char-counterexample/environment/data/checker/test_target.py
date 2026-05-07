@@ -28,7 +28,7 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "37b1655180dac9322433d67f64fbe0ca72555e7dfb8915664d9b3cd4ba3d7182"
+EXPECTED_PREFIX_SHA256 = "893736e0f87301fd0efa1026ff7305ae93617b9d64d52a5e200ade6269341f5a"
 EXPECTED_HEADER = "theorem casas_alvero.positive_char_counterexample {p : \u2115} (hp : p.Prime) :\n    \u2203 (K : Type*) (_ : Field K) (_ : CharP K p),\n      let P := X ^ (p + 1) - X ^ p\n      Monic P \u2227 HasCasasAlveroProp P \u2227\n      \u00ac\u2203 \u03b1 : K, P = (X - C \u03b1) ^ P.natDegree"
 THEOREM_NAME = "CasasAlvero.casas_alvero.positive_char_counterexample"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])

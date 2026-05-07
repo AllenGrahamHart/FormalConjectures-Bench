@@ -28,7 +28,7 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "412403dd5d221ada0c1e528d4cba1e0ac7dc9c9934312e3c09157edd9c8d2c14"
+EXPECTED_PREFIX_SHA256 = "bead711618e15b02eebbf797f5ce8b9327fc2a2ad0113227d8ea95656dd3c2cb"
 EXPECTED_HEADER = "theorem erdos_331 :\n    answer(False) \u2194\n      \u2200 A B : Set \u2115,\n      (fun (n : \u2115) \u21a6 (n : \u211d) ^ (1 / 2 : \u211d)) =O[atTop] (fun (n : \u2115) \u21a6 (count A n : \u211d)) \u2192\n      (fun (n : \u2115) \u21a6 (n : \u211d) ^ (1 / 2 : \u211d)) =O[atTop] (fun (n : \u2115) \u21a6 (count B n : \u211d)) \u2192\n      { s : \u2115 \u00d7 \u2115 \u00d7 \u2115 \u00d7 \u2115 | let \u27e8a\u2081, a\u2082, b\u2081, b\u2082\u27e9 := s\n        a\u2081 \u2208 A \u2227 a\u2082 \u2208 A \u2227 b\u2081 \u2208 B \u2227 b\u2082 \u2208 B \u2227\n        a\u2081 \u2260 a\u2082 \u2227 a\u2081 + b\u2082 = a\u2082 + b\u2081 }.Infinite"
 THEOREM_NAME = "Erdos331.erdos_331"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])

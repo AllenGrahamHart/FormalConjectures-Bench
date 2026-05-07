@@ -28,7 +28,7 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "f0b6f9acff2e056f9649e1cb7a27f6fa6a3b3dc883373f0f2e9a4efc88e5912f"
+EXPECTED_PREFIX_SHA256 = "db5a6587fd2689ef07d0887c57138def0f7a6894f73cc416cf0f0ff26510c365"
 EXPECTED_HEADER = "theorem erdos_198.variants.concrete :  \u2203 (A : Set \u2115), A = {n ! + n | n} \u2227\n    IsSidon A \u2227 (\u2200 Y, IsAPOfLength Y \u22a4 \u2192 (A \u2229 Y).Nonempty)"
 THEOREM_NAME = "Erdos198.erdos_198.variants.concrete"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])

@@ -28,7 +28,7 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "64f6aeedb328207987637b113cb7b74d472bf0d41b292c55467e00a4a9ff3621"
+EXPECTED_PREFIX_SHA256 = "d9693e05f855c40a76466dac91f923632cb89b03c5f6cd3a2c4dac415de883d1"
 EXPECTED_HEADER = "theorem erdos_152.variants.square : answer(True) \u2194\n    (fun n => f n : \u2115 \u2192 \u211d) \u226b (fun n => n ^ 2 : \u2115 \u2192 \u211d)"
 THEOREM_NAME = "Erdos152.erdos_152.variants.square"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])

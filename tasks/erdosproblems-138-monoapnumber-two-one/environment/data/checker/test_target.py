@@ -28,7 +28,7 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "91fd96625c847c654d3490cd9a3704fbbbf95a667ab89b981470fa7e9e637dbb"
+EXPECTED_PREFIX_SHA256 = "9a4558000050f3a6433c05d91bbb1e47f01cbf8e965c0aa5bf3c8807fc46694c"
 EXPECTED_HEADER = "theorem monoAPNumber_two_one : W 1 = 1"
 THEOREM_NAME = "Erdos138.monoAPNumber_two_one"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])

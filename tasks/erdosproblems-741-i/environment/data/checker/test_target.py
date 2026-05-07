@@ -28,7 +28,7 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "d59a2527f3776c5175c986d081891ad850f4d77378e3b7a47517d484df3d94ae"
+EXPECTED_PREFIX_SHA256 = "7d10697f2412d6b75b5ef7697b8b8ed33c1cfce9ab749bcb1fb5fbb640d6611a"
 EXPECTED_HEADER = "theorem erdos_741.parts.i : answer(False) \u2194 \u2200 A : Set \u2115, HasPosDensity (A + A) \u2192 \u2203 A\u2081 A\u2082,\n    A = A\u2081 \u222a A\u2082 \u2227 Disjoint A\u2081 A\u2082 \u2227 HasPosDensity (A\u2081 + A\u2081)\n    \u2227 HasPosDensity (A\u2082 + A\u2082)"
 THEOREM_NAME = "Erdos741.erdos_741.parts.i"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])

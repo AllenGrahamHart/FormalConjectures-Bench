@@ -28,7 +28,7 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "e8739c3784806bb18e900786dd9ff51e1ac7deeaac978ed25494a6cdef21b1b7"
+EXPECTED_PREFIX_SHA256 = "7a708c5a21dd0b4b457af0cdb61c27a77ba87e77a085d53725d1a9307aaa456e"
 EXPECTED_HEADER = "theorem erdos_100_piepmeyer :\n    \u2203 A : Finset \u211d\u00b2, A.card = 9 \u2227 DistancesSeparated A \u2227\n      diam (A : Set \u211d\u00b2) < 5"
 THEOREM_NAME = "Erdos100.erdos_100_piepmeyer"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])

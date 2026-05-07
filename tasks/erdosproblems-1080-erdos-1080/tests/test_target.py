@@ -28,7 +28,7 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "4bf83f91260945216b6970f009e61f42af546d6b72024b2e3b1ab58a5e948928"
+EXPECTED_PREFIX_SHA256 = "6f8a92fcc5b875ea6d8de1bda989e4f51f0fa418539af88b1852907f4b68e360"
 EXPECTED_HEADER = "theorem erdos_1080 :\n    answer(False) \u2194\n    \u2203 c > (0 : \u211d), \u2200 (V : Type) [Fintype V] [Nonempty V] (G : SimpleGraph V) (X Y : Set V),\n      IsBipartition G X Y \u2192 X.ncard = \u230a(Fintype.card V : \u211d) ^ (2/3 : \u211d)\u230b\u208a \u2192\n      G.edgeSet.ncard \u2265 c * Fintype.card V \u2192\n        \u2203 (v : V) (walk : G.Walk v v), walk.IsCycle \u2227 walk.length = 6"
 THEOREM_NAME = "Erdos1080.erdos_1080"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])

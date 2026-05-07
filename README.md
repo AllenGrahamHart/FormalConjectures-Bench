@@ -6,10 +6,13 @@ tasks derived from Google DeepMind's Formal Conjectures project.
 The current `main` branch has two checked-in task roots:
 
 - `tasks/`: 74 gold-solution tasks with bundled local Lean oracles. These run
-  with internet access disabled.
+  with internet access disabled. Their `Target.lean` files use a minimal
+  exam-style surface: source-derived comments above the benchmark marker are
+  stripped, except for the harbor canary.
 - `tasks-v2/`: 2,558 non-gold tasks without bundled oracles. These run with
   internet access enabled so agents can use external literature while trying to
-  produce new Lean proofs.
+  produce new Lean proofs. These keep the richer source context generated from
+  Formal Conjectures.
 
 The checked-in task roots contain 2,632 task instances: 74 gold instances are
 emitted under `tasks/`, and the remaining 2,558 non-gold instances are emitted

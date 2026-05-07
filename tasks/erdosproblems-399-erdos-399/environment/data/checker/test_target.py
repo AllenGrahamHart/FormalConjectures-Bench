@@ -28,7 +28,7 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "3663e7cb977e315ef0062eab792e56ffb7e4b1216d701ae1114c01a0c5ed3483"
+EXPECTED_PREFIX_SHA256 = "ec34c5dedc6df109e2bc108e2a22a707b965c55211c3910696ca6fd385cab735"
 EXPECTED_HEADER = "theorem erdos_399 : answer(False) \u2194\n    \u00ac \u2203 (n x y k : \u2115), 1 < x * y \u2227 2 < k \u2227 (n ! = x ^ k + y ^ k \u2228 n ! + y ^ k = x ^ k)"
 THEOREM_NAME = "Erdos399.erdos_399"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])

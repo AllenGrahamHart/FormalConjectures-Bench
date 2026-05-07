@@ -28,7 +28,7 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "cee1e02c3ea59ba89962b8ad2e1ac62e2dd32f93d9789656b458e5d21602a446"
+EXPECTED_PREFIX_SHA256 = "eb9e276a3370fbec440adfab47f4471d69d78820a72b926254e7344a696f6a1c"
 EXPECTED_HEADER = "theorem erdos_397 :\n    answer(False) \u2194\n      {(M, N) : Finset \u2115 \u00d7 Finset \u2115 | Disjoint M N \u2227\n      \u220f i \u2208 M, centralBinom i = \u220f j \u2208 N, centralBinom j}.Finite"
 THEOREM_NAME = "Erdos397.erdos_397"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])

@@ -28,7 +28,7 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "f1c727d606708751690e3950e8b03841b6360e1800d8a57134d258ac6a63ac23"
+EXPECTED_PREFIX_SHA256 = "bea41f5f0e663b85ee1750bc08168328035fd812b669429cd5a77c11f82849d5"
 EXPECTED_HEADER = "theorem erdos_645 (c : \u2115 \u2192 Bool) : \u2203 x d, 0 < x \u2227 x < d \u2227\n    (\u2203 C, c x = C \u2227 c (x + d) = C \u2227 c (x + 2 * d) = C)"
 THEOREM_NAME = "Erdos645.erdos_645"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])

@@ -28,7 +28,7 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "bba02b5b4eb6c59f6c7d7c21ae65f47143eb1de94792da7f65684d533ce5f3f3"
+EXPECTED_PREFIX_SHA256 = "4bf98c888e3188ba597933be7c1297eee655579f2aa5c428a3336807e683bcf2"
 EXPECTED_HEADER = "theorem eqSystem4_no_solution_ge4_trinary_int :\n    answer(True) \u2194\n      \u2200 D : Nat, D \u2265 4 \u2192\n        \u00ac \u2203 W : WeightsN 4 D \u2124,\n            (\u2200 e, W e = (-1 : \u2124) \u2228 W e = 0 \u2228 W e = 1) \u2227\n              EqSystemN 4 D W"
 THEOREM_NAME = "MonochromaticQuantumGraph.eqSystem4_no_solution_ge4_trinary_int"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])

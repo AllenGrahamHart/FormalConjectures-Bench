@@ -28,7 +28,7 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "7da24091cdb3a848f2e56d1fa79ed3e2a0b3e63cad5c9f93aa30c33e2a94a058"
+EXPECTED_PREFIX_SHA256 = "64901974393727e433ff66074453a204a9265b97aa33db6f79a742d3f3f079f4"
 EXPECTED_HEADER = "theorem erdos_229 :\n    letI := Polynomial.algebraPi \u2102 \u2102 \u2102\n    answer(True) \u2194 \u2200 (S : \u2115 \u2192 Set \u2102), (\u2200 n, derivedSet (S n) = \u2205) \u2192\n    \u2203 (f : \u2102 \u2192 \u2102), Transcendental (Polynomial \u2102) f \u2227 Differentiable \u2102 f \u2227 \u2200 n \u2265 1,\n      \u2203 k, \u2200 z \u2208 S n, iteratedDeriv k f z = 0"
 THEOREM_NAME = "Erdos229.erdos_229"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])

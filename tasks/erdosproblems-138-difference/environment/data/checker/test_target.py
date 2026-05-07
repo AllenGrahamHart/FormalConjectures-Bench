@@ -28,7 +28,7 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "41d66304799d4f8f11aeb94de72910393fdbc39ed261d40614703ee21f9d9c99"
+EXPECTED_PREFIX_SHA256 = "da75efea93675fafa0706705a272f1245b71c34913c7138b39738bb9f817e83f"
 EXPECTED_HEADER = "theorem erdos_138.variants.difference :\n    answer(True) \u2194 atTop.Tendsto (fun k => (W (k + 1) - W k)) atTop"
 THEOREM_NAME = "Erdos138.erdos_138.variants.difference"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])

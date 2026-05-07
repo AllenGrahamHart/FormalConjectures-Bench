@@ -28,7 +28,7 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "c91a129f9d023e2c083631fe61bf591ea05f4f5c9b4ff1f96376e3be250521ff"
+EXPECTED_PREFIX_SHA256 = "57b20e4b967e82532fd9b5e62af1492c303a49a1f3a813da6223e24572753e67"
 EXPECTED_HEADER = "theorem green_57.variants.z3_functional :\n    let a : ZMod 3 \u2192 \u2102 := ![(-1 : \u2102), -3, 3]\n    answer(True) \u2194\n      supportFn (ZMod 3) a (\u03a6' (ZMod 3)) < supportFn (ZMod 3) a (\u03a6 (ZMod 3))"
 THEOREM_NAME = "Green57.green_57.variants.z3_functional"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])

@@ -28,7 +28,7 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "f4ed5505dde9daa34f547f97ba58a28a64eecf4a93fd89124bbeb0d82d56ceff"
+EXPECTED_PREFIX_SHA256 = "f27d7b39af007b7720370259a411fd0942753b66739ecd1be470aedb585f809c"
 EXPECTED_HEADER = "theorem odd_perfect_number.euler_form (n : \u2115) (hn : Odd n) (hp : Perfect n) :\n    \u2203 (p m \u03b1 : \u2115),\n      p.Prime \u2227\n      p \u2261 1 [ZMOD 4] \u2227\n      \u03b1 \u2261 1 [ZMOD 4] \u2227\n      \u00ac p \u2223 m \u2227\n      n = p^\u03b1 * m^2"
 THEOREM_NAME = "PerfectNumbers.odd_perfect_number.euler_form"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])

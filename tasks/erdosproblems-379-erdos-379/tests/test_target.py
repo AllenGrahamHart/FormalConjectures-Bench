@@ -28,7 +28,7 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "0c601a5fafbac0b68bfbfd42a3d75ee49fcd6f83a64ea7d0807ba5607bfac52c"
+EXPECTED_PREFIX_SHA256 = "6154b5459362eb80d50dbdfb869f0713f3c4095ae985765015bc6b20c23992da"
 EXPECTED_HEADER = "theorem erdos_379 : atTop.limsup (fun n => (S n : \u2115\u221e)) = \u22a4"
 THEOREM_NAME = "Erdos379.erdos_379"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])

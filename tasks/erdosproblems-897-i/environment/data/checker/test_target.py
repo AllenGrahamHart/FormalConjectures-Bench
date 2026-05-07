@@ -28,7 +28,7 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "4165b45f4bb7ad908b1b11b4fa3d9f964be6c448d209e33172c9be825dab8b00"
+EXPECTED_PREFIX_SHA256 = "0ea576d2d434daabf690bf2b79939084d8549b2d2bf687149424e05701b87c4f"
 EXPECTED_HEADER = "theorem erdos_897.parts.i : answer(False) \u2194 \u2200 (f : \u2115 \u2192 \u211d),\n    (\u2200\u1d49 (a > 0) (b > 0), a.Coprime b \u2192 f (a * b) = f a + f b) \u2192\n    ((Filter.atTop \u2293 Filter.principal {(p, k) : \u2115 \u00d7 \u2115 | p.Prime}).limsup\n      (fun (p, k) => (f (p^k) / (p^k : \u211d).log : EReal)) = \u22a4) \u2192\n    Filter.atTop.limsup (fun (n : \u2115) => ((f (n+1) - f n) / (n : \u211d).log : EReal)) = \u22a4"
 THEOREM_NAME = "Erdos897.erdos_897.parts.i"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])

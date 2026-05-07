@@ -28,7 +28,7 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "fa716e01be892b7270a3f3a3af2c24de35d345f97a0a7f0f94158ed6decb6afd"
+EXPECTED_PREFIX_SHA256 = "4dd416bdfb7fbf148cd4f468f21248ae7b57fe988f4d07627bee2c248e2cfe76"
 EXPECTED_HEADER = "theorem erdos_741.variants.upper : answer(True) \u2194 \u2200 A : Set \u2115, 0 < upperDensity (A + A) \u2192 \u2203 A\u2081 A\u2082,\n    A = A\u2081 \u222a A\u2082 \u2227 Disjoint A\u2081 A\u2082 \u2227 0 < upperDensity (A\u2081 + A\u2081)\n    \u2227 0 < upperDensity (A\u2082 + A\u2082)"
 THEOREM_NAME = "Erdos741.erdos_741.variants.upper"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])

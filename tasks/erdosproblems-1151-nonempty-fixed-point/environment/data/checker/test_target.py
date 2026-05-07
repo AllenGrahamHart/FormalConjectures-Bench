@@ -28,7 +28,7 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "139dc94895a4e93ad0ae4512e5ef4e77b247c308b061ba328ffee63d8becbe29"
+EXPECTED_PREFIX_SHA256 = "e324eb574e3f81fee101531b0ee75ac36c3a0152200e38ffa0fa2f6bd97daa41"
 EXPECTED_HEADER = "theorem erdos_1151_nonempty_fixed_point\n    {x0 : \u211d} (hx0 : x0 \u2208 SpaceI)\n    {A : Set \u211d} (hA_closed : IsClosed A)\n    (hA_nonempty : A.Nonempty)\n    (hA_subset : A \u2286 SpaceI) :\n    \u2203 f : SpaceFun,\n      clusterSet (fun m : \u2115 => chebLagEval x0 f (m.succ)) = A"
 THEOREM_NAME = "Erdos1151NonemptyFixedPoint.erdos_1151_nonempty_fixed_point"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])

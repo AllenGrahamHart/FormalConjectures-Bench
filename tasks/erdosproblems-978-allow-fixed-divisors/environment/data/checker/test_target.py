@@ -28,7 +28,7 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "068cb6de1c7c798483e34e181c4d69f7763bbeeab5b400634a6a911e9186e7bd"
+EXPECTED_PREFIX_SHA256 = "ea85902ab758d4637e18ff47de32fddaccac350a56228bfcd41ca242c6f7a0b2"
 EXPECTED_HEADER = "theorem erdos_978.variants.allow_fixed_divisors : answer(False) \u2194\n    \u2200 {f : \u2124[X]}, Irreducible f \u2192 f.natDegree > 3 \u2192\n    (\u00ac \u2203 l : \u2115, f.natDegree = 2 ^ l) \u2192 0 < f.leadingCoeff \u2192\n    (\u00ac \u2203 p : \u2115, p.Prime \u2227 \u2200 n : \u2115, (p : \u2124) ^ (f.natDegree - 1) \u2223 f.eval (n : \u2124)) \u2192\n    {n : \u2115 | Powerfree (f.natDegree - 2) (f.eval (n : \u2124))}.Infinite"
 THEOREM_NAME = "Erdos978.erdos_978.variants.allow_fixed_divisors"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])

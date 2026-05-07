@@ -28,7 +28,7 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "74647b72c18751bb8058b100656f5d61f20e4ce29692065f17a6c3999fbb5e3f"
+EXPECTED_PREFIX_SHA256 = "afdbe9373a196a933780d9adcb8ddee0b35e58714946e2d200d51061d69ec40d"
 EXPECTED_HEADER = "theorem erdos_316 : answer(False) \u2194 \u2200 A : Finset \u2115, 0 \u2209 A \u2192 1 \u2209 A \u2192\n    \u2211 n \u2208 A, (1 / n : \u211a) < 2 \u2192 \u2203 (A\u2081 A\u2082 : Finset \u2115),\n      Disjoint A\u2081 A\u2082 \u2227 A = A\u2081 \u222a A\u2082 \u2227\n      \u2211 n \u2208 A\u2081, (1 / n : \u211a) < 1 \u2227 \u2211 n \u2208 A\u2082, (1 / n : \u211a) <  1"
 THEOREM_NAME = "Erdos316.erdos_316"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])

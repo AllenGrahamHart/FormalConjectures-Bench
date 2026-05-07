@@ -28,7 +28,7 @@ EDITABLE_REL = Path("FormalConjecturesBench")
 TARGET_REL = EDITABLE_REL / "Target.lean"
 TARGET = TASK_DIR / TARGET_REL
 MARKER = "-- FORMAL_CONJECTURES_BENCH_TARGET_BEGIN"
-EXPECTED_PREFIX_SHA256 = "ad763ab46b9a0eaed4c104859572c79e63ced9335acb60841c7f8cda44b1fc6c"
+EXPECTED_PREFIX_SHA256 = "2f3853b5edf46604237ac9302864b418c4be3d3c3f974ba40e7c57d65aaaceba"
 EXPECTED_HEADER = "theorem erdos_1043 :\n    answer(False) \u2194 \u2200 (f : \u2102[X]), f.Monic \u2192 f.degree \u2265 1 \u2192\n      \u2203 (u : \u2102), \u2016u\u2016 = 1 \u2227\n      volume ((\u211d \u2219 u).orthogonalProjection '' levelSet f) \u2264 2"
 THEOREM_NAME = "Erdos1043.erdos_1043"
 ALLOWED_AXIOMS = set(["propext", "Classical.choice", "Quot.sound"])
