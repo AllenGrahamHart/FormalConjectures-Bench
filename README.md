@@ -182,6 +182,14 @@ harbor run -p tasks-v2
 Use Harbor's usual agent/model flags to choose the solver. Bucket information is
 recorded in each task's `task.toml` under `metadata.benchmark_bucket`.
 
+Gold tasks use generous release timeouts by default: 24 hours for agent
+execution, 2 hours for verification, and 4 hours for environment builds. Use
+Harbor's timeout multiplier to scale these down or up for a local run:
+
+```bash
+harbor run -p tasks --timeout-multiplier 0.25
+```
+
 ## Verification Model
 
 Each generated task verifier checks that:
