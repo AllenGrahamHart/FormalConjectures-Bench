@@ -19,8 +19,8 @@ theorem-proving tasks with bundled oracle solutions. The executable benchmark is
 distributed as a Harbor dataset; this Hugging Face dataset is the metadata and
 discovery mirror.
 
-The benchmark is intended for evaluation, not training. Benchmark target files
-and oracle solutions should not be included in training corpora.
+The benchmark is intended for evaluation or RL. Benchmark target files and
+oracle solutions should not be included in training corpora.
 
 ## Running
 
