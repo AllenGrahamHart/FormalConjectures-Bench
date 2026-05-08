@@ -1,7 +1,7 @@
 ---
 pretty_name: FormalConjectures-Bench Gold
 language:
-- lean
+- code
 tags:
 - lean4
 - theorem-proving
