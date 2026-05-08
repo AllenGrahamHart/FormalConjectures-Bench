@@ -60,6 +60,6 @@ Before freezing a paper-grade archival release:
 8. Attach a source tarball plus base-image digest, and optionally an OCI image
    archive, to the release.
 
-Do this after the v1.0.0 task list and verifier template have had more external
-exercise. Until then, keep the lightweight checks strict enough that included
-tasks cannot depend on live proof URLs or unbundled oracle files.
+Do this after the v1.1.0 gold task list and verifier template have had more
+external exercise. Until then, keep the lightweight checks strict enough that
+included tasks cannot depend on live proof URLs or unbundled oracle files.

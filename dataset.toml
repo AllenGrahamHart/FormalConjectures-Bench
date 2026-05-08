@@ -1,13 +1,14 @@
-# Dataset manifest for FormalConjectures-Bench.
-# Task references are added after generated tasks are reviewed and digests are synced.
+# Release metadata for the Harbor-native gold dataset.
+# The executable Harbor registry is `registry.json`.
 
 schema_version = "1.0"
 
 [dataset]
-name = "formal-conjectures-bench/formal-conjectures-bench"
-version = "1.0.0"
-description = "Lean 4 theorem-proving tasks generated from the formally proved subset of Formal Conjectures."
+name = "formal-conjectures-gold"
+version = "1.1.0"
+description = "74 offline Lean 4 theorem-proving tasks from FormalConjectures-Bench with bundled oracle solutions."
 authors = [{ name = "Allen Graham Hart" }]
 keywords = ["lean4", "theorem-proving", "formal-mathematics", "harbor"]
-
-tasks = []
+task_count = 74
+harbor_registry = "registry.json"
+huggingface_metadata = "huggingface/formal-conjectures-gold/tasks.jsonl"

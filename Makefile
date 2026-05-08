@@ -10,8 +10,11 @@ V2_TASKS_DIR ?= tasks-v2
 V2_BATCH_SIZE ?= 100
 V2_LEAN_SMOKE ?= 10
 BASE_IMAGE_TAG ?= formal-conjectures-bench-base:v4.27.0-fc233a10e
+RELEASE_VERSION ?= 1.1.0
+RELEASE_TASK_COMMIT ?= a3674901510f2f8d8a8c1de0c28c568fcd48828e
+RELEASE_GIT_URL ?= https://github.com/AllenGrahamHart/FormalConjectures-Bench
 
-.PHONY: upstream manifest base-image generate-pilot generate check-generated check-pilot-generated check-manifest check-oracles check v2-candidates generate-v2-batch check-v2-batch smoke-v2-batch
+.PHONY: upstream manifest base-image generate-pilot generate check-generated check-pilot-generated check-manifest check-oracles check release-artifacts v2-candidates generate-v2-batch check-v2-batch smoke-v2-batch
 
 upstream:
 	mkdir -p .cache
@@ -43,6 +46,12 @@ check-oracles:
 	python3 scripts/check_included_oracles.py --manifest "$(MANIFEST)" --oracles-dir oracles --tasks-dir "$(TASKS_DIR)"
 
 check: check-manifest check-oracles check-generated
+
+release-artifacts:
+	python3 scripts/generate_release_artifacts.py \
+		--version "$(RELEASE_VERSION)" \
+		--git-url "$(RELEASE_GIT_URL)" \
+		--git-commit-id "$(RELEASE_TASK_COMMIT)"
 
 v2-candidates:
 	python3 manifest/build_v2_candidates.py --source "$(FORMAL_CONJECTURES_DIR)" --current-manifest "$(MANIFEST)" --out "$(V2_MANIFEST)" --batches-dir "$(V2_BATCHES_DIR)" --exclusions "$(V2_EXCLUSIONS)" --open-pairs "$(V2_OPEN_PAIRS)" --batch-size "$(V2_BATCH_SIZE)"

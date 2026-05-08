@@ -167,6 +167,29 @@ manifest entry is promoted and the generated task directory is committed.
 
 ## Running With Harbor
 
+Run the public gold release through the Harbor registry:
+
+```bash
+uv tool install harbor
+
+harbor run \
+  --dataset formal-conjectures-gold@1.1.0 \
+  --registry-url https://raw.githubusercontent.com/AllenGrahamHart/FormalConjectures-Bench/v1.1.0/registry.json
+```
+
+Run one task from the registry:
+
+```bash
+harbor run \
+  --dataset formal-conjectures-gold@1.1.0 \
+  --registry-url https://raw.githubusercontent.com/AllenGrahamHart/FormalConjectures-Bench/v1.1.0/registry.json \
+  --task-name erdosproblems-399-erdos-399
+```
+
+The checked-in `registry.json` is a Harbor registry for
+`formal-conjectures-gold@1.1.0`; its task entries pin the executable gold task
+tree to commit `a3674901510f2f8d8a8c1de0c28c568fcd48828e`.
+
 Run the offline gold bucket:
 
 ```bash
