@@ -4207,6 +4207,49 @@
       "theorem_header": "theorem erdos_1151_nonempty_fixed_point\n    {x0 : ℝ} (hx0 : x0 ∈ SpaceI)\n    {A : Set ℝ} (hA_closed : IsClosed A)\n    (hA_nonempty : A.Nonempty)\n    (hA_subset : A ⊆ SpaceI) :\n    ∃ f : SpaceFun,\n      clusterSet (fun m : ℕ => chebLagEval x0 f (m.succ)) = A",
       "theorem_name": "Erdos1151NonemptyFixedPoint.erdos_1151_nonempty_fixed_point",
       "uses_answer_sorry": false
+    },
+    {
+      "ams_tags": [
+        "52",
+        "28"
+      ],
+      "attribute_line": 40,
+      "category": [
+        "research",
+        "solved"
+      ],
+      "contains_answer_elaborator": false,
+      "declaration_kind": "theorem",
+      "declaration_line": 41,
+      "exclusion_reason": null,
+      "formal_proofs": [
+        {
+          "kind": "repository_local",
+          "url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench/blob/db39ab669991badf0326a1ac46e5d183ae154436/formalizations/erdos953/Erdos953Formalization/Main.lean#L82"
+        }
+      ],
+      "inclusion_status": "included",
+      "instance_id": "erdosproblems-953-upper-bound",
+      "local_declaration_name": "erdos_953_upper_bound",
+      "metadata_source": "formal-conjectures-bench/local",
+      "namespace": [
+        "Erdos953UpperBound"
+      ],
+      "oracle_status": "bundled",
+      "allow_internet": false,
+      "selected_oracle": {
+        "formal_proof_kind": "repository_local",
+        "kind": "repository_local_lean4",
+        "licence_status": "project-local",
+        "redistribution_status": "bundled",
+        "url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench/blob/db39ab669991badf0326a1ac46e5d183ae154436/formalizations/erdos953/Erdos953Formalization/Main.lean#L82"
+      },
+      "source_file": "benchmark_sources/erdos953/UpperBound.lean",
+      "source_origin": "local",
+      "task_description": "Prove the benchmark-local upper-bound formalization of Erdős Problem 953.",
+      "theorem_header": "theorem erdos_953_upper_bound :\n    ∃ C : ℝ, 0 < C ∧ ∀ R : ℝ, 1 ≤ R → M R ≤ C * Real.sqrt R",
+      "theorem_name": "Erdos953UpperBound.erdos_953_upper_bound",
+      "uses_answer_sorry": false
     }
   ],
   "schema_version": 1,
@@ -4221,11 +4264,11 @@
     "mathlib_input_rev": "v4.27.0"
   },
   "release": {
-    "current_version": "1.0.0",
-    "released_at": "2026-05-02",
-    "included_count": 74,
+    "current_version": "1.2.0",
+    "released_at": "2026-05-09",
+    "included_count": 75,
     "deferred_count": 29,
     "source_excluded_count": 5,
-    "policy": "v1.0.0 includes only tasks with bundled local verifier-clean oracles; remaining candidates are explicitly deferred for later repair."
+    "policy": "v1.2.0 includes only tasks with bundled local verifier-clean oracles; remaining candidates are explicitly deferred for later repair."
   }
 }

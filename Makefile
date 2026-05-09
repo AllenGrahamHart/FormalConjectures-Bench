@@ -10,7 +10,7 @@ V2_TASKS_DIR ?= tasks-v2
 V2_BATCH_SIZE ?= 100
 V2_LEAN_SMOKE ?= 10
 BASE_IMAGE_TAG ?= formal-conjectures-bench-base:v4.27.0-fc233a10e
-RELEASE_VERSION ?= 1.1.0
+RELEASE_VERSION ?= 1.2.0
 RELEASE_TASK_COMMIT ?= a3674901510f2f8d8a8c1de0c28c568fcd48828e
 RELEASE_GIT_URL ?= https://github.com/AllenGrahamHart/FormalConjectures-Bench
 

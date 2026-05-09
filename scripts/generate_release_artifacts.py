@@ -139,11 +139,11 @@ def main() -> None:
         default=Path("huggingface/formal-conjectures-gold/tasks.jsonl"),
     )
     parser.add_argument("--dataset-name", default="formal-conjectures-gold")
-    parser.add_argument("--version", default="1.1.0")
+    parser.add_argument("--version", default="1.2.0")
     parser.add_argument(
         "--description",
         default=(
-            "74 offline Lean 4 theorem-proving tasks from FormalConjectures-Bench "
+            "75 offline Lean 4 theorem-proving tasks from FormalConjectures-Bench "
             "with bundled oracle solutions."
         ),
     )
