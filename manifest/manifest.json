@@ -4250,11 +4250,53 @@
       "theorem_header": "theorem erdos_953_upper_bound :\n    ∃ C : ℝ, 0 < C ∧ ∀ R : ℝ, 1 ≤ R → M R ≤ C * Real.sqrt R",
       "theorem_name": "Erdos953UpperBound.erdos_953_upper_bound",
       "uses_answer_sorry": false
+    },
+    {
+      "instance_id": "openquantumproblems-35-ame-4-3-exists",
+      "theorem_name": "OpenQuantumProblem35.ame_4_3_exists",
+      "local_declaration_name": "ame_4_3_exists",
+      "declaration_kind": "theorem",
+      "source_file": "FormalConjectures/OpenQuantumProblems/35.lean",
+      "attribute_line": 736,
+      "declaration_line": 737,
+      "namespace": [
+        "OpenQuantumProblem35"
+      ],
+      "theorem_header": "theorem ame_4_3_exists : ExistsAME 4 3",
+      "formal_proofs": [
+        {
+          "kind": "repository_local",
+          "url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench/blob/main/formalizations/openquantum35_ame43/OpenQuantum35AME43Formalization.lean#L333"
+        }
+      ],
+      "selected_oracle": {
+        "formal_proof_kind": "repository_local",
+        "kind": "repository_local_lean4",
+        "licence_status": "Apache-2.0 + project-local",
+        "redistribution_status": "bundled",
+        "url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench/blob/main/formalizations/openquantum35_ame43/OpenQuantum35AME43Formalization.lean#L333"
+      },
+      "category": [
+        "research",
+        "solved"
+      ],
+      "ams_tags": [
+        "5",
+        "15",
+        "81",
+        "94"
+      ],
+      "contains_answer_elaborator": false,
+      "uses_answer_sorry": false,
+      "inclusion_status": "included",
+      "exclusion_reason": null,
+      "allow_internet": false,
+      "oracle_status": "bundled"
     }
   ],
   "schema_version": 1,
   "source": {
-    "candidate_count": 107,
+    "candidate_count": 108,
     "excluded_count": 5,
     "formal_conjectures_commit": "233a10e857ef78e79fd9fe661d37db724089170a",
     "formal_conjectures_remote": "https://github.com/google-deepmind/formal-conjectures.git",
@@ -4264,11 +4306,11 @@
     "mathlib_input_rev": "v4.27.0"
   },
   "release": {
-    "current_version": "1.2.0",
+    "current_version": "1.3.0",
     "released_at": "2026-05-09",
-    "included_count": 75,
+    "included_count": 76,
     "deferred_count": 29,
     "source_excluded_count": 5,
-    "policy": "v1.2.0 includes only tasks with bundled local verifier-clean oracles; remaining candidates are explicitly deferred for later repair."
+    "policy": "v1.3.0 includes only tasks with bundled local verifier-clean oracles; remaining candidates are explicitly deferred for later repair."
   }
 }

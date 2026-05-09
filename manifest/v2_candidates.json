@@ -36,9 +36,9 @@
     ]
   },
   "bucket_counts": {
-    "gold_solution": 72,
     "deferred_formal_candidate": 26,
-    "informal_proof": 722,
+    "gold_solution": 73,
+    "informal_proof": 721,
     "open_problem": 1810
   },
   "open_problem_pairs": [
@@ -35497,13 +35497,18 @@
         "OpenQuantumProblem35"
       ],
       "theorem_header": "theorem ame_4_3_exists : ExistsAME 4 3",
-      "formal_proofs": [],
+      "formal_proofs": [
+        {
+          "kind": "repository_local",
+          "url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench/blob/main/formalizations/openquantum35_ame43/OpenQuantum35AME43Formalization.lean#L333"
+        }
+      ],
       "selected_oracle": {
-        "kind": "none",
-        "formal_proof_kind": null,
-        "url": "",
-        "licence_status": "not_applicable",
-        "redistribution_status": "not_applicable"
+        "formal_proof_kind": "repository_local",
+        "kind": "repository_local_lean4",
+        "licence_status": "Apache-2.0 + project-local",
+        "redistribution_status": "bundled",
+        "url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench/blob/main/formalizations/openquantum35_ame43/OpenQuantum35AME43Formalization.lean#L333"
       },
       "category": [
         "research",
@@ -35517,11 +35522,11 @@
       ],
       "contains_answer_elaborator": false,
       "uses_answer_sorry": false,
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "exclusion_reason": null,
-      "benchmark_bucket": "informal_proof",
-      "allow_internet": true,
-      "oracle_status": "none"
+      "benchmark_bucket": "gold_solution",
+      "allow_internet": false,
+      "oracle_status": "bundled"
     },
     {
       "instance_id": "openquantumproblems-35-ame-4-6-exists",

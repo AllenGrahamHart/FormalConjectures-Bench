@@ -46,5 +46,5 @@ For source search, prefer commands such as:
 rg --glob '*.lean' 'search term' /app /opt/formal-conjectures
 ```
 
-Internet access is enabled for this task. You may use external literature and web resources, but the final Lean proof must pass the local verifier.
+The task is offline. Do not try to fetch external proof sources.
 The dependency checkout at `/opt/formal-conjectures` is read-only.
