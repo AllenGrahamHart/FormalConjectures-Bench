@@ -11,7 +11,7 @@ V2_BATCH_SIZE ?= 100
 V2_LEAN_SMOKE ?= 10
 BASE_IMAGE_TAG ?= formal-conjectures-bench-base:v4.27.0-fc233a10e
 RELEASE_VERSION ?= 1.2.0
-RELEASE_TASK_COMMIT ?= a3674901510f2f8d8a8c1de0c28c568fcd48828e
+RELEASE_TASK_COMMIT ?= c0e9d2f873cf5c60f6ac6126de7c37b7a3544458
 RELEASE_GIT_URL ?= https://github.com/AllenGrahamHart/FormalConjectures-Bench
 
 .PHONY: upstream manifest base-image generate-pilot generate check-generated check-pilot-generated check-manifest check-oracles check release-artifacts v2-candidates generate-v2-batch check-v2-batch smoke-v2-batch
