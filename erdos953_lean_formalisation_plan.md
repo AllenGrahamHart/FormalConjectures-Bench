@@ -1,10 +1,25 @@
 # Lean formalisation scaffold for the Poisson-Bessel proof of Erdős Problem #953
 
-This document is a detailed implementation plan for formalising the short note
+This document is a detailed implementation plan for formalising the upper-bound
+half of the order-of-growth resolution of Erdős Problem #953.
+
+Primary informal source:
+
+`https://www.ulam.ai/research/erdos953.pdf`
+
+Compressed reference:
 
 `https://www.ulam.ai/research/erdos953-short.pdf`
 
-in Lean 4 using only mathlib.  It is intended as a scaffold for Codex: theorem names and imports below are approximate, and some Lean snippets are deliberately schematic.  The final Lean development should contain no `axiom`, no `constant` standing for an unproved theorem, and no remaining `sorry`.
+The formal project objective is to prove, in Lean 4 using only mathlib,
+
+\[
+  \exists C>0,\ \forall R\ge 1,\quad M(R) \le C R^{1/2}.
+\]
+
+This is the new upper bound in the note.  The final Lean development should contain
+no `axiom`, no `constant` standing for an unproved theorem, and no remaining
+`sorry`.
 
 The plan focuses on the new upper bound
 
@@ -18,13 +33,67 @@ and the equivalent robust finite estimate
   |P| \le C\,\delta^{-2} X^{1/2}.
 \]
 
-The lower-bound consequence `M(R) = R^{1/2+o(1)}` uses Sárközy's construction.  Unless that construction is also formalised, do not state the asymptotic equality as a theorem in the final Lean file.  It can be mentioned as an informal corollary, or the project can add a separate formalisation of the relevant Sárközy papers later.
+The lower-bound consequence `M(R) = R^{1/2+o(1)}` uses Sárközy's construction.
+That material is outside the current Lean objective.  It can be mentioned in
+informal documentation, but it should not be stated as a theorem in this project.
+
+For the current project, treat the following as explicit non-goals:
+
+1. Do not formalise Sárközy's lower-bound theorem.
+2. Do not prove `M(R) = R^{1/2+o(1)}` in Lean.
+3. Do not seek sharp constants.
+4. Do not state an exact asymptotic formula.
+
+The original problem says "no integer distances".  Since distances between distinct
+points are positive, the formal measurable-set predicate below forbids positive
+integer distances.  The robust finite-set predicate uses distance to all integers,
+because the kernel proof naturally requires separation from the full integer
+lattice; the zero-integer case is supplied by Euclidean separation.
+
+Current Lean status:
+
+- `formalizations/erdos953` contains the active Lean project.
+- The final theorem is proved in `Erdos953Formalization/Main.lean`:
+  `erdos953_upper :
+    ∃ C : ℝ, 0 < C ∧ ∀ R : ℝ, 1 ≤ R → M R ≤ C * Real.sqrt R`.
+- The development compiles with `lake build`.
+- A placeholder audit over
+  `formalizations/erdos953/Erdos953Formalization` and
+  `formalizations/erdos953/Erdos953Formalization.lean` finds no declarations or
+  proof terms using `sorry`, `admit`, `axiom`, `constant`, `opaque`, or `unsafe`.
+  The remaining textual matches are ordinary prose in comments.
+- `Basic.lean`, `Delsarte.lean`, `CircleBessel.lean`, `PoissonKernel.lean`,
+  `TermNegativity.lean`, `RobustPointBound.lean`, and `MeasureReduction.lean`
+  provide the finite Delsarte argument, the circle-average Bessel kernel, the
+  termwise sign estimates, the robust finite-point bound, and the measurable
+  reduction to `M(R)`.
+- `PoissonFormula.lean` proves the analytic side.  It establishes the continuity,
+  integrability, decay, and summability hypotheses around mathlib's Poisson
+  summation theorem; reduces the Fourier-transform calculation to half-line
+  moments; performs the Fubini and elementary exponential-moment reductions;
+  converts the angular integrals to unit-circle averages; and proves the final
+  residue calculation in
+  `PoissonKernelCircleAverageFormulaPos_residue`.
+- The positive-radius residue proof factors the denominator into the two roots
+  `poissonRootIn` and `poissonRootOut`, proves that the first root lies inside
+  the unit disk and the second outside it, evaluates the normalized double- and
+  triple-pole contour integrals, and rewrites the residues back to the principal
+  powers `cpowR (q s t m) (-3/2)` and `cpowR (q s t m) (-5/2)`.
+- `Main.lean` exposes intermediate conditional theorems
+  (`erdos953_upper_from_poisson_formula`,
+  `erdos953_upper_from_fourier_formula`,
+  `erdos953_upper_from_moment_formula`,
+  `erdos953_upper_from_angular_formula`,
+  `erdos953_upper_from_circle_average_formula`, and
+  `erdos953_upper_from_circle_average_formula_pos`) as useful review points,
+  and the unconditional theorem now calls
+  `PoissonKernelCircleAverageFormulaPos_residue`.
 
 ---
 
 ## 0. Quick mathematical sanity check and formalisation risks
 
-I do not see a fatal mathematical obstruction in the short proof.  The core Delsarte/positive-definite argument is standard once the kernel has the advertised properties.  The algebra in the Poisson-side term estimate also looks coherent: the `b < a` case has leading real part `-a D^{-3/2}`, and the `b > a` case gives
+I do not see a fatal mathematical obstruction in the informal proofs.  The core Delsarte/positive-definite argument is standard once the kernel has the advertised properties.  The algebra in the Poisson-side term estimate also looks coherent: the `b < a` case has leading real part `-a D^{-3/2}`, and the `b > a` case gives
 
 \[
   -sD^{-3/2} - 3a^2sD^{-5/2} + \frac{15}{2}s^3D^{-5/2} + R,
@@ -49,40 +118,39 @@ However, for formalisation, the following points must be repaired or expanded.
 
 ---
 
-## 1. Suggested project layout
+## 1. Actual project layout
 
-Use small files.  The analytic proof is long enough that a monolithic file will be hard for Codex to repair.
+The project uses small files.  The analytic proof is long enough that a
+monolithic file would be hard to repair.
 
 ```text
-Erdos953/
+formalizations/erdos953/Erdos953Formalization/
   Basic.lean                  -- Euclidean plane, distance-to-integers, admissible sets
   Delsarte.lean               -- abstract positive-definite-kernel point bound
   CircleBessel.lean           -- definition of J0 by circle average and positivity
-  LaplaceBessel.lean          -- Laplace transform identity and Fourier transforms
-  PoissonKernel.lean          -- Poisson-side formula K_s = sum_m T_m
-  ComplexPowBounds.lean       -- local Taylor/remainder bounds for complex cpow
+  PoissonKernel.lean          -- Poisson-side kernel definitions and algebra
   TermNegativity.lean         -- T_m <= 0 and one negative term
   RobustPointBound.lean       -- N(X,δ) / finite-set theorem
+  PoissonFormula.lean         -- Poisson summation, transforms, moments, residues
   MeasureReduction.lean       -- measurable M(R) <= sup δ^2 N(R,δ)
   Main.lean                   -- final upper bound theorem
 ```
 
-The core proof dependency chain should be:
+The core proof dependency chain is:
 
 ```text
 Basic
   -> Delsarte
   -> CircleBessel
-  -> LaplaceBessel
   -> PoissonKernel
-  -> ComplexPowBounds
   -> TermNegativity
   -> RobustPointBound
+  -> PoissonFormula
   -> MeasureReduction
   -> Main
 ```
 
-The first target should be to make `Delsarte.lean` and `RobustPointBound.lean` compile with the kernel properties as hypotheses.  Then prove the kernel properties in the analytic files.
+`Erdos953Formalization.lean` imports the files above in this order.
 
 ---
 
@@ -190,7 +258,13 @@ This is Theorem 3 in finite-set form.
 
 ### 2.5 Measurable upper theorem
 
-Define admissibility and `M`.  Use closed balls; open/closed does not matter for the asymptotic bound, and closed balls simplify compactness.
+Define admissibility and `M`.  The problem statement uses the open ball
+`{x : ‖x‖ < R}`.  For the upper bound, formalise the stronger closed-ball
+version: every open ball is contained in the corresponding closed ball, and
+closed balls simplify the compactness and inner-regularity steps.
+
+Distances between distinct points are positive, so "no integer distances" in
+the original problem is formalised as "no positive integer distances".
 
 ```lean
 def NoPositiveIntegerDistances (A : Set Plane) : Prop :=
@@ -211,7 +285,7 @@ theorem erdos953_upper :
   -- MeasureReduction + robust_finite_bound
 ```
 
-Do not formalise the `R^{1/2+o(1)}` statement unless Sárközy's lower bound has been formalised.
+Do not formalise the `R^{1/2+o(1)}` statement in this project.
 
 ---
 
@@ -747,63 +821,126 @@ lemma zsum_poissonF1_eq_two_bessel_sum :
 
 Similarly for `f2`.
 
-### 5.2 Laplace-Bessel identity
+### 5.2 Laplace-Bessel, angular, and residue identities
 
-The project needs the theorem:
-
-```lean
-theorem laplace_J0
-    {λ : ℂ} {β : ℝ} (hλ : 0 < λ.re) :
-    ∫ x in (0)..(∞), Complex.exp (-λ * Complex.ofReal x) *
-        Complex.ofReal (CircleBessel.J0 (β * x))
-      = (λ^2 + (β : ℂ)^2) ^ (- (1/2 : ℂ)) := by
-```
-
-Lean interval integrals over `[0,∞)` may be awkward.  Use `∫ x : ℝ in Set.Ioi 0, ...` or define as an improper integral via `∫ x, indicator (Set.Ioi 0) ...`.  The exact integration API should be chosen after checking mathlib.
-
-The identity in the paper uses `β = 2πt` and principal complex square root.  In Lean, use `Complex.cpow`:
+The analytic calculation is formalised through the moment formula
+`PoissonKernelMomentFormula`:
 
 ```lean
-(λ^2 + (β : ℂ)^2) cpow (-(1/2 : ℂ))
+def PoissonKernelMomentFormula : Prop :=
+  ∀ (s t : ℝ), 0 < s → 0 ≤ t →
+    ∀ m : ℤ,
+      (∫ x in Set.Ioi (0 : ℝ), poissonKernelMomentOneIntegrand s t m x) =
+        (lam s m) * cpowR (q s t m) (-(3 / 2 : ℝ)) ∧
+      (∫ x in Set.Ioi (0 : ℝ), poissonKernelMomentTwoIntegrand s t m x) =
+        -cpowR (q s t m) (-(3 / 2 : ℝ)) +
+          3 * (lam s m) ^ 2 * cpowR (q s t m) (-(5 / 2 : ℝ))
 ```
 
-or a helper:
+`PoissonFormula.lean` proves the chain from this moment formula to the weighted
+half-line transform and then to the Fourier formula:
 
 ```lean
-noncomputable def invComplexSqrt (z : ℂ) : ℂ := z cpow (-(1/2 : ℂ))
+PoissonKernelHalfLineComplexFormula_of_momentFormula
+PoissonKernelHalfLineFormula_of_complexFormula
+PoissonKernelFourierFormula_of_halfLineFormula
 ```
 
-#### Recommended proof route for `laplace_J0`
+The moment formula itself is proved by:
 
-Because mathlib likely does not have Bessel transforms, formalise the classical integral from the circle-average definition.
+1. Rewriting `J0` using its complex circle-average definition.
+2. Swapping the half-line and circle integrals by Fubini.
+3. Evaluating the elementary half-line exponential moments
+   `integral_Ioi_cexp_neg_mul_moment_one` and
+   `integral_Ioi_cexp_neg_mul_moment_two`.
+4. Converting the remaining angular expressions to unit-circle averages.
+5. Proving the positive-radius unit-circle average by residues, with a separate
+   direct `t = 0` branch.
 
-1. Substitute the definition of `J0` as an average.
-2. Use Fubini/dominated convergence to swap the `x` and `θ` integrals.  Domination: `‖exp(-λx) * exp(i β x cos θ)‖ = exp(-Re λ * x)`.
-3. Compute the elementary Laplace integral
+The key final theorem is:
 
-   \[
-     \int_0^\infty e^{-(\lambda - i\beta\cos(2\pi\theta))x}\,dx
-       = \frac{1}{\lambda - i\beta\cos(2\pi\theta)}
-   \]
+```lean
+theorem PoissonKernelCircleAverageFormulaPos_residue :
+    PoissonKernelCircleAverageFormulaPos
+```
 
-   since `Re(λ - iβ cos(...)) = Re λ > 0`.
+It proves, for `s > 0`, `t > 0`, and `m : ℤ`,
 
-4. Prove the remaining angular integral
+```lean
+Real.circleAverage
+  (fun z => 1 / (poissonAngularDenomCircle s t m z) ^ 2) 0 1 =
+  (lam s m) * cpowR (q s t m) (-(3 / 2 : ℝ))
+```
 
-   \[
-   \int_0^1 \frac{d\theta}{\lambda - i\beta\cos(2\pi\theta)}
-     = (\lambda^2+\beta^2)^{-1/2}.
-   \]
+and
 
-This last angular integral is nontrivial.  Possible approaches:
+```lean
+Real.circleAverage
+  (fun z => 2 / (poissonAngularDenomCircle s t m z) ^ 3) 0 1 =
+  -cpowR (q s t m) (-(3 / 2 : ℝ)) +
+    3 * (lam s m) ^ 2 * cpowR (q s t m) (-(5 / 2 : ℝ))
+```
 
-- Use the tangent-half-angle substitution and integrate a rational function.
-- Use complex contour integration on the unit circle.  Mathlib complex contour integration may be more overhead than the rational route.
-- Prove both sides as holomorphic functions of `λ` on `{Re λ > 0}` and verify for real `λ>0`; probably too ambitious.
+The residue calculation uses the formal roots
 
-If this becomes the bottleneck, an alternative is to define a custom `J0` by the Laplace identity and separately prove the circle-average representation.  That merely moves the difficulty; the final project must prove both positivity and the Laplace transform with no axioms.
+```lean
+noncomputable def poissonRootIn (s t : ℝ) (m : ℤ) : ℂ :=
+  Complex.I * (poissonQSqrt s t m - lam s m) / ((bOfT t : ℝ) : ℂ)
 
-### 5.3 Fourier transforms of `f1` and `f2`
+noncomputable def poissonRootOut (s t : ℝ) (m : ℤ) : ℂ :=
+  -Complex.I * (poissonQSqrt s t m + lam s m) / ((bOfT t : ℝ) : ℂ)
+```
+
+with placement lemmas
+
+```lean
+poissonRootIn_mem_ball
+one_lt_norm_poissonRootOut
+```
+
+and evaluates the normalized rational contour integrals through
+
+```lean
+normalized_circleIntegral_double_pole
+normalized_circleIntegral_triple_pole
+double_pole_coefficient_eq
+triple_pole_coefficient_eq
+```
+
+The completed composition is:
+
+```lean
+theorem PoissonKernelCircleAverageFormula_of_pos
+    (hpos : PoissonKernelCircleAverageFormulaPos) :
+    PoissonKernelCircleAverageFormula
+
+theorem PoissonKernelAngularFormula_of_circleAverageFormula
+    (hcircle : PoissonKernelCircleAverageFormula) :
+    PoissonKernelAngularFormula
+
+theorem PoissonKernelMomentFormula_of_angularFormula
+    (hangular : PoissonKernelAngularFormula) :
+    PoissonKernelMomentFormula
+
+theorem K_besselPoissonFormula_of_circleAverageFormulaPos
+    (hformula : PoissonKernelCircleAverageFormulaPos) :
+    K_besselPoissonFormula
+```
+
+The previous weighted half-line target remains useful as a review checkpoint:
+
+```lean
+def PoissonKernelHalfLineComplexFormula : Prop :=
+  ∀ (s t : ℝ), 0 < s → 0 ≤ t →
+    ∀ m : ℤ,
+      (∫ x in Set.Ioi (0 : ℝ), poissonKernelHalfLineIntegrand s t m x) =
+        (1 / 2 : ℂ) * (lam s m) * cpowR (q s t m) (-(3 / 2 : ℝ)) +
+          (s : ℂ) *
+            (-cpowR (q s t m) (-(3 / 2 : ℝ)) +
+              3 * (lam s m) ^ 2 * cpowR (q s t m) (-(5 / 2 : ℝ)))
+```
+
+### 5.3 Fourier transform reduction already formalised
 
 Let
 
@@ -834,23 +971,22 @@ Check Lean parsing of rational complex exponents.  It may need:
 ((q s t m) cpow (Complex.ofReal (-(3/2 : ℝ))))
 ```
 
-Fourier transform formulas:
+The full-line Fourier transform of an even real function is twice the real part
+of the positive half-line Laplace integral.  This reduction is now formalised in
 
 ```lean
-lemma fourier_poissonF1 (s t : ℝ) (m : ℤ) (hs : 0 < s) :
-    FourierTransform.fourier (poissonF1 s t) (m : ℝ)
-      = 2 * Complex.ofReal ((lam s m * (q s t m) cpow (-(3/2 : ℂ))).re) := by
-  -- derive by differentiating `laplace_J0` in s or directly integrate x*exp(-λx)
+fourier_poissonKernelSampleC_re_eq_two_re_halfLine
+PoissonKernelFourierFormula_of_halfLineFormula
+PoissonKernelHalfLineFormula_of_complexFormula
 ```
 
-```lean
-lemma fourier_poissonF2 (s t : ℝ) (m : ℤ) (hs : 0 < s) :
-    FourierTransform.fourier (poissonF2 s t) (m : ℝ)
-      = 2 * Complex.ofReal (((-(q s t m) cpow (-(3/2 : ℂ))
-           + 3 * (lam s m)^2 * (q s t m) cpow (-(5/2 : ℂ))).re)) := by
-```
-
-The factors of `2` arise because the real-line Fourier transform of an even function is twice the half-line Laplace integral.  The sign of `2πim` depends on mathlib's Fourier convention; because the final expression takes real parts and `m ↦ -m` is symmetric, a sign error can usually be fixed by replacing `m` with `-m`.  Still, align this carefully using `#check Real.fourierChar` and small test lemmas.
+The currently defined `TtermC` has the factor of `2` built in, so the correct
+target for the combined sample is
+`(FourierTransform.fourier ... (m : ℝ)).re = Tterm s t m`, not equality with
+`TtermC` itself.  `PoissonFormula.lean` proves separately that this Fourier
+transform is real, so a real-part formula is enough for Poisson summation.  The
+sign of `2πim` has been aligned with mathlib's Fourier convention in the
+half-line integrand definition.
 
 ### 5.4 Applying mathlib Poisson summation
 
@@ -910,7 +1046,9 @@ This identity is the bridge from the positive-definite Bessel kernel to the term
 
 The term-negativity proof is mostly elementary inequalities for the principal branch of complex powers near `1` and `-1`.
 
-Create `ComplexPowBounds.lean` with all local analytic estimates.  Keep these independent of Bessel/Poisson.
+In the completed project these estimates live in `TermNegativity.lean` rather
+than in a separate `ComplexPowBounds.lean` file.  The statements below record
+the proof architecture that the file implements.
 
 ### 6.1 Use helpers for powers
 
@@ -1693,22 +1831,24 @@ theorem erdos953_upper :
 
 ---
 
-## 11. Optional lower bound and why it should be separated
+## 11. Appendix: lower-bound context, not part of this project
 
-The note's lower bound uses Sárközy's theorem on point sets whose mutual distances stay away from integers.  That theorem is not a simple mathlib import.  Therefore there are three honest options:
+The note's lower bound uses Sárközy's theorem on point sets whose mutual distances
+stay away from integers.  That theorem is not a simple mathlib import, and it is
+not needed for the current formal objective.
 
-1. **Do not formalise the lower bound.**  State only `erdos953_upper`.
-2. **Create a separate project formalising Sárközy's theorem.**  Then derive the lower bound by disk thickening.
-3. **State a conditional theorem**, not as an axiom but as a theorem taking Sárközy's point-set result as an explicit hypothesis:
+For this project, do not implement the Sárközy lower bound, do not add a
+conditional lower-bound theorem, and do not prove `M(R) = R^{1/2+o(1)}`.  The
+only final theorem about `M` should be the upper bound
 
-   ```lean
-   theorem lower_bound_conditional
-       (sarkozy : ∀ ε > 0, ∃ c > 0, ∀ᶠ R in atTop,
-          ∃ δ > 0, ∃ P : Finset Plane, ... ) :
-       ∀ ε > 0, ∃ c > 0, ∀ᶠ R in atTop, c * R^(1/2 - ε) ≤ M R := by
-   ```
+```lean
+theorem erdos953_upper :
+    ∃ C : ℝ, 0 < C ∧ ∀ R : ℝ, 1 ≤ R → M R ≤ C * Real.sqrt R
+```
 
-This is not an axiom because it is a conditional theorem.  But it does not prove the unconditional lower bound.
+The lower-bound paragraph from the informal notes can remain as mathematical
+context in project documentation, but it should not appear in the Lean milestone
+path or final quality gates.
 
 ---
 
@@ -1805,7 +1945,30 @@ This helps Codex preserve intent during refactors.
 
 ---
 
-## 13. Suggested milestones for Codex
+## 13. Implementation milestones
+
+All milestones below are now complete in `formalizations/erdos953`.  The list is
+kept as a review map for the proof architecture.
+
+### Milestone 0: scaffold the project and final theorem statement
+
+Files:
+
+- `lakefile.toml`
+- `Erdos953.lean`
+- `Erdos953/Basic.lean`
+- `Erdos953/Main.lean`
+
+Goal:
+
+```lean
+#check erdos953_upper
+```
+
+During development, placeholders are acceptable only as temporary scaffolding.
+The first scaffold should already use the closed-ball definition of `M` and the
+upper-bound-only final theorem.  Do not add Sárközy-related statements to the Lean
+project.
 
 ### Milestone 1: compile definitions and abstract Delsarte theorem
 
@@ -1841,8 +2004,8 @@ At this stage, do not prove Poisson negativity.
 
 Files:
 
-- `LaplaceBessel.lean`
 - `PoissonKernel.lean`
+- `PoissonFormula.lean`
 
 Goal:
 
@@ -1856,7 +2019,6 @@ Use mathlib's general Poisson theorem, not Schwartz Poisson.
 
 Files:
 
-- `ComplexPowBounds.lean`
 - `TermNegativity.lean`
 
 Goal:
@@ -1890,11 +2052,17 @@ Goal:
 #check erdos953_upper
 ```
 
+This is the final theorem for the current project.  Stop here; the
+`R^{1/2+o(1)}` statement belongs to a separate project requiring Sárközy's lower
+bound.
+
 ---
 
-## 14. Minimal theorem list to drive implementation
+## 14. Historical scaffold theorem list
 
-The following theorem list can be pasted into Lean as declarations with proof placeholders during development.  The final version must replace all placeholders with proofs.
+The following theorem list was the initial scaffold used to drive
+implementation.  The completed project has replaced these placeholder-shaped
+declarations with proofs in the files listed above.
 
 ```lean
 namespace Erdos953
@@ -1907,6 +2075,18 @@ def AwayFromIntegers (δ t : ℝ) : Prop :=
 def RobustFiniteSet (X δ : ℝ) (P : Finset Plane) : Prop :=
   (∀ p ∈ P, dist p 0 ≤ X) ∧
   (∀ p ∈ P, ∀ q ∈ P, p ≠ q → AwayFromIntegers δ (dist p q))
+
+def NoPositiveIntegerDistances (A : Set Plane) : Prop :=
+  ∀ x ∈ A, ∀ y ∈ A, x ≠ y → ∀ n : ℕ, 0 < n → dist x y ≠ (n : ℝ)
+
+def AdmissibleSet (R : ℝ) (A : Set Plane) : Prop :=
+  MeasurableSet A ∧ A ⊆ Metric.closedBall (0 : Plane) R ∧ NoPositiveIntegerDistances A
+
+noncomputable def area (A : Set Plane) : ℝ :=
+  (volume A).toReal
+
+noncomputable def M (R : ℝ) : ℝ :=
+  sSup {a : ℝ | ∃ A : Set Plane, AdmissibleSet R A ∧ area A = a}
 
 def invSqrtOnePlus (t : ℝ) : ℝ := (Real.sqrt (1 + t))⁻¹
 
@@ -1983,6 +2163,10 @@ theorem robust_finite_bound :
     (P.card : ℝ) ≤ C * δ⁻² * Real.sqrt X :=
   robust_finite_bound_from_kernel poissonBesselPackage
 
+theorem erdos953_upper :
+    ∃ C : ℝ, 0 < C ∧ ∀ R : ℝ, 1 ≤ R → M R ≤ C * Real.sqrt R := by
+  -- measurable reduction from `robust_finite_bound`
+
 end Erdos953
 ```
 
@@ -1990,12 +2174,25 @@ end Erdos953
 
 ## 15. Final quality gates
 
-Before considering the formalisation complete:
+The current project passes these gates:
 
 1. Run `lake build` with no `sorry` and no declarations of type `axiom` or unproved `constant`.
 2. Search the project for `sorry`, `admit`, `axiom`, `constant`, and `unsafe`.
-3. Ensure the final theorem is stated only for the upper bound unless Sárközy is formalised.
+3. Ensure the final theorem is stated only for the upper bound; do not add Sárközy-dependent lower-bound statements to this project.
 4. Confirm that the Poisson summation proof uses a theorem whose hypotheses are actually proved for the nonsmooth-at-zero functions.
 5. Confirm that all complex powers use the principal branch and that the estimates near the negative real axis are proved on the correct one-sided/upper-branch domain.
 6. Confirm that the final constants are existential and positive, with no hidden dependence on `R`, `X`, `δ`, `P`, `s`, or `t`.
 
+Latest verification command:
+
+```bash
+cd formalizations/erdos953 && lake build
+```
+
+Placeholder audit command:
+
+```bash
+rg -n "\b(sorry|admit|axiom|constant|opaque|unsafe)\b" \
+  formalizations/erdos953/Erdos953Formalization \
+  formalizations/erdos953/Erdos953Formalization.lean
+```
