@@ -2,7 +2,7 @@
 
 This directory is for the proof-faithful Lean development of Erdős Problem 330.
 It intentionally starts from the upper-density exact two-fold formulation in
-`erdos330_formalisation_brief_v2.md`, rather than treating the existing
+`formalisation_brief.md`, rather than treating the existing
 Formal Conjectures `answer(sorry)` statement as canonical.
 
 The intended first target is:
