@@ -2,15 +2,11 @@ import Erdos1151Formalization.Abstract
 import Erdos1151Formalization.Spike
 
 /-!
-# Erdős Problem 1151, final target statement scaffold
+# Erdős Problem 1151, final target statement
 
-The final theorem is stated now, but `chebLagEval` is currently a placeholder.
-The intended route is:
-
-1. prove `angle_theorem_from_block_spikes`;
-2. prove concrete block spikes;
-3. replace `chebLagEval` by the real Lagrange definition;
-4. prove the Lagrange bridge and close this theorem.
+This file packages the final fixed-point scalar theorem.  The proof passes
+through the abstract block-spike theorem, the concrete spike construction, and
+the Lagrange bridge from angle variables back to Chebyshev-root interpolation.
 -/
 
 noncomputable section
