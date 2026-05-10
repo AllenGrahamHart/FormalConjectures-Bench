@@ -27954,13 +27954,18 @@
         "Erdos699"
       ],
       "theorem_header": "theorem sylvester_schur (n i : ℕ) (hi : 1 ≤ i) (hi_half : i ≤ n / 2) :\n    ∃ p : ℕ, p.Prime ∧ i < p ∧ p ∣ Nat.choose n i",
-      "formal_proofs": [],
+      "formal_proofs": [
+        {
+          "kind": "repository_local",
+          "url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench/blob/482dacc4d9335240f26218cdc62032da3100392b/formalizations/erdos699/Erdos699Formalization.lean#L7679"
+        }
+      ],
       "selected_oracle": {
-        "kind": "none",
-        "formal_proof_kind": null,
-        "url": "",
-        "licence_status": "not_applicable",
-        "redistribution_status": "not_applicable"
+        "formal_proof_kind": "repository_local",
+        "kind": "repository_local_lean4",
+        "licence_status": "project-local",
+        "redistribution_status": "bundled",
+        "url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench/blob/482dacc4d9335240f26218cdc62032da3100392b/formalizations/erdos699/Erdos699Formalization.lean#L7679"
       },
       "category": [
         "research",
@@ -27971,11 +27976,11 @@
       ],
       "contains_answer_elaborator": false,
       "uses_answer_sorry": false,
-      "inclusion_status": "candidate",
+      "inclusion_status": "included",
       "exclusion_reason": null,
-      "benchmark_bucket": "informal_proof",
-      "allow_internet": true,
-      "oracle_status": "none"
+      "benchmark_bucket": "gold_solution",
+      "allow_internet": false,
+      "oracle_status": "bundled"
     },
     {
       "instance_id": "erdosproblems-705-erdos-705",

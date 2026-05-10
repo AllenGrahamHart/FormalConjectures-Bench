@@ -14,7 +14,7 @@ size_categories:
 
 # FormalConjectures-Bench Gold
 
-FormalConjectures-Bench Gold v1.3.0 is a set of 76 offline Lean 4
+FormalConjectures-Bench Gold v1.4.0 is a set of 77 offline Lean 4
 theorem-proving tasks with bundled oracle solutions. The executable benchmark is
 distributed as a Harbor dataset; this Hugging Face dataset is the metadata and
 discovery mirror.
@@ -30,8 +30,8 @@ Install Harbor and run the registry-backed dataset:
 uv tool install harbor
 
 harbor run \
-  --dataset formal-conjectures-gold@1.3.0 \
-  --registry-url https://raw.githubusercontent.com/AllenGrahamHart/FormalConjectures-Bench/v1.3.0/registry.json \
+  --dataset formal-conjectures-gold@1.4.0 \
+  --registry-url https://raw.githubusercontent.com/AllenGrahamHart/FormalConjectures-Bench/v1.4.0/registry.json \
   --agent terminus-2 \
   --model <provider/model>
 ```
@@ -40,8 +40,8 @@ Run a single task:
 
 ```bash
 harbor run \
-  --dataset formal-conjectures-gold@1.3.0 \
-  --registry-url https://raw.githubusercontent.com/AllenGrahamHart/FormalConjectures-Bench/v1.3.0/registry.json \
+  --dataset formal-conjectures-gold@1.4.0 \
+  --registry-url https://raw.githubusercontent.com/AllenGrahamHart/FormalConjectures-Bench/v1.4.0/registry.json \
   --task-name erdosproblems-399-erdos-399 \
   --agent terminus-2 \
   --model <provider/model>
@@ -53,8 +53,8 @@ timeout multiplier to scale them:
 
 ```bash
 harbor run \
-  --dataset formal-conjectures-gold@1.3.0 \
-  --registry-url https://raw.githubusercontent.com/AllenGrahamHart/FormalConjectures-Bench/v1.3.0/registry.json \
+  --dataset formal-conjectures-gold@1.4.0 \
+  --registry-url https://raw.githubusercontent.com/AllenGrahamHart/FormalConjectures-Bench/v1.4.0/registry.json \
   --timeout-multiplier 0.25
 ```
 
@@ -66,7 +66,7 @@ harbor run \
 
 ## Versions
 
-- Dataset: `formal-conjectures-gold@1.3.0`
+- Dataset: `formal-conjectures-gold@1.4.0`
 - Task source commit: recorded in `registry.json`
 - Lean toolchain: `leanprover/lean4:v4.27.0`
 - Mathlib commit: `a3a10db0e9d66acbebf76c5e6a135066525ac900`

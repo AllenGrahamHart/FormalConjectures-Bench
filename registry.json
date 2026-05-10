@@ -1,463 +1,469 @@
 [
   {
     "name": "formal-conjectures-gold",
-    "version": "1.3.0",
-    "description": "76 offline Lean 4 theorem-proving tasks from FormalConjectures-Bench with bundled oracle solutions.",
+    "version": "1.4.0",
+    "description": "77 offline Lean 4 theorem-proving tasks from FormalConjectures-Bench with bundled oracle solutions.",
     "tasks": [
       {
         "name": "arxiv-0911-2077-conjecture6-3-conjecture6-3",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/arxiv-0911-2077-conjecture6-3-conjecture6-3"
       },
       {
         "name": "erdosproblems-100-erdos-100-piepmeyer",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-100-erdos-100-piepmeyer"
       },
       {
         "name": "erdosproblems-1043-erdos-1043",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-1043-erdos-1043"
       },
       {
         "name": "erdosproblems-1051-erdos-1051",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-1051-erdos-1051"
       },
       {
         "name": "erdosproblems-1052-even-of-isunitaryperfect",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-1052-even-of-isunitaryperfect"
       },
       {
         "name": "erdosproblems-1074-ehsnumbers-infinite",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-1074-ehsnumbers-infinite"
       },
       {
         "name": "erdosproblems-1080-erdos-1080",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-1080-erdos-1080"
       },
       {
         "name": "erdosproblems-1082-ii",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-1082-ii"
       },
       {
         "name": "erdosproblems-1151-nonempty-fixed-point",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-1151-nonempty-fixed-point"
       },
       {
         "name": "erdosproblems-12-i",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-12-i"
       },
       {
         "name": "erdosproblems-12-ii",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-12-ii"
       },
       {
         "name": "erdosproblems-12-isgood-example",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-12-isgood-example"
       },
       {
         "name": "erdosproblems-125-erdos-125",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-125-erdos-125"
       },
       {
         "name": "erdosproblems-125-positive-lower-density",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-125-positive-lower-density"
       },
       {
         "name": "erdosproblems-138-difference",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-138-difference"
       },
       {
         "name": "erdosproblems-138-monoapnumber-two-one",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-138-monoapnumber-two-one"
       },
       {
         "name": "erdosproblems-138-monoapnumber-two-two",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-138-monoapnumber-two-two"
       },
       {
         "name": "erdosproblems-152-erdos-152",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-152-erdos-152"
       },
       {
         "name": "erdosproblems-152-square",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-152-square"
       },
       {
         "name": "erdosproblems-189-erdos-189",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-189-erdos-189"
       },
       {
         "name": "erdosproblems-198-concrete",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-198-concrete"
       },
       {
         "name": "erdosproblems-198-erdos-198",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-198-erdos-198"
       },
       {
         "name": "erdosproblems-229-erdos-229",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-229-erdos-229"
       },
       {
         "name": "erdosproblems-233-lower-bound",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-233-lower-bound"
       },
       {
         "name": "erdosproblems-259-erdos-259",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-259-erdos-259"
       },
       {
         "name": "erdosproblems-26-erdos-26",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-26-erdos-26"
       },
       {
         "name": "erdosproblems-26-tenenbaum",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-26-tenenbaum"
       },
       {
         "name": "erdosproblems-263-ii",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-263-ii"
       },
       {
         "name": "erdosproblems-267-specialization-pow-two",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-267-specialization-pow-two"
       },
       {
         "name": "erdosproblems-275-erdos-275",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-275-erdos-275"
       },
       {
         "name": "erdosproblems-316-erdos-316",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-316-erdos-316"
       },
       {
         "name": "erdosproblems-330-upper-density",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-330-upper-density"
       },
       {
         "name": "erdosproblems-331-erdos-331",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-331-erdos-331"
       },
       {
         "name": "erdosproblems-350-erdos-350",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-350-erdos-350"
       },
       {
         "name": "erdosproblems-355-erdos-355",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-355-erdos-355"
       },
       {
         "name": "erdosproblems-370-erdos-370",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-370-erdos-370"
       },
       {
         "name": "erdosproblems-379-erdos-379",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-379-erdos-379"
       },
       {
         "name": "erdosproblems-397-erdos-397",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-397-erdos-397"
       },
       {
         "name": "erdosproblems-399-erdos-399",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-399-erdos-399"
       },
       {
         "name": "erdosproblems-645-erdos-645",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-645-erdos-645"
+      },
+      {
+        "name": "erdosproblems-699-sylvester-schur",
+        "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
+        "path": "tasks/erdosproblems-699-sylvester-schur"
       },
       {
         "name": "erdosproblems-707-erdos-707",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-707-erdos-707"
       },
       {
         "name": "erdosproblems-741-i",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-741-i"
       },
       {
         "name": "erdosproblems-741-ii",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-741-ii"
       },
       {
         "name": "erdosproblems-741-upper",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-741-upper"
       },
       {
         "name": "erdosproblems-828-phi-dvd-self-iff-pow2-pow3",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-828-phi-dvd-self-iff-pow2-pow3"
       },
       {
         "name": "erdosproblems-846-erdos-846",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-846-erdos-846"
       },
       {
         "name": "erdosproblems-897-i",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-897-i"
       },
       {
         "name": "erdosproblems-897-ii",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-897-ii"
       },
       {
         "name": "erdosproblems-953-upper-bound",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-953-upper-bound"
       },
       {
         "name": "erdosproblems-978-allow-fixed-divisors",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/erdosproblems-978-allow-fixed-divisors"
       },
       {
         "name": "greensopenproblems-57-green-57",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/greensopenproblems-57-green-57"
       },
       {
         "name": "greensopenproblems-57-z3",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/greensopenproblems-57-z3"
       },
       {
         "name": "greensopenproblems-57-z3-functional",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/greensopenproblems-57-z3-functional"
       },
       {
         "name": "greensopenproblems-94-green-94-outer-measure",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/greensopenproblems-94-green-94-outer-measure"
       },
       {
         "name": "mathoverflow-10799-mathoverflow-10799",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/mathoverflow-10799-mathoverflow-10799"
       },
       {
         "name": "mathoverflow-486451-exists-semiring-unique-left-right-maximal-ne",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/mathoverflow-486451-exists-semiring-unique-left-right-maximal-ne"
       },
       {
         "name": "openquantumproblems-13-mutuallyunbiasedbases-dim6-bounds",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/openquantumproblems-13-mutuallyunbiasedbases-dim6-bounds"
       },
       {
         "name": "openquantumproblems-35-ame-11-5-open",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/openquantumproblems-35-ame-11-5-open"
       },
       {
         "name": "openquantumproblems-35-ame-4-3-exists",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/openquantumproblems-35-ame-4-3-exists"
       },
       {
         "name": "paper-casasalvero-positive-char-counterexample",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/paper-casasalvero-positive-char-counterexample"
       },
       {
         "name": "paper-claudescycles-cube-hamiltonian-arc-decomposition",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/paper-claudescycles-cube-hamiltonian-arc-decomposition"
       },
       {
         "name": "paper-monochromaticquantumgraph-eqsystem-no-solution-even-ge4-d-eq-n-explicit",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/paper-monochromaticquantumgraph-eqsystem-no-solution-even-ge4-d-eq-n-explicit"
       },
       {
         "name": "paper-monochromaticquantumgraph-eqsystem10-no-solution-d10",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/paper-monochromaticquantumgraph-eqsystem10-no-solution-d10"
       },
       {
         "name": "paper-monochromaticquantumgraph-eqsystem4-no-solution-d4",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/paper-monochromaticquantumgraph-eqsystem4-no-solution-d4"
       },
       {
         "name": "paper-monochromaticquantumgraph-eqsystem4-no-solution-ge4",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/paper-monochromaticquantumgraph-eqsystem4-no-solution-ge4"
       },
       {
         "name": "paper-monochromaticquantumgraph-eqsystem4-no-solution-ge4-int",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/paper-monochromaticquantumgraph-eqsystem4-no-solution-ge4-int"
       },
       {
         "name": "paper-monochromaticquantumgraph-eqsystem4-no-solution-ge4-real",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/paper-monochromaticquantumgraph-eqsystem4-no-solution-ge4-real"
       },
       {
         "name": "paper-monochromaticquantumgraph-eqsystem4-no-solution-ge4-trinary-int",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/paper-monochromaticquantumgraph-eqsystem4-no-solution-ge4-trinary-int"
       },
       {
         "name": "paper-monochromaticquantumgraph-eqsystem6-no-solution-d6",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/paper-monochromaticquantumgraph-eqsystem6-no-solution-d6"
       },
       {
         "name": "paper-monochromaticquantumgraph-eqsystem8-no-solution-d10",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/paper-monochromaticquantumgraph-eqsystem8-no-solution-d10"
       },
       {
         "name": "wikipedia-agohgiuga-isweakgiuga-iff-prime-dvd",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/wikipedia-agohgiuga-isweakgiuga-iff-prime-dvd"
       },
       {
         "name": "wikipedia-eulerbrick-cuboidone",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/wikipedia-eulerbrick-cuboidone"
       },
       {
         "name": "wikipedia-legendreconjecture-bounded-gap-legendre",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/wikipedia-legendreconjecture-bounded-gap-legendre"
       },
       {
         "name": "wikipedia-perfectnumbers-euler-form",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/wikipedia-perfectnumbers-euler-form"
       },
       {
         "name": "wikipedia-wolstenholmeprime-wolstenholme-prime-16483",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/wikipedia-wolstenholmeprime-wolstenholme-prime-16483"
       },
       {
         "name": "wikipedia-wolstenholmeprime-wolstenholme-theorem",
         "git_url": "https://github.com/AllenGrahamHart/FormalConjectures-Bench",
-        "git_commit_id": "8fb9479e9cbfde68d6990ed008b24c883cbd2750",
+        "git_commit_id": "71449fdfa6f58f7f33887c33ec2c7202f46fb6df",
         "path": "tasks/wikipedia-wolstenholmeprime-wolstenholme-theorem"
       }
     ]

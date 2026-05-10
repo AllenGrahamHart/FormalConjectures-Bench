@@ -5,17 +5,17 @@ tasks derived from Google DeepMind's Formal Conjectures project.
 
 The current `main` branch has two checked-in task roots:
 
-- `tasks/`: 76 gold-solution tasks with bundled local Lean oracles. These run
+- `tasks/`: 77 gold-solution tasks with bundled local Lean oracles. These run
   with internet access disabled. Their `Target.lean` files use a minimal
   exam-style surface: source-derived comments above the benchmark marker are
   stripped, except for the harbor canary.
-- `tasks-v2/`: 2,557 non-gold tasks without bundled oracles. These run with
+- `tasks-v2/`: 2,556 non-gold tasks without bundled oracles. These run with
   internet access enabled so agents can use external literature while trying to
   produce new Lean proofs. These keep the richer source context generated from
   Formal Conjectures.
 
-The checked-in task roots contain 2,633 task instances: 76 gold instances are
-emitted under `tasks/`, and the remaining 2,557 non-gold instances are emitted
+The checked-in task roots contain 2,633 task instances: 77 gold instances are
+emitted under `tasks/`, and the remaining 2,556 non-gold instances are emitted
 under `tasks-v2/`. The GDM-derived v2 candidate manifest records 2,630 task
 instances; the additional Erdős 330 upper-density, Erdős 953 upper-bound, and
 Erdős 1151 non-empty fixed-point gold tasks are benchmark-local.
@@ -26,9 +26,9 @@ Erdős 1151 non-empty fixed-point gold tasks are benchmark-local.
 | --- | --- |
 | Current task instances | 2,633 |
 | Gold task root | `tasks/` |
-| Gold tasks | 76 |
+| Gold tasks | 77 |
 | Non-gold v2 task root | `tasks-v2/` |
-| Non-gold v2 tasks | 2,557 |
+| Non-gold v2 tasks | 2,556 |
 | V2 batch manifests | `manifest/v2_batches/batch-001.json` through `batch-027.json` |
 | Language | Lean 4 |
 | Lean toolchain | `leanprover/lean4:v4.27.0` |
@@ -40,8 +40,8 @@ Erdős 1151 non-empty fixed-point gold tasks are benchmark-local.
 
 | Bucket | Count | Task root | Internet | Oracle |
 | --- | ---: | --- | --- | --- |
-| `gold_solution` | 76 | `tasks/` | Off | Bundled local oracle |
-| `informal_proof` | 721 | `tasks-v2/` | On | None |
+| `gold_solution` | 77 | `tasks/` | Off | Bundled local oracle |
+| `informal_proof` | 720 | `tasks-v2/` | On | None |
 | `deferred_formal_candidate` | 26 | `tasks-v2/` | On | None |
 | `open_problem` | 1,810 | `tasks-v2/` | On | None |
 
@@ -63,7 +63,7 @@ forms that are not part of the open prove/refute scoring model.
 
 ## Repository Layout
 
-- `manifest/manifest.json` is the source of truth for the 76 gold tasks emitted
+- `manifest/manifest.json` is the source of truth for the 77 gold tasks emitted
   under `tasks/`.
 - `manifest/v2_candidates.json` records the 2,630 GDM-derived v2 instances and
   their benchmark buckets.
